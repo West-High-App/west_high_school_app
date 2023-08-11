@@ -1,6 +1,6 @@
 //
 //  HomeView.swift
-//  West App
+//  West Ap
 //
 //  Created by August Andersen on 5/19/23.
 //
