@@ -20,7 +20,11 @@ welcome
 hello
 
 ### WHAAAT
-#### DOES IT WORK???
+
+hello
+**bold**
+*itallic*
+***anuthing?***
 
 - Yup
 - <span style="color: orange;">Orange Text</span>
