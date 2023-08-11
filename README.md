@@ -1,30 +1,34 @@
 # West High App
-
-Welcome to the West High School App.
-
+aiden we should do this because it looks professional
 ## Table of Contents
 
-- [Overview](#introduction)
-- [Colors](#test)
-- [Fonts](#fonts)
-- [Sizes](#sizes)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+- [Overview](#overview)
+- [Abilities](#abilities)
+- [Data](#data)
+- [Permissions](#permissions)
+- [Credits](#credits)
+- [Contact](#contact)
 
-## Introduction
+## Overview
 
-welcome
+welcome to west high app
 
-## Test
-hello
+## Abilities
 
-### WHAAAT
+it can do a lot of cool shit
 
-hello
-**bold**
-*itallic*
-***anuthing?***
+## Data
 
-- Yup
-- <span style="color: orange;">Orange Text</span>
+we use firebase wow
+
+## Permissions
+
+admin stuff
+
+## Credits
+
+created by aiden lee and august andersen
+
+## Credits
+
+emails and stuff
