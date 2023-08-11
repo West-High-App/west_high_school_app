@@ -29,6 +29,6 @@ admin stuff
 
 created by aiden lee and august andersen
 
-## Credits
+## Contact
 
 emails and stuff
