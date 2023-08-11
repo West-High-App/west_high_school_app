@@ -1,0 +1,827 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086922A60AE8E00EF1ECA /* LoginData.swift */; };
+		222086E92A6224D400EF1ECA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 222086E82A6224D400EF1ECA /* GoogleSignIn */; };
+		222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 222086EA2A6224D400EF1ECA /* GoogleSignInSwift */; };
+		222086EF2A62458900EF1ECA /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086EE2A62458900EF1ECA /* Utilities.swift */; };
+		2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B1EB2A68D23300823E58 /* WestHighApp.swift */; };
+		2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2072A68D9FC00823E58 /* AuthView.swift */; };
+		2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20C2A68DC3F00823E58 /* MenuView.swift */; };
+		2270B2102A68DD7100823E58 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20F2A68DD7100823E58 /* HomeView.swift */; };
+		2270B2142A68DDFC00823E58 /* StudentSpotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2132A68DDFC00823E58 /* StudentSpotlight.swift */; };
+		2270B2162A68DE1E00823E58 /* SpotlightArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */; };
+		2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2182A68DE9E00823E58 /* SpotlightData.swift */; };
+		2270B2212A68DF9400823E58 /* AnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2202A68DF9400823E58 /* AnnouncementsView.swift */; };
+		2270B2232A68DFDD00823E58 /* AnnouncementsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2222A68DFDD00823E58 /* AnnouncementsDetailView.swift */; };
+		2270B2252A68E00F00823E58 /* AnnouncementsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2242A68E00F00823E58 /* AnnouncementsData.swift */; };
+		2270B22A2A68E0A400823E58 /* ClubSportData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2292A68E0A400823E58 /* ClubSportData.swift */; };
+		2270B22E2A68E1F800823E58 /* ClubSportNewsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */; };
+		2270B2312A68E26900823E58 /* ClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2302A68E26900823E58 /* ClubsView.swift */; };
+		2270B2332A68E27800823E58 /* ClubsHibabi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2322A68E27800823E58 /* ClubsHibabi.swift */; };
+		2270B2352A68E29F00823E58 /* ClubsNewsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2342A68E29F00823E58 /* ClubsNewsDetailView.swift */; };
+		2270B2372A68E2AE00823E58 /* ClubsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2362A68E2AE00823E58 /* ClubsDetailView.swift */; };
+		2270B23A2A68E32200823E58 /* SportsDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2392A68E32200823E58 /* SportsDatabase.swift */; };
+		2270B23C2A68E33A00823E58 /* ClubsDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B23B2A68E33A00823E58 /* ClubsDatabase.swift */; };
+		2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B23E2A68E3FF00823E58 /* UpcomingEventsView.swift */; };
+		2270B2472A68E63E00823E58 /* SportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2462A68E63E00823E58 /* SportsView.swift */; };
+		2270B2492A68E65000823E58 /* SportsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2482A68E65000823E58 /* SportsDetailView.swift */; };
+		2270B24B2A68E66200823E58 /* SportsHibabi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B24A2A68E66200823E58 /* SportsHibabi.swift */; };
+		2270B24D2A68E67700823E58 /* SportsNewsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */; };
+		2270B2502A68E6BF00823E58 /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B24F2A68E6BF00823E58 /* InformationView.swift */; };
+		2270B2532A68E6FA00823E58 /* LunchMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2522A68E6FA00823E58 /* LunchMenuView.swift */; };
+		2270B2552A68E71100823E58 /* StaffView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2542A68E71100823E58 /* StaffView.swift */; };
+		2270B2582A68E72D00823E58 /* StaffDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2572A68E72D00823E58 /* StaffDetailView.swift */; };
+		2270B25A2A68E75900823E58 /* StaffData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2592A68E75900823E58 /* StaffData.swift */; };
+		2270B25C2A68E79800823E58 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B25B2A68E79800823E58 /* SocialView.swift */; };
+		2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B25D2A68E7B100823E58 /* ClassesView.swift */; };
+		2270B2602A68E7C600823E58 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B25F2A68E7C600823E58 /* ContactView.swift */; };
+		2270B2642A68E80D00823E58 /* MentalHealthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2632A68E80D00823E58 /* MentalHealthView.swift */; };
+		2270B2662A68E83600823E58 /* NavigatingSchoolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2652A68E83600823E58 /* NavigatingSchoolView.swift */; };
+		2270B2682A68E86C00823E58 /* SchoolPolicyGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2672A68E86C00823E58 /* SchoolPolicyGuideView.swift */; };
+		2270B26A2A68E88700823E58 /* TransportationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2692A68E88700823E58 /* TransportationView.swift */; };
+		2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26B2A68E89400823E58 /* SettingsView.swift */; };
+		2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26D2A68E8E600823E58 /* WebViewModel.swift */; };
+		228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */; };
+		228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */; };
+		228309FF2A8680D100AE9C08 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */; };
+		228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362DA2A2AB3D70061BFAE /* ContentView.swift */; };
+		228362DD2A2AB3D80061BFAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228362DC2A2AB3D80061BFAE /* Assets.xcassets */; };
+		228362E02A2AB3D80061BFAE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228362DF2A2AB3D80061BFAE /* Preview Assets.xcassets */; };
+		228362EA2A2AB9700061BFAE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 228362E92A2AB9700061BFAE /* FirebaseAnalytics */; };
+		228362EC2A2AB9700061BFAE /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 228362EB2A2AB9700061BFAE /* FirebaseAnalyticsSwift */; };
+		228362EE2A2AB9700061BFAE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 228362ED2A2AB9700061BFAE /* FirebaseAuth */; };
+		228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362EF2A2C17600061BFAE /* LoggedInView.swift */; };
+		228362F22A2C18CB0061BFAE /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362F12A2C18CB0061BFAE /* Events.swift */; };
+		228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362F32A2C1BBB0061BFAE /* DataManager.swift */; };
+		228362F72A2C1E720061BFAE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 228362F62A2C1E720061BFAE /* FirebaseFirestore */; };
+		228362F92A2C1E720061BFAE /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 228362F82A2C1E720061BFAE /* FirebaseFirestoreCombine-Community */; };
+		228362FB2A2C1E720061BFAE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 228362FA2A2C1E720061BFAE /* FirebaseFirestoreSwift */; };
+		E82562D72A84D0DA000AF117 /* ClubsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82562D62A84D0DA000AF117 /* ClubsMainView.swift */; };
+		E82562DB2A867858000AF117 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E82562DA2A867858000AF117 /* GoogleService-Info.plist */; };
+		E8531F612A83D1D100FB64F5 /* SportsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8531F602A83D1D100FB64F5 /* SportsMainView.swift */; };
+		E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89012392A7F484A00FCB764 /* HomeMainView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		222086922A60AE8E00EF1ECA /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
+		222086EE2A62458900EF1ECA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
+		2270B1F92A68D5ED00823E58 /* Login_auth_app_testApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_auth_app_testApp.swift; sourceTree = "<group>"; };
+		2270B1FB2A68D5ED00823E58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2270B1FD2A68D5EF00823E58 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2270B2002A68D5EF00823E58 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2270B2072A68D9FC00823E58 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		2270B20C2A68DC3F00823E58 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		2270B20F2A68DD7100823E58 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		2270B2132A68DDFC00823E58 /* StudentSpotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentSpotlight.swift; sourceTree = "<group>"; };
+		2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightArticles.swift; sourceTree = "<group>"; };
+		2270B2182A68DE9E00823E58 /* SpotlightData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightData.swift; sourceTree = "<group>"; };
+		2270B2202A68DF9400823E58 /* AnnouncementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsView.swift; sourceTree = "<group>"; };
+		2270B2222A68DFDD00823E58 /* AnnouncementsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsDetailView.swift; sourceTree = "<group>"; };
+		2270B2242A68E00F00823E58 /* AnnouncementsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsData.swift; sourceTree = "<group>"; };
+		2270B2292A68E0A400823E58 /* ClubSportData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubSportData.swift; sourceTree = "<group>"; };
+		2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubSportNewsData.swift; sourceTree = "<group>"; };
+		2270B2302A68E26900823E58 /* ClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsView.swift; sourceTree = "<group>"; };
+		2270B2322A68E27800823E58 /* ClubsHibabi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsHibabi.swift; sourceTree = "<group>"; };
+		2270B2342A68E29F00823E58 /* ClubsNewsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsNewsDetailView.swift; sourceTree = "<group>"; };
+		2270B2362A68E2AE00823E58 /* ClubsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsDetailView.swift; sourceTree = "<group>"; };
+		2270B2392A68E32200823E58 /* SportsDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsDatabase.swift; sourceTree = "<group>"; };
+		2270B23B2A68E33A00823E58 /* ClubsDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsDatabase.swift; sourceTree = "<group>"; };
+		2270B23E2A68E3FF00823E58 /* UpcomingEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsView.swift; sourceTree = "<group>"; };
+		2270B2462A68E63E00823E58 /* SportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsView.swift; sourceTree = "<group>"; };
+		2270B2482A68E65000823E58 /* SportsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsDetailView.swift; sourceTree = "<group>"; };
+		2270B24A2A68E66200823E58 /* SportsHibabi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsHibabi.swift; sourceTree = "<group>"; };
+		2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsNewsDetailView.swift; sourceTree = "<group>"; };
+		2270B24F2A68E6BF00823E58 /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
+		2270B2522A68E6FA00823E58 /* LunchMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchMenuView.swift; sourceTree = "<group>"; };
+		2270B2542A68E71100823E58 /* StaffView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffView.swift; sourceTree = "<group>"; };
+		2270B2572A68E72D00823E58 /* StaffDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffDetailView.swift; sourceTree = "<group>"; };
+		2270B2592A68E75900823E58 /* StaffData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffData.swift; sourceTree = "<group>"; };
+		2270B25B2A68E79800823E58 /* SocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
+		2270B25D2A68E7B100823E58 /* ClassesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesView.swift; sourceTree = "<group>"; };
+		2270B25F2A68E7C600823E58 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		2270B2632A68E80D00823E58 /* MentalHealthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MentalHealthView.swift; sourceTree = "<group>"; };
+		2270B2652A68E83600823E58 /* NavigatingSchoolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatingSchoolView.swift; sourceTree = "<group>"; };
+		2270B2672A68E86C00823E58 /* SchoolPolicyGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolPolicyGuideView.swift; sourceTree = "<group>"; };
+		2270B2692A68E88700823E58 /* TransportationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportationView.swift; sourceTree = "<group>"; };
+		2270B26B2A68E89400823E58 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		2270B26D2A68E8E600823E58 /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
+		228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsData.swift; sourceTree = "<group>"; };
+		228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsAdminView.swift; sourceTree = "<group>"; };
+		228362D52A2AB3D70061BFAE /* West High App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "West High App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		228362DA2A2AB3D70061BFAE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		228362DC2A2AB3D80061BFAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		228362DF2A2AB3D80061BFAE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		228362EF2A2C17600061BFAE /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
+		228362F12A2C18CB0061BFAE /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
+		228362F32A2C1BBB0061BFAE /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		E82562D62A84D0DA000AF117 /* ClubsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsMainView.swift; sourceTree = "<group>"; };
+		E82562DA2A867858000AF117 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E8531F602A83D1D100FB64F5 /* SportsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsMainView.swift; sourceTree = "<group>"; };
+		E89012392A7F484A00FCB764 /* HomeMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMainView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		228362D22A2AB3D70061BFAE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				228362EC2A2AB9700061BFAE /* FirebaseAnalyticsSwift in Frameworks */,
+				228362F72A2C1E720061BFAE /* FirebaseFirestore in Frameworks */,
+				228362EE2A2AB9700061BFAE /* FirebaseAuth in Frameworks */,
+				222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */,
+				228362F92A2C1E720061BFAE /* FirebaseFirestoreCombine-Community in Frameworks */,
+				228362EA2A2AB9700061BFAE /* FirebaseAnalytics in Frameworks */,
+				228362FB2A2C1E720061BFAE /* FirebaseFirestoreSwift in Frameworks */,
+				222086E92A6224D400EF1ECA /* GoogleSignIn in Frameworks */,
+				228309FF2A8680D100AE9C08 /* SwiftKeychainWrapper in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2270B1ED2A68D25F00823E58 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2270B1EB2A68D23300823E58 /* WestHighApp.swift */,
+				2270B1F02A68D2BE00823E58 /* Login Flow */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		2270B1EF2A68D29C00823E58 /* Data Managers */ = {
+			isa = PBXGroup;
+			children = (
+				22830A002A86843600AE9C08 /* Permissions */,
+				222086EE2A62458900EF1ECA /* Utilities.swift */,
+				228362F32A2C1BBB0061BFAE /* DataManager.swift */,
+			);
+			path = "Data Managers";
+			sourceTree = "<group>";
+		};
+		2270B1F02A68D2BE00823E58 /* Login Flow */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2072A68D9FC00823E58 /* AuthView.swift */,
+				222086922A60AE8E00EF1ECA /* LoginData.swift */,
+				228362DA2A2AB3D70061BFAE /* ContentView.swift */,
+				228362EF2A2C17600061BFAE /* LoggedInView.swift */,
+				2270B20A2A68DB0100823E58 /* Views */,
+			);
+			path = "Login Flow";
+			sourceTree = "<group>";
+		};
+		2270B1F22A68D2E000823E58 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				228362F12A2C18CB0061BFAE /* Events.swift */,
+				2270B26D2A68E8E600823E58 /* WebViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2270B1F82A68D5ED00823E58 /* Login auth app test */ = {
+			isa = PBXGroup;
+			children = (
+				2270B1F92A68D5ED00823E58 /* Login_auth_app_testApp.swift */,
+				2270B1FB2A68D5ED00823E58 /* ContentView.swift */,
+				2270B1FD2A68D5EF00823E58 /* Assets.xcassets */,
+				2270B1FF2A68D5EF00823E58 /* Preview Content */,
+			);
+			path = "Login auth app test";
+			sourceTree = "<group>";
+		};
+		2270B1FF2A68D5EF00823E58 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2002A68D5EF00823E58 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2270B2092A68DAE300823E58 /* Controlling Views */ = {
+			isa = PBXGroup;
+			children = (
+				2270B20C2A68DC3F00823E58 /* MenuView.swift */,
+			);
+			path = "Controlling Views";
+			sourceTree = "<group>";
+		};
+		2270B20A2A68DB0100823E58 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2092A68DAE300823E58 /* Controlling Views */,
+				2270B20B2A68DB0F00823E58 /* Main Views */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2270B20B2A68DB0F00823E58 /* Main Views */ = {
+			isa = PBXGroup;
+			children = (
+				2270B20E2A68DD5600823E58 /* Home */,
+				2270B21F2A68DF7C00823E58 /* Announcements */,
+				2270B22F2A68E23500823E58 /* Clubs and Sports */,
+				2270B24E2A68E69100823E58 /* Information */,
+			);
+			path = "Main Views";
+			sourceTree = "<group>";
+		};
+		2270B20E2A68DD5600823E58 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				2270B20F2A68DD7100823E58 /* HomeView.swift */,
+				E89012392A7F484A00FCB764 /* HomeMainView.swift */,
+				2270B2172A68DE4500823E58 /* Student Spotlight */,
+				2270B23D2A68E3E000823E58 /* Upcoming Events */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		2270B2172A68DE4500823E58 /* Student Spotlight */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2132A68DDFC00823E58 /* StudentSpotlight.swift */,
+				2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */,
+				2270B2182A68DE9E00823E58 /* SpotlightData.swift */,
+			);
+			path = "Student Spotlight";
+			sourceTree = "<group>";
+		};
+		2270B21F2A68DF7C00823E58 /* Announcements */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2202A68DF9400823E58 /* AnnouncementsView.swift */,
+				2270B2222A68DFDD00823E58 /* AnnouncementsDetailView.swift */,
+				2270B2242A68E00F00823E58 /* AnnouncementsData.swift */,
+			);
+			path = Announcements;
+			sourceTree = "<group>";
+		};
+		2270B2272A68E08900823E58 /* Sports */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2462A68E63E00823E58 /* SportsView.swift */,
+				E8531F602A83D1D100FB64F5 /* SportsMainView.swift */,
+				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
+				2270B24A2A68E66200823E58 /* SportsHibabi.swift */,
+				2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */,
+			);
+			path = Sports;
+			sourceTree = "<group>";
+		};
+		2270B2282A68E08E00823E58 /* Clubs */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2302A68E26900823E58 /* ClubsView.swift */,
+				E82562D62A84D0DA000AF117 /* ClubsMainView.swift */,
+				2270B2362A68E2AE00823E58 /* ClubsDetailView.swift */,
+				2270B2322A68E27800823E58 /* ClubsHibabi.swift */,
+				2270B2342A68E29F00823E58 /* ClubsNewsDetailView.swift */,
+			);
+			path = Clubs;
+			sourceTree = "<group>";
+		};
+		2270B22F2A68E23500823E58 /* Clubs and Sports */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2282A68E08E00823E58 /* Clubs */,
+				2270B2272A68E08900823E58 /* Sports */,
+				2270B2382A68E2FA00823E58 /* Clubs and Sports Data */,
+			);
+			path = "Clubs and Sports";
+			sourceTree = "<group>";
+		};
+		2270B2382A68E2FA00823E58 /* Clubs and Sports Data */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2292A68E0A400823E58 /* ClubSportData.swift */,
+				2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */,
+				2270B2392A68E32200823E58 /* SportsDatabase.swift */,
+				2270B23B2A68E33A00823E58 /* ClubsDatabase.swift */,
+			);
+			path = "Clubs and Sports Data";
+			sourceTree = "<group>";
+		};
+		2270B23D2A68E3E000823E58 /* Upcoming Events */ = {
+			isa = PBXGroup;
+			children = (
+				2270B23E2A68E3FF00823E58 /* UpcomingEventsView.swift */,
+				228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */,
+				228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */,
+			);
+			path = "Upcoming Events";
+			sourceTree = "<group>";
+		};
+		2270B24E2A68E69100823E58 /* Information */ = {
+			isa = PBXGroup;
+			children = (
+				2270B24F2A68E6BF00823E58 /* InformationView.swift */,
+				2270B2512A68E6C300823E58 /* Information Views */,
+			);
+			path = Information;
+			sourceTree = "<group>";
+		};
+		2270B2512A68E6C300823E58 /* Information Views */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2522A68E6FA00823E58 /* LunchMenuView.swift */,
+				2270B2562A68E71400823E58 /* Staff */,
+				2270B25B2A68E79800823E58 /* SocialView.swift */,
+				2270B25D2A68E7B100823E58 /* ClassesView.swift */,
+				2270B25F2A68E7C600823E58 /* ContactView.swift */,
+				2270B2652A68E83600823E58 /* NavigatingSchoolView.swift */,
+				2270B2632A68E80D00823E58 /* MentalHealthView.swift */,
+				2270B2672A68E86C00823E58 /* SchoolPolicyGuideView.swift */,
+				2270B2692A68E88700823E58 /* TransportationView.swift */,
+				2270B26B2A68E89400823E58 /* SettingsView.swift */,
+			);
+			path = "Information Views";
+			sourceTree = "<group>";
+		};
+		2270B2562A68E71400823E58 /* Staff */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2542A68E71100823E58 /* StaffView.swift */,
+				2270B2572A68E72D00823E58 /* StaffDetailView.swift */,
+				2270B2592A68E75900823E58 /* StaffData.swift */,
+			);
+			path = Staff;
+			sourceTree = "<group>";
+		};
+		22830A002A86843600AE9C08 /* Permissions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Permissions;
+			sourceTree = "<group>";
+		};
+		228362CC2A2AB3D70061BFAE = {
+			isa = PBXGroup;
+			children = (
+				228362D72A2AB3D70061BFAE /* Login auth app */,
+				2270B1F82A68D5ED00823E58 /* Login auth app test */,
+				228362D62A2AB3D70061BFAE /* Products */,
+				228362F52A2C1E720061BFAE /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		228362D62A2AB3D70061BFAE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				228362D52A2AB3D70061BFAE /* West High App.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		228362D72A2AB3D70061BFAE /* Login auth app */ = {
+			isa = PBXGroup;
+			children = (
+				2270B1ED2A68D25F00823E58 /* Main */,
+				2270B1EF2A68D29C00823E58 /* Data Managers */,
+				2270B1F22A68D2E000823E58 /* Models */,
+				E82562DA2A867858000AF117 /* GoogleService-Info.plist */,
+				228362DC2A2AB3D80061BFAE /* Assets.xcassets */,
+				228362DE2A2AB3D80061BFAE /* Preview Content */,
+			);
+			path = "Login auth app";
+			sourceTree = "<group>";
+		};
+		228362DE2A2AB3D80061BFAE /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				228362DF2A2AB3D80061BFAE /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		228362F52A2C1E720061BFAE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		228362D42A2AB3D70061BFAE /* West High App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 228362E32A2AB3D80061BFAE /* Build configuration list for PBXNativeTarget "West High App" */;
+			buildPhases = (
+				228362D12A2AB3D70061BFAE /* Sources */,
+				228362D22A2AB3D70061BFAE /* Frameworks */,
+				228362D32A2AB3D70061BFAE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "West High App";
+			packageProductDependencies = (
+				228362E92A2AB9700061BFAE /* FirebaseAnalytics */,
+				228362EB2A2AB9700061BFAE /* FirebaseAnalyticsSwift */,
+				228362ED2A2AB9700061BFAE /* FirebaseAuth */,
+				228362F62A2C1E720061BFAE /* FirebaseFirestore */,
+				228362F82A2C1E720061BFAE /* FirebaseFirestoreCombine-Community */,
+				228362FA2A2C1E720061BFAE /* FirebaseFirestoreSwift */,
+				222086E82A6224D400EF1ECA /* GoogleSignIn */,
+				222086EA2A6224D400EF1ECA /* GoogleSignInSwift */,
+				228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */,
+			);
+			productName = "Login auth app";
+			productReference = 228362D52A2AB3D70061BFAE /* West High App.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		228362CD2A2AB3D70061BFAE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					228362D42A2AB3D70061BFAE = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 228362D02A2AB3D70061BFAE /* Build configuration list for PBXProject "West High App" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 228362CC2A2AB3D70061BFAE;
+			packageReferences = (
+				228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				222086E72A6224D400EF1ECA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				228309FD2A8680D100AE9C08 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
+			);
+			productRefGroup = 228362D62A2AB3D70061BFAE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				228362D42A2AB3D70061BFAE /* West High App */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		228362D32A2AB3D70061BFAE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				228362E02A2AB3D80061BFAE /* Preview Assets.xcassets in Resources */,
+				E82562DB2A867858000AF117 /* GoogleService-Info.plist in Resources */,
+				228362DD2A2AB3D80061BFAE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		228362D12A2AB3D70061BFAE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2270B2532A68E6FA00823E58 /* LunchMenuView.swift in Sources */,
+				2270B22A2A68E0A400823E58 /* ClubSportData.swift in Sources */,
+				2270B22E2A68E1F800823E58 /* ClubSportNewsData.swift in Sources */,
+				228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */,
+				2270B2602A68E7C600823E58 /* ContactView.swift in Sources */,
+				228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */,
+				2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */,
+				228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */,
+				E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */,
+				2270B23C2A68E33A00823E58 /* ClubsDatabase.swift in Sources */,
+				222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */,
+				E8531F612A83D1D100FB64F5 /* SportsMainView.swift in Sources */,
+				E82562D72A84D0DA000AF117 /* ClubsMainView.swift in Sources */,
+				2270B2212A68DF9400823E58 /* AnnouncementsView.swift in Sources */,
+				2270B2232A68DFDD00823E58 /* AnnouncementsDetailView.swift in Sources */,
+				2270B2552A68E71100823E58 /* StaffView.swift in Sources */,
+				2270B2102A68DD7100823E58 /* HomeView.swift in Sources */,
+				2270B2662A68E83600823E58 /* NavigatingSchoolView.swift in Sources */,
+				2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */,
+				2270B24D2A68E67700823E58 /* SportsNewsDetailView.swift in Sources */,
+				2270B2502A68E6BF00823E58 /* InformationView.swift in Sources */,
+				228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */,
+				2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */,
+				2270B2352A68E29F00823E58 /* ClubsNewsDetailView.swift in Sources */,
+				2270B2582A68E72D00823E58 /* StaffDetailView.swift in Sources */,
+				2270B2142A68DDFC00823E58 /* StudentSpotlight.swift in Sources */,
+				2270B26A2A68E88700823E58 /* TransportationView.swift in Sources */,
+				2270B23A2A68E32200823E58 /* SportsDatabase.swift in Sources */,
+				2270B2682A68E86C00823E58 /* SchoolPolicyGuideView.swift in Sources */,
+				2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */,
+				2270B2252A68E00F00823E58 /* AnnouncementsData.swift in Sources */,
+				2270B25C2A68E79800823E58 /* SocialView.swift in Sources */,
+				2270B2162A68DE1E00823E58 /* SpotlightArticles.swift in Sources */,
+				2270B2372A68E2AE00823E58 /* ClubsDetailView.swift in Sources */,
+				2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */,
+				2270B2492A68E65000823E58 /* SportsDetailView.swift in Sources */,
+				2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */,
+				228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */,
+				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,
+				2270B2312A68E26900823E58 /* ClubsView.swift in Sources */,
+				2270B25A2A68E75900823E58 /* StaffData.swift in Sources */,
+				2270B2472A68E63E00823E58 /* SportsView.swift in Sources */,
+				2270B2332A68E27800823E58 /* ClubsHibabi.swift in Sources */,
+				228362F22A2C18CB0061BFAE /* Events.swift in Sources */,
+				222086EF2A62458900EF1ECA /* Utilities.swift in Sources */,
+				2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */,
+				2270B24B2A68E66200823E58 /* SportsHibabi.swift in Sources */,
+				2270B2642A68E80D00823E58 /* MentalHealthView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		228362E12A2AB3D80061BFAE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		228362E22A2AB3D80061BFAE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		228362E42A2AB3D80061BFAE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Login-auth-app-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "andersenlee.Login-auth-app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		228362E52A2AB3D80061BFAE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Login-auth-app-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "andersenlee.Login-auth-app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		228362D02A2AB3D70061BFAE /* Build configuration list for PBXProject "West High App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				228362E12A2AB3D80061BFAE /* Debug */,
+				228362E22A2AB3D80061BFAE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		228362E32A2AB3D80061BFAE /* Build configuration list for PBXNativeTarget "West High App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				228362E42A2AB3D80061BFAE /* Debug */,
+				228362E52A2AB3D80061BFAE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		222086E72A6224D400EF1ECA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		228309FD2A8680D100AE9C08 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		222086E82A6224D400EF1ECA /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 222086E72A6224D400EF1ECA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		222086EA2A6224D400EF1ECA /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 222086E72A6224D400EF1ECA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 228309FD2A8680D100AE9C08 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
+			productName = SwiftKeychainWrapper;
+		};
+		228362E92A2AB9700061BFAE /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		228362EB2A2AB9700061BFAE /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
+		};
+		228362ED2A2AB9700061BFAE /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		228362F62A2C1E720061BFAE /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		228362F82A2C1E720061BFAE /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
+		228362FA2A2C1E720061BFAE /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 228362CD2A2AB3D70061BFAE /* Project object */;
+}
