@@ -1,3 +1,8 @@
+what needs to happen:
+- notifications (aiden) - to figure it out ask for permissions, and make a button that sends a notification. do "if userInfo.loginStatus == "google"" so it only sends to people who are logged in with google (students)
+- my stuff
+
+
 # West High App
 aiden we should do this because it looks professional
 ## Table of Contents
