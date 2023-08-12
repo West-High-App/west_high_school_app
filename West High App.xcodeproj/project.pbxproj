@@ -51,6 +51,7 @@
 		228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */; };
 		228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */; };
 		228309FF2A8680D100AE9C08 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */; };
+		22830A042A86D01300AE9C08 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22830A032A86D01300AE9C08 /* Notifications.swift */; };
 		228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362DA2A2AB3D70061BFAE /* ContentView.swift */; };
 		228362DD2A2AB3D80061BFAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228362DC2A2AB3D80061BFAE /* Assets.xcassets */; };
 		228362E02A2AB3D80061BFAE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228362DF2A2AB3D80061BFAE /* Preview Assets.xcassets */; };
@@ -115,6 +116,7 @@
 		2270B26D2A68E8E600823E58 /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
 		228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsData.swift; sourceTree = "<group>"; };
 		228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsAdminView.swift; sourceTree = "<group>"; };
+		22830A032A86D01300AE9C08 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		228362D52A2AB3D70061BFAE /* West High App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "West High App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		228362DA2A2AB3D70061BFAE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		228362DC2A2AB3D80061BFAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			children = (
 				228362F12A2C18CB0061BFAE /* Events.swift */,
 				2270B26D2A68E8E600823E58 /* WebViewModel.swift */,
+				22830A032A86D01300AE9C08 /* Notifications.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -519,6 +522,7 @@
 				2270B24D2A68E67700823E58 /* SportsNewsDetailView.swift in Sources */,
 				2270B2502A68E6BF00823E58 /* InformationView.swift in Sources */,
 				228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */,
+				22830A042A86D01300AE9C08 /* Notifications.swift in Sources */,
 				2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */,
 				2270B2352A68E29F00823E58 /* ClubsNewsDetailView.swift in Sources */,
 				2270B2582A68E72D00823E58 /* StaffDetailView.swift in Sources */,

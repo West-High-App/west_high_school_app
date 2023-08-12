@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     var newstitlearray:[Newstab] = Newslist.topfive
     var spotlighttitlearray:[studentachievement] = studentachievementlist.allstudentachievementlist
+    var notiManager = NotificationsManager()
     //var safeArea: EdgeInsets
     //var size: CGSize
     // delete init under if being stupid
@@ -80,6 +81,15 @@ struct HomeView: View {
                     .zIndex(1)
                     
                     VStack{
+                        Button {
+                            notiManager.sendNotification(title: "Did it work?", body: "I SURE hope so!!")
+                        } label: {
+                            Text("Send notification")
+                                .padding(10)
+                                .background(.white)
+                                .cornerRadius(10)
+                        }
+
                         //MOST RECENT ANNOUNCEMENT
                         VStack{
                             NavigationLink {
