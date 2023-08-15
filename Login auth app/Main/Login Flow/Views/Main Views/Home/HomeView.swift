@@ -8,31 +8,24 @@
 import SwiftUI
 
 struct HomeView: View {
-    var newstitlearray:[Newstab] = Newslist.topfive
+     var newsDataManager = Newslist()
+
     var spotlighttitlearray:[studentachievement] = studentachievementlist.allstudentachievementlist
     var notiManager = NotificationsManager()
     //var safeArea: EdgeInsets
     //var size: CGSize
     // delete init under if being stupid
-    init(safeArea: EdgeInsets, size:CGSize) {
-        spotlighttitlearray = spotlighttitlearray.sorted { first, second in
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM d, yyyy"
-            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-            return firstDate < secondDate
-        }.reversed()
-        newstitlearray = newstitlearray.sorted { first, second in
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM d yyyy"
-            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-            return firstDate < secondDate
-        }.reversed()
-        self.safeArea = safeArea
-        self.size = size
-
-    }
+    init(safeArea: EdgeInsets, size: CGSize) {
+            self.safeArea = safeArea
+            self.size = size
+            spotlighttitlearray = spotlighttitlearray.sorted { first, second in
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MMM d, yyyy"
+                let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+                let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+                return firstDate < secondDate
+            }.reversed()
+        }
     @EnvironmentObject var userInfo: UserInfo
     @State var date = Date()
     let yellow = Color(red: 0.976, green: 0.87, blue: 0.01)
@@ -90,12 +83,12 @@ struct HomeView: View {
                                 .cornerRadius(10)
                         }
 
-                        //MOST RECENT ANNOUNCEMENT
+                        //MxOST RECENT ANNOUNCEMENT
                         VStack{
                             NavigationLink {
-                                AnnouncementsDetailView(currentnews: Newslist.topfive.first!)
+                                AnnouncementsDetailView(currentnews: newsDataManager.newstitlearray[0])
                             } label:{
-                                MostRecentAnnouncementCell(news: newstitlearray[0])
+                                MostRecentAnnouncementCell(news: newsDataManager.newstitlearray[0])
                             }
                         }
                         .padding(.bottom, 10)

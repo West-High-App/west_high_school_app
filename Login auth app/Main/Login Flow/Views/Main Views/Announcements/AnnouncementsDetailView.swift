@@ -46,7 +46,8 @@ struct AnnouncementsDetailView: View {
 }
 
 struct AnnouncementsDetailView_Previews: PreviewProvider {
+    var newsDataManager = Newslist()
     static var previews: some View {
-        AnnouncementsDetailView(currentnews: Newslist.topfive.first!)
+        AnnouncementsDetailView(currentnews: Newstab(documentID: "testID", title: "Test", publisheddate: "Jan 5, 2023", description: "Description", newsimagename: "West Regents Logo"))
     }
 }

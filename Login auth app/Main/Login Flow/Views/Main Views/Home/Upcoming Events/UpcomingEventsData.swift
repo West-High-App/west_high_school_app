@@ -28,7 +28,7 @@ class upcomingEventsDataManager: ObservableObject {
         let ref = db.collection("UpcomingEvents") // finding collection
         ref.getDocuments { snapshot, error in
             guard error == nil else {
-                print("Error: \(error!.localizedDescription)") // if this happens everything is fucked
+                print("Error: \(error!.localizedDescription)") // if this happens everything is
                 return
             }
 
@@ -45,7 +45,6 @@ class upcomingEventsDataManager: ObservableObject {
                     let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day)
                     self.alleventslist.append(event) // adding event with info from firebase
                 }
-                print("Retrieved all documents")
             }
         }
     }

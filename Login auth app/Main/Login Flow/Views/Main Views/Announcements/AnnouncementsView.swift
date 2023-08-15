@@ -8,42 +8,36 @@
 import SwiftUI
 
 struct AnnouncementsView: View {
-    var newstitlearray:[Newstab] = Newslist.topfive
-    
-    // delete init under if being stupid
+    @StateObject var newsDataManager = Newslist()
+        
     init() {
-        newstitlearray = newstitlearray.sorted { first, second in
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM, d yyyy"
-            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-            return firstDate < secondDate
-        }.reversed()
+        newsDataManager.getAnnouncements()
     }
     
     var body: some View {
             NavigationView{
-                List(newstitlearray, id: \.id){news in
-                    NavigationLink {
-                        AnnouncementsDetailView(currentnews: news)
-                    } label: {
-                        NewsCell(news: news)
+                VStack {
+                    List(newsDataManager.topfive, id: \.id){news in
+                        NavigationLink {
+                            AnnouncementsDetailView(currentnews: news)
+                        } label: {
+                            NewsCell(news: news)
+                        }
+                        .listRowBackground(
+                            Rectangle()
+                                .cornerRadius(25)
+                                .foregroundColor(Color(red: 220/255, green: 220/255, blue: 220/255))
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 7)
+                                .shadow(radius: 5)
+                        )
+                        .listRowSeparator(.hidden)
+                        
+                        
                     }
-                    .listRowBackground(
-                        Rectangle()
-                            .cornerRadius(25)
-                            .foregroundColor(Color(red: 220/255, green: 220/255, blue: 220/255))
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 7)
-                            .shadow(radius: 5)
-                    )
-                    .listRowSeparator(.hidden)
-                    
-                    
+                    .navigationBarTitle(
+                        Text("Announcements"))
                 }
-                .navigationBarTitle(
-                    Text("Announcements"))
-                
             }
 
 
