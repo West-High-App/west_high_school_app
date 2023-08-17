@@ -26,54 +26,59 @@ struct SportsDetailView: View {
                     GeometryReader{ proxy in
                         let minY = proxy.frame(in: .named("SCROLL")).minY - safeArea.top
                         
-                        VStack {
-                            if vm.contains(currentsport) == false {
-                                Button {
-                                    confirming = true
-                                } label: {
-                                    HStack {
-                                        Image(systemName: "plus.app")
-                                            .resizable()
-                                            .foregroundColor(westblue)
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(height: 24)
-                                        Text("Add to my Sports")
-                                            .foregroundColor(westblue)
-                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                    }.padding(.all, 10)
+                        HStack{
+                            Spacer()
+                            VStack {
+                                if vm.contains(currentsport) == false {
+                                    Button {
+                                        confirming = true
+                                    } label: {
+                                        HStack {
+                                            Image(systemName: "plus.app")
+                                                .resizable()
+                                                .foregroundColor(westblue)
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(height: 24)
+                                            Text("Add to my Sports")
+                                                .foregroundColor(westblue)
+                                                .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                        }.padding(.all, 10)
+                                            .background(Color(hue: 0, saturation: 0, brightness: 0.95, opacity: 0.90))
+                                            .cornerRadius(10)
+                                    }.confirmationDialog("Add to My Sports", isPresented: $confirming) {
+                                        Button("Add to My Sports") {
+                                            vm.toggleFav(item: currentsport)
+                                        }
+                                    }
+                                } else {
+                                    Button (role: .destructive){
+                                        confirming2 = true
+                                    } label: {
+                                        HStack {
+                                            Image(systemName: "xmark.app")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(height: 24)
+                                            Text("Remove Sport")
+                                                .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                        }
+                                        .padding(.all, 10)
                                         .background(Color(hue: 0, saturation: 0, brightness: 0.95, opacity: 0.90))
                                         .cornerRadius(10)
-                                }.confirmationDialog("Add to My Sports", isPresented: $confirming) {
-                                    Button("Add to My Sports") {
-                                        vm.toggleFav(item: currentsport)
-                                    }
-                                }
-                            } else {
-                                Button (role: .destructive){
-                                    confirming2 = true
-                                } label: {
-                                    HStack {
-                                        Image(systemName: "xmark.app")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(height: 24)
-                                        Text("Remove Sport")
-                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                    }
-                                    .padding(.all, 10)
-                                        .background(Color(hue: 0, saturation: 0, brightness: 0.95, opacity: 0.90))
-                                        .cornerRadius(10)
-                                }.confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
-                                    Button("Remove from My Sports", role: .destructive) {
-                                        vm.toggleFav(item: currentsport)
+                                    }.confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
+                                        Button("Remove from My Sports", role: .destructive) {
+                                            vm.toggleFav(item: currentsport)
+                                        }
                                     }
                                 }
                             }
+                            .padding(.top,-60)
+                            .frame(maxWidth: .infinity, maxHeight:.infinity)
+                            .offset(y: minY < 50 ? -(minY - 50) : 0)
+                            Spacer()
                         }
-                        .padding(.top,-60)
-                        .frame(maxWidth: .infinity, maxHeight:.infinity)
-                        .offset(y: minY < 50 ? -(minY - 50) : 0)
                     }
+                    
                     .zIndex(1)
                     
                     VStack{
@@ -153,7 +158,6 @@ struct SportsDetailView: View {
                                 }
                             }
                                 .padding(.all)
-                                .frame(width:370)
                                 .background(Color(red: 250/255, green: 250/255, blue: 250/255))
                                 .cornerRadius(12)
                             }

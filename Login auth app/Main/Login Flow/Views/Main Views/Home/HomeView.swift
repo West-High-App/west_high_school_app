@@ -162,29 +162,6 @@ struct HomeView: View {
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             VStack {
-                                
-                                HStack {
-                                    VStack {
-                                        Text("July")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("9")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("No School")
-                                            .fontWeight(.semibold)
-                                        Text("All day")
-                                    }.padding(.vertical, -5)
-                                        .padding(.horizontal)
-                                    Spacer()
-                                }
-                                Divider()
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 5)
                                 HStack {
                                     VStack {
                                         Text("July")
@@ -631,3 +608,30 @@ struct HomeView_Previews: PreviewProvider {
    }
 }
 
+struct UpcomingEventsList: View{
+    var UEC: event
+    var body:some View{
+        HStack {
+            VStack {
+                Text(UEC.eventname)
+                    .font(.system(size: 14))
+                    .foregroundColor(.red)
+                Text(UEC.eventname)
+                    .font(.system(size: 24))
+            }.padding(.vertical, -5)
+                .padding(.leading, 20)
+                .padding(.trailing, 10)
+            Divider()
+            VStack(alignment: .leading) {
+                Text(UEC.eventname)
+                    .fontWeight(.semibold)
+                Text(UEC.eventname)
+            }.padding(.vertical, -5)
+                .padding(.horizontal)
+            Spacer()
+        }
+        Divider()
+            .padding(.horizontal)
+            .padding(.vertical, 5)
+    }
+}

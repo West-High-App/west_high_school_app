@@ -1,4 +1,4 @@
-//test test
+//
 //  UpcomingEventsView.swift
 //  West App
 //
@@ -11,8 +11,6 @@ struct UpcomingEventsView: View {
     var dataManager = upcomingEventsDataManager()
 
     var body: some View {
-            
-            NavigationView{
                 VStack {
                     
                     NavigationLink {
@@ -41,10 +39,11 @@ struct UpcomingEventsView: View {
                                 .padding(.horizontal,7)
                             Spacer()
                         }
-                        .padding(.vertical)
+                        .padding(.horizontal, 70)
+                        .padding(.vertical, 20)
+
                         .background(Rectangle()
-                            .frame(width:380)
-                            .cornerRadius(9.0)
+                            .cornerRadius(9.0)                                    
                             .padding(.horizontal)
                             .shadow(radius: 5, x: 2, y: 2)
                             .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
@@ -52,7 +51,7 @@ struct UpcomingEventsView: View {
                     }
                 }
                 .navigationBarTitle(Text("Upcoming Events"))
-            }
+            
         
         
 
