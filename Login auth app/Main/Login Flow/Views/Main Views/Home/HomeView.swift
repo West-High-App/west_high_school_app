@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-     var newsDataManager = Newslist()
+    var newsDataManager = Newslist()
 
     var spotlighttitlearray:[studentachievement] = studentachievementlist.allstudentachievementlist
     var notiManager = NotificationsManager()
@@ -73,6 +73,11 @@ struct HomeView: View {
                     }
                     .zIndex(1)
                     
+                    NavigationLink {
+                        UpcomingEventsAdminView()
+                    } label: {
+                        Text("edit events")
+                    }
                     VStack{
                         Button {
                             notiManager.sendNotification(title: "Did it work?", body: "I SURE hope so!!")
@@ -118,24 +123,22 @@ struct HomeView: View {
                         //UPCOMING EVENTS NEEDS WORK!
                         VStack{
                             HStack {
-                                Text("Upcoming Events               ")
+                                Text("Upcoming Events")
+                                    .lineLimit(1)
+                                    .padding(.leading, 15)
                                     .foregroundColor(westblue)
                                     .bold()
                                     .font(
                                         .custom("Apple SD Gothic Neo", fixedSize: 24))
-                                    .padding(.horizontal)
-                                    .padding(.vertical, -5)
+                                    //.padding(.horizontal)
+                                    //.padding(.vertical, -5)
+
                                 Spacer()
-                                    .frame(width: 10, height: 0)
-                                
                                 NavigationLink {
                                     UpcomingEventsView()
                                 } label: {
                                     HStack{
-                                        Spacer()
-                                            .frame(width: 40)
                                         Text("See more")
-                                            .padding(.vertical, -5)
                                             .padding(.trailing,-15)
                                     }
                                     .padding(.horizontal,34)
@@ -151,7 +154,8 @@ struct HomeView: View {
                                 
                             }
                             .foregroundStyle(.black)
-                            .padding(.all)
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
                             .background(Rectangle()
                                 .cornerRadius(9.0)
                                 .padding(.horizontal)
@@ -236,24 +240,20 @@ struct HomeView: View {
                         
                         VStack{
                             HStack {
-                                Text("Student Spotlight               ")
+                                Text("Student Spotlight")
                                     .foregroundColor(westblue)
                                     .bold()
                                     .font(
                                         .custom("Apple SD Gothic Neo", fixedSize: 24))
                                     .padding(.horizontal)
-                                    .padding(.vertical, -5)
+
                                 Spacer()
-                                    .frame(width: 10, height: 0)
                                 
                                 NavigationLink {
                                     StudentSpotlight()
                                 } label: {
                                     HStack{
-                                        Spacer()
-                                            .frame(width: 40)
                                         Text("See more")
-                                            .padding(.vertical, -5)
                                             .padding(.trailing,-15)
                                     }
                                     .padding(.horizontal,34)
@@ -269,7 +269,8 @@ struct HomeView: View {
                                 
                             }
                             .foregroundStyle(.black)
-                            .padding(.all)
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
                             .background(Rectangle()
                                 .cornerRadius(9.0)
                                 .padding(.horizontal)
@@ -348,10 +349,12 @@ struct HomeView: View {
                             )
                         VStack(spacing: 0) {
                             Text(date, style: .date)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.2)
                                 .font(
                                 .custom("Trebuchet MS", fixedSize: 50))
                                 .foregroundColor(yellow)
-                                .padding(.horizontal, 5)
+                                .padding(.horizontal)
                                 .fontWeight(.semibold)
                                 .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
 
@@ -360,6 +363,9 @@ struct HomeView: View {
                                 //.multilineTextAlignment(.center)
                             
                             Text("Good \(getTime()), \(userInfo.firstName())!")
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.2)
+                                .multilineTextAlignment(.center)
                                 .font(
                                 .custom("Trebuchet MS", fixedSize: 32))
                                 .fontWeight(.medium)
@@ -497,6 +503,7 @@ struct MostRecentAnnouncementCell: View{
 
 
 struct MostRecentMessageCell: View{
+    var dataManager = dailymessagelist()
     var body:some View{
         VStack(alignment: .leading) {
             HStack {
@@ -511,19 +518,19 @@ struct MostRecentMessageCell: View{
                 //.padding(.horizontal)
                 .padding(.vertical, 5)
             
-            Text("Remember to turn in your homework!")
-                .lineLimit(3)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(.black)
-                //.padding(.horizontal)
-            
-            HStack {
-                Text("- Mob Boss Kigs")
-                    //.padding(.horizontal)
-                    .padding(.top, 1)
-                    .foregroundColor(.gray)
-                Spacer()
-            }
+//            Text(dataManager.alldailymessagelist.first!.messagecontent)
+//                .lineLimit(3)
+//                .multilineTextAlignment(.leading)
+//                .foregroundColor(.black)
+//                //.padding(.horizontal)
+//            
+//            HStack {
+//                Text(dataManager.alldailymessagelist.first!.messagecontent)
+//                    //.padding(.horizontal)
+//                    .padding(.top, 1)
+//                    .foregroundColor(.gray)
+//                Spacer()
+//            }
         }.padding(.all) //EDIT
             .background(Rectangle()
                 .cornerRadius(9.0)

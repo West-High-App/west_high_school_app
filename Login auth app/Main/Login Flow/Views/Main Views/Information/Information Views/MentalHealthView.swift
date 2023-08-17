@@ -13,11 +13,11 @@ struct MentalHealthView: View {
             ZStack{
                 ZStack{
                     Rectangle()
-                        .frame(width:430, height: 60)
+                        .frame(height: 60)
                         .foregroundColor(Color(red: 41/255, green: 51/255, blue:145/255))
                     HStack{
                         Text("WEST HIGH SCHOOL")
-                            .offset(x: 17, y:1)
+                            .padding(.leading,25)
                             .foregroundColor(Color(red: 240/255, green: 241/255, blue: 247/255))
                             .font(
                                 .custom(
@@ -31,7 +31,7 @@ struct MentalHealthView: View {
                 }
                 ZStack{
                     Rectangle()
-                        .frame(width:430, height:40)
+                        .frame(height:40)
                         .foregroundColor(Color(red: 85/255, green: 85/255, blue: 85/255))
                         .offset(y:50)
                     HStack{
@@ -66,13 +66,13 @@ struct MentalHealthView: View {
                                     fixedSize: 45)
                                 .weight(.bold)
                             )
-                            .offset(x:-25)
+                            .padding(.trailing, 25)
                     }
                     Image("stones")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width:410)
                         .cornerRadius(10)
+                        .padding()
                     
                 }
                     .padding(.vertical,20)
@@ -153,8 +153,7 @@ If you're in crisis, please check the crisis line information below to speak to 
                 }
             }
             //41,52,145
-            .padding(.horizontal,10)
-            .frame(width:410, height:380)
+            .padding(10)
             .foregroundColor(Color(red: 253/255, green: 253/255, blue: 254/255))
             .background(Color(red: 41/255, green: 52/255, blue: 145/255))
             .cornerRadius(10)

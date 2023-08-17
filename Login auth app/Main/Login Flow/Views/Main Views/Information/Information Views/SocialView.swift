@@ -10,18 +10,15 @@ import SwiftUI
 struct SocialView: View {
     var body: some View {
         ZStack{
-            // vstack below looks pointless but don't delete it
             VStack{
-            }
-            .padding(.bottom,750)
-            VStack{
-                VStack(spacing:10){
+                VStack(spacing:20){
                     Link(destination: URL(string: "https://www.instagram.com/madisonwesthighschool/")!,
                          label: {
                         ZStack{
                             Text("West High Instagram")
                                 .padding(.leading, 20)
                                 .bold()
+                                .padding(20)
                                 .frame(width:280, height:45)
                                 .foregroundColor(.white)
                                 .background(Color(red: 41/255, green: 51/255, blue:145/255))
