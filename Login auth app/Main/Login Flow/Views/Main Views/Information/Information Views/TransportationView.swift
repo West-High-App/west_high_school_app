@@ -13,11 +13,11 @@ struct TransportationView: View {
             ZStack{
                 ZStack{
                     Rectangle()
-                        .frame(width:430, height: 60)
+                        .frame(height: 60)
                         .foregroundColor(Color(red: 41/255, green: 51/255, blue:145/255))
                     HStack{
                         Text("WEST HIGH SCHOOL")
-                            .offset(x: 17, y:1)
+                            .padding(.leading,25)
                             .foregroundColor(Color(red: 240/255, green: 241/255, blue: 247/255))
                             .font(
                                 .custom(
@@ -31,7 +31,7 @@ struct TransportationView: View {
                 }
                 ZStack{
                     Rectangle()
-                        .frame(width:430, height:40)
+                        .frame(height:40)
                         .foregroundColor(Color(red: 85/255, green: 85/255, blue: 85/255))
                         .offset(y:50)
                     HStack{
@@ -67,12 +67,12 @@ struct TransportationView: View {
                                 .weight(.bold)
                             )
                             .padding(.bottom, 10)
-                            .offset(x:-85)
+                        Spacer()
                     }
+                    .padding(.leading, 15)
                     Image("SchoolBus")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width:410)
                         .cornerRadius(10)
                     
                 }
@@ -112,22 +112,21 @@ Metro buses will continue to drop off students on Regent Street, but will now pi
 """)
                     .padding(.leading,7)
                     .padding(.bottom, 5)
-                    HStack{
-                        Image(systemName: "bus.fill")
-                        Text("Regent Street: (W3 Arboretum, W1 Tokay, W3 Hill Farms, W1 Shorewood, W1 Mineral Point)")
+                    VStack(alignment: .leading, spacing: 20){
+                        HStack{
+                            Image(systemName: "bus.fill")
+                            Text("Regent Street: (W3 Arboretum, W1 Tokay, W3 Hill Farms, W1 Shorewood, W1 Mineral Point)")
+                        }
+                        HStack{
+                            Image(systemName: "bus.fill")
+                            Text("Van Hise Avenue: (W1 Nakoma, W3 Leopold, W5 Burr Oaks, W5 Wingra, W7 Olin.")
+                        }
+                        HStack{
+                            Image(systemName: "bus.fill")
+                            Text("Fitchburg: yellow buses will load on Ash Street.")
+                        }
                     }
-                    .padding(.leading,7)
-                    .padding(.bottom,5)
-                    HStack{
-                        Image(systemName: "bus.fill")
-                        Text("Van Hise Avenue: (W1 Nakoma, W3 Leopold, W5 Burr Oaks, W5 Wingra, W7 Olin.")
-                    }.padding(.leading,2)
-                        .padding(.bottom,5)
-                    HStack{
-                        Image(systemName: "bus.fill")
-                        Text("Fitchburg: yellow buses will load on Ash Street.")
-                    }.padding(.bottom,5)
-                        .padding(.trailing,13)
+                    .padding(.horizontal,10)
                 }
                 HStack{
                     Text("Badger Bus (Yellow Bus) Info & Routes")
@@ -162,7 +161,9 @@ Metro buses will continue to drop off students on Regent Street, but will now pi
                         .scaleEffect(1)
                 }
                 Text("These are the areas not serviced by Metro in the West attendance area.")
-                Text("""
+                VStack (alignment: .leading){
+                    HStack{
+                        Text("""
 **Contact Info**
 
 **Regular Yellow School Bus Services:** (608)-298-5471
@@ -170,8 +171,10 @@ Metro buses will continue to drop off students on Regent Street, but will now pi
 **All services after 5:00pm:** (608)-310-4892
 **E-mail:** jasonf@badgerbus.com
 """)
-                .padding(.leading,7)
-                .padding(.top,5)
+                    Spacer()
+                    }
+                    .padding(.leading,10)
+                }
                 HStack{
                     Text("Bus Stop Reminders")
                         .font(

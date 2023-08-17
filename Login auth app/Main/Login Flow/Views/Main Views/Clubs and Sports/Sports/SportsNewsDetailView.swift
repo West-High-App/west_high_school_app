@@ -30,7 +30,7 @@ var currentnews: sportNews
                                                 .clipped()
                                         }
                                     }
-                                    .frame(width: geo.size.width - 40, height: geo.size.height - 100, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                    .frame(width: geo.size.width, height: geo.size.height - 100, alignment: .center)
                                     .cornerRadius(15)
                                 }
                                 
@@ -39,10 +39,10 @@ var currentnews: sportNews
                             .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                             
                         }.cornerRadius(30)
+                    
                     .frame(width: 380, height: 500)
                     .shadow(color: .gray, radius: 8, x:2, y:3)
-
-                        .padding()
+                    .padding(.trailing, 10)
                         Spacer()
                     }
     //                Image(currentstudentdub.images.first!)
@@ -72,12 +72,11 @@ var currentnews: sportNews
                                     .font(.system(size: 20, weight: .semibold, design: .rounded))
                                     .padding(.trailing)
                             }
-                            .padding(.horizontal, 10)
-                            .padding(.vertical,10)
+                            .padding(.vertical,5)
                             .background(Rectangle()
                                 .cornerRadius(9.0)
-                                .frame(width: 400)
-                                .padding(.horizontal)
+                                //.frame(width: 400)
+                                .padding(.horizontal, -20)
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             .padding(.bottom, 10)
@@ -87,12 +86,11 @@ var currentnews: sportNews
                             .multilineTextAlignment(.leading)
                             .foregroundColor(Color.black)
                             .font(.system(size: 20, weight: .regular, design: .rounded))
-                            .padding(.horizontal, 25)
+                            .padding(.horizontal, 20)
                             .padding(.vertical,5)
                             .background(Rectangle()
                                 .cornerRadius(9.0)
-                                .frame(width: 400)
-                                .padding(.horizontal)
+                                .padding(.horizontal, -20)
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             .padding(.vertical, 5)
