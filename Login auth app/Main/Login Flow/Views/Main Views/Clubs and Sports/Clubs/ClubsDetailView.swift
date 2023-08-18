@@ -156,7 +156,6 @@ struct ClubsDetailView: View {
                                 }
                             }
                                 .padding(.all)
-                                .frame(width:370)
                                 .background(Color(red: 250/255, green: 250/255, blue: 250/255))
                                 .cornerRadius(12)
                             }
