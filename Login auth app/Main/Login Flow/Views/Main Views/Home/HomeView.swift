@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct HomeView: View {
     var newsDataManager = Newslist()
 
     var spotlighttitlearray:[studentachievement] = studentachievementlist.allstudentachievementlist
-    var notiManager = NotificationsManager()
+    //var notiManager = NotificationsManager()
     //var safeArea: EdgeInsets
     //var size: CGSize
     // delete init under if being stupid
@@ -73,20 +74,21 @@ struct HomeView: View {
                     }
                     .zIndex(1)
                     
-                    NavigationLink {
-                        UpcomingEventsAdminView()
-                    } label: {
-                        Text("edit events")
-                    }
+                    
+                    
+                    
+                    
+                    
+                    
                     VStack{
-                        Button {
-                            notiManager.sendNotification(title: "Did it work?", body: "I SURE hope so!!")
-                        } label: {
-                            Text("Send notification")
-                                .padding(10)
-                                .background(.white)
-                                .cornerRadius(10)
-                        }
+//                        Button {
+//                            notiManager.sendNotification(title: "Did it work?", body: "I SURE hope so!!")
+//                        } label: {
+//                            Text("Send notification")
+//                                .padding(10)
+//                                .background(.white)
+//                                .cornerRadius(10)
+//                        }
 
                         //MxOST RECENT ANNOUNCEMENT
                         VStack{
@@ -269,7 +271,7 @@ struct HomeView: View {
                         
                         
                     }
-                                        .zIndex(0)
+                    .zIndex(0)
                     
                 }
                 .overlay(alignment: .top) {
