@@ -13,7 +13,7 @@ struct Newstab: Identifiable {
     let documentID: String
     let title:String
     let publisheddate:String // format: Jun 15, 2023, Feb 28, 1998, etc.
-    let description: LocalizedStringKey
+    let description: String
     let newsimagename: String
 }
 
@@ -40,7 +40,7 @@ class Newslist: ObservableObject {
                 for document in snapshot.documents {
                     let data = document.data()
                     let title = data["title"] as? String ?? ""
-                    let description = data["description"] as? LocalizedStringKey ?? ""
+                    let description = data["description"] as? String ?? ""
                     let publisheddate = data["publisheddate"] as? String ?? ""
                     let newsimagename = data["newsimagename"] as? String ?? ""
                     let documentID = document.documentID
@@ -65,6 +65,36 @@ class Newslist: ObservableObject {
         }
     }
 
+    func createAnnouncement(announcement: Newstab, completion: @escaping (Error?) -> Void) {
+        print("Creating new announcement...")
+        let db = Firestore.firestore()
+        db.collection("Announcements").addDocument(data: [
+            "title": announcement.title,
+            "description": announcement.description,
+            "publisheddate": announcement.publisheddate,
+            "newsimagename": announcement.newsimagename
+        ]) { error in
+            completion(error)
+            if error == nil {
+                self.getAnnouncements()
+            }
+        }
+        print("ANnouncement created with documentID: \(announcement.documentID)")
+    }
+
+    func deleteAnnouncement(announcement: Newstab, completion: @escaping (Error?) -> Void) { //
+        print("Deleting announcement with documentID: \(announcement.documentID)...")
+        let db = Firestore.firestore()
+        let eventRef = db.collection("Announcements").document(announcement.documentID)
+        
+        eventRef.delete { error in
+            completion(error)
+            if error == nil {
+                self.getAnnouncements()
+            }
+        }
+        print("Announcement deleted")
+    }
     
     func filterByDate() -> [Newstab]{
         self.getAnnouncements()

@@ -18,7 +18,7 @@ struct UpcomingEventsAdminView: View {
             VStack {
                 Text("NOTE: You are currently editing source data. Any changes you make will be published across all devices.")
                 Button {
-                    isPresentingAddEvent.toggle()
+                    isPresentingAddEvent = true
                 } label: {
                     Text("Add Upcoming Event")
                         .foregroundColor(.blue)

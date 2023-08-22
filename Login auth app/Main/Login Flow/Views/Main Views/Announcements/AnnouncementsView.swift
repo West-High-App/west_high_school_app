@@ -17,6 +17,12 @@ struct AnnouncementsView: View {
     var body: some View {
             NavigationView{
                 VStack {
+                    NavigationLink {
+                        AnnouncementsAdminView()
+                    } label: {
+                        Text("edit announcements")
+                    }
+
                     List(newsDataManager.topfive, id: \.id){news in
                         NavigationLink {
                             AnnouncementsDetailView(currentnews: news)
