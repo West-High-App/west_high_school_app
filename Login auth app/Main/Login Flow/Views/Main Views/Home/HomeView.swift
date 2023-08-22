@@ -100,15 +100,6 @@ struct HomeView: View {
                         
                         //SNACK SPLICE BOISSSSSS
                         HStack{
-                            VStack{
-                                NavigationLink {
-                                    LunchMenuView()
-                                } label:{
-                                    CurrentLunchMenu()
-                                }
-                                Spacer()
-                            }
-                            .padding(.bottom, 10)
                             
                         //ICE SPICE YOU THOUGHT I WAS FEELIN U?
                             VStack{
@@ -516,34 +507,6 @@ struct MostRecentMessageCell: View{
     }
 }
 
-struct CurrentLunchMenu: View{
-    var body:some View{
-        VStack(alignment: .leading) {
-            HStack {
-                Text("Today's Menu")
-                    .foregroundColor(.black)
-                    .fontWeight(.semibold)
-                    //.padding(.horizontal)
-                    .padding(.vertical, -5)
-                Spacer()
-            }
-            Divider()
-                //.padding(.horizontal)
-                .padding(.vertical, 5)
-            
-            Text("Cheeseburger")
-                .lineLimit(3)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(.black)
-                //.padding(.horizontal)
-            
-        }.padding(.all) //EDIT
-            .background(Rectangle()
-                .cornerRadius(9.0)
-                .shadow(radius: 5, x: 3, y: 3)
-                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-    }
-}
 
 
 
