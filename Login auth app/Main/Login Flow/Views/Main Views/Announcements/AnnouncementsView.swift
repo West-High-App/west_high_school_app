@@ -9,18 +9,28 @@ import SwiftUI
 
 struct AnnouncementsView: View {
     @StateObject var newsDataManager = Newslist()
+    var permissionsManager = permissionsDataManager()
+    @StateObject var userInfo = UserInfo()
+    
+    @State private var hasPermission = false
         
     init() {
         newsDataManager.getAnnouncements()
+        print(userInfo.email)
     }
     
     var body: some View {
             NavigationView{
                 VStack {
-                    NavigationLink {
-                        AnnouncementsAdminView()
-                    } label: {
-                        Text("edit announcements")
+                    if hasPermission {
+                        Text("has permission")
+                    }
+                    if hasPermission {
+                        NavigationLink {
+                            AnnouncementsAdminView()
+                        } label: {
+                            Text("edit announcements")
+                        }
                     }
 
                     List(newsDataManager.topfive, id: \.id){news in
@@ -44,13 +54,12 @@ struct AnnouncementsView: View {
                     .navigationBarTitle(
                         Text("Announcements"))
                 }
+            }.onAppear {
+                permissionsManager.checkPermissions(dataType: "Announcements", user: userInfo.email) { result in
+                    self.hasPermission = result
+                }
             }
-
-
-
     }
-
-    
     
     struct NewsCell: View{
         var news: Newstab

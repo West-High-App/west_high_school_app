@@ -33,7 +33,6 @@ class upcomingEventsDataManager: ObservableObject {
             }
 
             if let snapshot = snapshot {
-                print("Scanning documents...")
                 for document in snapshot.documents {
                     let data = document.data()
                     let eventname = data["eventname"] as? String ?? ""

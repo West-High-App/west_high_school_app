@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* Permissions.swift */; };
 		222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086922A60AE8E00EF1ECA /* LoginData.swift */; };
 		222086E92A6224D400EF1ECA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 222086E82A6224D400EF1ECA /* GoogleSignIn */; };
 		222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 222086EA2A6224D400EF1ECA /* GoogleSignInSwift */; };
@@ -74,6 +75,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		221A9CF92A95DD0A004A9F02 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		222086922A60AE8E00EF1ECA /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
 		222086EE2A62458900EF1ECA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 		22830A002A86843600AE9C08 /* Permissions */ = {
 			isa = PBXGroup;
 			children = (
+				221A9CF92A95DD0A004A9F02 /* Permissions.swift */,
 			);
 			path = Permissions;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */,
 				2270B2492A68E65000823E58 /* SportsDetailView.swift in Sources */,
 				2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */,
+				221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */,
 				228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */,
 				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,
 				2270B2312A68E26900823E58 /* ClubsView.swift in Sources */,

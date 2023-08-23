@@ -2,24 +2,32 @@ import Foundation
 import SwiftKeychainWrapper
 
 class UserInfo: ObservableObject {
-    // Keychain key for saving login status
     private let loginStatusKey = "loginStatusKey"
+    private let emailKey = "emailKey"
     
-    // @Published property to observe login status changes
     @Published var loginStatus: String {
         didSet {
-            // Save the updated login status to Keychain
             KeychainWrapper.standard.set(loginStatus, forKey: loginStatusKey)
+        }
+    }
+    
+    @Published var email: String {
+        didSet {
+            KeychainWrapper.standard.set(email, forKey: emailKey)
         }
     }
     
     // Data available when user signs in with Google (if loginStatus = "google")
     @Published var displayName: String = ""
-    @Published var email: String = ""
     
     init() {
-        // Load the login status from Keychain (defaulting to "none" if not found)
         loginStatus = KeychainWrapper.standard.string(forKey: loginStatusKey) ?? "none"
+        email = ""
+        if loginStatus == "google" {
+            email = KeychainWrapper.standard.string(forKey: emailKey) ?? "no email"
+        } else {
+            email = "no email"
+        }
     }
     
     func firstName() -> String {

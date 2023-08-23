@@ -49,7 +49,6 @@ class Newslist: ObservableObject {
                     templist.append(newstab)  // Add the newstab to the temporary array
                 }
                 
-                print("Announcement documents list:")
                 self.topfive = Array(templist[0...])
                 self.topfive = self.topfive.sorted { first, second in
                     let dateFormatter = DateFormatter()
@@ -58,9 +57,6 @@ class Newslist: ObservableObject {
                     let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
                     return firstDate < secondDate
                 }.reversed()
-                print("work plz")
-                print(self.topfive)
-                print("Documents retrieved.")
             }
         }
     }
