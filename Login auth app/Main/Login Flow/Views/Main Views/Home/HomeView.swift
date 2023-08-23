@@ -10,8 +10,7 @@ import UserNotifications
 
 struct HomeView: View {
     var newsDataManager = Newslist()
-var permissionsManager = permissionsDataManager()
-    
+
     var spotlighttitlearray:[studentachievement] = studentachievementlist.allstudentachievementlist
     //var notiManager = NotificationsManager()
     //var safeArea: EdgeInsets

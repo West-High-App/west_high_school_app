@@ -10,7 +10,7 @@ import Firebase
 
 struct Newstab: Identifiable {
     let id = UUID()
-    let documentID: String
+    let documentID: String // if ur basing it off my data you need to add documentID
     let title:String
     let publisheddate:String // format: Jun 15, 2023, Feb 28, 1998, etc.
     let description: String

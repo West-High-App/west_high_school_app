@@ -9,14 +9,19 @@ import SwiftUI
 
 struct UpcomingEventsView: View {
     var dataManager = upcomingEventsDataManager()
-
+    var permissionsManager = permissionsDataManager()
+    var userInfo = UserInfo()
+    @State private var hasPermission = false
+    
     var body: some View {
                 VStack {
                     
-                    NavigationLink {
-                        UpcomingEventsAdminView()
-                    } label: {
-                        Text("edit events")
+                    if hasPermission {
+                        NavigationLink {
+                            UpcomingEventsAdminView()
+                        } label: {
+                            Text("edit events")
+                        }
                     }
                     
                     List(dataManager.alleventslist, id: \.id){event in
@@ -51,6 +56,11 @@ struct UpcomingEventsView: View {
                     }
                 }
                 .navigationBarTitle(Text("Upcoming Events"))
+                .onAppear {
+                    permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
+                        self.hasPermission = result
+                    }
+                }
             
         
         
