@@ -5,6 +5,7 @@ struct permission: Identifiable {
     let id = UUID()
     let dataType: String
     let allowedUsers: [String]
+    let documentID: String
 }
 
 class permissionsDataManager: ObservableObject {
@@ -26,6 +27,7 @@ class permissionsDataManager: ObservableObject {
                     let data = document.data()
                     let dataType = data["dataType"] as? String ?? ""
                     let allowedUsers = data["allowedUsers"] as? [String] ?? []
+                    let documentID = document.documentID
                     
                     self.permissions[dataType] = allowedUsers
                 }
@@ -44,5 +46,17 @@ class permissionsDataManager: ObservableObject {
             completion(returnValue)
         }
     }
+    
+    func updatePermission(_ permission: permission, completion: @escaping (Error?) -> Void) {
+            let db = Firestore.firestore()
+            let documentRef = db.collection("Permissions").document(permission.documentID)
+            
+            documentRef.setData([
+                "dataType": permission.dataType,
+                "allowedUsers": permission.allowedUsers
+            ], merge: true) { error in
+                completion(error)
+            }
+        }
 }
 

@@ -152,7 +152,7 @@ Metro buses will continue to drop off students on Regent Street, but will now pi
                                 fixedSize: 23)
                             .weight(.regular)
                         )
-                        .frame(width:385, height:45)
+                        .frame(height:45)
                         .foregroundColor(.yellow)
                         .background(LinearGradient(colors: [Color(red: 20/255, green: 100/255, blue: 235/255), Color(red: 100/255, green: 120/255, blue: 200/255)],
                                                    startPoint: .top,

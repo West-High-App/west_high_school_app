@@ -64,7 +64,7 @@ struct WestHighApp: App {
     
     var body: some Scene {
         WindowGroup {
-            AuthView() // starts at the authentication screen
+            AuthView() // AuthView -- starts at the authentication screen
         }
         }
     }

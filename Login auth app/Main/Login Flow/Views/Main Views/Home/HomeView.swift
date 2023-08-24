@@ -9,9 +9,15 @@ import SwiftUI
 import UserNotifications
 
 struct HomeView: View {
-    var newsDataManager = Newslist()
+    @State var newsDataManager = Newslist()
+    
+    // permissions
+    var permissionsManager = permissionsDataManager()
+    @State private var hasPermissionUpcomingEvents = false
+    @State private var hasPermissionSpotlight = false
 
-    var spotlighttitlearray:[studentachievement] = studentachievementlist.allstudentachievementlist
+    @ObservedObject var spotlightManager = studentachievementlist()
+    @State var newstitlearray: [studentachievement] = []
     //var notiManager = NotificationsManager()
     //var safeArea: EdgeInsets
     //var size: CGSize
@@ -19,26 +25,21 @@ struct HomeView: View {
     init(safeArea: EdgeInsets, size: CGSize) {
             self.safeArea = safeArea
             self.size = size
-            spotlighttitlearray = spotlighttitlearray.sorted { first, second in
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "MMM d, yyyy"
-                let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-                let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-                return firstDate < secondDate
-            }.reversed()
+        spotlightManager.getAchievements()
+        newstitlearray = newstitlearray.sorted { first, second in
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM d, yyyy"
+            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+            return firstDate < secondDate
+        }.reversed()
+        print("LIST FROM HOME VIEW:::")
+        print(spotlightManager.allstudentachievementlist)
         }
     @EnvironmentObject var userInfo: UserInfo
     @State var date = Date()
     let yellow = Color(red: 0.976, green: 0.87, blue: 0.01)
     let blue = Color(red: 0.159, green: 0.207, blue: 0.525)
-    
-    
-    
-
-    
-    
-    
-    
     
     func getTime() -> String {
         let hour = Calendar.current.component(.hour, from: Date())
@@ -73,13 +74,6 @@ struct HomeView: View {
                         
                     }
                     .zIndex(1)
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     VStack{
 //                        Button {
 //                            notiManager.sendNotification(title: "Did it work?", body: "I SURE hope so!!")
@@ -92,6 +86,7 @@ struct HomeView: View {
 
                         //MxOST RECENT ANNOUNCEMENT
                         VStack{
+                            //temp
                             NavigationLink {
                                 AnnouncementsDetailView(currentnews: newsDataManager.newstitlearray[0])
                             } label:{
@@ -101,17 +96,6 @@ struct HomeView: View {
                         .padding(.bottom, 10)
                         
                         //SNACK SPLICE BOISSSSSS
-                        HStack{
-                            
-                        //ICE SPICE YOU THOUGHT I WAS FEELIN U?
-                            VStack{
-                                MostRecentMessageCell()
-                            }
-                            .padding(.bottom, 10)
-
-                        }
-                        .padding(.horizontal)
-                        
                         
                         //UPCOMING EVENTS NEEDS WORK!
                         VStack{
@@ -154,6 +138,15 @@ struct HomeView: View {
                                 .padding(.horizontal)
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                            
+                            if hasPermissionUpcomingEvents {
+                                NavigationLink {
+                                    UpcomingEventsAdminView()
+                                } label: {
+                                    Text("edit events")
+                                }
+                            }
+                            
                             VStack {
                                 HStack {
                                     VStack {
@@ -246,22 +239,34 @@ struct HomeView: View {
                                 .padding(.horizontal)
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                            VStack {
+                            
+                            
+                            if hasPermissionSpotlight {
                                 NavigationLink {
-                                    SpotlightArticles(currentstudentdub: spotlighttitlearray[0])
+                                    SpotlightAdminView()
                                 } label: {
-                                    MostRecentAchievementCell(feat: spotlighttitlearray[0])
+                                    Text("Edit spotlight articles")
                                 }
+                            }
+                            
+                            
+                            
+                            VStack { // articles
                                 NavigationLink {
-                                    SpotlightArticles(currentstudentdub: spotlighttitlearray[1])
+                                    SpotlightArticles(currentstudentdub: spotlightManager.allstudentachievementlist[0])
                                 } label: {
-                                    MostRecentAchievementCell(feat: spotlighttitlearray[1])
+                                    MostRecentAchievementCell(feat: spotlightManager.allstudentachievementlist[0])
                                 }
-                                NavigationLink {
-                                    SpotlightArticles(currentstudentdub: spotlighttitlearray[2])
-                                } label: {
-                                    MostRecentAchievementCell(feat: spotlighttitlearray[2])
-                                }
+                                // NavigationLink {
+                                   // SpotlightArticles(currentstudentdub: spotlighttitlearray[1])
+                                // } label: {
+                                  //  MostRecentAchievementCell(feat: spotlighttitlearray[1])
+                               // }
+                            //    NavigationLink {
+                           //         SpotlightArticles(currentstudentdub: spotlighttitlearray[2])
+                          //      } label: {
+                          //          MostRecentAchievementCell(feat: spotlighttitlearray[2])
+                           //     }
 
                             }
                             .padding(.horizontal)
@@ -276,6 +281,16 @@ struct HomeView: View {
                 }
                 .overlay(alignment: .top) {
                     HeaderView()
+                }
+                
+                // checking for permissions on appear
+                .onAppear {
+                    permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
+                        self.hasPermissionSpotlight = result
+                    }
+                    permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
+                        self.hasPermissionUpcomingEvents = result
+                    }
                 }
                 
             }

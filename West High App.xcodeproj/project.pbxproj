@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* Permissions.swift */; };
+		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
 		222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086922A60AE8E00EF1ECA /* LoginData.swift */; };
 		222086E92A6224D400EF1ECA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 222086E82A6224D400EF1ECA /* GoogleSignIn */; };
 		222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 222086EA2A6224D400EF1ECA /* GoogleSignInSwift */; };
@@ -69,6 +70,10 @@
 		E82562D72A84D0DA000AF117 /* ClubsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82562D62A84D0DA000AF117 /* ClubsMainView.swift */; };
 		E82562DB2A867858000AF117 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E82562DA2A867858000AF117 /* GoogleService-Info.plist */; };
 		E8531F612A83D1D100FB64F5 /* SportsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8531F602A83D1D100FB64F5 /* SportsMainView.swift */; };
+		E87A324A2A967EB400D7CDB1 /* PrivacySecurityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87A32492A967EB400D7CDB1 /* PrivacySecurityView.swift */; };
+		E87A324C2A967EC100D7CDB1 /* HelpSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87A324B2A967EC100D7CDB1 /* HelpSupportView.swift */; };
+		E87A324E2A967ECF00D7CDB1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87A324D2A967ECF00D7CDB1 /* AboutView.swift */; };
+		E87A32502A967EE900D7CDB1 /* ContactUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87A324F2A967EE900D7CDB1 /* ContactUsView.swift */; };
 		E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89012392A7F484A00FCB764 /* HomeMainView.swift */; };
 		E8A1E54F2A8CD311003BE94C /* DailyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */; };
 		E8A1E5512A8CDC85003BE94C /* DailyMessageAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A1E5502A8CDC85003BE94C /* DailyMessageAdminView.swift */; };
@@ -76,6 +81,7 @@
 
 /* Begin PBXFileReference section */
 		221A9CF92A95DD0A004A9F02 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
+		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
 		222086922A60AE8E00EF1ECA /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
 		222086EE2A62458900EF1ECA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
@@ -133,6 +139,10 @@
 		E82562D62A84D0DA000AF117 /* ClubsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsMainView.swift; sourceTree = "<group>"; };
 		E82562DA2A867858000AF117 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E8531F602A83D1D100FB64F5 /* SportsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsMainView.swift; sourceTree = "<group>"; };
+		E87A32492A967EB400D7CDB1 /* PrivacySecurityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySecurityView.swift; sourceTree = "<group>"; };
+		E87A324B2A967EC100D7CDB1 /* HelpSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpSupportView.swift; sourceTree = "<group>"; };
+		E87A324D2A967ECF00D7CDB1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		E87A324F2A967EE900D7CDB1 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; };
 		E89012392A7F484A00FCB764 /* HomeMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMainView.swift; sourceTree = "<group>"; };
 		E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyMessage.swift; sourceTree = "<group>"; };
 		E8A1E5502A8CDC85003BE94C /* DailyMessageAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyMessageAdminView.swift; sourceTree = "<group>"; };
@@ -265,6 +275,7 @@
 				2270B2132A68DDFC00823E58 /* StudentSpotlight.swift */,
 				2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */,
 				2270B2182A68DE9E00823E58 /* SpotlightData.swift */,
+				221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */,
 			);
 			path = "Student Spotlight";
 			sourceTree = "<group>";
@@ -356,7 +367,7 @@
 				2270B2632A68E80D00823E58 /* MentalHealthView.swift */,
 				2270B2672A68E86C00823E58 /* SchoolPolicyGuideView.swift */,
 				2270B2692A68E88700823E58 /* TransportationView.swift */,
-				2270B26B2A68E89400823E58 /* SettingsView.swift */,
+				E87A32482A967AE300D7CDB1 /* Settings */,
 			);
 			path = "Information Views";
 			sourceTree = "<group>";
@@ -423,6 +434,18 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E87A32482A967AE300D7CDB1 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				2270B26B2A68E89400823E58 /* SettingsView.swift */,
+				E87A32492A967EB400D7CDB1 /* PrivacySecurityView.swift */,
+				E87A324B2A967EC100D7CDB1 /* HelpSupportView.swift */,
+				E87A324D2A967ECF00D7CDB1 /* AboutView.swift */,
+				E87A324F2A967EE900D7CDB1 /* ContactUsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -520,12 +543,14 @@
 				228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */,
 				2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */,
 				228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */,
+				E87A324E2A967ECF00D7CDB1 /* AboutView.swift in Sources */,
 				E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */,
 				2270B23C2A68E33A00823E58 /* ClubsDatabase.swift in Sources */,
 				222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */,
 				E8531F612A83D1D100FB64F5 /* SportsMainView.swift in Sources */,
 				E82562D72A84D0DA000AF117 /* ClubsMainView.swift in Sources */,
 				2270B2212A68DF9400823E58 /* AnnouncementsView.swift in Sources */,
+				221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */,
 				2270B2232A68DFDD00823E58 /* AnnouncementsDetailView.swift in Sources */,
 				2270B2552A68E71100823E58 /* StaffView.swift in Sources */,
 				2270B2102A68DD7100823E58 /* HomeView.swift in Sources */,
@@ -555,6 +580,7 @@
 				221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */,
 				228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */,
 				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,
+				E87A324C2A967EC100D7CDB1 /* HelpSupportView.swift in Sources */,
 				2270B2312A68E26900823E58 /* ClubsView.swift in Sources */,
 				2270B25A2A68E75900823E58 /* StaffData.swift in Sources */,
 				2270B2472A68E63E00823E58 /* SportsView.swift in Sources */,
@@ -563,6 +589,8 @@
 				228362F22A2C18CB0061BFAE /* Events.swift in Sources */,
 				222086EF2A62458900EF1ECA /* Utilities.swift in Sources */,
 				2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */,
+				E87A32502A967EE900D7CDB1 /* ContactUsView.swift in Sources */,
+				E87A324A2A967EB400D7CDB1 /* PrivacySecurityView.swift in Sources */,
 				2270B24B2A68E66200823E58 /* SportsHibabi.swift in Sources */,
 				2270B2642A68E80D00823E58 /* MentalHealthView.swift in Sources */,
 			);
