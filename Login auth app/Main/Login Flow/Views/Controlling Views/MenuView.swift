@@ -56,7 +56,7 @@ struct MenuView : View {
     var tabItems = MenuItem.allCases
     @EnvironmentObject var userInfo: UserInfo
     @EnvironmentObject var dataManager: DataManager
-    @State var selected: MenuItem = .home
+    @State var selected: MenuItem = .announcments
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -176,6 +176,7 @@ struct CustomShape: Shape {
             path.addLine(to: CGPoint(x: rect.width, y: rect.height))
             path.addLine(to: CGPoint(x: rect.width, y: 15))
             path.move(to: CGPoint(x: centerX - 35, y: 15))
+            //length of bulge
             path.addQuadCurve(to: CGPoint(x: centerX + 35, y: 15), control: CGPoint(x: centerX, y: -30))
         }
     }
@@ -183,6 +184,6 @@ struct CustomShape: Shape {
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
-        MenuView()
+        MenuView().environmentObject(UserInfo())
     }
 }
