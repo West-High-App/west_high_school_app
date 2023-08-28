@@ -101,9 +101,3 @@ struct SpotlightArticles: View {
         
     }
 }
-
-struct SpotlightArticles_Previews: PreviewProvider {
-    static var previews: some View {
-        SpotlightArticles(currentstudentdub: studentachievementlist.allstudentachievementlist.first!)
-    }
-}

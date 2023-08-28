@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct StudentSpotlight: View {
-    var newstitlearray:[studentachievement] = studentachievementlist.allstudentachievementlist
-    
+
+    var spotlightManager = studentachievementlist()
+    @State var newstitlearray: [studentachievement] = []
     // delete init under if being stupid
     init() {
+        spotlightManager.getAchievements()
         newstitlearray = newstitlearray.sorted { first, second in
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d, yyyy"
@@ -25,14 +27,22 @@ struct StudentSpotlight: View {
     var body: some View {
 
         //NavigationView{
-            List(newstitlearray, id: \.id)
+        VStack {
+            //NavigationLink {
+              //  SpotlightAdminView()
+            //} label: {
+              //  Text("Edit spotlight articles")
+            //}
+
+            List(spotlightManager.allstudentachievementlist, id: \.id)
             {news in
                 achievementcell(feat: news)
                     .background( NavigationLink("", destination: SpotlightArticles(currentstudentdub: news)).opacity(0) )
                     .listRowSeparator(.hidden)
                 
             }
-            .navigationBarTitle(Text("Student Spotlight"))
+        }            .navigationBarTitle(Text("Student Spotlight"))
+
 
         }
     }

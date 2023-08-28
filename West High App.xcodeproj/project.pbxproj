@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* Permissions.swift */; };
+		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
 		222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086922A60AE8E00EF1ECA /* LoginData.swift */; };
 		222086E92A6224D400EF1ECA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 222086E82A6224D400EF1ECA /* GoogleSignIn */; };
 		222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 222086EA2A6224D400EF1ECA /* GoogleSignInSwift */; };
@@ -80,6 +81,7 @@
 
 /* Begin PBXFileReference section */
 		221A9CF92A95DD0A004A9F02 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
+		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
 		222086922A60AE8E00EF1ECA /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
 		222086EE2A62458900EF1ECA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				2270B2132A68DDFC00823E58 /* StudentSpotlight.swift */,
 				2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */,
 				2270B2182A68DE9E00823E58 /* SpotlightData.swift */,
+				221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */,
 			);
 			path = "Student Spotlight";
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				E8531F612A83D1D100FB64F5 /* SportsMainView.swift in Sources */,
 				E82562D72A84D0DA000AF117 /* ClubsMainView.swift in Sources */,
 				2270B2212A68DF9400823E58 /* AnnouncementsView.swift in Sources */,
+				221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */,
 				2270B2232A68DFDD00823E58 /* AnnouncementsDetailView.swift in Sources */,
 				2270B2552A68E71100823E58 /* StaffView.swift in Sources */,
 				2270B2102A68DD7100823E58 /* HomeView.swift in Sources */,
