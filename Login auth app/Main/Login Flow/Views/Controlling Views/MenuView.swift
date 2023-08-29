@@ -10,21 +10,20 @@ import SwiftUI
 
 enum MenuItem: String, CaseIterable {
     
-    
-    case activities
-    case announcments
     case home
+    case announcments
+    case activities
     case calendar
     case profile
     
     var description: String {
         switch self {
+        case .home:
+            return "Home"
         case .activities:
             return "Clubs"
         case .announcments:
             return "Messages"
-        case .home:
-            return "Home"
         case .calendar:
             return "Sports"
         case .profile:
@@ -33,12 +32,12 @@ enum MenuItem: String, CaseIterable {
     }
     var icon: String {
         switch self {
+        case .home:
+            return "house.fill"
         case .activities:
             return "dice.fill"
         case .announcments:
             return "megaphone.fill"
-        case .home:
-            return "house.fill"
         case .calendar:
             return "basketball.fill"
         case .profile:
@@ -56,7 +55,7 @@ struct MenuView : View {
     var tabItems = MenuItem.allCases
     @EnvironmentObject var userInfo: UserInfo
     @EnvironmentObject var dataManager: DataManager
-    @State var selected: MenuItem = .announcments
+    @State var selected: MenuItem = .home
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -65,13 +64,13 @@ struct MenuView : View {
         VStack(spacing: 0){
             TabView(selection: $selected){
                 
-                ClubsHibabi()
+                HomeMainView()
                     .tag(tabItems[0])
                     .ignoresSafeArea(.all)
                 AnnouncementsView()
                     .tag(tabItems[1])
                     .ignoresSafeArea(.all)
-                HomeMainView()
+                ClubsHibabi()
                     .tag(tabItems[2])
                     .ignoresSafeArea(.all)
                 SportsHibabi()

@@ -12,6 +12,7 @@ struct HomeView: View {
     @State var newsDataManager = Newslist()
     
     // permissions
+    var sportsnewsmanager = sportsNewslist()
     var permissionsManager = permissionsDataManager()
     @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermissionSpotlight = false
@@ -370,26 +371,39 @@ struct HomeView: View {
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.2)
                                 .font(
-                                .custom("Trebuchet MS", fixedSize: 50))
+                                    .custom("Trebuchet MS", fixedSize: 50))
                                 .foregroundColor(yellow)
                                 .padding(.horizontal)
                                 .fontWeight(.semibold)
                                 .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-
-                                //.font(.system(size: 45))
-                                //.fontWeight(.bold)
-                                //.multilineTextAlignment(.center)
                             
-                            Text("Good \(getTime()), \(userInfo.firstName())!")
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.2)
-                                .multilineTextAlignment(.center)
-                                .font(
-                                .custom("Trebuchet MS", fixedSize: 32))
-                                .fontWeight(.medium)
-                                .padding(.horizontal)
-                                .foregroundColor(westyellow)
-                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                            //.font(.system(size: 45))
+                            //.fontWeight(.bold)
+                            //.multilineTextAlignment(.center)
+                            if userInfo.loginStatus == "google"{
+                                Text("Good \(getTime()), \(userInfo.firstName())!")
+                                    .lineLimit(2)
+                                    .minimumScaleFactor(0.2)
+                                    .multilineTextAlignment(.center)
+                                    .font(
+                                        .custom("Trebuchet MS", fixedSize: 32))
+                                    .fontWeight(.medium)
+                                    .padding(.horizontal)
+                                    .foregroundColor(westyellow)
+                                    .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                            }
+                            else{
+                                Text("Good \(getTime())!")
+                                    .lineLimit(2)
+                                    .minimumScaleFactor(0.2)
+                                    .multilineTextAlignment(.center)
+                                    .font(
+                                        .custom("Trebuchet MS", fixedSize: 32))
+                                    .fontWeight(.medium)
+                                    .padding(.horizontal)
+                                    .foregroundColor(westyellow)
+                                    .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                            }
                         }
                         .opacity(1 + (progress > 0 ? -progress : progress))
                         .padding(.bottom, 25)
