@@ -10,6 +10,7 @@
 		221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* Permissions.swift */; };
 		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
 		221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */; };
+		221A9D052A9EC1A6004A9F02 /* ClubNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */; };
 		222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086922A60AE8E00EF1ECA /* LoginData.swift */; };
 		222086E92A6224D400EF1ECA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 222086E82A6224D400EF1ECA /* GoogleSignIn */; };
 		222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 222086EA2A6224D400EF1ECA /* GoogleSignInSwift */; };
@@ -85,6 +86,7 @@
 		221A9CF92A95DD0A004A9F02 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
 		221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsNewsAdminView.swift; sourceTree = "<group>"; };
+		221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubNewsAdminView.swift; sourceTree = "<group>"; };
 		222086922A60AE8E00EF1ECA /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
 		222086EE2A62458900EF1ECA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */,
+				221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -569,6 +572,7 @@
 				2270B2232A68DFDD00823E58 /* AnnouncementsDetailView.swift in Sources */,
 				2270B2552A68E71100823E58 /* StaffView.swift in Sources */,
 				2270B2102A68DD7100823E58 /* HomeView.swift in Sources */,
+				221A9D052A9EC1A6004A9F02 /* ClubNewsAdminView.swift in Sources */,
 				2270B2662A68E83600823E58 /* NavigatingSchoolView.swift in Sources */,
 				2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */,
 				E8A1E54F2A8CD311003BE94C /* DailyMessage.swift in Sources */,
