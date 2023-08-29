@@ -51,6 +51,14 @@ struct HomeView: View {
         }
     }
     
+    
+    
+    
+    //SHOOTa ALRME
+    
+            
+        
+
     //
     //
     //
@@ -75,14 +83,28 @@ struct HomeView: View {
                     }
                     .zIndex(1)
                     VStack{
-//                        Button {
-//                            notiManager.sendNotification(title: "Did it work?", body: "I SURE hope so!!")
-//                        } label: {
-//                            Text("Send notification")
-//                                .padding(10)
-//                                .background(.white)
-//                                .cornerRadius(10)
-//                        }
+                        Button {
+                            let center = UNUserNotificationCenter.current()
+                            
+                            let content = UNMutableNotificationContent()
+                            content.title = "Emergency Announcment"
+                            content.body = "skool is getting shot up guys run"
+                            
+                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                            
+                            //creating request
+                            let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
+                            
+                            center.add(request){error in
+                                if let error = error {
+                                    print(error)
+                                }
+                            }
+                        } label: {
+                            Text("kigeya click here if pew pew pew")
+                        }
+
+
 
                         //MxOST RECENT ANNOUNCEMENT
                         VStack{
@@ -257,16 +279,6 @@ struct HomeView: View {
                                 } label: {
                                     MostRecentAchievementCell(feat: spotlightManager.allstudentachievementlist[0])
                                 }
-                                // NavigationLink {
-                                   // SpotlightArticles(currentstudentdub: spotlighttitlearray[1])
-                                // } label: {
-                                  //  MostRecentAchievementCell(feat: spotlighttitlearray[1])
-                               // }
-                            //    NavigationLink {
-                           //         SpotlightArticles(currentstudentdub: spotlighttitlearray[2])
-                          //      } label: {
-                          //          MostRecentAchievementCell(feat: spotlighttitlearray[2])
-                           //     }
 
                             }
                             .padding(.horizontal)

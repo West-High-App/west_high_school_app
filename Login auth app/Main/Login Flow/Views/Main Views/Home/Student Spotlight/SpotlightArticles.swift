@@ -38,7 +38,7 @@ struct SpotlightArticles: View {
                         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                         
                     }.cornerRadius(30)
-                .frame(width: 400, height: 500)
+                .frame(height: 500)
                 .shadow(color: .gray, radius: 8, x:2, y:3)
 
                     .padding()
@@ -75,7 +75,6 @@ struct SpotlightArticles: View {
                         .padding(.vertical,10)
                         .background(Rectangle()
                             .cornerRadius(9.0)
-                            .frame(width: 400)
                             .padding(.horizontal)
                             .shadow(radius: 5, x: 3, y: 3)
                             .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
@@ -101,3 +100,11 @@ struct SpotlightArticles: View {
         
     }
 }
+
+struct SpotlightArticles_Previews: PreviewProvider {
+    static var previews: some View {
+        SpotlightArticles(currentstudentdub: studentachievement(documentID: "testID" , achievementtitle: "test", achievementdescription: "building go boom boom", articleauthor: "alah akbar", publisheddate: "Sept 11, 2001", images: ["west", "west"]))
+    }
+}
+//(documentID: "testID", title: "Test", publisheddate: "Jan 5, 2023", description: "Description", newsimagename: "West Regents Logo")
+//i like feet
