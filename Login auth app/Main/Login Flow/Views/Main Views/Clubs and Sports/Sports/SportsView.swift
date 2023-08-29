@@ -9,7 +9,16 @@
 import SwiftUI
 
 struct SportsHibabi: View {
-    var newstitlearray:[sportNews] = sportsNewslist.allsportsnewslist
+    
+    var permissionsManager = permissionsDataManager()
+    var userInfo = UserInfo()
+    @State private var hasPermissionSportsNews = false
+    var sportsNewsManager = sportsNewslist()
+    init() {
+        sportsNewsManager.getSportsNews()
+        newstitlearray = sportsNewsManager.allsportsnewslist
+    }
+    @State var newstitlearray:[sportNews] = []
     @StateObject var vm = ViewModel()
     @State var searchText = "" // text for search field
     @State var selected = 1 // which tab is selected
@@ -95,6 +104,7 @@ struct SportsHibabi: View {
 
         NavigationView{
             VStack {
+
                 Picker(selection: $selected, label: Text(""), content: { // picker at top
                     Text("My Sports").tag(1)
                     Text("Browse").tag(2)
@@ -205,7 +215,17 @@ struct SportsHibabi: View {
                             Spacer()
                         }
                     }
-                    List(newstitlearray, id: \.id) { news in
+                    
+                    if hasPermissionSportsNews {
+                        NavigationLink {
+                            SportsNewsAdminView()
+                        } label: {
+                            Text("edit sports news")
+                        }
+                    }
+
+                    
+                    List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
                         
                         sportnewscell(feat: news)
                             .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
@@ -214,6 +234,13 @@ struct SportsHibabi: View {
                 }
                     }
             .navigationTitle("Sports")
+            
+            .onAppear {
+                permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
+                    self.hasPermissionSportsNews = result
+                }
+            }
+            
             }.sheet(isPresented: $isFiltering, content: {
                 HStack {
                     Button {

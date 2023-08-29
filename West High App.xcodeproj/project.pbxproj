@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* Permissions.swift */; };
 		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
+		221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */; };
 		222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086922A60AE8E00EF1ECA /* LoginData.swift */; };
 		222086E92A6224D400EF1ECA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 222086E82A6224D400EF1ECA /* GoogleSignIn */; };
 		222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 222086EA2A6224D400EF1ECA /* GoogleSignInSwift */; };
@@ -83,6 +84,7 @@
 /* Begin PBXFileReference section */
 		221A9CF92A95DD0A004A9F02 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
+		221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsNewsAdminView.swift; sourceTree = "<group>"; };
 		222086922A60AE8E00EF1ECA /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
 		222086EE2A62458900EF1ECA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
@@ -170,6 +172,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		221A9D012A9EADEB004A9F02 /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */,
+			);
+			path = Admin;
+			sourceTree = "<group>";
+		};
 		2270B1ED2A68D25F00823E58 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -321,6 +331,7 @@
 		2270B22F2A68E23500823E58 /* Clubs and Sports */ = {
 			isa = PBXGroup;
 			children = (
+				221A9D012A9EADEB004A9F02 /* Admin */,
 				2270B2282A68E08E00823E58 /* Clubs */,
 				2270B2272A68E08900823E58 /* Sports */,
 				2270B2382A68E2FA00823E58 /* Clubs and Sports Data */,
@@ -542,6 +553,7 @@
 				2270B22A2A68E0A400823E58 /* ClubSportData.swift in Sources */,
 				2270B22E2A68E1F800823E58 /* ClubSportNewsData.swift in Sources */,
 				228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */,
+				221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */,
 				2270B2602A68E7C600823E58 /* ContactView.swift in Sources */,
 				228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */,
 				2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */,

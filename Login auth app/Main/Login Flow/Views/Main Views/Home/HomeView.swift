@@ -12,6 +12,7 @@ struct HomeView: View {
     @State var newsDataManager = Newslist()
     
     // permissions
+    var sportsnewsmanager = sportsNewslist()
     var permissionsManager = permissionsDataManager()
     @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermissionSpotlight = false

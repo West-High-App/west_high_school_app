@@ -64,7 +64,7 @@ struct WestHighApp: App {
     
     var body: some Scene {
         WindowGroup {
-            SplashScreenView() // Splash Screen View - Leads to AuthView
+            SplashScreenView() // SplashScreenView -- Splash Screen View - Leads to AuthView
             }
         }
     }

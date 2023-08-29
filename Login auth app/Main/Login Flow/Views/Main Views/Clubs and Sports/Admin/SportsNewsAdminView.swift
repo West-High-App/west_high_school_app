@@ -1,17 +1,17 @@
 import SwiftUI
 
-struct SpotlightAdminView: View {
-    @StateObject var dataManager = studentachievementlist()
+struct SportsNewsAdminView: View {
+    @StateObject var dataManager = sportsNewslist()
     
     @State private var isPresentingAddAchievement = false
-    @State private var selectedAchievement: studentachievement?
+    @State private var selectedAchievement: sportNews?
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var tempAchievementTitle = ""
     
     @State private var isConfirmingDeleteAchievement = false
     @State private var isConfirmingDeleteAchievementFinal = false
-    @State private var achievementToDelete: studentachievement?
+    @State private var achievementToDelete: sportNews?
     
     var body: some View {
         VStack {
@@ -19,7 +19,7 @@ struct SpotlightAdminView: View {
             Button {
                 isPresentingAddAchievement = true
             } label: {
-                Text("Add Achievement")
+                Text("Add Sport News")
                     .foregroundColor(.blue)
                     .padding(10)
                     .background(Rectangle()
@@ -28,24 +28,24 @@ struct SpotlightAdminView: View {
                         .shadow(radius: 2, x: 1, y: 1))
             }
             
-            List(dataManager.newstitlearray, id: \.id) { achievement in
-                AchievementRowView(achievement: achievement)
+            List(dataManager.allsportsnewslist, id: \.id) { sportNews in
+                sportNewsRowView(sportNews: sportNews)
                     .buttonStyle(PlainButtonStyle())
                     .contextMenu {
                         Button("Delete", role: .destructive) {
-                            tempAchievementTitle = achievement.achievementtitle
+                            tempAchievementTitle = sportNews.newstitle
                             isConfirmingDeleteAchievement = true
-                            achievementToDelete = achievement
+                            achievementToDelete = sportNews
                         }
                     }
             }
-            .navigationBarTitle(Text("Edit Achievements"))
+            .navigationBarTitle(Text("Edit Sport News"))
         }
         .sheet(isPresented: $isPresentingAddAchievement) {
-            AchievementDetailView(dataManager: dataManager)
+            sportNewsRowlView(dataManager: dataManager)
         }
         .sheet(item: $selectedAchievement) { achievement in
-            AchievementDetailView(dataManager: dataManager, editingAchievement: achievement)
+            sportNewsRowlView(dataManager: dataManager, editingAchievement: achievement)
         }
         .alert(isPresented: $isConfirmingDeleteAchievement) {
             Alert(
@@ -53,7 +53,7 @@ struct SpotlightAdminView: View {
                 message: Text("Are you sure you want to delete the achievement '\(tempAchievementTitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
                     if let achievementToDelete = achievementToDelete {
-                        dataManager.deleteAchievment(achievement: achievementToDelete) { error in
+                        dataManager.deleteSportNews(sportNews: achievementToDelete) { error in
                             if let error = error {
                                 print("Error deleting achievement: \(error.localizedDescription)")
                             }
@@ -66,36 +66,33 @@ struct SpotlightAdminView: View {
     }
 }
 
-struct AchievementRowView: View {
-    var achievement: studentachievement
+struct sportNewsRowView: View {
+    var sportNews: sportNews
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(achievement.achievementtitle)
+            Text(sportNews.newstitle)
                 .font(.headline)
-            Text(achievement.publisheddate)
+            Text(sportNews.newsdescription)
                 .font(.subheadline)
-            Text(achievement.achievementdescription)
+            Text(sportNews.newsdate)
                 .font(.subheadline)
-            Text(achievement.articleauthor)
+            Text(sportNews.author)
                 .font(.subheadline)
         }
     }
 }
 
-struct AchievementDetailView: View {
+struct sportNewsRowlView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var dataManager: studentachievementlist
-    @State private var achievementTitle = ""
-    @State private var achievementDescription = ""
-    @State private var articleAuthor = ""
-    @State private var publishedDate = ""
+    @ObservedObject var dataManager: sportsNewslist
+    @State var newstitle = ""
+    @State var newsimage: [String] = []
+    @State var newsdescription = ""
+    @State var newsdate = ""
+    @State var author = ""
     
-    var editingAchievement: studentachievement?
-    
-    // Define arrays for month and day options
-    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    let days = Array(1...31)
+    var editingAchievement: sportNews?
     
     @State private var isConfirmingAddAchievement = false
     @State private var isConfirmingDeleteAchievement = false
@@ -103,37 +100,30 @@ struct AchievementDetailView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Achievement Details")) {
-                    TextField("Achievement Title", text: $achievementTitle)
-                    TextField("Achievement Description", text: $achievementDescription)
-                    TextField("Article Author", text: $articleAuthor)
-                    TextField("Published Date", text: $publishedDate)
+                Section(header: Text("Sports News Details")) {
+                    TextField("Title", text: $newstitle)
+                    TextField("Description", text: $newsdescription)
+                    TextField("Author", text: $author)
+                    TextField("Date", text: $newsdate)
                 }
                 
-                Button("Publish New Achievement") {
+                Button("Publish New Sport News") {
                     isConfirmingAddAchievement = true
                 }
             }
-            .navigationBarTitle(editingAchievement == nil ? "Add Achievement" : "Edit Achievement")
+            .navigationBarTitle(editingAchievement == nil ? "Add Sport News" : "Edit Sport News")
             .navigationBarItems(trailing: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             })
             .alert(isPresented: $isConfirmingAddAchievement) {
                 Alert(
                     title: Text("You Are Publishing Changes"),
-                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(achievementTitle)\nDescription: \(achievementDescription)\nAuthor: \(articleAuthor)\nPublished Date: \(publishedDate)"),
+                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(newstitle)\nDescription: \(newsdescription)\nAuthor: \(author)\nPublished Date: \(newsdate)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
-                        let achievementToSave = studentachievement(
-                            documentID: "NAN",
-                            achievementtitle: achievementTitle,
-                            achievementdescription: achievementDescription,
-                            articleauthor: articleAuthor,
-                            publisheddate: publishedDate,
-                            images: []
-                        )
-                        dataManager.createAchievement(achievement: achievementToSave) { error in
+                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: ["west"], newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: "NAN")
+                        dataManager.createSportNews(sportNews: achievementToSave) { error in
                             if let error = error {
-                                print("Error creating achievement: \(error.localizedDescription)")
+                                print("Error creating sport news: \(error.localizedDescription)")
                             } else {
                                 presentationMode.wrappedValue.dismiss()
                             }
@@ -144,17 +134,17 @@ struct AchievementDetailView: View {
             }
             .onAppear {
                 if let achievement = editingAchievement {
-                    achievementTitle = achievement.achievementtitle
-                    achievementDescription = achievement.achievementdescription
-                    articleAuthor = achievement.articleauthor
-                    publishedDate = achievement.publisheddate
+                    newstitle = achievement.newstitle
+                    newsdescription = achievement.newsdescription
+                    author = achievement.author
+                    newsdate = achievement.newsdate
                 }
             }
         }
     }
 }
 
-struct SpotlightAdminView_Previews: PreviewProvider {
+struct SportsNewsAdminView_Previews: PreviewProvider {
     static var previews: some View {
         SpotlightAdminView()
     }

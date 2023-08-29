@@ -104,6 +104,11 @@ var currentnews: sportNews
 
 struct SportsNewsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsNewsDetailView(currentnews: sportsNewslist.allsportsnewslist.first!)
+        SportsNewsDetailView(currentnews: sportNews(
+            newstitle: "Varsity Football Team Wins Regional Championship",
+            newsimage: ["football"],
+            newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
+            newsdate: "Nov 15, 2022",
+            author: "Emily Thompson", documentID: "NAN"))
     }
 }
