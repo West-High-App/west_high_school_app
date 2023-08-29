@@ -101,7 +101,29 @@ struct HomeView: View {
                                 }
                             }
                         } label: {
-                            Text("kigeya click here if pew pew pew")
+                            HStack{
+                                Spacer()
+                                Image("warning")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width:30)
+                                Text("SEND A WARNING")
+                                    .foregroundColor(.red)
+                                    .fontWeight(.semibold)
+                                    .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
+                                Image("warning")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width:30)
+                                Spacer()
+
+                            }
+                            .padding(.vertical, 8)
+                            .background(Rectangle()
+                                .cornerRadius(9.0)
+                                .padding(.horizontal)
+                                .shadow(radius: 5, x: 3, y: 3)
+                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                         }
 
 
@@ -127,8 +149,7 @@ struct HomeView: View {
                                     .padding(.leading, 15)
                                     .foregroundColor(westblue)
                                     .bold()
-                                    .font(
-                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
+                                    .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
                                     //.padding(.horizontal)
                                     //.padding(.vertical, -5)
 
