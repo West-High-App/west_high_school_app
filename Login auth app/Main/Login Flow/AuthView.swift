@@ -66,7 +66,8 @@ struct AuthView: View {
     @State var userIsLoggedIn = false
     @State var count = 0
     @State var showingDomainError = false
-    
+    let westyellow = Color(red:248/255, green:222/255, blue:8/255)
+    let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     @StateObject private var viewModel = AuthenticationViewModel()
     @StateObject var dataManager = DataManager()
     @StateObject var userInfo = UserInfo()
@@ -95,8 +96,7 @@ struct AuthView: View {
         else {
             NavigationView {
                 ZStack {
-                    Color.blue
-                    
+                    westblue
                     VStack {
                         
                          // GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
@@ -173,7 +173,7 @@ struct AuthView: View {
                                 )
                         }
                         
-                    }.accentColor(.blue)
+                    }.accentColor(westblue)
                         .padding([.leading, .trailing, .bottom])
                         .padding(.top, 50)
                         .background(Rectangle()

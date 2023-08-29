@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 struct sportNews: Identifiable, Codable {
     let newstitle: String
@@ -14,107 +15,89 @@ struct sportNews: Identifiable, Codable {
     let newsdate: String
     let author: String
     var id = UUID()
-    let sportid: Int
-
+    let documentID: String
 }
 
-struct sportsNewslist{
-    static let allsportsnewslist = [
-        sportNews(
-            newstitle: "JV Boys Basketball Places #2 at State",
-            newsimage: ["basketball"],
-            newsdescription: """
-In a stunning display of skill and determination, the Madison West High School JV boys basketball team emerged as the runners-up at the highly anticipated state tournament held at the prestigious Oakridge Arena. Despite facing fierce competition from some of the state's most formidable teams, the Madison West Warriors showcased their undeniable talent, leaving their mark on the tournament and etching their names in the annals of the school's sports history.
-
-The journey to the state tournament was nothing short of remarkable for the Madison West JV boys. Throughout the season, they displayed unwavering commitment, countless hours of practice, and an unyielding drive to succeed. Coached by the esteemed basketball veteran, Coach Johnson, the team underwent rigorous training sessions, refining their skills and developing a cohesive playing style that would prove to be a formidable force on the court.
-
-As the state tournament unfolded, the Madison West Warriors made their intentions clear from the very first game. They showcased their prowess by overwhelming their opponents with a display of speed, precision, and tactical brilliance. Led by their exceptional point guard, Alex Thompson, who demonstrated unparalleled court vision and remarkable ball-handling skills, the team dismantled one opponent after another, leaving their fans in awe.
-
-In the thrilling semifinal matchup against their arch-rivals, the Oakridge High School Eagles, the Madison West JV boys basketball team demonstrated their resilience and mental fortitude. The game was a seesaw battle from start to finish, with both teams refusing to back down. It was a clash of titans, as the roaring crowd witnessed an unforgettable display of sportsmanship and fierce competition. Although the game ended in a narrow defeat for Madison West, the team's performance showcased their ability to go toe-to-toe with the best and left a lasting impression on all those in attendance.
-
-In the finals, Madison West faced the formidable Lincoln High School Tigers, who boasted an impressive record throughout the season. The tension in the arena was palpable as the crowd anticipated a showdown for the ages. The game was a testament to the Madison West Warriors' indomitable spirit and unwavering determination. They fought tooth and nail, trading baskets and making remarkable defensive stands. Despite their valiant efforts, the Tigers managed to secure a narrow victory, claiming the championship title by the slimmest of margins.
-
-Despite falling short of the ultimate prize, the Madison West High School JV boys basketball team left the court with their heads held high, knowing they had given their all. Their extraordinary journey, marked by exceptional teamwork, individual brilliance, and an unyielding commitment to excellence, will forever be remembered by their devoted fans and the wider community.
-
-Coach Johnson expressed immense pride in his team's achievements, stating, "These young athletes have shown remarkable growth and dedication throughout the season. Placing second at the state tournament is a testament to their hard work and the bright future that lies ahead for them. I couldn't be prouder of their accomplishments."
-
-The Madison West High School JV boys basketball team's achievement serves as an inspiration for future athletes and underscores the school's commitment to fostering excellence in both sports and academics. As the Warriors bask in the glory of their second-place finish, their legacy will undoubtedly continue to inspire future generations, proving that with passion, determination, and a relentless pursuit of greatness, anything is possible.
-""",
-            newsdate: "Mar 9, 2023",
-            author: "Zachary Dufrezne",
-            sportid: 6),
-        sportNews(
+class sportsNewslist: ObservableObject {
+    @Published var allsportsnewslist = [sportNews(
         newstitle: "Varsity Football Team Wins Regional Championship",
         newsimage: ["football"],
         newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
         newsdate: "Nov 15, 2022",
-        author: "Emily Thompson",
-        sportid: 1),
-
-        sportNews(
-        newstitle: "Girls Varsity Soccer Team Clinches Conference Title",
-        newsimage: ["soccer"],
-        newsdescription: "The Oakridge High School girls' varsity soccer team dominated the conference and secured the championship title with an unbeaten record.",
-        newsdate: "May 4, 2023",
-        author: "Jennifer Ramirez",
-        sportid: 2),
-
-        sportNews(
-        newstitle: "Swimming and Diving Team Shines at State Meet",
-        newsimage: ["swimming"],
-        newsdescription: "The Harborview High School swimming and diving team showcased their exceptional skills at the state meet, with several athletes claiming top positions and setting new records.",
-        newsdate: "Feb 28, 2023",
-        author: "Michael Sullivan",
-        sportid: 3),
-
-        sportNews(
-        newstitle: "Cross Country Team Excels in Regional Championship",
-        newsimage: ["cross country"],
-        newsdescription: "The Sunset Valley High School cross country team exhibited outstanding performance at the regional championship, with both the boys' and girls' teams securing top positions.",
-        newsdate: "Oct 22, 2022",
-        author: "Sarah Anderson",
-        sportid: 4),
-
-        sportNews(
-        newstitle: "Girls Varsity Volleyball Team Advances to State Semifinals",
-        newsimage: ["volleyball"],
-        newsdescription: "The Northridge High School girls' varsity volleyball team showcased their talent and determination, earning a spot in the state semifinals after a thrilling playoff match.",
-        newsdate: "Nov 2, 2022",
-        author: "Jessica Davis",
-        sportid: 5),
-
-        sportNews(
-        newstitle: "Girls Varsity Softball Team Wins Divisional Championship",
-        newsimage: ["softball"],
-        newsdescription: "The Riverside High School girls' varsity softball team celebrated their divisional championship victory after a thrilling season filled with remarkable performances.",
-        newsdate: "May 18, 2023",
-        author: "Alexandra Johnson",
-        sportid: 7),
-
-        sportNews(
-        newstitle: "Wrestling Team Dominates State Tournament",
-        newsimage: ["wrestling"],
-        newsdescription: "The Ridgemont High School wrestling team showcased their strength and skill at the state tournament, with several wrestlers claiming individual titles and the team earning the overall championship.",
-        newsdate: "Feb 15, 2023",
-        author: "Jason Roberts",
-        sportid: 8),
-
-        sportNews(
-        newstitle: "Boys Varsity Baseball Team Clinches State Title",
-        newsimage: ["baseball"],
-        newsdescription: "The Jeffersonville High School boys' varsity baseball team emerged victorious in the state championship game, displaying remarkable teamwork and skill throughout the season.",
-        newsdate: "Jun 5, 2023",
-        author: "Daniel Martin",
-        sportid: 9),
-
-        sportNews(
-        newstitle: "Girls Varsity Basketball Team Makes School History",
-        newsimage: ["basketball2"],
-        newsdescription: "The Lakeside High School girls' varsity basketball team made school history by clinching their first-ever state championship, leaving a lasting legacy for future generations.",
-        newsdate: "Mar 18, 2023",
-        author: "Stephanie Thompson",
-        sportid: 10)
-    ]
+        author: "Emily Thompson", documentID: "NAN")]
+    
+    init() {
+        print("getting sports news>>>>>")
+        getSportsNews()
+    }
+    
+    func getSportsNews() {
+        var templist: [sportNews] = []
+        print("GETTING SPORTS NEWS")
+        let db = Firestore.firestore()
+        let collection = db.collection("SportsNews")
+        
+        collection.getDocuments { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            }
+            
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    let data = document.data()
+                    let newstitle = data["newstitle"] as? String ?? ""
+                    let newsimage = data["newsimage"] as? [String] ?? []
+                    let newsdescription = data["newsdescription"] as? String ?? ""
+                    let newsdate = data["newsdate"] as? String ?? ""
+                    let author = data["author"] as? String ?? ""
+                    let documentID = document.documentID
+                    
+                    let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID)
+                    templist.append(sportnews)
+                    print(sportnews)
+                    print("^^^^ SPORTNEWS")
+                }
+                
+                DispatchQueue.main.async {
+                    self.allsportsnewslist = templist
+                    print(self.allsportsnewslist)
+                    print("^^^^^ ALL SPORTS LIS")
+                }
+            }
+        }
+    }
+    
+    func createSportNews(sportNews: sportNews, completion: @escaping (Error?) -> Void) {
+        print("Creating new sports news...")
+        let db = Firestore.firestore()
+        db.collection("SportsNews").addDocument(data: [
+            "newstitle": sportNews.newstitle,
+            "newsimage": sportNews.newsimage,
+            "newsdescription": sportNews.newsdescription,
+            "newsdate": sportNews.newsdate,
+            "author": sportNews.author
+        ]) { error in
+            completion(error)
+            if error == nil {
+                self.getSportsNews()
+            }
+        }
+        print("Sport news created with ID: \(sportNews.documentID)")
+    }
+    
+    func deleteSportNews(sportNews: sportNews, completion: @escaping (Error?) -> Void) {
+        print("Deleting sport news with ID: \(sportNews.documentID)")
+        let db = Firestore.firestore()
+        let ref = db.collection("SportsNews").document(sportNews.documentID)
+        ref.delete { error in
+            completion(error)
+            if error == nil {
+                self.getSportsNews()
+            }
+        }
+        print("Article deleted")
+    }
+    
 }
 
 struct clubNews: Identifiable, Codable {
