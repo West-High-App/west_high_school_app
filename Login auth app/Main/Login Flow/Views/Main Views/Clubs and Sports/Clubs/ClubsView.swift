@@ -8,7 +8,17 @@
 import SwiftUI
 
 struct ClubsHibabi: View {
-    var clubsnewstitlearray:[clubNews] = clubsNewslist.allclubsnewslist
+    
+    var permissionsManager = permissionsDataManager()
+    var userInfo = UserInfo()
+    @State private var hasPermissionClubNews = false
+    
+    var clubNewsManager = clubsNewslist()
+    init() {
+        clubNewsManager.getClubNews()
+        newstitlearray = clubNewsManager.allclubsnewslist
+    }
+    @State var newstitlearray:[clubNews] = []
     @StateObject var vmm = ClubViewModel()
     @State var clubsearchText = "" // text for search field
     @State var clubselected = 1 // which tab is selected
@@ -89,49 +99,59 @@ struct ClubsHibabi: View {
                         }
                     }
                     else {
-                        List {
-                            ForEach(filteredclubs) { item in
-                                if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
-                                    NavigationLink {
-                                        ClubsMainView(selectedclub: item)
-                                            .environmentObject(vmm)
-                                    } label: {
-                                        HStack {
-                                            Image(item.clubimage)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 50, height: 50)
-                                                .cornerRadius(1000)
-                                                .padding(.trailing, 10)
-                                            VStack(alignment: .center) {
-                                                HStack {
-                                                    Text(item.clubname)
-                                                        .foregroundColor(.primary)
-                                                        .lineLimit(2)
-                                                        .minimumScaleFactor(0.9)
-                                                        .font(.system(size: 28, weight: .semibold, design: .rounded))
-                                                    Spacer()
+                        VStack {
+                            List {
+                                ForEach(filteredclubs) { item in
+                                    if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
+                                        NavigationLink {
+                                            ClubsMainView(selectedclub: item)
+                                                .environmentObject(vmm)
+                                        } label: {
+                                            HStack {
+                                                Image(item.clubimage)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 50, height: 50)
+                                                    .cornerRadius(1000)
+                                                    .padding(.trailing, 10)
+                                                VStack(alignment: .center) {
+                                                    HStack {
+                                                        Text(item.clubname)
+                                                            .foregroundColor(.primary)
+                                                            .lineLimit(2)
+                                                            .minimumScaleFactor(0.9)
+                                                            .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                                        Spacer()
+                                                    }
+                                                    HStack {
+                                                        Text(item.clubname)
+                                                            .foregroundColor(.secondary)
+                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                        Spacer()
+                                                    }
                                                 }
-                                                HStack {
-                                                    Text(item.clubname)
-                                                        .foregroundColor(.secondary)
-                                                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                    Spacer()
-                                                }
+                                                Spacer()
                                             }
-                                            Spacer()
                                         }
                                     }
                                 }
                             }
+                            .searchable(text: $clubsearchText)
                         }
-                        .searchable(text: $clubsearchText)
                     }
 
                 }
                 //you thought i was feeling you???
                 else if clubselected == 3 { // penis
-                    List(clubsnewstitlearray, id: \.id) { news in
+                    if hasPermissionClubNews {
+                        NavigationLink {
+                            ClubNewsAdminView()
+                        } label: {
+                            Text("edit club news")
+                        }
+
+                    }
+                    List(clubNewsManager.allclubsnewslist, id: \.id) { news in
                         
                         clubnewscell(feat: news)
                             .background( NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news)).opacity(0) )
@@ -143,6 +163,13 @@ struct ClubsHibabi: View {
                 }
                 
                     }
+            
+            .onAppear {
+                permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
+                    self.hasPermissionClubNews = result
+                }
+            }
+            
             .navigationTitle("Clubs")
             }
 

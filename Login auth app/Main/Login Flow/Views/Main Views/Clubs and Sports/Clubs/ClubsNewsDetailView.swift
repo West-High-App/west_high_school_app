@@ -107,6 +107,11 @@ var currentclubnews: clubNews
 
 struct ClubsNewsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubsNewsDetailView(currentclubnews: clubsNewslist.allclubsnewslist.first!)
+        ClubsNewsDetailView(currentclubnews: clubNews(
+            newstitle: "hardcoded title",
+            newsimage: ["roboticsclub"],
+            newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app", newsdate: "Apr 1, 2023",
+            author: "aiden jamae lee lmfao remember",
+            documentID: "NAN"))
     }
 }
