@@ -15,7 +15,7 @@ struct ContactView: View {
             ZStack{
                 ZStack{
                     Rectangle()
-                        .frame(width:430, height: 60)
+                        .frame(height: 60)
                         .foregroundColor(Color(red: 41/255, green: 51/255, blue:145/255))
                     HStack{
                         Text("WEST HIGH SCHOOL")
@@ -33,7 +33,7 @@ struct ContactView: View {
                 }
                 ZStack{
                     Rectangle()
-                        .frame(width:430, height:40)
+                        .frame(height:40)
                         .foregroundColor(Color(red: 85/255, green: 85/255, blue: 85/255))
                         .offset(y:50)
                     HStack{
@@ -61,6 +61,7 @@ struct ContactView: View {
                 VStack{
                     HStack{
                         Text("West Contacts")
+                            .padding(.leading)
                             .foregroundColor(.black)
                             .font(
                                 .custom(
@@ -69,19 +70,14 @@ struct ContactView: View {
                                 .weight(.bold)
                             )
                             .padding(.bottom, 10)
-                            .offset(x:-45)
-                    }
-                    Image("west")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .cornerRadius(10)
-                        .padding()
-                    
+                        Spacer()
+                    }                    
                 }
                 .padding(.vertical,50)
             }
             .padding(.top, 30)
-            
+            .padding(.bottom, -30)
+
             VStack{
                 DisclosureGroup("Main Phone"){
                     VStack(alignment:.leading){

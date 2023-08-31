@@ -79,7 +79,6 @@ struct HomeView: View {
                     Artwork()
                     // Since We ignored Top Edge
                     GeometryReader{ proxy in
-                        let minY = proxy.frame(in: .named("SCROLL")).minY - safeArea.top
                         
                     }
                     .zIndex(1)

@@ -16,20 +16,34 @@ struct SettingsView: View {
             VStack{
                 List{
                     NavigationLink {
-                        LunchMenuView()
+                        PrivacySecurityView()
                     } label: {
                         HStack{
                             Image(systemName: "lock.shield")
                                 .font(.system(size: 30))
                             Spacer()
                                 .frame(width:15)
-                            Text("Privacy & Security")
+                            Text("Privacy Policy")
+                                .font(.system(size: 24))
+                        }
+                    }
+                    .padding(.vertical,15)
+                    
+                    NavigationLink {
+                        PrivacyPolicyView()
+                    } label: {
+                        HStack{
+                            Image(systemName: "checkmark.circle")
+                                .font(.system(size: 30))
+                            Spacer()
+                                .frame(width:15)
+                            Text("Terms of Service")
                                 .font(.system(size: 24))
                         }
                     }
                     .padding(.vertical,15)
                     NavigationLink {
-                        LunchMenuView()
+                        HelpSupportView()
                     } label: {
                         HStack{
                             Image(systemName: "headphones")
@@ -43,20 +57,7 @@ struct SettingsView: View {
                     }
                     .padding(.vertical,15)
                     NavigationLink {
-                        StaffView()
-                    } label: {
-                        HStack{
-                            Image(systemName: "questionmark.circle")
-                                .font(.system(size: 30))
-                            Spacer()
-                                .frame(width:15)
-                            Text("About")
-                                .font(.system(size: 24))
-                        }
-                    }
-                    .padding(.vertical,15)
-                    NavigationLink {
-                        SocialView()
+                        ContactUsView()
                     } label: {
                         HStack{
                             Image(systemName: "phone.circle")

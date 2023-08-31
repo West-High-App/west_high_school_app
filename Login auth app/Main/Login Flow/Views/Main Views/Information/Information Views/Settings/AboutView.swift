@@ -10,8 +10,6 @@ import SwiftUI
 struct AboutView: View {
     var body: some View {
         let screenSize: CGRect = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
         ScrollView(showsIndicators: false){
             ZStack{
                 ZStack{

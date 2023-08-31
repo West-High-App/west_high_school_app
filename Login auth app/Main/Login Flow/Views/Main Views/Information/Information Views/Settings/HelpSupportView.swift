@@ -10,8 +10,6 @@ import SwiftUI
 struct HelpSupportView: View {
     var body: some View {
         let screenSize: CGRect = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        let screenHeight = screenSize.height
         ScrollView(showsIndicators: false){
             ZStack{
                 ZStack{
@@ -78,39 +76,31 @@ struct HelpSupportView: View {
                 .padding(.vertical,50)
             }
             .padding(.top, 30)
+            .padding(.bottom, -30)
+
             
             VStack{
                 DisclosureGroup("FAQs"){
                     VStack(alignment:.leading){
-                        HStack{
-                            VStack(alignment: .leading){
-                                Text("Regent Attendance:")
-                                    .padding(.leading,10)
-                                Button {
-                                } label: {
-                                    Text("(608) 204-4108")
-                                }
-                                .foregroundColor(.blue)
-                                .padding(.leading,10)
-                                
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("**Who can edit content on the app?**")
+                                Spacer()
                             }
-                        }
-                        .padding(.vertical, 10)
-                        HStack{
-                            Image(systemName: "phone")                        .scaleEffect(1.5)
-                            VStack(alignment: .leading){
-                                Text("Regent Attendance:")
-                                    .padding(.leading,10)
-                                Button {
-                                } label: {
-                                    Text("(608) 204-3091")
-                                }
-                                .foregroundColor(.blue)
-                                .padding(.leading,10)
-                                
+                            Text("Only verified users and administrators can edit content inside the app. Certain student leaders also may have access to editing the app, this includes chosen members of sports teams and chosen members of clubs.\n")
+                            
+                            HStack{
+                                Text("**Who writes the articles?**")
+                                Spacer()
                             }
+                            Text("The articles shown in the student spotlight as well as the sports and club news are written by the Regent Reporter.\n")
+                            
+                            HStack{
+                                Text("**How can I help with the app?**")
+                                Spacer()
+                            }
+                            Text("Student Council helps maintain the West High app, if you are interested in joining visit room 1209 during lunch! If you have any suggestions or improvements, contact us at westhighapp@gmail.com.\n")
                         }
-                        .padding(.vertical, 10)
                     }
                     .font(
                         .custom(
@@ -119,10 +109,9 @@ struct HelpSupportView: View {
                         .weight(.regular)
                     )
                     .foregroundColor(.black)
-                    .padding(.horizontal)
                     .padding(.vertical, 10.0)
-                    .background(Color(red: 240/255, green: 240/255, blue: 240/255) ,in: RoundedRectangle(cornerRadius: 25.0))
-                }                                .font(
+                }
+                .font(
                     .custom(
                         "arial",
                         fixedSize: 24)
@@ -141,58 +130,28 @@ struct HelpSupportView: View {
                 DisclosureGroup("Logging in"){
                     VStack(alignment:.leading){
                         HStack{
-                            Image(systemName: "person.crop.circle")                        .scaleEffect(1.5)
-                            VStack(alignment: .leading){
-                                Text("**Corvonn Gaines** \nWest High School Athletic Director")
-                                    .padding(.leading,10)
-                                
-                                Text("cjgaines@madison.k12.wi.us")
-                                    .padding(.leading,10)
-                                
-                                Button {
-                                } label: {
-                                    Text("(608) 204-3060")
-                                }
-                                .foregroundColor(.blue)
-                                .padding(.leading,10)
-                                
-                            }
+                            Text("**Why can't I log in with gmail?**")
+                            Spacer()
                         }
-                        .padding(.vertical)
+                        Text("Only email accounts with the MMSD email domain (@madison.k12.wi.us) will be able to log in, this is to maximize the security of our students.\n")
+                        
                         HStack{
-                            Image(systemName: "person.crop.circle")                        .scaleEffect(1.5)
-                            VStack(alignment: .leading){
-                                Text("**Natalie Loranger**                                                 \nAthletic Secretary")
-                                    .padding(.leading,10)
-                                
-                                Text("nkloranger@madison.k12.wi.us")
-                                    .padding(.leading,10)
-                                
-                                Button {
-                                } label: {
-                                    Text("(608) 204-4103")
-                                }
-                                .foregroundColor(.blue)
-                                .padding(.leading,10)
-                                
-                            }
+                            Text("**What is logging in as a guest?**")
+                            Spacer()
                         }
-                        .padding(.vertical)
-                        
-                        
-                        
+                        Text("Logging in as a guest will allow you to enter the app without logging in with an MMSD email, logging in as a guest will restrict you from viewing sensitive information, such as any news articles or details to clubs and sports.\n")
                     }
+                    
+                    
                     .font(
                         .custom(
                             "arial",
                             fixedSize: 18)
                         .weight(.regular)
                     )
-                    .foregroundColor(.black)
-                    .padding(.horizontal)
-                    .padding(.vertical, 10.0)
-                    .background(Color(red: 240/255, green: 240/255, blue: 240/255) ,in: RoundedRectangle(cornerRadius: 25.0))
-                }                                .font(
+
+                }
+                .font(
                     .custom(
                         "arial",
                         fixedSize: 24)
@@ -205,9 +164,26 @@ struct HelpSupportView: View {
                 .cornerRadius(20)
                 .padding(.horizontal,5)
                 
-                DisclosureGroup("Report bugs"){
-                    VStack{
-                        Text("")
+                
+                
+                
+                DisclosureGroup("Other Issues"){
+                    VStack(alignment:.leading){
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("**Reporting Bugs**")
+                                Spacer()
+                            }
+                            HStack{
+                                Text("Please report any bugs or issue to WestHighApp@gmail.com, if possible please include a screenshot of the issue as well a description. Thank you for you cooperation!\n")
+                                Spacer()
+                            }
+                            HStack{
+                                Text("**Additional Questions**")
+                                Spacer()
+                            }
+                            Text("Other questions and concerns can be emailed to WestHighApp@gmail.com, emails may take one to three business days to process. Thank you for your patience.")
+                        }
                     }
                     .font(
                         .custom(
@@ -216,10 +192,9 @@ struct HelpSupportView: View {
                         .weight(.regular)
                     )
                     .foregroundColor(.black)
-                    .padding(.horizontal)
                     .padding(.vertical, 10.0)
-                    .background(Color(red: 240/255, green: 240/255, blue: 240/255) ,in: RoundedRectangle(cornerRadius: 25.0))
-                }                                .font(
+                }
+                .font(
                     .custom(
                         "arial",
                         fixedSize: 24)
