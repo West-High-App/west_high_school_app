@@ -16,7 +16,7 @@ struct SettingsView: View {
             VStack{
                 List{
                     NavigationLink {
-                        PrivacySecurityView()
+                        PrivacyPolicyView()
                     } label: {
                         HStack{
                             Image(systemName: "lock.shield")
@@ -30,7 +30,7 @@ struct SettingsView: View {
                     .padding(.vertical,15)
                     
                     NavigationLink {
-                        PrivacyPolicyView()
+                        PrivacySecurityView()
                     } label: {
                         HStack{
                             Image(systemName: "checkmark.circle")

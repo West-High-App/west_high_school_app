@@ -19,26 +19,26 @@ struct studentachievement: Identifiable{
 }
 class studentachievementlist: ObservableObject{
     
-    @Published var allstudentachievementlist: [studentachievement] = [studentachievement(documentID: "TestID", achievementtitle: "Manual title", achievementdescription: "Manual description", articleauthor: "Author", publisheddate: "Jan 5, 2023", images: ["West High"])]
+    @Published var allstudentachievementlist: [studentachievement] = []
     @Published var newstitlearray: [studentachievement] = []
+    @Published var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""])
+    @Published var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""])
+    @Published var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""])
+
     
     init() {
-        print("INTITIALIZING DATA")
-getAchievements()   
+        getAchievements()
     }
     
     func getAchievements() {
         var templist: [studentachievement] = []
-        print("GETTING ACHIEVEMENTS")
         let db = Firestore.firestore()
         let collection = db.collection("StudentAchievements")
-        
         collection.getDocuments { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 return
             }
-            
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     let data = document.data()
@@ -62,6 +62,16 @@ getAchievements()
                                     let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
                                     return firstDate < secondDate
                                 }.reversed()
+                                if let firstEvent = self.newstitlearray.first {
+                                self.firstcurrentevent = firstEvent
+                                }
+                                if self.newstitlearray.count > 1 {
+                                self.secondcurrentevent =   self.newstitlearray[1]
+                                }
+                                if self.allstudentachievementlist.count > 2 {
+                                self.thirdcurrentevent = self.newstitlearray[2]
+                        }
+                    
                             }
             }
         }

@@ -13,7 +13,9 @@ struct UpcomingEventsAdminView: View {
     @State private var isConfirmingDeleteEvent = false
     @State private var isConfirmingDeleteEventFinal = false
     @State private var eventToDelete: event?
-    
+    init() {
+        dataManager.getUpcomingEvents()
+    }
     var body: some View {
             VStack {
                 Text("NOTE: You are currently editing source data. Any changes you make will be published across all devices.")
@@ -29,7 +31,7 @@ struct UpcomingEventsAdminView: View {
                             .shadow(radius: 2, x:1, y:1))
                 }
                 
-                List(dataManager.alleventslist) { event in
+                List(dataManager.allupcomingeventslist) { event in
                     EventRowView(event: event)
                         .buttonStyle(PlainButtonStyle())
                         .contextMenu {

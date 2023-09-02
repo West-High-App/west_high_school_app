@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct UpcomingEventsView: View {
-    var dataManager = upcomingEventsDataManager()
+    @StateObject var dataManager = upcomingEventsDataManager()
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
     @State private var hasPermission = false
+    init() {
+        dataManager.getUpcomingEvents()
+    }
     
     var body: some View {
                 VStack {
@@ -24,7 +27,7 @@ struct UpcomingEventsView: View {
                         }
                     }
                     
-                    List(dataManager.alleventslist, id: \.id){event in
+                    List(dataManager.allupcomingeventslist, id: \.id){event in
                         HStack {
                             VStack {
                                 Text(event.month)

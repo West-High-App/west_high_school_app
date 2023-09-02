@@ -18,8 +18,7 @@ struct Newstab: Identifiable {
 }
 
 class Newslist: ObservableObject {
-    
-    @Published var topfive: [Newstab] = [Newstab(documentID: "testID", title: "Test", publisheddate: "Jan 5, 2023", description: "Description", newsimagename: "West Regents Logo")]
+    @Published var topfive: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...", newsimagename: "Loading...")]
     @Published var newstitlearray: [Newstab] = []
 
     init() {
@@ -44,19 +43,19 @@ class Newslist: ObservableObject {
                     let publisheddate = data["publisheddate"] as? String ?? ""
                     let newsimagename = data["newsimagename"] as? String ?? ""
                     let documentID = document.documentID
-                    
                     let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description, newsimagename: newsimagename)
                     templist.append(newstab)  // Add the newstab to the temporary array
                 }
-                
-                self.topfive = Array(templist[0...])
-                self.topfive = self.topfive.sorted { first, second in
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "MMM, d yyyy"
-                    let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-                    let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-                    return firstDate < secondDate
-                }.reversed()
+                DispatchQueue.main.async {
+                    self.topfive = Array(templist[0...])
+                    self.topfive = self.topfive.sorted { first, second in
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "MMM, d yyyy"
+                        let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+                        let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+                        return firstDate < secondDate
+                    }.reversed()
+                }
             }
         }
     }

@@ -9,10 +9,11 @@ import SwiftUI
 import UserNotifications
 
 struct HomeView: View {
-    @State var newsDataManager = Newslist()
-    
+    @ObservedObject var newsDataManager = Newslist()
+    @ObservedObject var dataManager = upcomingEventsDataManager()
+
     // permissions
-    var sportsnewsmanager = sportsNewslist()
+    @ObservedObject var sportsnewsmanager = sportsNewslist()
     var permissionsManager = permissionsDataManager()
     @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermissionSpotlight = false
@@ -24,9 +25,11 @@ struct HomeView: View {
     //var size: CGSize
     // delete init under if being stupid
     init(safeArea: EdgeInsets, size: CGSize) {
-            self.safeArea = safeArea
-            self.size = size
+        self.safeArea = safeArea
+        self.size = size
+        newsDataManager.getAnnouncements()
         spotlightManager.getAchievements()
+        dataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d, yyyy"
@@ -34,8 +37,6 @@ struct HomeView: View {
             let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
             return firstDate < secondDate
         }.reversed()
-        print("LIST FROM HOME VIEW:::")
-        print(spotlightManager.allstudentachievementlist)
         }
     @EnvironmentObject var userInfo: UserInfo
     @State var date = Date()
@@ -128,13 +129,13 @@ struct HomeView: View {
 
 
 
-                        //MxOST RECENT ANNOUNCEMENT
                         VStack{
                             //temp
+
                             NavigationLink {
-                                AnnouncementsDetailView(currentnews: newsDataManager.newstitlearray[0])
+                                AnnouncementsDetailView(currentnews: newsDataManager.topfive[0])
                             } label:{
-                                MostRecentAnnouncementCell(news: newsDataManager.newstitlearray[0])
+                                MostRecentAnnouncementCell(news: newsDataManager.topfive[0])
                             }
                         }
                         .padding(.bottom, 10)
@@ -189,49 +190,17 @@ struct HomeView: View {
                                     Text("edit events")
                                 }
                             }
-                            
+                            //i would eat 2 pounds of broken glass and smash both of my testicles to hear Eren Yeager say my name
                             VStack {
-                                HStack {
-                                    VStack {
-                                        Text("July")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("11")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("Mid-Summer Dance")
-                                            .fontWeight(.semibold)
-                                        Text("5:00 PM - 10:00 PM")
-                                    }.padding(.vertical, -5)
-                                        .padding(.horizontal)
-                                    Spacer()
-                                }
+                                UpcomingEventCell(event: dataManager.firstcurrentevent)
                                 Divider()
                                     .padding(.horizontal)
                                     .padding(.vertical, 5)
-                                HStack {
-                                    VStack {
-                                        Text("July")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("14")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("Band & Orch Concert")
-                                            .fontWeight(.semibold)
-                                        Text("7:00 PM - 10:00 PM")
-                                    }.padding(.vertical, -5)
-                                        .padding(.horizontal)
-                                    Spacer()
-                                }
+                                UpcomingEventCell(event: dataManager.secondcurrentEvent)
+                                Divider()
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 5)
+                                UpcomingEventCell(event: dataManager.thirdcurrentEvent)
                             }
                             .foregroundStyle(.black)
                             .padding(.all) //EDIT
@@ -296,10 +265,22 @@ struct HomeView: View {
                             
                             VStack { // articles
                                 NavigationLink {
-                                    SpotlightArticles(currentstudentdub: spotlightManager.allstudentachievementlist[0])
+                                    SpotlightArticles(currentstudentdub: spotlightManager.firstcurrentevent)
                                 } label: {
-                                    MostRecentAchievementCell(feat: spotlightManager.allstudentachievementlist[0])
+                                    MostRecentAchievementCell(feat: spotlightManager.firstcurrentevent)
                                 }
+                                NavigationLink {
+                                    SpotlightArticles(currentstudentdub: spotlightManager.secondcurrentevent)
+                                } label: {
+                                    MostRecentAchievementCell(feat: spotlightManager.secondcurrentevent)
+                                }
+                                NavigationLink {
+                                    SpotlightArticles(currentstudentdub: spotlightManager.thirdcurrentevent)
+                                } label: {
+                                    MostRecentAchievementCell(feat: spotlightManager.thirdcurrentevent)
+                                }
+
+
 
                             }
                             .padding(.horizontal)
@@ -334,7 +315,7 @@ struct HomeView: View {
 
 
     }
-    
+
     
     @ViewBuilder
     func Artwork() -> some View {
@@ -492,6 +473,7 @@ struct HomeView: View {
     
 }
 
+//LAINAH BRAUN
 struct MostRecentAnnouncementCell: View{
     var news: Newstab
     
@@ -504,6 +486,11 @@ struct MostRecentAnnouncementCell: View{
                     .padding(.horizontal)
                     .padding(.vertical, -5)
                 Spacer()
+                Text(news.publisheddate)
+                    .foregroundColor(.gray)
+                    .fontWeight(.regular)
+                    .padding(.horizontal)
+                    .padding(.vertical, -5)
             }
             Divider()
                 .padding(.horizontal)
@@ -533,47 +520,32 @@ struct MostRecentAnnouncementCell: View{
 }
 
 
-struct MostRecentMessageCell: View{
-    var dataManager = dailymessagelist()
+
+struct UpcomingEventCell: View{
+    var event: event
     var body:some View{
-        VStack(alignment: .leading) {
-            HStack {
-                Text("Daily Message")
-                    .foregroundColor(.black)
-                    .fontWeight(.semibold)
-                    //.padding(.horizontal)
-                    .padding(.vertical, -5)
-                Spacer()
-            }
+        HStack {
+            VStack {
+                Text(event.month)
+                    .font(.system(size: 14))
+                    .foregroundColor(.red)
+                Text(event.day)
+                    .font(.system(size: 24))
+            }.padding(.vertical, -5)
+                .padding(.leading, 20)
+                .padding(.trailing, 10)
             Divider()
-                //.padding(.horizontal)
-                .padding(.vertical, 5)
-            
-//            Text(dataManager.alldailymessagelist.first!.messagecontent)
-//                .lineLimit(3)
-//                .multilineTextAlignment(.leading)
-//                .foregroundColor(.black)
-//                //.padding(.horizontal)
-//            
-//            HStack {
-//                Text(dataManager.alldailymessagelist.first!.messagecontent)
-//                    //.padding(.horizontal)
-//                    .padding(.top, 1)
-//                    .foregroundColor(.gray)
-//                Spacer()
-//            }
-        }.padding(.all) //EDIT
-            .background(Rectangle()
-                .cornerRadius(9.0)
-                .shadow(radius: 5, x: 3, y: 3)
-                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+            VStack(alignment: .leading) {
+                Text(event.eventname)
+                    .fontWeight(.semibold)
+                Text(event.time)
+            }.padding(.vertical, -5)
+                .padding(.horizontal)
+            Spacer()
+        }
+
     }
 }
-
-
-
-
-
 
 
 
@@ -604,10 +576,17 @@ struct MostRecentAchievementCell: View{
                     .lineLimit(3)
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .padding(.leading, 5)
-                Text("Read more")
-                    .foregroundColor(.blue)
-                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .padding(.leading, 5)
+                HStack{
+                    Text("Read more")
+                        .foregroundColor(.blue)
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .padding(.leading, 5)
+                    Spacer()
+                    Text("By : " + feat.articleauthor)
+                        .foregroundColor(.gray)
+                        .font(.system(size: 18, weight: .regular, design: .rounded))
+                        .padding(.trailing, 5)
+                }
 //                    Text("Click here to read more")
 //                        .foregroundColor(.blue)
 //                        .lineLimit(2)

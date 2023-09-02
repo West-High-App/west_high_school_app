@@ -1,37 +1,24 @@
 //
-//  AnnouncementsView.swift
-//  West App
+//  Test1.swift
+//  West High App
 //
-//  Created by Aiden Lee on 5/19/23.
+//  Created by Aiden Lee on 9/1/23.
 //
 
 import SwiftUI
 
-struct AnnouncementsView: View {
-    @StateObject var newsDataManager = Newslist()
-    var permissionsManager = permissionsDataManager()
-    @StateObject var userInfo = UserInfo()
-    
-    @State private var hasPermission = false
-        
+struct Test1: View {
+    @ObservedObject var newsDataManager = Newslist()
     init() {
         newsDataManager.getAnnouncements()
+
         //print(userInfo.email)
     }
     
     var body: some View {
             NavigationView{
                 VStack {
-                    if hasPermission {
-                        Text("has permission")
-                    }
-                    if hasPermission {
-                        NavigationLink {
-                            AnnouncementsAdminView()
-                        } label: {
-                            Text("edit announcements")
-                        }
-                    }
+
 
                     List(newsDataManager.topfive, id: \.id){news in
                         NavigationLink {
@@ -46,7 +33,6 @@ struct AnnouncementsView: View {
                                 .padding(.vertical, 10)
                                 .padding(.horizontal, 7)
                                 .shadow(radius: 5)
-
                         )
                         .listRowSeparator(.hidden)
                         
@@ -54,10 +40,6 @@ struct AnnouncementsView: View {
                     }
                     .navigationBarTitle(
                         Text("Announcements"))
-                }
-            }.onAppear {
-                permissionsManager.checkPermissions(dataType: "Announcements", user: userInfo.email) { result in
-                    self.hasPermission = result
                 }
             }
     }
@@ -94,9 +76,9 @@ struct AnnouncementsView: View {
     }
 }
 
-struct AnnouncementsView_Previews: PreviewProvider {
+struct Test1_Preview: PreviewProvider {
     static var previews: some View {
-        AnnouncementsView()
+        Test1()
 
     }
 }

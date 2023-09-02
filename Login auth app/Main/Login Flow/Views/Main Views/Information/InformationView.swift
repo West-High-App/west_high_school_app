@@ -16,50 +16,51 @@ struct InformationView: View {
                     } label: {
                         Image(systemName: "fork.knife.circle")
                         Text("School Lunch Menu")
+                        
                     }
-                    .padding(.vertical,10)
+                    .padding(.vertical,15)
                     NavigationLink {
                         StaffView()
                     } label: {
                         Image(systemName: "person")
                         Text("School Staff")
                     }
-                    .padding(.vertical,10)
+                    .padding(.vertical,15)
                     NavigationLink {
                         SocialView()
                     } label: {
                         Image(systemName: "network")
                         Text("School Socials")
                     }
-                    .padding(.vertical,10)
+                    .padding(.vertical,15)
                     NavigationLink {
                         ClassesView()
                     } label: {
                         Image(systemName: "menucard")
                         Text("Avaliable Classes")
                     }
-                    .padding(.vertical,10)
+                    .padding(.vertical,15)
                     NavigationLink {
                         ContactView()
                     } label: {
                         Image(systemName: "phone")
                         Text("Contact Us")
                     }
-                    .padding(.vertical,10)
+                    .padding(.vertical,15)
                     NavigationLink {
                         NavigatingSchoolView()
                     } label: {
                         Image(systemName: "map")
                         Text("Navigating the School")
                     }
-                    .padding(.vertical,10)
+                    .padding(.vertical,15)
                     NavigationLink {
                         MentalHealthView()
                     } label: {
                         Image(systemName: "heart")
                         Text("Mental Health Resources")
                     }
-                    .padding(.vertical,10)
+                    .padding(.vertical,15)
                     NavigationLink {
                         SchoolPolicyGuideView()
                     } label: {
@@ -70,7 +71,7 @@ struct InformationView: View {
                                 .padding(.leading,3)
                         }
                     }
-                    .padding(.vertical,10)
+                    .padding(.vertical,15)
                     NavigationLink {
                         TransportationView()
                     } label: {

@@ -13,17 +13,22 @@ struct event: Identifiable { // holy shit this took a long fucking time jesus fu
 
 
 class upcomingEventsDataManager: ObservableObject {
+    @Published var allupcomingeventslist: [event] = []
     @Published var alleventslist: [event] = [] // data list
+    @Published var firstcurrentevent = event(documentID: "", eventname: "", time: "", month: "", day: "")
+    @Published var secondcurrentEvent = event(documentID: "", eventname: "", time: "", month: "", day: "")
+    @Published var thirdcurrentEvent = event(documentID: "", eventname: "", time: "", month: "", day: "")
+
+
     var editingEvent: event?
 
     init() {
-        print("Retrieving collection 'UpcomingEvents'...")
         getUpcomingEvents() // initialising the updated data to get at beginning
-        print("'UpcomingEvents' retrieved")
     }
 
     func getUpcomingEvents() {
         alleventslist.removeAll() // clear the list
+        var templist: [event] = []
         let db = Firestore.firestore()
         let ref = db.collection("UpcomingEvents") // finding collection
         ref.getDocuments { snapshot, error in
@@ -31,7 +36,6 @@ class upcomingEventsDataManager: ObservableObject {
                 print("Error: \(error!.localizedDescription)") // if this happens everything is
                 return
             }
-
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     let data = document.data()
@@ -42,14 +46,25 @@ class upcomingEventsDataManager: ObservableObject {
                     let documentID = document.documentID
                     
                     let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day)
-                    self.alleventslist.append(event) // adding event with info from firebase
+                    templist.append(event) // adding event with info from firebase
                 }
+
+                self.allupcomingeventslist = templist
+                if let firstEvent = self.allupcomingeventslist.first {
+                  self.firstcurrentevent = firstEvent
+                }
+                if self.allupcomingeventslist.count > 1 {
+                  self.secondcurrentEvent = self.allupcomingeventslist[1]
+                }
+                if self.allupcomingeventslist.count > 2 {
+                  self.thirdcurrentEvent = self.allupcomingeventslist[2]
+                }
+
             }
         }
     }
 
     func createEvent(event: event, completion: @escaping (Error?) -> Void) { // creating a new event
-        print("Creating new event...")
         let db = Firestore.firestore()
         db.collection("UpcomingEvents").addDocument(data: [
             "eventname": event.eventname,
@@ -62,11 +77,9 @@ class upcomingEventsDataManager: ObservableObject {
                 self.getUpcomingEvents()
             }
         }
-        print("Event created with documentID: \(event.documentID)")
     }
 
     func deleteEvent(event: event, completion: @escaping (Error?) -> Void) { // who woulda fucking thought this one deletes an event
-        print("Deleting event with documentID: \(event.documentID)...")
         let db = Firestore.firestore()
         let eventRef = db.collection("UpcomingEvents").document(event.documentID)
         
@@ -76,7 +89,6 @@ class upcomingEventsDataManager: ObservableObject {
                 self.getUpcomingEvents()
             }
         }
-        print("Event deleted")
     }
 
     
