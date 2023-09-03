@@ -20,11 +20,11 @@ struct Newstab: Identifiable {
 class Newslist: ObservableObject {
     @Published var topfive: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...", newsimagename: "Loading...")]
     @Published var newstitlearray: [Newstab] = []
-
     init() {
         getAnnouncements()
         newstitlearray = filterByDate()
     }
+    
     
     func getAnnouncements() {
         var templist: [Newstab] = []

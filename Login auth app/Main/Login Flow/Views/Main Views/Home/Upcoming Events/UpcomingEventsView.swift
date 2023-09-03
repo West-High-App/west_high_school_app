@@ -23,38 +23,42 @@ struct UpcomingEventsView: View {
                         NavigationLink {
                             UpcomingEventsAdminView()
                         } label: {
-                            Text("edit events")
-                        }
+                            Text("Edit Upcoming Events")
+                                .foregroundColor(.blue)
+                                .padding(10)
+                                .background(Rectangle()
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .shadow(radius: 2, x: 1, y: 1))                        }
                     }
                     
                     List(dataManager.allupcomingeventslist, id: \.id){event in
                         HStack {
                             VStack {
                                 Text(event.month)
-                                    .font(.system(size: 18))
+                                    .font(.system(size: 14))
                                     .foregroundColor(.red)
                                 Text(event.day)
                                     .font(.system(size: 24))
-                            }.padding(.vertical, -10)
-                                .padding(.leading, 10)
-                                .padding(.trailing, 10)
+                            }
+                            .frame(width:50,height:30)
                             Divider()
                             VStack(alignment: .leading) {
                                 Text(event.eventname)
                                     .fontWeight(.semibold)
                                 Text(event.time)
-                            }.padding(.vertical, -5)
-                                .padding(.horizontal,7)
+                            }
+                            .padding(.vertical, -5)
+                            .padding(.leading, 5)
                             Spacer()
-                        }
-                        .padding(.horizontal, 70)
-                        .padding(.vertical, 20)
 
-                        .background(Rectangle()
-                            .cornerRadius(9.0)                                    
-                            .padding(.horizontal)
-                            .shadow(radius: 5, x: 2, y: 2)
-                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                        }
+
+                            .padding()
+                            .background(Rectangle()
+                                .cornerRadius(9.0)
+                                .shadow(radius: 5, x: 2, y: 2)
+                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                         
                     }
                 }

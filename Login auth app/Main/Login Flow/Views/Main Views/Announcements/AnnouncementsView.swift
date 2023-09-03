@@ -19,6 +19,7 @@ struct AnnouncementsView: View {
         //print(userInfo.email)
     }
     
+    
     var body: some View {
             NavigationView{
                 VStack {
@@ -41,7 +42,7 @@ struct AnnouncementsView: View {
                         }
                         .listRowBackground(
                             Rectangle()
-                                .cornerRadius(25)
+                                .cornerRadius(15)
                                 .foregroundColor(Color(red: 220/255, green: 220/255, blue: 220/255))
                                 .padding(.vertical, 10)
                                 .padding(.horizontal, 7)

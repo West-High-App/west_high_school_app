@@ -18,7 +18,8 @@ struct UpcomingEventsAdminView: View {
     }
     var body: some View {
             VStack {
-                Text("NOTE: You are currently editing source data. Any changes you make will be published across all devices.")
+                Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
+                    .padding()
                 Button {
                     isPresentingAddEvent = true
                 } label: {
@@ -74,14 +75,22 @@ struct EventRowView: View {
     var event: event
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(event.eventname)
-                .font(.headline)
-            Text(event.time)
-                .font(.subheadline)
-            Text("\(event.month) \(event.day)")
-                .font(.subheadline)
+        HStack{
+            VStack(alignment: .leading) {
+                Text("Event Name : " + event.eventname)
+                    .font(.headline)
+                Text("Event Date : " + "\(event.month) \(event.day)")
+                    .font(.subheadline)
+                Text("Event Time : " + event.time)
+                    .font(.subheadline)
+            }
+            Spacer()
         }
+        .padding()
+        .background(Rectangle()
+            .cornerRadius(9.0)
+            .shadow(radius: 5, x: 0, y: 0)
+            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
     }
 }
 

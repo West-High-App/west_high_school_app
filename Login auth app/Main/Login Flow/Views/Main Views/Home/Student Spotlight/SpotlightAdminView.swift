@@ -15,7 +15,8 @@ struct SpotlightAdminView: View {
     
     var body: some View {
         VStack {
-            Text("NOTE: You are currently editing source data. Any changes you make will be published across all devices.")
+            Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
+                .padding()
             Button {
                 isPresentingAddAchievement = true
             } label: {
@@ -28,7 +29,7 @@ struct SpotlightAdminView: View {
                         .shadow(radius: 2, x: 1, y: 1))
             }
             
-            List(dataManager.newstitlearray, id: \.id) { achievement in
+            List(dataManager.allstudentachievementlist, id: \.id) { achievement in
                 AchievementRowView(achievement: achievement)
                     .buttonStyle(PlainButtonStyle())
                     .contextMenu {
@@ -70,16 +71,25 @@ struct AchievementRowView: View {
     var achievement: studentachievement
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(achievement.achievementtitle)
-                .font(.headline)
-            Text(achievement.publisheddate)
-                .font(.subheadline)
-            Text(achievement.achievementdescription)
-                .font(.subheadline)
-            Text(achievement.articleauthor)
-                .font(.subheadline)
+        //EREN JAEGER
+        HStack{
+            VStack(alignment: .leading) {
+                Text(achievement.achievementtitle)
+                    .font(.headline)
+                Text(achievement.publisheddate)
+                    .font(.subheadline)
+                Text(achievement.achievementdescription)
+                    .font(.subheadline)
+                Text(achievement.articleauthor)
+                    .font(.subheadline)
+            }
+            Spacer()
         }
+        .padding()
+        .background(Rectangle()
+            .cornerRadius(9.0)
+            .shadow(radius: 5, x: 0, y: 0)
+            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
     }
 }
 

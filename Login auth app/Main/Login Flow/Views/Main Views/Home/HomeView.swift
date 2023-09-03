@@ -8,7 +8,13 @@
 import SwiftUI
 import UserNotifications
 
+
+
 struct HomeView: View {
+//    func scrollToTop() {
+//        let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
+//        setContentOffset(desiredOffset, animated: true)
+//    }
     @ObservedObject var newsDataManager = Newslist()
     @ObservedObject var dataManager = upcomingEventsDataManager()
 
@@ -182,15 +188,6 @@ struct HomeView: View {
                                 .padding(.horizontal)
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                            
-                            if hasPermissionUpcomingEvents {
-                                NavigationLink {
-                                    UpcomingEventsAdminView()
-                                } label: {
-                                    Text("edit events")
-                                }
-                            }
-                            //i would eat 2 pounds of broken glass and smash both of my testicles to hear Eren Yeager say my name
                             VStack {
                                 UpcomingEventCell(event: dataManager.firstcurrentevent)
                                 Divider()
@@ -252,15 +249,7 @@ struct HomeView: View {
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             
-                            
-                            if hasPermissionSpotlight {
-                                NavigationLink {
-                                    SpotlightAdminView()
-                                } label: {
-                                    Text("Edit spotlight articles")
-                                }
-                            }
-                            
+                                                    
                             
                             
                             VStack { // articles
@@ -447,13 +436,36 @@ struct HomeView: View {
             }
             .padding(.top,70)
             .overlay(content: {
-                Image("Regents Logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 70, height:70)
-                    .offset(y: -titleProgress > 0.75 ? 0 : 80)
-                    .clipped()
-                    .animation(.easeOut(duration: 0.25), value: -titleProgress > 0.75)
+//                Button {
+////                    HomeView.scrollToTop()
+//                } label: {
+//                    Image("Regents Logo")
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .frame(width: 70, height:70)
+//                        .offset(y: -titleProgress > 0.75 ? 0 : 80)
+//                        .clipped()
+//                        .animation(.easeOut(duration: 0.25), value: -titleProgress > 0.75)
+//                }
+                Rectangle()
+                    .fill(
+                        .linearGradient(colors: [
+                            westblue.opacity(0.5 - titleProgress),
+                            westblue.opacity(0.4 - titleProgress),
+                            westblue.opacity(0.3 - titleProgress),
+                            westblue.opacity(0.2 - titleProgress),
+                            westblue.opacity(0.1 - titleProgress),
+                            westblue.opacity(0 - titleProgress),
+                            westblue.opacity(0 - titleProgress),
+                            westblue.opacity(0 - titleProgress),
+
+
+                        ], startPoint: .top, endPoint: .bottom)
+                    )
+                    .frame(height:70)
+                    .padding(.bottom,100)
+                
+
             })
             //.padding([.horizontal,.bottom], 15)
             //.padding(safeArea.top + 20)

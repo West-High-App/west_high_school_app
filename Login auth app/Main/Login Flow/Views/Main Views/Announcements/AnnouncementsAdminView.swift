@@ -16,7 +16,8 @@ struct AnnouncementsAdminView: View {
     
     var body: some View {
         VStack {
-            Text("NOTE: You are currently editing source data. Any changes you make will be published across all devices.")
+            Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
+                .padding()
             Button {
                 isPresentingAddAnnouncement = true
             } label: {
@@ -71,14 +72,22 @@ struct AnnouncementRowView: View {
     var announcement: Newstab
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(announcement.title)
-                .font(.headline)
-            Text(announcement.publisheddate)
-                .font(.subheadline)
-            Text(announcement.description)
-                .font(.subheadline)
+        HStack{
+            VStack(alignment: .leading) {
+                Text(announcement.title)
+                    .font(.headline)
+                Text(announcement.publisheddate)
+                    .font(.subheadline)
+                Text(announcement.description)
+                    .font(.subheadline)
+            }
+            Spacer()
         }
+        .padding()
+        .background(Rectangle()
+            .cornerRadius(9.0)
+            .shadow(radius: 5, x: 0, y: 0)
+            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
     }
 }
 

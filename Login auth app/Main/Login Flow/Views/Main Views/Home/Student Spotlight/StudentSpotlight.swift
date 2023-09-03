@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct StudentSpotlight: View {
-
+    @State private var hasPermissionSpotlight = false
+    var permissionsManager = permissionsDataManager()
+    var userInfo = UserInfo()
     var spotlightManager = studentachievementlist()
     @State var newstitlearray: [studentachievement] = []
     // delete init under if being stupid
@@ -28,11 +30,22 @@ struct StudentSpotlight: View {
 
         //NavigationView{
         VStack {
-            //NavigationLink {
-              //  SpotlightAdminView()
-            //} label: {
-              //  Text("Edit spotlight articles")
-            //}
+            if hasPermissionSpotlight {
+                NavigationLink {
+                    SpotlightAdminView()
+                } label: {
+                    Text("Edit Upcoming Events")
+                        .foregroundColor(.blue)
+                        .padding(10)
+                        .background(Rectangle()
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 2, x: 1, y: 1))
+                    
+                }
+
+            }
+
 
             List(spotlightManager.allstudentachievementlist, id: \.id)
             {news in
@@ -40,6 +53,11 @@ struct StudentSpotlight: View {
                     .background( NavigationLink("", destination: SpotlightArticles(currentstudentdub: news)).opacity(0) )
                     .listRowSeparator(.hidden)
                 
+            }
+        }
+        .onAppear {
+            permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
+                self.hasPermissionSpotlight = result
             }
         }            .navigationBarTitle(Text("Student Spotlight"))
 
