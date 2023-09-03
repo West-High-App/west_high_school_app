@@ -27,13 +27,11 @@ class sportsNewslist: ObservableObject {
         author: "Emily Thompson", documentID: "NAN")]
     
     init() {
-        print("getting sports news>>>>>")
         getSportsNews()
     }
     
     func getSportsNews() {
         var templist: [sportNews] = []
-        print("GETTING SPORTS NEWS")
         let db = Firestore.firestore()
         let collection = db.collection("SportsNews")
         
@@ -58,8 +56,6 @@ class sportsNewslist: ObservableObject {
                 
                 DispatchQueue.main.async {
                     self.allsportsnewslist = templist
-                    print(self.allsportsnewslist)
-                    print("^^^^^ ALL SPORTS LIS")
                 }
             }
         }
@@ -117,13 +113,11 @@ class clubsNewslist: ObservableObject{
         documentID: "NAN")]
     
     init() {
-        print("getting club news...")
         getClubNews()
     }
     
     func getClubNews() {
         var templist: [clubNews] = []
-        print("GETTING CLUB NEWS>>>")
         let db = Firestore.firestore()
         let collection = db.collection("ClubNews")
         
@@ -143,8 +137,6 @@ class clubsNewslist: ObservableObject{
                     let documentID = document.documentID
                     let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID)
                     templist.append(clubnews)
-                    print(clubnews)
-                    print("CLUB NEWS ^^")
                 }
                 
                 DispatchQueue.main.async {

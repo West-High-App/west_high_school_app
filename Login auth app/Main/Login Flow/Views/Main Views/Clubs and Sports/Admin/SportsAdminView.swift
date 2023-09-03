@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SportsAdminView: View {
     // MARK: initializers
-    var db = sportsManager()
+    @StateObject var db = sportsManager()
     
     @State var isPresentingAddSport = false
     @State var isPresetingDeleteSport = false
@@ -27,7 +27,7 @@ struct SportsAdminView: View {
     @State var sportsteam = ""
     @State var sportsroster: [String] = []
     @State var sportscaptains: [String] = []
-    @State var tags: [Int] = []
+    @State var tags: [Int] = [1, 1, 1]
     @State var info = ""
     
     // MARK: body
@@ -62,6 +62,7 @@ struct SportsAdminView: View {
                         temptitle = sport.sportid
                         sportToDelete = sport
                         isPresetingDeleteSport = true
+                        db.getSports() { sports in }
                     }
                 }
                 
@@ -88,7 +89,7 @@ struct SportsAdminView: View {
                         Text("Additional information can be added after creation of sport.")
                     }
                     
-                    Button("Published New Sport") {
+                    Button("Publish New Sport") {
                         
                             adminemails = adminsstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                             
@@ -102,6 +103,8 @@ struct SportsAdminView: View {
                             } else {
                                 print("No sport to add (whaaat?)")
                             }
+                        isPresentingAddSport = false
+                        db.getSports() { sports in }
                         
                     }
                 }

@@ -22,9 +22,7 @@ class dailymessagelist: ObservableObject {
     var edittingdailymessage: dailymessage?
 
     init() {
-        print("Retrieving collection 'UpcomingEvents'...")
         getdailymessage() // initialising the updated data to get at beginning
-        print("'UpcomingEvents' retrieved")
     }
 
     func getdailymessage() {
@@ -33,7 +31,7 @@ class dailymessagelist: ObservableObject {
         let ref = db.collection("DailyMessage") // finding collection
         ref.getDocuments { snapshot, error in
             guard error == nil else {
-                print("Error: \(error!.localizedDescription)") // if this happens everything is
+                print("Error: \(error!.localizedDescription)") // if this happens everything is fucked
                 return
             }
 
@@ -86,7 +84,7 @@ class dailymessagelist: ObservableObject {
 
 struct DailyMessage: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Hello, World!")
     }
 }
 

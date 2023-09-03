@@ -47,7 +47,6 @@ class sportEventManager: ObservableObject {
                     let events = data["events"] as? [[String: String]] ?? []
                     let documentID = document.documentID
                     
-                    print("SPORT ID FOUND: \(sportID)")
                     if sportID == forSport {
                         // making in into a sportEvent
                         for event in events {

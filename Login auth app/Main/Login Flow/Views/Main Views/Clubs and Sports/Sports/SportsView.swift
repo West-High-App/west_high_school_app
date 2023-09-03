@@ -13,9 +13,12 @@ struct SportsHibabi: View {
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
     @State private var hasPermissionSportsNews = false
+    @State private var hasPermissionSports = false
     @State var sportsNewsManager = sportsNewslist()
+    @State var favoritesManager = FavoriteSports()
+    @State var favorites: [sport] = []
     @ObservedObject var sportsmanager = sportsManager()
-    @State var sportslist: [sport] = []
+    @State var displaylist: [sport] = []
     @State var newstitlearray:[sportNews] = []
     @State var vm = ViewModel()
     @State var searchText = "" // text for search field
@@ -29,9 +32,11 @@ struct SportsHibabi: View {
     @State var showingAllNews = 1
     @State private var count = 0
     @State public var templist: [sport] = []
+
     init() {
         sportsNewsManager.getSportsNews()
         newstitlearray = sportsNewsManager.allsportsnewslist
+        print("WE WERE HERE")
     }
     class ScreenSize {
         let screen: CGRect
@@ -49,14 +54,22 @@ struct SportsHibabi: View {
     }
     let Colors = UsefulColors()
     let Screen = ScreenSize()
-    private var filteredSports: [sport] {
+    private var filteredFavoriteSports: [sport] {
         return searchText == ""
             ? vm.filteredItems
             : vm.filteredItems.filter {
                 $0.sportname.lowercased().contains(searchText.lowercased())
             }
     }
+    private var filteredSports: [sport] {
+        return searchText == ""
+        ? sportsmanager.allsportlist
+            : sportsmanager.allsportlist.filter {
+                $0.sportname.lowercased().contains(searchText.lowercased())
+            }
+    }
     // MARK: functions
+        
     func filteredList(fromList: [sport]) -> [sport] {
         templist = []
         for item in vm.filteredItems {
@@ -120,6 +133,7 @@ struct SportsHibabi: View {
                             count = 1
                         }
                         templist = filteredList(fromList: vm.filteredItems)
+                        
                     }
                     .onChange(of: selected) { newValue in
                         if (selected == 1 && tempSelection == 2) {
@@ -133,11 +147,14 @@ struct SportsHibabi: View {
                         templist = filteredList(fromList: vm.filteredItems)
                     }
                 
-                if selected == 1 || selected == 2 {
-                    NavigationLink {
-                        SportsAdminView()
-                    } label: {
-                        Text("EDIT SPORTS")
+                // MARK: my sports
+                if selected == 1 {
+                    if hasPermissionSports {
+                        NavigationLink {
+                            SportsAdminView()
+                        } label: {
+                            Text("EDIT SPORTS")
+                        }
                     }
 
                     if selected == 1 && vm.savedItems.count == 0 {
@@ -170,8 +187,8 @@ struct SportsHibabi: View {
                                 Spacer()
                             }
                         }
-                        List { // foreach templist
-                            ForEach(sportsmanager.allsportlist) { item in
+                        List { // MARK: foreach my sports
+                            ForEach(sportsmanager.favoriteslist) { item in
                                 if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                     NavigationLink {
                                         SportsMainView(selectedsport: item)
@@ -209,6 +226,89 @@ struct SportsHibabi: View {
                         .searchable(text: $searchText)
                     }
                 }
+                
+                // MARK: browse
+                else if selected == 2 {
+                    
+                    if hasPermissionSports {
+                        NavigationLink {
+                            SportsAdminView()
+                        } label: {
+                            Text("EDIT SPORTS")
+                        }
+                    }
+
+                    if selected == 1 && vm.savedItems.count == 0 {
+                        VStack {
+                            Spacer()
+                            Text("Add a sport to get started!")
+                            Button {
+                                selected = 2
+                            } label: {
+                                Text("Browse Sports")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.semibold)
+                                    .padding(.all, 15.0)
+                                    .background(.primary)
+                                    .cornerRadius(15.0)
+                            }.searchable(text: $searchText)
+                            Spacer()
+                            
+                        }
+                    }
+                    else {
+                        Button {
+                            isFiltering = true
+                        } label: {
+                            HStack {
+                                Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
+                                    .padding(.horizontal)
+                                    .padding(.top, 1)
+                                    .foregroundColor(.blue)
+                                Spacer()
+                            }
+                        }
+                        List { // MARK: foreach browse
+                            ForEach(filteredSports) { item in
+                                if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
+                                    NavigationLink {
+                                        SportsMainView(selectedsport: item)
+                                            .environmentObject(vm)
+                                    }label: {
+                                        HStack {
+                                            Image(item.sportsimage)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: 50, height: 50)
+                                                .cornerRadius(1000)
+                                                .padding(.trailing, 10)
+                                            VStack (alignment: .center){
+                                                HStack {
+                                                    Text(item.sportname)
+                                                        .foregroundColor(.primary)
+                                                        .lineLimit(2)
+                                                        .minimumScaleFactor(0.9)
+                                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                    Spacer()
+                                                }
+                                                HStack {
+                                                    Text(item.sportsteam)
+                                                        .foregroundColor(.secondary)
+                                                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                    Spacer()
+                                                }
+                                            }
+                                            Spacer()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .searchable(text: $searchText)
+                    }
+                }
+                
+                // MARK: sports news
                 else if selected == 3 {
                     Button {
                         isFilteringNews = true
@@ -245,8 +345,12 @@ struct SportsHibabi: View {
                 permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
                     self.hasPermissionSportsNews = result
                 }
+                permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
+                    self.hasPermissionSports = result
+                }
             }
             
+            // MARK: sheets and stuff
             }.sheet(isPresented: $isFiltering, content: {
                 HStack {
                     Button {
@@ -366,7 +470,7 @@ struct SportsHibabi: View {
         }
     }
 
-
+// MARK: sportnewscell
 struct sportnewscell: View{
     var feat: sportNews
     

@@ -27,16 +27,12 @@ extension SportsHibabi {
 
         init() {
             self.savedItems = db.load()
-            print("GETTING ITEMS IN HIBABI")
-            sportmanager.getSports()
+            sportmanager.getSports() { sports in }
             self.items = self.sportmanager.allsportlist
-            print("HIBABI ITEMS:")
-            print(sportmanager.allsportlist)
-            print(self.items)
         }
         
         func getSports() {
-            sportmanager.getSports()
+            sportmanager.getSports() { sports in }
         }
 
         func sortFavs() {

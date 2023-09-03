@@ -25,13 +25,19 @@ struct sport: Identifiable {
     
 class sportsManager: ObservableObject {
     @Published var allsportlist: [sport] = []
+    var favoritesports = FavoriteSports()
+    @Published var favoriteslist: [sport] = []
     
     init() {
-        getSports()
+        getSports() { sports in }
+        getFavorites { favorites in
+            self.favoriteslist = favorites
+        }
+        print("GOT FAVORITES:")
+        print(self.favoriteslist)
     }
     
-    func getSports() {
-        print("GETTING SPORTS")
+    func getSports(completion: @escaping ([sport]) -> Void) {
         var returnvalue: [sport] = []
         var tempID = 0
         let db = Firestore.firestore()
@@ -41,6 +47,7 @@ class sportsManager: ObservableObject {
         collection.getDocuments { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
+                completion([])
             }
             if let snapshot = snapshot {
                 for document in snapshot.documents {
@@ -61,14 +68,13 @@ class sportsManager: ObservableObject {
                     let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, documentID: documentID, sportid: sportid, id: id))
                     tempID = tempID + 1
                     returnvalue.append(sport)
-                    print("found sport")
                 }
                 
                 DispatchQueue.main.async {
                     self.allsportlist = returnvalue
                 }
             }
-
+            completion(returnvalue)
         }
     }
     
@@ -87,7 +93,7 @@ class sportsManager: ObservableObject {
         ]) { error in
             completion(error)
             if error == nil {
-                self.getSports()
+                self.getSports() { sports in }
             }
         }
     }
@@ -99,7 +105,7 @@ class sportsManager: ObservableObject {
         ref.delete { error in
             completion(error)
             if error == nil {
-                self.getSports()
+                self.getSports() { sports in }
             }
         }
     }
@@ -119,6 +125,36 @@ class sportsManager: ObservableObject {
             "info": data.info,
         ])
     }
+    
+    func getFavorites(completion: @escaping ([sport]) -> Void) {
+        var templist: [sport] = []
+        var templist2: [String] = []
+        var returnlist: [sport] = []
+        
+        returnlist = self.allsportlist
+        
+        favoritesports.getFavorites { [self] favorites in
+            templist2 = favorites
+            
+            self.getSports() { sports in
+                templist = sports
+                print("SPORTS")
+                print(templist)
+                
+                for item in templist {
+                    for item2 in templist2 {
+                        if "\(item.sportname) \(item.sportsteam)" == item2 {
+                            returnlist.append(item)
+                            print("HOLY SHIT BOIS")
+                        }
+                    }
+                }
+                
+                completion(returnlist)
+            }
+        }
+    }
+
     
 }
 

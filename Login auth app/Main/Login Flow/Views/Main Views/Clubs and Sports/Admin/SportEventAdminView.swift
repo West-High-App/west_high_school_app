@@ -44,12 +44,20 @@ struct SportEventsAdminView: View {
                             if let eventToDelete = eventToDelete {
                                 dataManager.deleteSportEventNews(forSport: currentsport, sportEvent: eventToDelete)
                             }
-                            
+                            dataManager.getSportsEvent(forSport: currentsport) { events, error in
+                                if let error = error {
+                                    print("Error updating events: \(error.localizedDescription)")
+                                }
+                                if let events = events {
+                                    eventlist = events
+                                }
+                            }
                         }
                     }
                 }
             }
-        }.onAppear {
+        }.navigationTitle("Edit Sport Events")
+        .onAppear {
             dataManager.getSportsEvent(forSport: currentsport) { events, error in
                 if let error = error {
                     print(error.localizedDescription)
@@ -93,6 +101,14 @@ struct SportEventsAdminView: View {
                             dataManager.createSportEvent(forSport: currentsport, sportEvent: eventToSave)
                             isPresetingAddEvent = false
                             
+                        }
+                        dataManager.getSportsEvent(forSport: currentsport) { events, error in
+                            if let error = error {
+                                print("Error updating events: \(error.localizedDescription)")
+                            }
+                            if let events = events {
+                                eventlist = events
+                            }
                         }
                     }
                 }

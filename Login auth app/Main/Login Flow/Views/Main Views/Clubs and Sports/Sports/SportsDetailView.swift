@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct SportsDetailView: View {
+    var permissionsManager = permissionsDataManager()
+    var userInfo = UserInfo()
+    @State private var hasPermissionSport = false
+    @State private var canEditSport = false
     @State var selected = 1
+    @State var favoritesManager = FavoriteSports()
     @EnvironmentObject var vm: SportsHibabi.ViewModel
     @StateObject var sporteventmanager = sportEventManager()
     @State private var confirming = false
@@ -21,10 +26,10 @@ struct SportsDetailView: View {
     var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
+    //MARK: view
     var body: some View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack{
-                    // MARK: - Artwork
                     Artwork()
                     // Since We ignored Top Edge
                     GeometryReader{ proxy in
@@ -52,7 +57,7 @@ struct SportsDetailView: View {
                                             .cornerRadius(10)
                                     }.confirmationDialog("Add to My Sports", isPresented: $confirming) {
                                         Button("Add to My Sports") {
-                                            vm.toggleFav(item: currentsport)
+                                            favoritesManager.addFavorite(sport: currentsport)
                                         }
                                     }
                                 } else {
@@ -72,7 +77,7 @@ struct SportsDetailView: View {
                                         .cornerRadius(10)
                                     }.confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
                                         Button("Remove from My Sports", role: .destructive) {
-                                            vm.toggleFav(item: currentsport)
+                                            // MARK: remove favorite NEEDS TO BE ADDED
                                         }
                                     }
                                 }
@@ -87,6 +92,22 @@ struct SportsDetailView: View {
                     .zIndex(1)
                     
                     VStack{
+                        
+                        if canEditSport {
+                            NavigationLink {
+                                SportsDetailAdminView(editingsport: currentsport)
+                            } label: {
+                                Text("Edit Sport")
+                                    .foregroundColor(.blue)
+                                    .padding(10)
+                                    .background(Rectangle()
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                        .shadow(radius: 2, x:1, y:1))
+                            }
+                        }
+
+                        
                         Picker(selection: $selected, label: Text(""), content: {
                             Text("Upcoming").tag(1)
                             Text("Members").tag(2)
@@ -98,10 +119,12 @@ struct SportsDetailView: View {
 
                         if selected == 1{
                             VStack{
-                                NavigationLink {
-                                    SportEventsAdminView(currentsport:  currentsportID)
-                                } label: {
-                                    Text("edit sports events")
+                                if canEditSport {
+                                    NavigationLink {
+                                        SportEventsAdminView(currentsport:  currentsportID)
+                                    } label: {
+                                        Text("edit sports events")
+                                    }
                                 }
                                 VStack {
                                     ForEach(upcomingeventslist) { event in
@@ -193,19 +216,8 @@ struct SportsDetailView: View {
                                 Text(currentsport.info)
                                     .fontWeight(.semibold)
                             }
-                    
-                            }
-
-
-
-
-
-
-
-
-
-
-
+                            
+                        }
                     }
                     .padding()
                     .background(Rectangle()
@@ -228,17 +240,23 @@ struct SportsDetailView: View {
                         }
                         
                     })
+                    permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
+                        hasPermissionSport = result
+                    }
+                    var tempbool = false
+                    if hasPermissionSport {
+                        tempbool = true
+                    }
+                    for email in currentsport.adminemails {
+                        if email == userInfo.email {
+                            tempbool = true
+                        }
+                    }
+                    canEditSport = tempbool
                 }
                 .overlay(alignment: .top) {
                     HeaderView()
                 }
-                
-                
-                
-                
-                
-                
-                
             }
             .background(westblue)
             .coordinateSpace(name: "SCROLL")

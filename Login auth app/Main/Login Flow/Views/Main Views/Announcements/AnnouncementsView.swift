@@ -15,9 +15,7 @@ struct AnnouncementsView: View {
     @State private var hasPermission = false
         
     init() {
-        newsDataManager.getAnnouncements()
-        //print(userInfo.email)
-    }
+        newsDataManager.getAnnouncements()    }
     
     
     var body: some View {
