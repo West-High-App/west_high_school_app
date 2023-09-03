@@ -30,22 +30,6 @@ struct StudentSpotlight: View {
 
         //NavigationView{
         VStack {
-            if hasPermissionSpotlight {
-                NavigationLink {
-                    SpotlightAdminView()
-                } label: {
-                    Text("Edit Upcoming Events")
-                        .foregroundColor(.blue)
-                        .padding(10)
-                        .background(Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .shadow(radius: 2, x: 1, y: 1))
-                    
-                }
-
-            }
-
 
             List(spotlightManager.allstudentachievementlist, id: \.id)
             {news in

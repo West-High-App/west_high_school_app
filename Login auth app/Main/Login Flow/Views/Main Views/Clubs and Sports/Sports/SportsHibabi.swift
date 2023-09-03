@@ -10,9 +10,10 @@ import SwiftUI
 
 extension SportsHibabi {
     final class ViewModel: ObservableObject {
-        @Published var items = [sport]()
+        @State var items = [sport]()
         @Published var showingFavs = false
         @Published var savedItems: Set<Int> = []
+        var sportmanager = sportsManager()
 
         // Filter saved items
         var filteredItems: [sport]  {
@@ -26,7 +27,16 @@ extension SportsHibabi {
 
         init() {
             self.savedItems = db.load()
-            self.items = sport.allsportlist
+            print("GETTING ITEMS IN HIBABI")
+            sportmanager.getSports()
+            self.items = self.sportmanager.allsportlist
+            print("HIBABI ITEMS:")
+            print(sportmanager.allsportlist)
+            print(self.items)
+        }
+        
+        func getSports() {
+            sportmanager.getSports()
         }
 
         func sortFavs() {

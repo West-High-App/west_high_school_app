@@ -9,17 +9,15 @@
 import SwiftUI
 
 struct SportsHibabi: View {
-    
+    // MARK: initializers
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
     @State private var hasPermissionSportsNews = false
-    var sportsNewsManager = sportsNewslist()
-    init() {
-        sportsNewsManager.getSportsNews()
-        newstitlearray = sportsNewsManager.allsportsnewslist
-    }
+    @State var sportsNewsManager = sportsNewslist()
+    @ObservedObject var sportsmanager = sportsManager()
+    @State var sportslist: [sport] = []
     @State var newstitlearray:[sportNews] = []
-    @StateObject var vm = ViewModel()
+    @State var vm = ViewModel()
     @State var searchText = "" // text for search field
     @State var selected = 1 // which tab is selected
     @State var selectedGender = 1
@@ -31,6 +29,10 @@ struct SportsHibabi: View {
     @State var showingAllNews = 1
     @State private var count = 0
     @State public var templist: [sport] = []
+    init() {
+        sportsNewsManager.getSportsNews()
+        newstitlearray = sportsNewsManager.allsportsnewslist
+    }
     class ScreenSize {
         let screen: CGRect
         let screenWidth: CGFloat
@@ -54,7 +56,7 @@ struct SportsHibabi: View {
                 $0.sportname.lowercased().contains(searchText.lowercased())
             }
     }
-    
+    // MARK: functions
     func filteredList(fromList: [sport]) -> [sport] {
         templist = []
         for item in vm.filteredItems {
@@ -101,7 +103,7 @@ struct SportsHibabi: View {
     }
     
     var body: some View {
-
+        // MARK: body
         NavigationView{
             VStack {
 
@@ -132,6 +134,12 @@ struct SportsHibabi: View {
                     }
                 
                 if selected == 1 || selected == 2 {
+                    NavigationLink {
+                        SportsAdminView()
+                    } label: {
+                        Text("EDIT SPORTS")
+                    }
+
                     if selected == 1 && vm.savedItems.count == 0 {
                         VStack {
                             Spacer()
@@ -162,10 +170,8 @@ struct SportsHibabi: View {
                                 Spacer()
                             }
                         }
-                        
-                        
-                        List {
-                            ForEach(templist) { item in
+                        List { // foreach templist
+                            ForEach(sportsmanager.allsportlist) { item in
                                 if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                     NavigationLink {
                                         SportsMainView(selectedsport: item)
@@ -203,7 +209,7 @@ struct SportsHibabi: View {
                         .searchable(text: $searchText)
                     }
                 }
-                else if selected == 3 { // penis
+                else if selected == 3 {
                     Button {
                         isFilteringNews = true
                     } label: {

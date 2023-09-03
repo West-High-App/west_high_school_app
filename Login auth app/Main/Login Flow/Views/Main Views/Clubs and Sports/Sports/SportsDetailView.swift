@@ -10,9 +10,13 @@ import SwiftUI
 struct SportsDetailView: View {
     @State var selected = 1
     @EnvironmentObject var vm: SportsHibabi.ViewModel
+    @StateObject var sporteventmanager = sportEventManager()
     @State private var confirming = false
     @State private var confirming2 = false
     var currentsport: sport
+    @State var currentsportID = ""
+    @State var upcomingeventslist: [sportEvent] = []
+    @State var topthree: [sportEvent] = []
     var safeArea: EdgeInsets
     var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
@@ -29,6 +33,7 @@ struct SportsDetailView: View {
                         HStack{
                             Spacer()
                             VStack {
+
                                 if vm.contains(currentsport) == false {
                                     Button {
                                         confirming = true
@@ -92,70 +97,46 @@ struct SportsDetailView: View {
 
 
                         if selected == 1{
-                            VStack {
-                                HStack {
-                                    VStack {
-                                        Text("Jul")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("7")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("Lunch Meeting")
-                                            .fontWeight(.semibold)
-                                        Text("At lunch at room 1209")
-                                    }.padding(.vertical, -5)
-                                        .padding(.horizontal)
-                                    Spacer()
+                            VStack{
+                                NavigationLink {
+                                    SportEventsAdminView(currentsport:  currentsportID)
+                                } label: {
+                                    Text("edit sports events")
                                 }
-                                Divider()
+                                VStack {
+                                    ForEach(upcomingeventslist) { event in
+                                        HStack {
+                                            VStack {
+                                                Text(sporteventmanager.getDatePart(event: event, part: "month"))
+                                                    .font(.system(size: 14))
+                                                    .foregroundColor(.red)
+                                                Text(sporteventmanager.getDatePart(event: event, part: "day"))
+                                                    .font(.system(size: 24))
+                                            }.padding(.vertical, -5)
+                                                .padding(.leading, 20)
+                                                .padding(.trailing, 10)
+                                            Divider()
+                                            VStack(alignment: .leading) {
+                                                Text(event.title)
+                                                    .fontWeight(.semibold)
+                                                Text(event.subtitle)
+                                            }.padding(.vertical, -5)
+                                                .padding(.horizontal)
+                                            Spacer()
+                                        }
+                                        Divider()
+                                            .padding(.horizontal)
+                                            .padding(.vertical, 5)
+                                    }
+                                }
+                                .foregroundStyle(.black)
+                                .padding(.all) //EDIT
+                                .background(Rectangle()
+                                    .cornerRadius(9.0)
                                     .padding(.horizontal)
-                                    .padding(.vertical, 5)
-                                HStack {
-                                    VStack {
-                                        Text("Jul")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("12")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("Community service")
-                                            .fontWeight(.semibold)
-                                        Text("7:30 PM @ MIA")
-                                    }.padding(.vertical, -5)
-                                        .padding(.horizontal)
-                                    Spacer()
-                                }
-                                Divider()
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 5)
-                                HStack {
-                                    VStack {
-                                        Text("Jul")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("15")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("Potluck")
-                                            .fontWeight(.semibold)
-                                        Text("7:00 PM @ Hoyt Park")
-                                    }.padding(.vertical, -5)
-                                        .padding(.horizontal)
-                                    Spacer()
-                                }
+                                    .shadow(radius: 5, x: 2, y: 2)
+                                            
+                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             }
                                 .padding(.all)
                                 .background(Color(red: 250/255, green: 250/255, blue: 250/255))
@@ -177,7 +158,7 @@ struct SportsDetailView: View {
                                           Text("Coaches")
                                         }
                                         Section{
-                                            ForEach(currentsport.sportscaptains!, id: \.self){captain in
+                                            ForEach(currentsport.sportscaptains, id: \.self){captain in
                                                 HStack{
                                                     //Image(systemName: "star")
                                                     Text(captain)
@@ -209,7 +190,7 @@ struct SportsDetailView: View {
                             }
                         if selected == 3{
                             VStack {
-                                Text("MAKE THIS EDITABLE SO COACHES/CAPTAINS CAN WRITE WHAT THEY WANT HERE")
+                                Text(currentsport.info)
                                     .fontWeight(.semibold)
                             }
                     
@@ -234,6 +215,19 @@ struct SportsDetailView: View {
                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                     .padding(.horizontal)
                     
+                }
+                .onAppear { // all the shit yyayy
+                    currentsportID = ("\(currentsport.sportname) \(currentsport.sportsteam)")
+                    sporteventmanager.getSportsEvent(forSport: currentsportID, completion: { events, error in
+                        if let error = error {
+                            print("Error: \(error.localizedDescription)")
+                        }
+                        if let events = events {
+                            print(events)
+                            upcomingeventslist = events
+                        }
+                        
+                    })
                 }
                 .overlay(alignment: .top) {
                     HeaderView()
@@ -367,6 +361,6 @@ struct SportsDetailView: View {
 
 struct SportsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsMainView(selectedsport: sport.allsportlist.first!).environmentObject(SportsHibabi.ViewModel())
+        SportsMainView(selectedsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(SportsHibabi.ViewModel())
     }
 }

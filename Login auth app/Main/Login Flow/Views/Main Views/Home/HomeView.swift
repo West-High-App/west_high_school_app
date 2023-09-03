@@ -59,21 +59,7 @@ struct HomeView: View {
         }
     }
     
-    
-    
-    
-    //SHOOTa ALRME
-    
-            
-        
-
-    //
-    //
-    //
-    //
-    //HOME VIEW STARTS HERE
-    //HOME VIEW STARTS HERE
-    //HOME VIEW STARTS HERE
+    // MARK: VIEW
     var safeArea: EdgeInsets
     var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
@@ -82,7 +68,7 @@ struct HomeView: View {
         NavigationView{
             ScrollView(.vertical, showsIndicators: false) {
                 VStack{
-                    // MARK: - Artwork
+                    // artwork
                     Artwork()
                     // Since We ignored Top Edge
                     GeometryReader{ proxy in
@@ -148,7 +134,7 @@ struct HomeView: View {
                         
                         //SNACK SPLICE BOISSSSSS
                         
-                        //UPCOMING EVENTS NEEDS WORK!
+                        //MARK: upcoming events
                         VStack{
                             HStack {
                                 Text("Upcoming Events")
@@ -188,6 +174,19 @@ struct HomeView: View {
                                 .padding(.horizontal)
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                            // edit button
+                            if hasPermissionUpcomingEvents {
+                                NavigationLink {
+                                    UpcomingEventsAdminView()
+                                } label: {
+                                    Text("Edit Upcoming Events")
+                                        .foregroundColor(.blue)
+                                        .padding(10)
+                                        .background(Rectangle()
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 2, x: 1, y: 1))                        }
+                            }
                             VStack {
                                 UpcomingEventCell(event: dataManager.firstcurrentevent)
                                 Divider()
@@ -208,7 +207,8 @@ struct HomeView: View {
                                         
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                         }
-                        //STUDENT SPOTLIGHT
+                        
+                        //MARK: student spotlight
                         
                         VStack{
                             HStack {
@@ -249,7 +249,21 @@ struct HomeView: View {
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             
-                                                    
+                            if hasPermissionSpotlight {
+                                NavigationLink {
+                                    SpotlightAdminView()
+                                } label: {
+                                    Text("Edit Spotlight Articles")
+                                        .foregroundColor(.blue)
+                                        .padding(10)
+                                        .background(Rectangle()
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 2, x: 1, y: 1))
+                                    
+                                }
+
+                            }
                             
                             
                             VStack { // articles

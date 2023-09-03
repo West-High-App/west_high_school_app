@@ -6,148 +6,121 @@
 //
 
 import Foundation
-
-struct sport: Identifiable, Codable {
-    let sportname:String // name of sport
-    let sportcoaches: [String] // coach
-    let sportsimage:String // image name
-    let sportsteam: String // varsity, jv, etc.
-    let sportsroster:[String] // array of students in sport
-    let sportscaptains:[String]? // array of captains in sports
-    let isFaved: Bool // is sport in my posrts
-    let tags: [Int] // [gender tag, season tag, team tag] all ints
-    let id: Int // id
-    
-    static let allsportlist = [
-        sport(sportname: "Boys Hockey",
-        sportcoaches: ["Steve Libert"],
-        sportsimage: "tennis",
-        sportsteam : "Varsity",
-        sportsroster: ["Isaac Ingwell", "Caleb Withrow", "James Beyler", "Warner Frey", "Alec Heikkinen", "George Eichhorn", "Evan Blonien", "Lucas Morris", "Kai Gerou", "Owen Zanni", "Teddy Osmond", "Brendan Uhlinger", "Cullen Gustavson", "Quincy Lohiede", "Sam Lee", "Ethan Holmes", "Benjamin Wenkman", "Dmitry Picek", "Willam Zinnen"],
-        sportscaptains: ["Will McDonald", "Quinn Smith"],
-        isFaved: false,
-        tags: [2, 1, 2],
-        id: 1),
-        sport(sportname: "Girls Hockey",
-        sportcoaches: ["Ben Dover"],
-        sportsimage: "mwgirlshockeyvarsity",
-        sportsteam : "Varsity",
-        sportsroster: ["Isaac Ingwell", "Caleb Withrow", "James Beyler", "Warner Frey", "Alec Heikkinen", "Quinn Smith", "George Eichhorn", "Evan Blonien", "Lucas Morris", "Kai Gerou", "Owen Zanni", "Will McDonald", "Teddy Osmond", "Brendan Uhlinger", "Cullen Gustavson", "Quincy Lohiede", "Sam Lee", "Ethan Holmes", "Benjamin Wenkman", "Dmitry Picek", "Willam Zinnen"],
-             sportscaptains: ["Will McDonald", "Quinn Smith"],
-              isFaved: false,
-              tags: [3, 1, 2],
-              id: 2),
-        sport(sportname: "Boys Soccer",
-        sportcoaches: ["Juan Marino"],
-        sportsimage: "mwboysjvsoccer",
-        sportsteam : "JV1",
-        sportsroster: ["Isaac Ingwell", "Caleb Withrow", "James Beyler", "Warner Frey", "Alec Heikkinen", "Quinn Smith", "George Eichhorn", "Evan Blonien", "Lucas Morris", "Kai Gerou", "Owen Zanni", "Will McDonald", "Teddy Osmond", "Brendan Uhlinger", "Cullen Gustavson", "Quincy Lohiede", "Sam Lee", "Ethan Holmes", "Benjamin Wenkman", "Dmitry Picek", "Willam Zinnen"],
-             sportscaptains: ["Will McDonald", "Quinn Smith"], isFaved: false,
-              tags: [2, 1, 3],
-              id: 3),
-        sport(sportname: "Boys Soccer",
-        sportcoaches: ["Owen Stevens"],
-        sportsimage: "mwboyssoccervarsity",
-        sportsteam : "Varsity",
-        sportsroster: ["Isaac Ingwell", "Caleb Withrow", "James Beyler", "Warner Frey", "Alec Heikkinen", "Quinn Smith", "George Eichhorn", "Evan Blonien", "Lucas Morris", "Kai Gerou", "Owen Zanni", "Will McDonald", "Teddy Osmond", "Brendan Uhlinger", "Cullen Gustavson", "Quincy Lohiede", "Sam Lee", "Ethan Holmes", "Benjamin Wenkman", "Dmitry Picek", "Willam Zinnen"],
-             sportscaptains: ["Will McDonald", "Quinn Smith"], isFaved: false,
-              tags: [2, 1, 2],
-              id: 4),
-        sport(sportname: "Girls Tennis",
-        sportcoaches: ["Andrew Donalnd"],
-        sportsimage: "tennis",
-        sportsteam : "Varsity",
-        sportsroster: ["Isaac Ingwell", "Caleb Withrow", "James Beyler", "Warner Frey", "Alec Heikkinen", "Quinn Smith", "George Eichhorn", "Evan Blonien", "Lucas Morris", "Kai Gerou", "Owen Zanni", "Will McDonald", "Teddy Osmond", "Brendan Uhlinger", "Cullen Gustavson", "Quincy Lohiede", "Sam Lee", "Ethan Holmes", "Benjamin Wenkman", "Dmitry Picek", "Willam Zinnen"],
-             sportscaptains: ["Will McDonald", "Quinn Smith"], isFaved: false,
-              tags: [3, 1, 2],
-              id: 5),
-        sport(sportname: "Boys Basketball",
-        sportcoaches: ["Jack Chang"],
-        sportsimage: "basketball",
-        sportsteam : "Varsity",
-        sportsroster: ["Isaac Ingwell", "Caleb Withrow", "James Beyler", "Warner Frey", "Alec Heikkinen", "Quinn Smith", "George Eichhorn", "Evan Blonien", "Lucas Morris", "Kai Gerou", "Owen Zanni", "Will McDonald", "Teddy Osmond", "Brendan Uhlinger", "Cullen Gustavson", "Quincy Lohiede", "Sam Lee", "Ethan Holmes", "Benjamin Wenkman", "Dmitry Picek", "Willam Zinnen"],
-             sportscaptains: ["Will McDonald", "Quinn Smith"], isFaved: false,
-              tags: [2, 1, 2],
-              id: 6),
-        sport(sportname: "Track and Field",
-        sportcoaches: ["Jamie Sanders"],
-        sportsimage: "track",
-        sportsteam : "Running",
-        sportsroster: ["Isaac Ingwell", "Caleb Withrow", "James Beyler", "Warner Frey", "Alec Heikkinen", "Quinn Smith", "George Eichhorn", "Evan Blonien", "Lucas Morris", "Kai Gerou", "Owen Zanni", "Will McDonald", "Teddy Osmond", "Brendan Uhlinger", "Cullen Gustavson", "Quincy Lohiede", "Sam Lee", "Ethan Holmes", "Benjamin Wenkman", "Dmitry Picek", "Willam Zinnen"],
-             sportscaptains: ["Will McDonald", "Quinn Smith"], isFaved: false,
-              tags: [4, 4, 1],
-              id: 7),
-        sport(sportname: "Cross Country",
-        sportcoaches: ["Albert Willinstein"],
-        sportsimage: "crosscountry",
-        sportsteam : "Running",
-        sportsroster: ["Isaac Ingwell", "Caleb Withrow", "James Beyler", "Warner Frey", "Alec Heikkinen", "Quinn Smith", "George Eichhorn", "Evan Blonien", "Lucas Morris", "Kai Gerou", "Owen Zanni", "Will McDonald", "Teddy Osmond", "Brendan Uhlinger", "Cullen Gustavson", "Quincy Lohiede", "Sam Lee", "Ethan Holmes", "Benjamin Wenkman", "Dmitry Picek", "Willam Zinnen"],
-             sportscaptains: ["Will McDonald", "Quinn Smith"], isFaved: false,
-              tags: [4, 1, 1],
-              id: 8),
-        sport(sportname: "Girls Volleyball",
-        sportcoaches: ["Lisa Anderson"],
-        sportsimage: "girlsvolleyball",
-        sportsteam : "Varsity",
-        sportsroster: ["Emily Johnson", "Olivia Thompson", "Sophia Davis", "Ava Wilson", "Grace Anderson", "Natalie Martinez", "Lily Turner", "Hannah Lewis", "Brooke Edwards", "Mia Scott", "Emma Brown", "Ella Clark", "Victoria White", "Chloe Hall", "Zoe Allen"],
-        sportscaptains: ["Emily Johnson", "Olivia Thompson"],
-        isFaved: true,
-        tags: [3, 1, 1],
-        id: 9),
-
-        sport(sportname: "Girls Soccer",
-        sportcoaches: ["Sarah Johnson"],
-        sportsimage: "soccer",
-        sportsteam : "Varsity",
-        sportsroster: ["Emma Thompson", "Olivia Smith", "Sophia Johnson", "Ava Wilson", "Grace Davis", "Natalie Clark", "Lily Brown", "Hannah Anderson", "Brooke Martinez", "Mia Turner", "Emily Lewis", "Ella Edwards", "Chloe Scott", "Zoe White", "Victoria Hall"],
-        sportscaptains: ["Emma Thompson", "Olivia Smith"],
-        isFaved: false,
-        tags: [3, 3, 4],
-        id: 10),
-
-        sport(sportname: "Boys Baseball",
-        sportcoaches: ["Chris Johnson"],
-        sportsimage: "boysbaseball",
-        sportsteam : "Varsity",
-        sportsroster: ["Michael Thompson", "David Smith", "Daniel Johnson", "Andrew Wilson", "James Davis", "Christopher Clark", "Matthew Brown", "Ryan Anderson", "Nicholas Martinez", "William Turner", "Joseph Lewis", "Tyler Edwards", "Benjamin Scott", "Ethan White", "Samuel Hall"],
-        sportscaptains: ["Michael Thompson", "David Smith"],
-        isFaved: true,
-        tags: [2, 1, 1],
-        id: 11),
-
-        sport(sportname: "Girls Lacrosse",
-        sportcoaches: ["Jennifer Anderson"],
-        sportsimage: "girlslacrosse",
-        sportsteam : "Varsity",
-        sportsroster: ["Emma Thompson", "Olivia Smith", "Sophia Johnson", "Ava Wilson", "Grace Davis", "Natalie Clark", "Lily Brown", "Hannah Anderson", "Brooke Martinez", "Mia Turner", "Emily Lewis", "Ella Edwards", "Chloe Scott", "Zoe White", "Victoria Hall"],
-        sportscaptains: ["Emma Thompson", "Olivia Smith"],
-        isFaved: false,
-        tags: [3, 1, 1],
-        id: 12),
-
-        sport(sportname: "Boys Golf",
-        sportcoaches: ["Brian Wilson"],
-        sportsimage: "boysgolf",
-        sportsteam : "Varsity",
-        sportsroster: ["Ryan Thompson", "Daniel Smith", "Matthew Johnson", "David Wilson", "Christopher Davis", "Michael Clark", "James Brown", "Andrew Anderson", "Nicholas Martinez", "William Turner", "Joseph Lewis", "Tyler Edwards", "Benjamin Scott", "Ethan White", "Samuel Hall"],
-        sportscaptains: ["Ryan Thompson", "Daniel Smith"],
-        isFaved: true,
-        tags: [2, 1, 1],
-        id: 13),
-
-        sport(sportname: "Girls Softball",
-        sportcoaches: ["Jessica Johnson"],
-        sportsimage: "girlssoftball",
-        sportsteam : "Varsity",
-        sportsroster: ["Sophia Thompson", "Olivia Smith", "Emma Johnson", "Ava Wilson", "Grace Davis", "Natalie Clark", "Lily Brown", "Hannah Anderson", "Brooke Martinez", "Mia Turner", "Emily Lewis", "Ella Edwards", "Chloe Scott", "Zoe White", "Victoria Hall"],
-        sportscaptains: ["Sophia Thompson", "Olivia Smith"],
-        isFaved: false,
-        tags: [3, 1, 1],
-        id: 10)
-
-        ]
+import Firebase
+// MARK: sports
+struct sport: Identifiable {
+    var sportname:String // name of sport
+    var sportcoaches: [String] // coach
+    var adminemails: [String]
+    var sportsimage:String // image name
+    var sportsteam: String // varsity, jv, etc.
+    var sportsroster:[String] // array of students in sport
+    var sportscaptains:[String] // array of captains in sports
+    var tags: [Int] // [gender tag, season tag, team tag] all ints
+    var info: String
+    var documentID: String // NOT USED IN FIREBASE
+    var sportid: String // NOT USED IN FIREBASE
+    var id: Int // NOT USED IN FIREBASE
 }
+    
+class sportsManager: ObservableObject {
+    @Published var allsportlist: [sport] = []
+    
+    init() {
+        getSports()
+    }
+    
+    func getSports() {
+        print("GETTING SPORTS")
+        var returnvalue: [sport] = []
+        var tempID = 0
+        let db = Firestore.firestore()
+        let collection = db.collection("Sport")
+        
+        
+        collection.getDocuments { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            }
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    let data = document.data()
+                    let sportname = data["sportname"] as? String ?? ""
+                    let sportcoaches = data["sportscoaches"] as? [String] ?? []
+                    let adminemails = data["adminemails"] as? [String] ?? []
+                    let sportsimage = data["sportsimage"] as? String ?? ""
+                    let sportsteam = data["sportsteam"] as? String ?? ""
+                    let sportsroster = data["sportsroster"] as? [String] ?? []
+                    let sportscaptains = data["sportscaptains"] as? [String] ?? []
+                    let tags = data["tags"] as? [Int] ?? [1, 1, 1]
+                    let info = data["info"] as? String ?? ""
+                    let documentID = document.documentID
+                    let sportid = "\(sportname) \(sportsteam)"
+                    let id = tempID
+                    
+                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, documentID: documentID, sportid: sportid, id: id))
+                    tempID = tempID + 1
+                    returnvalue.append(sport)
+                    print("found sport")
+                }
+                
+                DispatchQueue.main.async {
+                    self.allsportlist = returnvalue
+                }
+            }
 
+        }
+    }
+    
+    func createSport(sport: sport, completion: @escaping (Error?) -> Void) {
+        let db = Firestore.firestore()
+        db.collection("Sport").addDocument(data: [
+            "sportname": sport.sportname,
+            "sportcoaches": sport.sportcoaches,
+            "adminemails": sport.adminemails,
+            "sportsimage": sport.sportsimage,
+            "sportsteam": sport.sportsteam,
+            "sportsroster": sport.sportsroster,
+            "sportscaptains": sport.sportscaptains,
+            "tags": sport.tags,
+            "info": sport.info,
+        ]) { error in
+            completion(error)
+            if error == nil {
+                self.getSports()
+            }
+        }
+    }
+    
+    func deleteSport(sport: sport, completion: @escaping (Error?) -> Void) {
+        let db = Firestore.firestore()
+        let ref = db.collection("Sport").document(sport.documentID)
+        
+        ref.delete { error in
+            completion(error)
+            if error == nil {
+                self.getSports()
+            }
+        }
+    }
+    
+    func updateSport(data: sport) {
+        let db = Firestore.firestore()
+        let ref = db.collection("Sport").document(data.documentID)
+        ref.setData([
+            "sportname": data.sportname,
+            "sportscoaches": data.sportcoaches,
+            "adminemails": data.adminemails,
+            "sportsimage": data.sportsimage,
+            "sportsteam": data.sportsteam,
+            "sportsroster": data.sportsroster,
+            "sportscaptains": data.sportscaptains,
+            "tags": data.tags,
+            "info": data.info,
+        ])
+    }
+    
+}
 
 struct club: Identifiable, Codable {
     let clubname:String
