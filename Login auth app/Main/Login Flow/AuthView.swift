@@ -80,7 +80,6 @@ struct AuthView: View {
                 .onAppear {
                     userInfo.displayName = Auth.auth().currentUser?.displayName ?? "student"
                     userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
-                    print(userInfo.email)
                 }
         }
         

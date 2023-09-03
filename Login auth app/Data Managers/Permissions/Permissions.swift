@@ -12,7 +12,6 @@ class permissionsDataManager: ObservableObject {
     @Published var permissions: [String: [String]] = [:]
     
     func checkPermissions(dataType: String, user: String, completion: @escaping (Bool) -> Void) {
-        print("chekcing permissions")
         self.permissions.removeAll()
         let db = Firestore.firestore()
         let ref = db.collection("Permissions")
@@ -32,7 +31,6 @@ class permissionsDataManager: ObservableObject {
                     self.permissions[dataType] = allowedUsers
                 }
             }
-            print(self.permissions)
             
             var returnValue = false
             for thing in self.permissions {
@@ -42,7 +40,6 @@ class permissionsDataManager: ObservableObject {
                     }
                 }
             }
-            print("has permisison??? ->>> \(returnValue)")
             completion(returnValue)
         }
     }
