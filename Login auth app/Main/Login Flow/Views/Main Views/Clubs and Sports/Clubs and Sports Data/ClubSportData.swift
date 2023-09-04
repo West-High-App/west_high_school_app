@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 // MARK: sports
-struct sport: Identifiable {
+struct sport: Identifiable, Equatable {
     var sportname:String // name of sport
     var sportcoaches: [String] // coach
     var adminemails: [String]

@@ -72,4 +72,33 @@ class FavoriteSports: ObservableObject {
     }
     
     //MARK: ADD REMOVE FAVORITE FUNCTION
+    func removeFavorite(sport: sport) {
+        let email = userInfo.email
+        let db = Firestore.firestore()
+        let collection = db.collection("FavoritedSports")
+        var documenttoupdate = ""
+        collection.getDocuments { snapshot, error in
+            if let error = error {
+                print("Error deleting favorite \(error.localizedDescription)")
+            }
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    let data = document.data()
+                    let user = data["user"] as? String ?? ""
+                    let documentID = document.documentID
+                    
+                    if user == email {
+                        documenttoupdate = documentID
+                    }
+                }
+            }
+            
+            let ref = collection.document(documenttoupdate)
+            let sportid = "\(sport.sportname) \(sport.sportsteam)"
+            ref.updateData([
+                "favoritedSports": FieldValue.arrayRemove([sportid])
+            ])
+        }
+        let _ = getFavorites() { favorites in }
+    }
 }

@@ -24,9 +24,8 @@ struct SportsMainView: View {
 }
 
 struct SportsMainView_Previews: PreviewProvider {
-    var sportmanager = sportsManager()
     static var previews: some View {
-        SportsMainView(selectedsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", documentID: "NAN", sportid: "SPORT ID", id: 1)).environmentObject(SportsHibabi.ViewModel()).environmentObject(UserInfo())
+        SportsMainView(selectedsport: sportsManager().allsportlist.first!).environmentObject(SportsHibabi.ViewModel()).environmentObject(UserInfo())
         
     }
 }

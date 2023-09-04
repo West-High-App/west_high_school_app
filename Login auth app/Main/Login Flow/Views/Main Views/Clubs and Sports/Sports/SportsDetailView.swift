@@ -13,7 +13,9 @@ struct SportsDetailView: View {
     @State private var hasPermissionSport = false
     @State private var canEditSport = false
     @State var selected = 1
+    @State var isFavorited = false
     @State var favoritesManager = FavoriteSports()
+    @State var favorites: [sport] = []
     @EnvironmentObject var vm: SportsHibabi.ViewModel
     @StateObject var sporteventmanager = sportEventManager()
     @State private var confirming = false
@@ -39,7 +41,7 @@ struct SportsDetailView: View {
                             Spacer()
                             VStack {
 
-                                if vm.contains(currentsport) == false {
+                                if isFavorited == false {
                                     Button {
                                         confirming = true
                                     } label: {
@@ -77,7 +79,7 @@ struct SportsDetailView: View {
                                         .cornerRadius(10)
                                     }.confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
                                         Button("Remove from My Sports", role: .destructive) {
-                                            // MARK: remove favorite NEEDS TO BE ADDED
+                                            favoritesManager.removeFavorite(sport: currentsport)
                                         }
                                     }
                                 }
@@ -256,6 +258,20 @@ struct SportsDetailView: View {
                 }
                 .overlay(alignment: .top) {
                     HeaderView()
+                }
+            }
+            .onAppear {
+                favoritesManager.getFavorites { list in
+                    print("LIST BABY")
+                    print(list)
+                    for item in list {
+                        print(item)
+                        print("\(currentsport.sportname) \(currentsport.sportsteam)")
+                        if "\(currentsport.sportname) \(currentsport.sportsteam)" == item {
+                            print("TRUUUUUE")
+                            isFavorited = true
+                        }
+                    }
                 }
             }
             .background(westblue)
