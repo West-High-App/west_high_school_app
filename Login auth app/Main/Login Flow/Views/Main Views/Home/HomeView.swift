@@ -94,6 +94,7 @@ struct HomeView: View {
                                 }
                             }
                         } label: {
+                            
                             HStack{
                                 Spacer()
                                 Image("warning")

@@ -28,7 +28,13 @@ struct AnnouncementsView: View {
                         NavigationLink {
                             AnnouncementsAdminView()
                         } label: {
-                            Text("edit announcements")
+                            Text("Add Announcement")
+                                .foregroundColor(.blue)
+                                .padding(10)
+                                .background(Rectangle()
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .shadow(radius: 2, x: 1, y: 1))
                         }
                     }
 
