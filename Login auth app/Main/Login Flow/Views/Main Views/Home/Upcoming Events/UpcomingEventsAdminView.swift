@@ -79,7 +79,7 @@ struct EventRowView: View {
             VStack(alignment: .leading) {
                 Text("Event Name : " + event.eventname)
                     .font(.headline)
-                Text("Event Date : " + "\(event.month) \(event.day)")
+                Text("Event Date : " + "\(event.month) \(event.day), \(event.year)")
                     .font(.subheadline)
                 Text("Event Time : " + event.time)
                     .font(.subheadline)
@@ -95,18 +95,22 @@ struct EventRowView: View {
 }
 
 struct EventDetailView: View {
+    let calendar = Calendar.current
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var dataManager: upcomingEventsDataManager
     @State private var eventName = ""
     @State private var eventTime = ""
+    @State private var eventyear = ""
     @State private var selectedMonthIndex = 0
+    @State private var selectedYearIndex = 0
     @State private var selectedDayIndex = 0
     var editingEvent: event?
     
     // Define arrays for month and day options
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     let days = Array(1...31)
-    
+    let years = ["2023", "2024", "2025", "2026"]
+
     @State private var isConfirmingAddEvent = false
     @State private var isConfirmingDeleteEvent = false
     
@@ -127,11 +131,21 @@ struct EventDetailView: View {
                             Text("\(days[index])").tag(index)
                         }
                     }
+                    Picker("Year", selection: $selectedYearIndex) {
+                        ForEach(0..<years.count, id: \.self) { index in
+                            Text("\(years[index])").tag(index)
+                        }
+                    }
+
                 }
                 
                 Button("Publish New Event") {
                     isConfirmingAddEvent = true
                 }
+            }
+            .onAppear{
+                let currentYear = calendar.component(.year, from: Date())
+                eventyear = String(currentYear)
             }
             .navigationBarTitle(editingEvent == nil ? "Add Event" : "Edit Event")
             .navigationBarItems(trailing: Button("Cancel") {
@@ -140,14 +154,15 @@ struct EventDetailView: View {
             .alert(isPresented: $isConfirmingAddEvent) {
                 Alert(
                     title: Text("You Are Publishing Changes"),
-                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(eventName)\nSubtitle: \(eventTime)\nDate: \(months[selectedMonthIndex]) \(selectedDayIndex + 1)"),
+                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(eventName)\nSubtitle: \(eventTime)\nDate: \(months[selectedMonthIndex]) \(selectedDayIndex + 1)\(years[selectedYearIndex])"),
                     primaryButton: .destructive(Text("Publish Changes")) {
                         let eventToSave = event(
                             documentID: "NAN",
                             eventname: eventName,
                             time: eventTime,
                             month: months[selectedMonthIndex],
-                            day: "\(days[selectedDayIndex])"
+                            day: "\(days[selectedDayIndex])",
+                            year: eventyear
                         )
                         dataManager.createEvent(event: eventToSave) { error in
                             if let error = error {
@@ -172,6 +187,7 @@ struct EventDetailView: View {
                     if let day = Int(event.day), let dayIndex = days.firstIndex(of: day) {
                         selectedDayIndex = dayIndex
                     }
+
                 }
             }
         }

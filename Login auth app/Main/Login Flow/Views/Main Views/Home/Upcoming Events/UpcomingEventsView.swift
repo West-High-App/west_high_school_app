@@ -33,7 +33,7 @@ struct UpcomingEventsView: View {
                             VStack(alignment: .leading) {
                                 Text(event.eventname)
                                     .fontWeight(.semibold)
-                                Text(event.time)
+                                Text(event.time)    
                             }
                             .padding(.vertical, -5)
                             .padding(.leading, 5)

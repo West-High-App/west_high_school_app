@@ -9,15 +9,16 @@ struct event: Identifiable { // holy shit this took a long fucking time jesus fu
     let time: String
     let month: String
     let day: String
+    let year: String
 }
 
 
 class upcomingEventsDataManager: ObservableObject {
     @Published var allupcomingeventslist: [event] = []
     @Published var alleventslist: [event] = [] // data list
-    @Published var firstcurrentevent = event(documentID: "", eventname: "", time: "", month: "", day: "")
-    @Published var secondcurrentEvent = event(documentID: "", eventname: "", time: "", month: "", day: "")
-    @Published var thirdcurrentEvent = event(documentID: "", eventname: "", time: "", month: "", day: "")
+    @Published var firstcurrentevent = event(documentID: "", eventname: "", time: "", month: "", day: "", year: "")
+    @Published var secondcurrentEvent = event(documentID: "", eventname: "", time: "", month: "", day: "", year: "")
+    @Published var thirdcurrentEvent = event(documentID: "", eventname: "", time: "", month: "", day: "", year: "")
 
 
     var editingEvent: event?
@@ -43,9 +44,9 @@ class upcomingEventsDataManager: ObservableObject {
                     let time = data["time"] as? String ?? ""
                     let month = data["month"] as? String ?? ""
                     let day = data["day"] as? String ?? ""
+                    let year = data["year"] as? String ?? ""
                     let documentID = document.documentID
-                    
-                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day)
+                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year)
                     templist.append(event) // adding event with info from firebase
                 }
 
@@ -70,7 +71,8 @@ class upcomingEventsDataManager: ObservableObject {
             "eventname": event.eventname,
             "time": event.time,
             "month": event.month,
-            "day": event.day
+            "day": event.day,
+            "year": event.year
         ]) { error in
             completion(error)
             if error == nil {
@@ -90,6 +92,19 @@ class upcomingEventsDataManager: ObservableObject {
             }
         }
     }
+    
+    func filterByDate() -> [event]{
+        self.getUpcomingEvents()
+        self.allupcomingeventslist = self.allupcomingeventslist.sorted { first, second in
+            let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MMM, d yyyy"
+            let firstDate = dateFormatter.date(from: first.day) ?? Date()
+            let secondDate = dateFormatter.date(from: second.day) ?? Date()
+            return firstDate < secondDate
+        }.reversed()
+        return(allupcomingeventslist)
+    }
+
 
     
 }

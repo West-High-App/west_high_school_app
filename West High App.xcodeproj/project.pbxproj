@@ -292,8 +292,8 @@
 			children = (
 				2270B20F2A68DD7100823E58 /* HomeView.swift */,
 				E89012392A7F484A00FCB764 /* HomeMainView.swift */,
-				E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */,
 				E8A1E5502A8CDC85003BE94C /* DailyMessageAdminView.swift */,
+				E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */,
 				2270B2172A68DE4500823E58 /* Student Spotlight */,
 				2270B23D2A68E3E000823E58 /* Upcoming Events */,
 			);
