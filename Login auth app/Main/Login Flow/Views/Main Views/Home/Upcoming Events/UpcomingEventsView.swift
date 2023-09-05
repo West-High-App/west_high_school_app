@@ -11,14 +11,30 @@ struct UpcomingEventsView: View {
     @StateObject var dataManager = upcomingEventsDataManager()
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
+    @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermission = false
     init() {
         dataManager.getUpcomingEvents()
     }
     
     var body: some View {
+        if hasPermissionUpcomingEvents {
+            NavigationLink {
+                UpcomingEventsAdminView()
+            } label: {
+                Text("Edit Upcoming Events")
+                    .foregroundColor(.blue)
+                    .padding(10)
+                    .background(Rectangle()
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .shadow(radius: 2, x: 1, y: 1))                        }
+        }
+
+        
+    
                 VStack {
-                    
+
                     List(dataManager.allupcomingeventslist, id: \.id){event in
                         HStack {
                             VStack {
@@ -52,10 +68,10 @@ struct UpcomingEventsView: View {
                 .navigationBarTitle(Text("Upcoming Events"))
                 .onAppear {
                     permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
-                        self.hasPermission = result
+                        self.hasPermissionUpcomingEvents = result
                     }
                 }
-            
+
         
         
 

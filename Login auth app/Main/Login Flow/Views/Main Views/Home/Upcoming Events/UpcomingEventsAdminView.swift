@@ -81,8 +81,10 @@ struct EventRowView: View {
                     .font(.headline)
                 Text("Event Date : " + "\(event.month) \(event.day), \(event.year)")
                     .font(.subheadline)
+                    .font(.subheadline)
                 Text("Event Time : " + event.time)
                     .font(.subheadline)
+
             }
             Spacer()
         }
@@ -95,28 +97,31 @@ struct EventRowView: View {
 }
 
 struct EventDetailView: View {
+    
     let calendar = Calendar.current
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var dataManager: upcomingEventsDataManager
     @State private var eventName = ""
     @State private var eventTime = ""
     @State private var eventyear = ""
-    @State private var selectedMonthIndex = 0
+    @State private var selectedMonthIndex = Calendar.current.component(.month, from: Date()) - 1
     @State private var selectedYearIndex = 0
-    @State private var selectedDayIndex = 0
+    @State private var selectedDayIndex = Calendar.current.component(.day, from: Date()) - 1
     var editingEvent: event?
-    
     // Define arrays for month and day options
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     let days = Array(1...31)
-    let years = ["2023", "2024", "2025", "2026"]
+    @State var years: [String] = []
 
+    let year = Calendar.current.component(.year, from: Date())
     @State private var isConfirmingAddEvent = false
     @State private var isConfirmingDeleteEvent = false
     
     var body: some View {
+        
         NavigationView {
             Form {
+                
                 Section(header: Text("Event Details")) {
                     TextField("Event Name", text: $eventName)
                     TextField("Event Time", text: $eventTime)
@@ -144,6 +149,9 @@ struct EventDetailView: View {
                 }
             }
             .onAppear{
+                for i in 0...2 {
+                    years.append(String(Int(year) + Int(i)))
+                }
                 let currentYear = calendar.component(.year, from: Date())
                 eventyear = String(currentYear)
             }
@@ -154,7 +162,7 @@ struct EventDetailView: View {
             .alert(isPresented: $isConfirmingAddEvent) {
                 Alert(
                     title: Text("You Are Publishing Changes"),
-                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(eventName)\nSubtitle: \(eventTime)\nDate: \(months[selectedMonthIndex]) \(selectedDayIndex + 1)\(years[selectedYearIndex])"),
+                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(eventName)\nSubtitle: \(eventTime)\nDate: \(months[selectedMonthIndex]) \(selectedDayIndex + 1),\(years[selectedYearIndex]) "),
                     primaryButton: .destructive(Text("Publish Changes")) {
                         let eventToSave = event(
                             documentID: "NAN",
@@ -162,7 +170,8 @@ struct EventDetailView: View {
                             time: eventTime,
                             month: months[selectedMonthIndex],
                             day: "\(days[selectedDayIndex])",
-                            year: eventyear
+                            year: eventyear,
+                            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)"
                         )
                         dataManager.createEvent(event: eventToSave) { error in
                             if let error = error {
