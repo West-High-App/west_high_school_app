@@ -15,6 +15,7 @@ struct HomeView: View {
 //        let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
 //        setContentOffset(desiredOffset, animated: true)
 //    }
+    @State var clubmanager = clubManager()
     @ObservedObject var newsDataManager = Newslist()
     @ObservedObject var dataManager = upcomingEventsDataManager()
 
@@ -76,50 +77,36 @@ struct HomeView: View {
                     }
                     .zIndex(1)
                     VStack{
-                        Button {
-                            let center = UNUserNotificationCenter.current()
-                            
-                            let content = UNMutableNotificationContent()
-                            content.title = "Emergency Announcment"
-                            content.body = "skool is getting shot up guys run"
-                            
-                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-                            
-                            //creating request
-                            let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
-                            
-                            center.add(request){error in
-                                if let error = error {
-                                    print(error)
+
+                        if false {
+                            NavigationLink {
+                                ImagePickerView(imagename: "1781EBCD-85F8-49A6-9ED5-AD4B2A56596B.jpg")
+                            } label: {
+                                
+                                HStack{
+                                    Spacer()
+                                    Image(systemName: "photo")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width:20)
+                                    Text("Image Picker Demo")
+                                        .fontWeight(.semibold)
+                                        .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
+                                    Image(systemName: "photo")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width:20)
+                                    Spacer()
+                                    
                                 }
+                                .padding(.vertical, 8)
+                                .background(Rectangle()
+                                    .cornerRadius(9.0)
+                                    .padding(.horizontal)
+                                    .shadow(radius: 5, x: 3, y: 3)
+                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             }
-                        } label: {
-                            
-                            HStack{
-                                Spacer()
-                                Image("warning")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width:30)
-                                Text("SEND A WARNING")
-                                    .foregroundColor(.red)
-                                    .fontWeight(.semibold)
-                                    .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
-                                Image("warning")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width:30)
-                                Spacer()
-
-                            }
-                            .padding(.vertical, 8)
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .padding(.horizontal)
-                                .shadow(radius: 5, x: 3, y: 3)
-                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                         }
-
 
 
                         VStack{
@@ -176,6 +163,20 @@ struct HomeView: View {
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             // edit button
+                            
+                            if hasPermissionUpcomingEvents {
+                                NavigationLink {
+                                    UpcomingEventsAdminView()
+                                } label: {
+                                    Text("Edit Upcoming Events")
+                                        .foregroundColor(.blue)
+                                        .padding(10)
+                                        .background(Rectangle()
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 2, x: 1, y: 1))                        }
+                            }
+                            
                             VStack {
                                 UpcomingEventCell(event: dataManager.firstcurrentevent)
                                 Divider()
@@ -238,7 +239,21 @@ struct HomeView: View {
                                 .shadow(radius: 5, x: 3, y: 3)
                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             
-                            
+                            if hasPermissionSpotlight {
+                                NavigationLink {
+                                    SpotlightAdminView()
+                                } label: {
+                                    Text("Edit Spotlight Articles")
+                                        .foregroundColor(.blue)
+                                        .padding(10)
+                                        .background(Rectangle()
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 2, x: 1, y: 1))
+                                    
+                                }
+
+                            }
                             
                             VStack { // articles
                                 NavigationLink {
@@ -268,6 +283,49 @@ struct HomeView: View {
                         
                     }
                     .zIndex(0)
+                    
+                    Button {
+                        let center = UNUserNotificationCenter.current()
+                        
+                        let content = UNMutableNotificationContent()
+                        content.title = "Emergency Announcment"
+                        content.body = "skool is getting shot up guys run"
+                        
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                        
+                        //creating request
+                        let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
+                        
+                        center.add(request){error in
+                            if let error = error {
+                                print(error)
+                            }
+                        }
+                    } label: {
+                        
+                        HStack{
+                            Spacer()
+                            Image(systemName: "bell.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width:20)
+                            Text("Send Notification")
+                                .fontWeight(.semibold)
+                                .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
+                            Image(systemName: "bell.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width:20)
+                            Spacer()
+
+                        }
+                        .padding(.vertical, 8)
+                        .background(Rectangle()
+                            .cornerRadius(9.0)
+                            .padding(.horizontal)
+                            .shadow(radius: 5, x: 3, y: 3)
+                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                    }
                     
                 }
                 .overlay(alignment: .top) {

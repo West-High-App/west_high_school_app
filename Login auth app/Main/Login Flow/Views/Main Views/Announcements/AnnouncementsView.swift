@@ -22,13 +22,10 @@ struct AnnouncementsView: View {
             NavigationView{
                 VStack {
                     if hasPermission {
-                        Text("has permission")
-                    }
-                    if hasPermission {
                         NavigationLink {
                             AnnouncementsAdminView()
                         } label: {
-                            Text("Add Announcement")
+                            Text("Edit Announcements")
                                 .foregroundColor(.blue)
                                 .padding(10)
                                 .background(Rectangle()
@@ -47,10 +44,10 @@ struct AnnouncementsView: View {
                         .listRowBackground(
                             Rectangle()
                                 .cornerRadius(15)
-                                .foregroundColor(Color(red: 220/255, green: 220/255, blue: 220/255))
+                                .foregroundColor(Color(red: 225/255, green: 225/255, blue: 225/255))
                                 .padding(.vertical, 10)
                                 .padding(.horizontal, 7)
-                                .shadow(radius: 5)
+                                .shadow(radius: 2, x: 1, y: 1)
 
                         )
                         .listRowSeparator(.hidden)

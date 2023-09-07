@@ -24,7 +24,7 @@ struct ClubsMainView: View {
 
 struct ClubsMainView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubsMainView(selectedclub: club.allsportlist.first!).environmentObject(ClubsHibabi.ClubViewModel()).environmentObject(UserInfo())
+        ClubsMainView(selectedclub: clubManager().allclublist.first!).environmentObject(ClubsHibabi.ClubViewModel()).environmentObject(UserInfo())
         
     }
 }

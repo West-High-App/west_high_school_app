@@ -1,52 +1,52 @@
 import Foundation
 import Firebase
 
-struct sportFavorite: Identifiable {
+struct clubFavorite: Identifiable {
     var user: String
-    var favoritedSports: [String]
+    var favoritedClubs: [String]
     let documentID: String
     let id = UUID()
 }
 
-class FavoriteSports: ObservableObject {
-    @Published var favoritedsports: [sport] = []
+class FavoriteClubs: ObservableObject {
+    @Published var favoritedclubs: [club] = []
     var userInfo = UserInfo()
     
     func getFavorites(completion: @escaping ([String]) -> Void) {
         let email = userInfo.email
         var returnvalue: [String] = []
         let db = Firestore.firestore()
-        let collection = db.collection("FavoritedSports")
+        let collection = db.collection("FavoritedClubs")
         
         collection.getDocuments { snapshot, error in
             if let error = error {
-                print("Error: \(error.localizedDescription)")
+                print(error.localizedDescription)
                 completion([])
             }
-            
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     let data = document.data()
                     let user = data["user"] as? String ?? ""
-                    let favoritedSports = data["favoritedSports"] as? [String] ?? []
+                    let favoritedClubs = data["favoritedClubs"] as? [String] ?? []
                     if email == user {
-                        returnvalue = favoritedSports
+                        returnvalue = favoritedClubs
+                        print(returnvalue)
+                        print("CLUb RETURN VALUE")
                     }
                 }
             }
             completion(returnvalue)
         }
     }
-
     
-    func addFavorite(sport: sport) {
+    func addFavorite(club: club) {
         let email = userInfo.email
         let db = Firestore.firestore()
-        let collection = db.collection("FavoritedSports")
+        let collection = db.collection("FavoritedClubs")
         var documenttoupdate = ""
         collection.getDocuments { snapshot, error in
             if let error = error {
-                print("Error adding favorite: \(error.localizedDescription)")
+                print(error.localizedDescription)
             }
             if let snapshot = snapshot {
                 for document in snapshot.documents {
@@ -61,23 +61,23 @@ class FavoriteSports: ObservableObject {
             }
             
             let ref = collection.document(documenttoupdate)
-            let sportid = "\(sport.sportname) \(sport.sportsteam)"
+            let clubid = club.clubname
             ref.updateData([
-                "favoritedSports": FieldValue.arrayUnion([sportid])
+                "favoritedClubs": FieldValue.arrayUnion([clubid])
             ])
+            
+            
         }
-        let _ = getFavorites() { favorites in }
     }
     
-    //MARK: ADD REMOVE FAVORITE FUNCTION
-    func removeFavorite(sport: sport) {
+    func removeFavorite(club: club) {
         let email = userInfo.email
         let db = Firestore.firestore()
-        let collection = db.collection("FavoritedSports")
-        var documenttoupdate = ""
+        let collection = db.collection("FavoritedClubs")
+        var documenttotupdate = ""
         collection.getDocuments { snapshot, error in
             if let error = error {
-                print("Error deleting favorite \(error.localizedDescription)")
+                print(error.localizedDescription)
             }
             if let snapshot = snapshot {
                 for document in snapshot.documents {
@@ -86,17 +86,17 @@ class FavoriteSports: ObservableObject {
                     let documentID = document.documentID
                     
                     if user == email {
-                        documenttoupdate = documentID
+                        documenttotupdate = documentID
                     }
                 }
             }
             
-            let ref = collection.document(documenttoupdate)
-            let sportid = "\(sport.sportname) \(sport.sportsteam)"
+            let ref = collection.document(documenttotupdate)
+            let clubid = club.clubname
             ref.updateData([
-                "favoritedSports": FieldValue.arrayRemove([sportid])
+                "favoritedClubs": FieldValue.arrayRemove([clubid])
             ])
         }
-        let _ = getFavorites() { favorites in }
     }
+    
 }

@@ -9,9 +9,18 @@ import SwiftUI
 
 struct ClubsDetailView: View {
     @State var selected = 1
+    var permissionsManager = permissionsDataManager()
+    var userInfo = UserInfo()
+    @State private var hasPermissionClub = false
+    @State private var canEditClub = false
+    @State var isFavorited = false
+    // @State var favoritesManager = FavoriteClubs()
+    // @State var favorites: [club] = []
     @EnvironmentObject var vmm: ClubsHibabi.ClubViewModel
     @State private var confirming = false
     @State private var confirming2 = false
+    @State var upcomingeventlist: [sportEvent] = [] // supposed to be clubEvent
+    @StateObject var clubeventmanager = clubEventManager()
     var currentclub: club
     var safeArea: EdgeInsets
     var size: CGSize
@@ -91,73 +100,34 @@ struct ClubsDetailView: View {
 
                         if selected == 1{
                             VStack {
-                                HStack {
-                                    VStack {
-                                        Text("Jul")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("7")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
+
+                                ForEach(upcomingeventlist) { event in
+                                    HStack {
+                                        VStack {
+                                            Text(clubeventmanager.getDatePart(event: event, part: "month"))
+                                                .font(.system(size: 14))
+                                                .foregroundColor(.red)
+                                            Text(clubeventmanager.getDatePart(event: event, part: "day"))
+                                                .font(.system(size: 24))
+                                        }.padding(.vertical, -5)
+                                            .padding(.leading, 20)
+                                            .padding(.trailing, 10)
+                                        Divider()
+                                        VStack(alignment: .leading) {
+                                            Text(event.title)
+                                                .fontWeight(.semibold)
+                                            Text(event.subtitle)
+                                        }.padding(.vertical, -5)
+                                            .padding(.horizontal)
+                                        Spacer()
+                                    }
                                     Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("Lunch Meeting")
-                                            .fontWeight(.semibold)
-                                        Text("At lunch at room 1209")
-                                    }.padding(.vertical, -5)
                                         .padding(.horizontal)
-                                    Spacer()
+                                        .padding(.vertical, 5)
                                 }
-                                Divider()
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 5)
-                                HStack {
-                                    VStack {
-                                        Text("Jul")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("12")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("Community service")
-                                            .fontWeight(.semibold)
-                                        Text("7:30 PM @ MIA")
-                                    }.padding(.vertical, -5)
-                                        .padding(.horizontal)
-                                    Spacer()
-                                }
-                                Divider()
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 5)
-                                HStack {
-                                    VStack {
-                                        Text("Jul")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(.red)
-                                        Text("15")
-                                            .font(.system(size: 24))
-                                    }.padding(.vertical, -5)
-                                        .padding(.leading, 20)
-                                        .padding(.trailing, 10)
-                                    Divider()
-                                    VStack(alignment: .leading) {
-                                        Text("Potluck")
-                                            .fontWeight(.semibold)
-                                        Text("7:00 PM @ Hoyt Park")
-                                    }.padding(.vertical, -5)
-                                        .padding(.horizontal)
-                                    Spacer()
-                                }
+                                
                             }
-                                .padding(.all)
-                                .background(Color(red: 250/255, green: 250/255, blue: 250/255))
-                                .cornerRadius(12)
+
                             }
                         if selected == 2{
                             VStack{
@@ -205,16 +175,6 @@ struct ClubsDetailView: View {
                             .cornerRadius(12)
 
                             }
-
-
-
-
-
-
-
-
-
-
                     }
                     .padding()
                     .background(Rectangle()
@@ -225,16 +185,25 @@ struct ClubsDetailView: View {
                     .padding(.horizontal)
                     
                 }
+                .onAppear {
+                    clubeventmanager.getClubsEvent(forClub: currentclub.clubname) { events, error in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        }
+                        if let events = events {
+                            var tempp: [sportEvent] = []
+                            for item in events {
+                                
+                                tempp.append(sportEvent(documentID: item.documentID, title: item.title, subtitle: item.subtitle, date: item.date))
+                                
+                            }
+                            upcomingeventlist = tempp
+                        }
+                    }
+                }
                 .overlay(alignment: .top) {
                     HeaderView()
                 }
-                
-                
-                
-                
-                
-                
-                
             }
             .background(westblue)
             .coordinateSpace(name: "SCROLL")
@@ -289,6 +258,12 @@ struct ClubsDetailView: View {
                                 .bold()
                                 .foregroundStyle(westyellow)
                                 .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                            NavigationLink {
+                                ClubDetailAdminView(editingclub: currentclub)
+                            } label: {
+                                Text("edit club details")
+                            }
+
                         }
                         .opacity(1 + (progress > 0 ? -progress : progress))
                         .padding(.bottom, 65)
@@ -366,6 +341,6 @@ struct ClubsDetailView: View {
 
 struct ClubsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubsMainView(selectedclub: club.allsportlist.first!).environmentObject(ClubsHibabi.ClubViewModel())
+        ClubsMainView(selectedclub: clubManager().allclublist.first!).environmentObject(ClubsHibabi.ClubViewModel())
     }
 }

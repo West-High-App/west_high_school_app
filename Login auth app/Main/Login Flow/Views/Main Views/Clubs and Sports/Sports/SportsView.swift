@@ -156,7 +156,9 @@ struct SportsHibabi: View {
                             Text("EDIT SPORTS")
                         }
                     }
-
+                    if userInfo.loginStatus != "google" {
+                        Text("Log in to save favorites!")
+                    }
                     if selected == 1 && vm.savedItems.count == 0 {
                         VStack {
                             Spacer()

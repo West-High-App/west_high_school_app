@@ -20,6 +20,10 @@
 		2232FEEA2AA46F4D0067AAB8 /* SportsDetailAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEE92AA46F4D0067AAB8 /* SportsDetailAdminView.swift */; };
 		2232FEEC2AA46F5E0067AAB8 /* SportEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEEB2AA46F5E0067AAB8 /* SportEventAdminView.swift */; };
 		2232FEEE2AA4BD6D0067AAB8 /* FavoriteSportsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEED2AA4BD6D0067AAB8 /* FavoriteSportsData.swift */; };
+		2232FEF02AA681AE0067AAB8 /* ClubsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEEF2AA681AE0067AAB8 /* ClubsAdminView.swift */; };
+		2232FEF22AA798620067AAB8 /* ClubsEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF12AA798620067AAB8 /* ClubsEventData.swift */; };
+		2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */; };
+		2232FEF62AA945140067AAB8 /* ClubEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */; };
 		2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B1EB2A68D23300823E58 /* WestHighApp.swift */; };
 		2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2072A68D9FC00823E58 /* AuthView.swift */; };
 		2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20C2A68DC3F00823E58 /* MenuView.swift */; };
@@ -74,6 +78,10 @@
 		228362F72A2C1E720061BFAE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 228362F62A2C1E720061BFAE /* FirebaseFirestore */; };
 		228362F92A2C1E720061BFAE /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 228362F82A2C1E720061BFAE /* FirebaseFirestoreCombine-Community */; };
 		228362FB2A2C1E720061BFAE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 228362FA2A2C1E720061BFAE /* FirebaseFirestoreSwift */; };
+		22DECD662AAABF9200061E60 /* FavoriteClubsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */; };
+		22DECD682AAB655000061E60 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DECD672AAB655000061E60 /* ImagePickerView.swift */; };
+		22DECD6A2AAB656300061E60 /* ImagePickerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DECD692AAB656300061E60 /* ImagePickerData.swift */; };
+		22DECD6C2AAB65B800061E60 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 22DECD6B2AAB65B800061E60 /* FirebaseStorage */; };
 		E8150E3E2A9E49C300BD6853 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8150E3D2A9E49C300BD6853 /* SplashScreenView.swift */; };
 		E82562D72A84D0DA000AF117 /* ClubsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82562D62A84D0DA000AF117 /* ClubsMainView.swift */; };
 		E82562DB2A867858000AF117 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E82562DA2A867858000AF117 /* GoogleService-Info.plist */; };
@@ -100,6 +108,10 @@
 		2232FEE92AA46F4D0067AAB8 /* SportsDetailAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsDetailAdminView.swift; sourceTree = "<group>"; };
 		2232FEEB2AA46F5E0067AAB8 /* SportEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportEventAdminView.swift; sourceTree = "<group>"; };
 		2232FEED2AA4BD6D0067AAB8 /* FavoriteSportsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSportsData.swift; sourceTree = "<group>"; };
+		2232FEEF2AA681AE0067AAB8 /* ClubsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsAdminView.swift; sourceTree = "<group>"; };
+		2232FEF12AA798620067AAB8 /* ClubsEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsEventData.swift; sourceTree = "<group>"; };
+		2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailAdminView.swift; sourceTree = "<group>"; };
+		2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEventAdminView.swift; sourceTree = "<group>"; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
 		2270B1F92A68D5ED00823E58 /* Login_auth_app_testApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_auth_app_testApp.swift; sourceTree = "<group>"; };
 		2270B1FB2A68D5ED00823E58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -152,6 +164,9 @@
 		228362EF2A2C17600061BFAE /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
 		228362F12A2C18CB0061BFAE /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		228362F32A2C1BBB0061BFAE /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteClubsData.swift; sourceTree = "<group>"; };
+		22DECD672AAB655000061E60 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		22DECD692AAB656300061E60 /* ImagePickerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerData.swift; sourceTree = "<group>"; };
 		E8150E3D2A9E49C300BD6853 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		E82562D62A84D0DA000AF117 /* ClubsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsMainView.swift; sourceTree = "<group>"; };
 		E82562DA2A867858000AF117 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -174,6 +189,7 @@
 				228362EC2A2AB9700061BFAE /* FirebaseAnalyticsSwift in Frameworks */,
 				228362F72A2C1E720061BFAE /* FirebaseFirestore in Frameworks */,
 				228362EE2A2AB9700061BFAE /* FirebaseAuth in Frameworks */,
+				22DECD6C2AAB65B800061E60 /* FirebaseStorage in Frameworks */,
 				222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */,
 				228362F92A2C1E720061BFAE /* FirebaseFirestoreCombine-Community in Frameworks */,
 				228362EA2A2AB9700061BFAE /* FirebaseAnalytics in Frameworks */,
@@ -192,8 +208,11 @@
 				221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */,
 				221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */,
 				2232FEE72AA46F3D0067AAB8 /* SportsAdminView.swift */,
+				2232FEEF2AA681AE0067AAB8 /* ClubsAdminView.swift */,
 				2232FEE92AA46F4D0067AAB8 /* SportsDetailAdminView.swift */,
 				2232FEEB2AA46F5E0067AAB8 /* SportEventAdminView.swift */,
+				2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */,
+				2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -214,6 +233,8 @@
 				22830A002A86843600AE9C08 /* Permissions */,
 				222086EE2A62458900EF1ECA /* Utilities.swift */,
 				228362F32A2C1BBB0061BFAE /* DataManager.swift */,
+				22DECD692AAB656300061E60 /* ImagePickerData.swift */,
+				22DECD672AAB655000061E60 /* ImagePickerView.swift */,
 			);
 			path = "Data Managers";
 			sourceTree = "<group>";
@@ -362,10 +383,12 @@
 			children = (
 				2270B2292A68E0A400823E58 /* ClubSportData.swift */,
 				2232FEED2AA4BD6D0067AAB8 /* FavoriteSportsData.swift */,
+				22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */,
 				2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */,
 				2270B2392A68E32200823E58 /* SportsDatabase.swift */,
 				2270B23B2A68E33A00823E58 /* ClubsDatabase.swift */,
 				2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */,
+				2232FEF12AA798620067AAB8 /* ClubsEventData.swift */,
 			);
 			path = "Clubs and Sports Data";
 			sourceTree = "<group>";
@@ -509,6 +532,7 @@
 				222086E82A6224D400EF1ECA /* GoogleSignIn */,
 				222086EA2A6224D400EF1ECA /* GoogleSignInSwift */,
 				228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */,
+				22DECD6B2AAB65B800061E60 /* FirebaseStorage */,
 			);
 			productName = "Login auth app";
 			productReference = 228362D52A2AB3D70061BFAE /* West High App.app */;
@@ -577,6 +601,7 @@
 				221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */,
 				2270B2602A68E7C600823E58 /* ContactView.swift in Sources */,
 				228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */,
+				22DECD6A2AAB656300061E60 /* ImagePickerData.swift in Sources */,
 				2232FEE62AA46F0D0067AAB8 /* SportsEventData.swift in Sources */,
 				2232FEEC2AA46F5E0067AAB8 /* SportEventAdminView.swift in Sources */,
 				2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */,
@@ -597,8 +622,10 @@
 				2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */,
 				E8A1E54F2A8CD311003BE94C /* DailyMessage.swift in Sources */,
 				2270B24D2A68E67700823E58 /* SportsNewsDetailView.swift in Sources */,
+				2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */,
 				E87ADFEB2AA13B89009D9512 /* PrivacyPolicyView.swift in Sources */,
 				2270B2502A68E6BF00823E58 /* InformationView.swift in Sources */,
+				22DECD682AAB655000061E60 /* ImagePickerView.swift in Sources */,
 				228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */,
 				22830A042A86D01300AE9C08 /* Notifications.swift in Sources */,
 				2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */,
@@ -606,14 +633,18 @@
 				2270B2582A68E72D00823E58 /* StaffDetailView.swift in Sources */,
 				E8A1E5512A8CDC85003BE94C /* DailyMessageAdminView.swift in Sources */,
 				2270B2142A68DDFC00823E58 /* StudentSpotlight.swift in Sources */,
+				22DECD662AAABF9200061E60 /* FavoriteClubsData.swift in Sources */,
+				2232FEF22AA798620067AAB8 /* ClubsEventData.swift in Sources */,
 				2270B26A2A68E88700823E58 /* TransportationView.swift in Sources */,
 				2270B23A2A68E32200823E58 /* SportsDatabase.swift in Sources */,
+				2232FEF62AA945140067AAB8 /* ClubEventAdminView.swift in Sources */,
 				2270B2682A68E86C00823E58 /* SchoolPolicyGuideView.swift in Sources */,
 				2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */,
 				2270B2252A68E00F00823E58 /* AnnouncementsData.swift in Sources */,
 				2270B25C2A68E79800823E58 /* SocialView.swift in Sources */,
 				2270B2162A68DE1E00823E58 /* SpotlightArticles.swift in Sources */,
 				2270B2372A68E2AE00823E58 /* ClubsDetailView.swift in Sources */,
+				2232FEF02AA681AE0067AAB8 /* ClubsAdminView.swift in Sources */,
 				2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */,
 				2270B2492A68E65000823E58 /* SportsDetailView.swift in Sources */,
 				2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */,
@@ -912,6 +943,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		22DECD6B2AAB65B800061E60 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 228362E82A2AB9700061BFAE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

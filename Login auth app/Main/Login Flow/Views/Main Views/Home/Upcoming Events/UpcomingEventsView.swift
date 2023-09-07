@@ -18,21 +18,6 @@ struct UpcomingEventsView: View {
     }
     
     var body: some View {
-        if hasPermissionUpcomingEvents {
-            NavigationLink {
-                UpcomingEventsAdminView()
-            } label: {
-                Text("Edit Upcoming Events")
-                    .foregroundColor(.blue)
-                    .padding(10)
-                    .background(Rectangle()
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 2, x: 1, y: 1))                        }
-        }
-
-        
-    
                 VStack {
 
                     List(dataManager.allupcomingeventslist, id: \.id){event in

@@ -12,12 +12,10 @@ struct ClubsHibabi: View {
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
     @State private var hasPermissionClubNews = false
+    @State private var hasPermissionClubs = false
     
     var clubNewsManager = clubsNewslist()
-    init() {
-        clubNewsManager.getClubNews()
-        newstitlearray = clubNewsManager.allclubsnewslist
-    }
+    @ObservedObject var clubsmanager = clubManager()
     @State var newstitlearray:[clubNews] = []
     @StateObject var vmm = ClubViewModel()
     @State var clubsearchText = "" // text for search field
@@ -45,16 +43,34 @@ struct ClubsHibabi: View {
     let Screen = ScreenSize()
     private var filteredclubs: [club] {
         return clubsearchText == ""
-            ? vmm.clubfilteredItems
-            : vmm.clubfilteredItems.filter {
+        ? clubsmanager.allclublist
+        : clubsmanager.allclublist.filter {
                 $0.clubname.lowercased().contains(clubsearchText.lowercased())
             }
     }
     
+    @State var favoritesManager = FavoriteClubs()
+    @State var favorites: [club] = []
+    @State var searchText = ""
     
+    init() {
+        clubNewsManager.getClubNews()
+        newstitlearray = clubNewsManager.allclubsnewslist
+    }
+    
+    private var filteredClubs: [club] {
+        return searchText == ""
+        ? clubsmanager.allclublist
+            : clubsmanager.allclublist.filter {
+                $0.clubname.lowercased().contains(searchText.lowercased())
+            }
+    }
+    
+        // MARK: view
     var body: some View {
         NavigationView{
             VStack {
+
                 Picker(selection: $clubselected, label: Text(""), content: { // picker at top
                     Text("My Clubs").tag(1)
                     Text("Browse").tag(2)
@@ -80,6 +96,17 @@ struct ClubsHibabi: View {
                     }
                 
                 if clubselected == 1 || clubselected == 2 {
+                    
+                    if hasPermissionClubs {
+                        
+                        NavigationLink {
+                            ClubsAdminView()
+                        } label: {
+                            Text("Edit clubs")
+                        }
+                        
+                    }
+                    
                     if clubselected == 1 && vmm.clubsavedItems.count == 0 {
                         VStack {
                             Spacer()
@@ -100,44 +127,87 @@ struct ClubsHibabi: View {
                     }
                     else {
                         VStack {
-                            List {
-                                ForEach(filteredclubs) { item in
-                                    if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
-                                        NavigationLink {
-                                            ClubsMainView(selectedclub: item)
-                                                .environmentObject(vmm)
-                                        } label: {
-                                            HStack {
-                                                Image(item.clubimage)
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 50, height: 50)
-                                                    .cornerRadius(1000)
-                                                    .padding(.trailing, 10)
-                                                VStack(alignment: .center) {
-                                                    HStack {
-                                                        Text(item.clubname)
-                                                            .foregroundColor(.primary)
-                                                            .lineLimit(2)
-                                                            .minimumScaleFactor(0.9)
-                                                            .font(.system(size: 28, weight: .semibold, design: .rounded))
-                                                        Spacer()
+                            if clubselected == 1 {
+                                if userInfo.loginStatus != "google" {
+                                    Text("Log in to save favorites!")
+                                }
+                                List {// MARK: foreach 1 or 2
+                                    ForEach(clubsmanager.favoriteslist) { item in
+                                        if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
+                                            NavigationLink {
+                                                ClubsMainView(selectedclub: item)
+                                                    .environmentObject(vmm)
+                                            } label: {
+                                                HStack {
+                                                    Image(item.clubimage)
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 50, height: 50)
+                                                        .cornerRadius(1000)
+                                                        .padding(.trailing, 10)
+                                                    VStack(alignment: .center) {
+                                                        HStack {
+                                                            Text(item.clubname)
+                                                                .foregroundColor(.primary)
+                                                                .lineLimit(2)
+                                                                .minimumScaleFactor(0.9)
+                                                                .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                                            Spacer()
+                                                        }
+                                                        HStack {
+                                                            Text(item.clubname)
+                                                                .foregroundColor(.secondary)
+                                                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                            Spacer()
+                                                        }
                                                     }
-                                                    HStack {
-                                                        Text(item.clubname)
-                                                            .foregroundColor(.secondary)
-                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                        Spacer()
-                                                    }
+                                                    Spacer()
                                                 }
-                                                Spacer()
                                             }
                                         }
                                     }
                                 }
                             }
-                            .searchable(text: $clubsearchText)
-                        }
+                            if clubselected == 2 {
+                                List {// MARK: foreach 1 or 2
+                                    ForEach(filteredclubs) { item in
+                                        if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
+                                            NavigationLink {
+                                                ClubsMainView(selectedclub: item)
+                                                    .environmentObject(vmm)
+                                            } label: {
+                                                HStack {
+                                                    Image(item.clubimage)
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 50, height: 50)
+                                                        .cornerRadius(1000)
+                                                        .padding(.trailing, 10)
+                                                    VStack(alignment: .center) {
+                                                        HStack {
+                                                            Text(item.clubname)
+                                                                .foregroundColor(.primary)
+                                                                .lineLimit(2)
+                                                                .minimumScaleFactor(0.9)
+                                                                .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                                            Spacer()
+                                                        }
+                                                        HStack {
+                                                            Text(item.clubname)
+                                                                .foregroundColor(.secondary)
+                                                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                            Spacer()
+                                                        }
+                                                    }
+                                                    Spacer()
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }.searchable(text: $clubsearchText)
                     }
 
                 }
@@ -167,6 +237,9 @@ struct ClubsHibabi: View {
             .onAppear {
                 permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
                     self.hasPermissionClubNews = result
+                }
+                permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
+                    self.hasPermissionClubs = result
                 }
             }
             
