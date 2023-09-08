@@ -3,10 +3,8 @@
 //
 //  Created by August Andersen on 6/2/23.
 // github repo test
-
 import SwiftUI
 import Firebase
-
 @main // main function, runs app
 struct WestHighApp: App {
     init() {
@@ -36,7 +34,7 @@ struct WestHighApp: App {
             }
         }
         
-    
+        
         if todaysdate(daysToAdd: 0).isWeekday(){
             
             let center = UNUserNotificationCenter.current()
@@ -65,6 +63,6 @@ struct WestHighApp: App {
     var body: some Scene {
         WindowGroup {
             SplashScreenView() // SplashScreenView -- Splash Screen View - Leads to AuthView
-            }
         }
     }
+}
