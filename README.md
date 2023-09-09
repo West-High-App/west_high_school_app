@@ -12,6 +12,7 @@
 - make sure it doesn't crash when there's not enough data - august/aiden
 - info view (move things around, replace contact and staff with webview, remove settings, move privacy policy, etc.) - aiden
 - refresh view on homescreen - aiden
+- update privacy policy/terms of service - august
 - ui for guest log in - aiden
 - splash view when loading stuff - aiden
 - search for announcements (just implement search bar so you can search inside the text, not the title) - august/aiden
