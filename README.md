@@ -1,6 +1,6 @@
 # What needs to happen this weekend:
-
-- touch up clubs (favorites, data permissions)
+(// means done)
+- touch up clubs (//favorites, //data permissions)
 - get photos working (two functions: 1. save, 2. retrieve image with name)
 - implement photos to all data types (when saving, update photo field, when viewing, display image with name from photo field)
 - filters for sports
