@@ -1,7 +1,7 @@
 # What needs to happen this weekend:
 (// means done)
-- touch up clubs (//favorites, //data permissions)
-- get photos working (//two functions: 1. save, 2. retrieve image with name)
+- //touch up clubs (//favorites, //data permissions)
+- //get photos working (//two functions: 1. save, 2. retrieve image with name)
 - implement photos for all data types (general photo class for all photos which gets initialized at home so they don't have to update every time)
 - filters for sports
 - teachers connected to firebase (data)
