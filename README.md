@@ -2,8 +2,6 @@
 (// means done)
 - implement photos for all data types (general photo class for all photos which gets initialized at home so they don't have to update every time)
 - filters for sports - august
-- teachers connected to firebase (NOT DOING) - august 
-- permissions for teachers (general permissions + individual with email)(NOT DOING) - august
 - general permissions manager in app (admins can use to manager who can edit general permissions fields) - august
 - variables refreshing when updated to firebase (possibly DispatchQueue.main.async, or related to @State vs. @StateObject) - aiden
 - make sure it doesn't crash when there's not enough data - august/aiden
