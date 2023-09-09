@@ -9,6 +9,7 @@
 - permissions for teachers (general permissions + individual with email)
 - general permissions manager in app (admins can use to manager who can edit general permissions fields)
 - variables refreshing when updated to firebase (possibly DispatchQueue.main.async, or related to @State vs. @StateObject)
+- make sure it doesn't crash when there's not enough data
 - refresh view on homescreen (this one is aiden)
 - ui for guest log in (no favorite clubs)
 - search for announcements (just implement search bar so you can search inside the text, not the title)
