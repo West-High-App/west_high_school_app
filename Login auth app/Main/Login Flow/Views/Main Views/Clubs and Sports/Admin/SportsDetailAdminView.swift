@@ -45,7 +45,7 @@ struct SportsDetailAdminView: View {
     
     // images
     @StateObject var imagemanager = imageManager()
-    @State var originalImage = UIImage()
+    @State var originalImage = ""
     @State var displayimage: UIImage?
     @State var isDisplayingAddImage = false
     
@@ -247,6 +247,21 @@ struct SportsDetailAdminView: View {
                     }
                 }
                 
+                Section("Image") {
+                    Image(uiImage: displayimage ?? editingsport.imagedata)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 200, height: 200)
+                        .cornerRadius(10)
+                    Button("Upload New Image") {
+                        isDisplayingAddImage = true
+                    }
+                }
+                
+                .sheet(isPresented: $isDisplayingAddImage) {
+                    ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
+                }
+                
                 Button {
                     isConfirmingChanges.toggle()
                 } label: {
@@ -268,6 +283,18 @@ struct SportsDetailAdminView: View {
                 title: Text("You Are Publishing Changes"),
                 message: Text("Make sure you double check your edits.\nThis action annot be undone."),
                 primaryButton: .destructive(Text("Publish")) {
+                    
+                    //images
+                    
+                    if let displayimage = displayimage {
+                        sportsimage = imagemanager.uploadPhoto(file: displayimage)
+                    }
+                    
+                    imagemanager.deleteImage(imageFileName: "") { error in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        }
+                    }
                     
                     // creating data
                     
@@ -307,6 +334,14 @@ struct SportsDetailAdminView: View {
                 selectedSeason = tags[1]
                 selectedTeam = tags[2]
                 documentID = editingsport.documentID
+                
+                
+                originalImage = editingsport.sportsimage
+                imagemanager.getImageFromStorage(fileName: sportsimage) { image in
+                    displayimage = image
+                    print("IMNAGE")
+                    print(image)
+                }
             }
     }
 }

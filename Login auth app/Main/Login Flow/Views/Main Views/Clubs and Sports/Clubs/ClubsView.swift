@@ -251,31 +251,8 @@ struct ClubsHibabi: View {
                 
                 
                 if !hasAppeared {
-                    var tempylist: [club] = []
-                    let dispatchGroup = DispatchGroup() // Create a dispatch group
-                    
-                    for club in clubsmanager.allclublist {
-                        dispatchGroup.enter() // Enter the dispatch group
-                        print("club found")
-                        
-                        imagemanager.getImageFromStorage(fileName: club.clubimage) { image in
-                            
-                            var tempclub = club
-                            if let image = image {
-                                tempclub.imagedata = image
-                            }
-                            print("updated club:")
-                            print(tempclub) // Print tempclub, not club
-                            tempylist.append(tempclub) // Append tempclub to tempylist
-                            dispatchGroup.leave() // Leave the dispatch group when the closure is done
-                        }
-                    }
-                    
-                    dispatchGroup.notify(queue: .main) { [self] in // This block will be executed when all tasks are done
-                        self.clubsmanager.allclublist = tempylist
-                        print("ALL CLUBS LIST (UPDATED)")
-                    }
-                    
+                    let dispatchGroup = DispatchGroup()
+
                     var tempylist2: [club] = []
                     
                     for club in clubsmanager.favoriteslist {
@@ -296,6 +273,30 @@ struct ClubsHibabi: View {
                     
                     dispatchGroup.notify(queue: .main) { [self] in
                         self.clubsmanager.favoriteslist = tempylist2
+                    }
+                    
+                    var tempylist: [club] = []
+                    
+                    for club in clubsmanager.allclublist {
+                        dispatchGroup.enter()
+                        print("club found")
+                        
+                        imagemanager.getImageFromStorage(fileName: club.clubimage) { image in
+                            
+                            var tempclub = club
+                            if let image = image {
+                                tempclub.imagedata = image
+                            }
+                            print("updated club:")
+                            print(tempclub)
+                            tempylist.append(tempclub) //
+                            dispatchGroup.leave()
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) { [self] in
+                        self.clubsmanager.allclublist = tempylist
+                        print("ALL CLUBS LIST (UPDATED)")
                     }
                     
                     

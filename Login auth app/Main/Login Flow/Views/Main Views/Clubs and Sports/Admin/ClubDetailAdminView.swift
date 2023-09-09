@@ -217,6 +217,7 @@ struct ClubDetailAdminView: View {
                 Section("Image") {
                     Image(uiImage: displayimage ?? editingclub.imagedata)
                             .resizable()
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: 200, height: 200)
                             .cornerRadius(10)
                     Button("Upload New Image") {

@@ -32,6 +32,8 @@ struct SportsHibabi: View {
     @State var showingAllNews = 1
     @State private var count = 0
     @State public var templist: [sport] = []
+    @State private var hasAppeared = false
+    @State var imagesManager = imageManager()
 
     init() {
         sportsNewsManager.getSportsNews()
@@ -197,7 +199,7 @@ struct SportsHibabi: View {
                                             .environmentObject(vm)
                                     }label: {
                                         HStack {
-                                            Image(item.sportsimage)
+                                            Image(uiImage: item.imagedata)
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fill)
                                                 .frame(width: 50, height: 50)
@@ -278,7 +280,7 @@ struct SportsHibabi: View {
                                             .environmentObject(vm)
                                     }label: {
                                         HStack {
-                                            Image(item.sportsimage)
+                                            Image(uiImage: item.imagedata)
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fill)
                                                 .frame(width: 50, height: 50)
@@ -349,6 +351,57 @@ struct SportsHibabi: View {
                 }
                 permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
                     self.hasPermissionSports = result
+                }
+                
+                
+                // images
+                
+                
+                if !hasAppeared {
+                    let dispatchGroup = DispatchGroup()
+
+                    var templist2: [sport] = []
+                    
+                    for sport in sportsmanager.favoriteslist {
+                        dispatchGroup.enter()
+                        
+                        imagesManager.getImageFromStorage(fileName: sport.sportsimage) { image in
+                            
+                            var tempsport2 = sport
+                            if let image = image {
+                                tempsport2.imagedata = image
+                            }
+                            
+                            templist2.append(tempsport2)
+                            dispatchGroup.leave()
+
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) { [self] in
+                        self.sportsmanager.favoriteslist = templist2
+                    }
+                    
+                    var templist: [sport] = []
+                    
+                    for sport in sportsmanager.allsportlist {
+                        dispatchGroup.enter()
+                        
+                        imagesManager.getImageFromStorage(fileName: sport.sportsimage) { image in
+                            
+                            var tempsport = sport
+                            if let image = image {
+                                tempsport.imagedata = image
+                            }
+                            
+                            templist.append(tempsport)
+                            dispatchGroup.leave()
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) { [self] in
+                        self.sportsmanager.allsportlist = templist
+                    }
                 }
             }
             

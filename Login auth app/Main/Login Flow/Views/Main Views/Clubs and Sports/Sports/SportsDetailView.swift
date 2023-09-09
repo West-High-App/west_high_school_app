@@ -243,18 +243,11 @@ struct SportsDetailView: View {
                         
                     })
                     permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
-                        hasPermissionSport = result
+                        canEditSport = result
                     }
-                    var tempbool = false
-                    if hasPermissionSport {
-                        tempbool = true
+                    if currentsport.adminemails.contains(userInfo.email) {
+                        canEditSport = true
                     }
-                    for email in currentsport.adminemails {
-                        if email == userInfo.email {
-                            tempbool = true
-                        }
-                    }
-                    canEditSport = tempbool
                 }
                 .overlay(alignment: .top) {
                     HeaderView()
@@ -287,7 +280,7 @@ struct SportsDetailView: View {
             let minY = proxy.frame(in: .named("SCROLL")).minY
             let progress = minY / (height * (minY > 0 ? 0.5 : 0.8))
             
-            Image(currentsport.sportsimage)
+            Image(uiImage: currentsport.imagedata)
                 .resizable()
                 .scaledToFill()
                 .aspectRatio(contentMode: .fill)

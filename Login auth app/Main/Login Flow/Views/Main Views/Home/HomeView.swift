@@ -78,38 +78,6 @@ struct HomeView: View {
                     }
                     .zIndex(1)
                     VStack{
-
-                        if true { // MARK: IMAGE PICKER
-                            NavigationLink {
-                                ImagePickerView(imagename: "images/10AB63C7-53F9-4B5B-89CB-8B988E51AE2E.jpg")
-                            } label: {
-                                
-                                HStack{
-                                    Spacer()
-                                    Image(systemName: "photo")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width:20)
-                                    Text("Image Picker Demo")
-                                        .fontWeight(.semibold)
-                                        .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
-                                    Image(systemName: "photo")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width:20)
-                                    Spacer()
-                                    
-                                }
-                                .padding(.vertical, 8)
-                                .background(Rectangle()
-                                    .cornerRadius(9.0)
-                                    .padding(.horizontal)
-                                    .shadow(radius: 5, x: 3, y: 3)
-                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                            }
-                        }
-
-
                         VStack{
                             //temp
 
