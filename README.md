@@ -3,7 +3,7 @@
 - //touch up clubs (//favorites, //data permissions)
 - //get photos working (//two functions: 1. save, 2. retrieve image with name)
 - implement photos for all data types (general photo class for all photos which gets initialized at home so they don't have to update every time)
-- delete photos automatically when not in use
+- //delete photos automatically when not in use
 - filters for sports
 - teachers connected to firebase (data)
 - permissions for teachers (general permissions + individual with email)
