@@ -1,9 +1,6 @@
 # What needs to happen this weekend:
 (// means done)
-- //touch up clubs (//favorites, //data permissions) - august
-- //get photos working (//two functions: 1. save, 2. retrieve image with name) - august
 - implement photos for all data types (general photo class for all photos which gets initialized at home so they don't have to update every time)
-- //delete photos automatically when not in use - august
 - filters for sports - august
 - teachers connected to firebase (NOT DOING) - august 
 - permissions for teachers (general permissions + individual with email)(NOT DOING) - august
