@@ -12,5 +12,6 @@
 - make sure it doesn't crash when there's not enough data
 - refresh view on homescreen (this one is aiden)
 - ui for guest log in (no favorite clubs)
+- splash view when loading stuff
 - search for announcements (just implement search bar so you can search inside the text, not the title)
 - final ui changes
