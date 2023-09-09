@@ -43,6 +43,12 @@ struct SportsDetailAdminView: View {
     @State var selectedSeason = 1
     @State var selectedTeam = 1
     
+    // images
+    @StateObject var imagemanager = imageManager()
+    @State var originalImage = UIImage()
+    @State var displayimage: UIImage?
+    @State var isDisplayingAddImage = false
+    
     var body: some View {
         VStack {
             Form {
@@ -271,7 +277,7 @@ struct SportsDetailAdminView: View {
                     temptags.append(selectedTeam)
                     tags = temptags
                     
-                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
+                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: UIImage(), documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
                     
                     
                     if let sporttoedit = sporttoedit {
@@ -307,6 +313,6 @@ struct SportsDetailAdminView: View {
 
 struct SportsDetailAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", documentID: "NAN", sportid: "SPORT ID", id: 1))
+        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID", id: 1))
     }
 }

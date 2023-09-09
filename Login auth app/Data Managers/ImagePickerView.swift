@@ -106,7 +106,7 @@ struct ImagePickerView: View {
         let path = "images/\(UUID().uuidString).jpg" // name change here
         let fileRef = storageRef.child(path)
         
-        let uploadTask = fileRef.putData(imageData!, metadata: nil) { metadata, error in
+        _ = fileRef.putData(imageData!, metadata: nil) { metadata, error in
             
             if let error = error {
                 print(error.localizedDescription)
@@ -161,6 +161,56 @@ struct ImagePickerView: View {
             }
         }
     }
+}
+
+class imageManager: ObservableObject {
+    
+    @State var selectedImage: UIImage?
+    @State var imagetoshow: UIImage?
+    @State var imagename: String = ""
+    
+    func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
+        
+            let storageRef = Storage.storage().reference()
+            let fileRef = storageRef.child(fileName)
+            fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                if error == nil, let imageData = data {
+                    if let image = UIImage(data: imageData) {
+                        completion(image)
+                    } else {
+                        completion(nil)
+                    }
+                } else {
+                    print("ERROR")
+                    print(error!.localizedDescription)
+                    completion(nil)
+                }
+            }
+        }
+    
+    func uploadPhoto(file: UIImage) -> String{
+        
+        let storageRef = Storage.storage().reference()
+        
+        let imageData = file.jpegData(compressionQuality: 0.8)
+        
+        guard imageData != nil else {
+            return ""
+        }
+        
+        let path = "images/\(UUID().uuidString).jpg" // name change here
+        let fileRef = storageRef.child(path)
+        
+        _ = fileRef.putData(imageData!, metadata: nil) { metadata, error in
+            
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+       return path
+    }
+    
+    
 }
 
 struct ImagePickerView_Previews: PreviewProvider {

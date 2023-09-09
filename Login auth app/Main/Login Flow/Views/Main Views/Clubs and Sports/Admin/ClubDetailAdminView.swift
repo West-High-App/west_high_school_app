@@ -38,6 +38,12 @@ struct ClubDetailAdminView: View {
     @State private var isAddingMember = false
     @State private var newMemberName = ""
     
+    // images
+    @StateObject var imagemanager = imageManager()
+    @State var originalImage = UIImage()
+    @State var displayimage: UIImage?
+    @State var isDisplayingAddImage = false
+    
     var body: some View {
         
         VStack {
@@ -207,6 +213,21 @@ struct ClubDetailAdminView: View {
                     }
                     
                 }
+                
+                Section("Image") {
+                        Image(uiImage: editingclub.imagedata)
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                            .cornerRadius(10)
+                    Button("Upload New Image") {
+                        isDisplayingAddImage = true
+                    }
+                    
+                }
+                .sheet(isPresented: $isDisplayingAddImage) {
+                    ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
+                }
+                
                 Button {
                     isConfirmingChanges.toggle()
                 } label: {
@@ -225,7 +246,11 @@ struct ClubDetailAdminView: View {
                         message: Text("Make sure you double check your edits.\nThis action annot be undone."),
                         primaryButton: .destructive(Text("Publish")) {
                             
-                            clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, documentID: editingclub.documentID, id: 0)
+                            if let displayimage = displayimage {
+                                clubimage = imagemanager.uploadPhoto(file: displayimage)
+                            }
+                            
+                            clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, imagedata: UIImage(), documentID: editingclub.documentID, id: 0)
                             
                             if let clubtoedit = clubtoedit {
                                 clubmanager.updateClub(data: clubtoedit)
@@ -241,7 +266,7 @@ struct ClubDetailAdminView: View {
         }.navigationTitle("Edit \(editingclub.clubname)")
         
             .onAppear {
-                
+                // initializers
                 clubname = editingclub.clubname
                 clubcaptain = editingclub.clubcaptain ?? []
                 clubadvisor = editingclub.clubadvisor
@@ -252,13 +277,20 @@ struct ClubDetailAdminView: View {
                 clubmembers = editingclub.clubmembers
                 adminemails = editingclub.adminemails
                 
+                //images
+                imagemanager.getImageFromStorage(fileName: clubimage) { image in
+                    displayimage = image
+                    print("IMNAGE")
+                    print(image)
+                }
             }
+        
         
     }
 }
 
 struct ClubDetailAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubDetailAdminView(editingclub: club(clubname: "club name", clubcaptain: ["clubcaptain"], clubadvisor: ["advisory"], clubmeetingroom: "meeting room", clubdescription: "description", clubimage: "image", clubmembercount: "member count", clubmembers: ["club guy 1", "club gyal 2"], adminemails: ["augustelholm@gmail.com"], documentID: "NAN", id: 0))
+        ClubDetailAdminView(editingclub: club(clubname: "club name", clubcaptain: ["clubcaptain"], clubadvisor: ["advisory"], clubmeetingroom: "meeting room", clubdescription: "description", clubimage: "image", clubmembercount: "member count", clubmembers: ["club guy 1", "club gyal 2"], adminemails: ["augustelholm@gmail.com"], imagedata: UIImage(), documentID: "NAN", id: 0))
     }
 }

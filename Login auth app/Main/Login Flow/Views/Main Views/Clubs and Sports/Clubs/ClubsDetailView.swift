@@ -14,13 +14,17 @@ struct ClubsDetailView: View {
     @State private var hasPermissionClub = false
     @State private var canEditClub = false
     @State var isFavorited = false
-    // @State var favoritesManager = FavoriteClubs()
-    // @State var favorites: [club] = []
+    @State var favoritesManager = FavoriteClubs()
+    @State var clubsmanager = clubManager()
+    @State var favorites: [club] = []
     @EnvironmentObject var vmm: ClubsHibabi.ClubViewModel
     @State private var confirming = false
     @State private var confirming2 = false
     @State var upcomingeventlist: [sportEvent] = [] // supposed to be clubEvent
     @StateObject var clubeventmanager = clubEventManager()
+    @State var displayedimage: UIImage?
+    @State var originalimage = UIImage()
+    @StateObject var imagemanager = imageManager()
     var currentclub: club
     var safeArea: EdgeInsets
     var size: CGSize
@@ -35,7 +39,7 @@ struct ClubsDetailView: View {
                         let minY = proxy.frame(in: .named("SCROLL")).minY - safeArea.top
                         
                         VStack {
-                            if vmm.clubcontains(currentclub) == false {
+                            if isFavorited == false {
                                 Button {
                                     confirming = true
                                 } label: {
@@ -53,7 +57,7 @@ struct ClubsDetailView: View {
                                         .cornerRadius(10)
                                 }.confirmationDialog("Add to My Clubs", isPresented: $confirming) {
                                     Button("Add to My Clubs") {
-                                        vmm.clubtoggleFav(item: currentclub)
+                                        favoritesManager.addFavorite(club: currentclub)
                                     }
                                 }
                             } else {
@@ -73,7 +77,7 @@ struct ClubsDetailView: View {
                                         .cornerRadius(10)
                                 }.confirmationDialog("Remove from My Clubs", isPresented: $confirming2) {
                                     Button("Remove from My Clubs", role: .destructive) {
-                                        vmm.clubtoggleFav(item: currentclub)
+                                        favoritesManager.removeFavorite(club: currentclub)
                                     }
                                 }
                             }
@@ -200,6 +204,33 @@ struct ClubsDetailView: View {
                             upcomingeventlist = tempp
                         }
                     }
+                    
+                    favoritesManager.getFavorites { list in
+                        print(list)
+                        for item in list {
+                            print(item)
+                            print(currentclub.clubname)
+                            if currentclub.clubname == item {
+                                print("TRUUUUUE")
+                                isFavorited = true
+                            }
+                        }
+                    }
+                    
+                    permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { permission in
+                        hasPermissionClub = permission
+                    }
+                    if currentclub.adminemails.contains(userInfo.email) {
+                        hasPermissionClub = true
+                    }
+                    
+                    
+                    
+                        imagemanager.getImageFromStorage(fileName: currentclub.clubimage) { image in
+                            displayedimage = image
+                            originalimage = image ?? UIImage()
+                    }
+                    
                 }
                 .overlay(alignment: .top) {
                     HeaderView()
@@ -218,7 +249,7 @@ struct ClubsDetailView: View {
             let minY = proxy.frame(in: .named("SCROLL")).minY
             let progress = minY / (height * (minY > 0 ? 0.5 : 0.8))
             
-            Image(currentclub.clubimage)
+            Image(uiImage: currentclub.imagedata)
                 .resizable()
                 .scaledToFill()
                 .aspectRatio(contentMode: .fill)
@@ -258,10 +289,13 @@ struct ClubsDetailView: View {
                                 .bold()
                                 .foregroundStyle(westyellow)
                                 .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-                            NavigationLink {
-                                ClubDetailAdminView(editingclub: currentclub)
-                            } label: {
-                                Text("edit club details")
+                            
+                            if hasPermissionClub {
+                                NavigationLink {
+                                    ClubDetailAdminView(editingclub: currentclub)
+                                } label: {
+                                    Text("edit club details")
+                                }
                             }
 
                         }

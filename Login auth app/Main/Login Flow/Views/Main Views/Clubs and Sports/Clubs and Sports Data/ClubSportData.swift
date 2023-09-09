@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import UIKit
 // MARK: sports
 struct sport: Identifiable, Equatable {
     var sportname:String // name of sport
@@ -18,6 +19,7 @@ struct sport: Identifiable, Equatable {
     var sportscaptains:[String] // array of captains in sports
     var tags: [Int] // [gender tag, season tag, team tag] all ints
     var info: String
+    var imagedata: UIImage // NOT USED IN FIREBASE
     var documentID: String // NOT USED IN FIREBASE
     var sportid: String // NOT USED IN FIREBASE
     var id: Int // NOT USED IN FIREBASE
@@ -33,8 +35,6 @@ class sportsManager: ObservableObject {
         getFavorites { favorites in
             self.favoriteslist = favorites
         }
-        print("GOT FAVORITES:")
-        print(self.favoriteslist)
     }
     
     func getSports(completion: @escaping ([sport]) -> Void) {
@@ -65,7 +65,7 @@ class sportsManager: ObservableObject {
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
                     
-                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, documentID: documentID, sportid: sportid, id: id))
+                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
                     tempID = tempID + 1
                     returnvalue.append(sport)
                 }
@@ -138,14 +138,11 @@ class sportsManager: ObservableObject {
             
             self.getSports() { sports in
                 templist = sports
-                print("SPORTS")
-                print(templist)
                 
                 for item in templist {
                     for item2 in templist2 {
                         if "\(item.sportname) \(item.sportsteam)" == item2 {
                             returnlist.append(item)
-                            print("HOLY SHIT BOIS")
                         }
                     }
                 }
@@ -170,6 +167,7 @@ struct club: Identifiable, Equatable {
     let clubmembercount:String
     let clubmembers:[String]
     let adminemails:[String]
+    var imagedata: UIImage // NOT USED IN FIREBASE
     let documentID: String // NOT IN FIREBASE
     let id: Int // NOT IN FIREBASE
 }
@@ -181,8 +179,6 @@ class clubManager: ObservableObject {
     
     init() {
         getClubs() { clubs in
-            print("CLUBS BABYYYY")
-            print(clubs)
         }
         getFavorites { favorites in
             self.favoriteslist = favorites
@@ -215,7 +211,7 @@ class clubManager: ObservableObject {
                     let adminemails = data["adminemails"] as? [String] ?? []
                     let documentID = document.documentID
                     
-                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, documentID: documentID, id: id)
+                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, imagedata: UIImage(), documentID: documentID, id: id)
                     id = id + 1
                     returnvalue.append(club)
                  }
@@ -290,14 +286,11 @@ class clubManager: ObservableObject {
             templist2 = favorites
             self.getClubs { clubs in
                 templist = clubs
-                print("&&&& CLUBBBS")
-                print(templist)
                 
                 for item in templist {
                     for item2 in templist2 {
                         if item.clubname == item2 {
                             returnlist.append(item)
-                            print("FOUND ONE BOYS")
                         }
                     }
                 }

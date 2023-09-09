@@ -93,6 +93,7 @@ class studentachievementlist: ObservableObject{
             }
         }
         print("Article creating with ID: \(achievement.documentID)")
+        
     }
     
     func deleteAchievment(achievement: studentachievement, completion: @escaping (Error?) -> Void) {

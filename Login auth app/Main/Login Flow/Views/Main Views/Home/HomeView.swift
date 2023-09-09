@@ -45,6 +45,7 @@ struct HomeView: View {
             return firstDate < secondDate
         }.reversed()
         }
+    
     @EnvironmentObject var userInfo: UserInfo
     @State var date = Date()
     let yellow = Color(red: 0.976, green: 0.87, blue: 0.01)
@@ -78,9 +79,9 @@ struct HomeView: View {
                     .zIndex(1)
                     VStack{
 
-                        if false {
+                        if true { // MARK: IMAGE PICKER
                             NavigationLink {
-                                ImagePickerView(imagename: "1781EBCD-85F8-49A6-9ED5-AD4B2A56596B.jpg")
+                                ImagePickerView(imagename: "images/10AB63C7-53F9-4B5B-89CB-8B988E51AE2E.jpg")
                             } label: {
                                 
                                 HStack{

@@ -25,6 +25,10 @@ struct ClubsHibabi: View {
     @State var clubtempSelection = 1
     @State var clubshowingAllNews = 1
     @State private var clubcount = 0
+    
+    @State private var hasAppeared = false
+    @State var imagemanager = imageManager()
+
     class ScreenSize {
         let screen: CGRect
         let screenWidth: CGFloat
@@ -52,10 +56,13 @@ struct ClubsHibabi: View {
     @State var favoritesManager = FavoriteClubs()
     @State var favorites: [club] = []
     @State var searchText = ""
+    @State var imagesManager = imageManager()
     
     init() {
         clubNewsManager.getClubNews()
         newstitlearray = clubNewsManager.allclubsnewslist
+        
+        // getting club favorites
     }
     
     private var filteredClubs: [club] {
@@ -241,6 +248,36 @@ struct ClubsHibabi: View {
                 permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
                     self.hasPermissionClubs = result
                 }
+                
+                
+                if !hasAppeared {
+                    var tempylist: [club] = []
+                    let dispatchGroup = DispatchGroup() // Create a dispatch group
+                    
+                    for club in clubsmanager.allclublist {
+                        dispatchGroup.enter() // Enter the dispatch group
+                        print("club found")
+                        
+                        imagemanager.getImageFromStorage(fileName: club.clubimage) { image in
+                            
+                            var tempclub = club
+                            if let image = image {
+                                tempclub.imagedata = image
+                            }
+                            print("updated club:")
+                            print(tempclub) // Print tempclub, not club
+                            tempylist.append(tempclub) // Append tempclub to tempylist
+                            dispatchGroup.leave() // Leave the dispatch group when the closure is done
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) { [self] in // This block will be executed when all tasks are done
+                        self.clubsmanager.allclublist = tempylist
+                        print("ALL CLUBS LIST (UPDATED)")
+                    }
+                    hasAppeared = true
+                }
+                
             }
             
             .navigationTitle("Clubs")
@@ -248,7 +285,6 @@ struct ClubsHibabi: View {
 
     }
 }
-
 
 struct clubnewscell: View{
     var feat: clubNews
