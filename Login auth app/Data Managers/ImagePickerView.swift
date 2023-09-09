@@ -210,6 +210,21 @@ class imageManager: ObservableObject {
        return path
     }
     
+    func deleteImage(imageFileName: String, completion: @escaping (Error?) -> Void) {
+            let storageRef = Storage.storage().reference()
+            let fileRef = storageRef.child(imageFileName)
+            
+            fileRef.delete { error in
+                if let error = error {
+                    print("Error deleting image: \(error.localizedDescription)")
+                    completion(error)
+                } else {
+                    print("Image deleted successfully")
+                    completion(nil)
+                }
+            }
+        }
+    
     
 }
 

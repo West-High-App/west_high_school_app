@@ -104,6 +104,14 @@ struct ClubsDetailView: View {
 
                         if selected == 1{
                             VStack {
+                                
+                                if hasPermissionClub {
+                                    NavigationLink {
+                                        ClubsEventsAdminView(currentclub: currentclub.clubname)
+                                    } label: {
+                                        Text("Edit club events")
+                                    }
+                                }
 
                                 ForEach(upcomingeventlist) { event in
                                     HStack {
@@ -219,6 +227,8 @@ struct ClubsDetailView: View {
                     
                     permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { permission in
                         hasPermissionClub = permission
+                        print("HAS PERMISSION BRO WHAAAT")
+                        print(hasPermissionClub)
                     }
                     if currentclub.adminemails.contains(userInfo.email) {
                         hasPermissionClub = true

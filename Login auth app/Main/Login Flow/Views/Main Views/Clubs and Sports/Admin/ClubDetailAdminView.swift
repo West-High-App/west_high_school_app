@@ -40,7 +40,7 @@ struct ClubDetailAdminView: View {
     
     // images
     @StateObject var imagemanager = imageManager()
-    @State var originalImage = UIImage()
+    @State var originalImage = ""
     @State var displayimage: UIImage?
     @State var isDisplayingAddImage = false
     
@@ -215,7 +215,7 @@ struct ClubDetailAdminView: View {
                 }
                 
                 Section("Image") {
-                        Image(uiImage: editingclub.imagedata)
+                    Image(uiImage: displayimage ?? editingclub.imagedata)
                             .resizable()
                             .frame(width: 200, height: 200)
                             .cornerRadius(10)
@@ -250,6 +250,12 @@ struct ClubDetailAdminView: View {
                                 clubimage = imagemanager.uploadPhoto(file: displayimage)
                             }
                             
+                            imagemanager.deleteImage(imageFileName: originalImage) { error in
+                                if let error = error {
+                                    print(error.localizedDescription)
+                                }
+                            }
+                            
                             clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, imagedata: UIImage(), documentID: editingclub.documentID, id: 0)
                             
                             if let clubtoedit = clubtoedit {
@@ -278,6 +284,8 @@ struct ClubDetailAdminView: View {
                 adminemails = editingclub.adminemails
                 
                 //images
+                
+                originalImage = editingclub.clubimage
                 imagemanager.getImageFromStorage(fileName: clubimage) { image in
                     displayimage = image
                     print("IMNAGE")

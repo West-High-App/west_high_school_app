@@ -114,7 +114,7 @@ struct ClubsHibabi: View {
                         
                     }
                     
-                    if clubselected == 1 && vmm.clubsavedItems.count == 0 {
+                    if clubselected == 1 && clubsmanager.favoriteslist.count == 0 {
                         VStack {
                             Spacer()
                             Text("Add a club to get started!")
@@ -146,7 +146,7 @@ struct ClubsHibabi: View {
                                                     .environmentObject(vmm)
                                             } label: {
                                                 HStack {
-                                                    Image(item.clubimage)
+                                                    Image(uiImage: item.imagedata)
                                                         .resizable()
                                                         .aspectRatio(contentMode: .fill)
                                                         .frame(width: 50, height: 50)
@@ -184,7 +184,7 @@ struct ClubsHibabi: View {
                                                     .environmentObject(vmm)
                                             } label: {
                                                 HStack {
-                                                    Image(item.clubimage)
+                                                    Image(uiImage: item.imagedata)
                                                         .resizable()
                                                         .aspectRatio(contentMode: .fill)
                                                         .frame(width: 50, height: 50)
@@ -275,6 +275,30 @@ struct ClubsHibabi: View {
                         self.clubsmanager.allclublist = tempylist
                         print("ALL CLUBS LIST (UPDATED)")
                     }
+                    
+                    var tempylist2: [club] = []
+                    
+                    for club in clubsmanager.favoriteslist {
+                        dispatchGroup.enter()
+                        
+                        imagemanager.getImageFromStorage(fileName: club.clubimage) { image in
+                            
+                            var tempclub2 = club
+                            if let image = image {
+                                tempclub2.imagedata = image
+                            }
+                            
+                            tempylist2.append(tempclub2)
+                            dispatchGroup.leave()
+                            
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) { [self] in
+                        self.clubsmanager.favoriteslist = tempylist2
+                    }
+                    
+                    
                     hasAppeared = true
                 }
                 
