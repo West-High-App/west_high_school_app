@@ -11,7 +11,6 @@
 - sort other stuff by alphabetical order - august
 - loading view for loading stuff
 - make sure it doesn't crash when there's not enough data - august/aiden
-- fix ui for news article (its ugly af) - aiden
 - search for announcements (just implement search bar so you can search inside the text, not the title) - august/aiden
 - make members count the actual members count - august
 - provide defaults if there is no data for everything
