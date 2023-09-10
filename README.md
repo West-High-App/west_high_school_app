@@ -13,6 +13,7 @@
 - make sure it doesn't crash when there's not enough data - august/aiden
 - search for announcements (just implement search bar so you can search inside the text, not the title) - august/aiden
 - make members count the actual members count - august
+- internet connection error if there is no internet connection
 - provide defaults if there is no data for everything
 - remove news articles filters
 - final ui changes (homeview thingy, edit buttons, standard font, make upcoming events happy, font size smaller in news, default rounded corners size, crop image in news, touch up school socials)
