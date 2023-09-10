@@ -1,7 +1,6 @@
 # What needs to happen this weekend:
 (// means done)
-- implement photos for all data types (general photo class for all photos which gets initialized at home so they don't have to update every time)
-- filters for sports - august
+- implement photos for all data types (general initial update not individual initializers)
 - general permissions manager in app (admins can use to manager who can edit general permissions fields) - august
 - variables refreshing when updated to firebase (possibly DispatchQueue.main.async, or related to @State vs. @StateObject) - aiden
 - info view (move things around, replace contact and staff with webview, remove settings, move privacy policy, etc.) - aiden
