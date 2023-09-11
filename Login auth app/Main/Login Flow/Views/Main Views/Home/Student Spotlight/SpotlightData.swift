@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-struct studentachievement: Identifiable{
+struct studentachievement: Identifiable, Equatable{
     let id = UUID()
     let documentID: String
     let achievementtitle:String
@@ -16,14 +16,16 @@ struct studentachievement: Identifiable{
     let articleauthor:String
     let publisheddate:String
     let images:[String]
-}
+    var imagedata: [UIImage] // , imagedata: []
+ }
 class studentachievementlist: ObservableObject{
     
     @Published var allstudentachievementlist: [studentachievement] = []
     @Published var newstitlearray: [studentachievement] = []
-    @Published var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""])
-    @Published var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""])
-    @Published var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""])
+    @Published var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
+    @Published var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
+    @Published var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
+    @StateObject var imagemanager = imageManager()
 
     
     init() {
@@ -49,7 +51,7 @@ class studentachievementlist: ObservableObject{
                     let images = data["images"] as? [String] ?? []
                     let documentID = document.documentID
                     
-                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images)
+                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, imagedata: [])
                     templist.append(achievement)
                 }
                 
@@ -108,5 +110,41 @@ class studentachievementlist: ObservableObject{
         }
         print("Achievement deleted")
     }
-
+    
+    
+    func getImageData(articlelist: [studentachievement], completion: @escaping ([studentachievement]) -> Void) {
+        var spotlightarticles = articlelist
+        var returnlist: [studentachievement] = []
+        
+        let dispatchGroup = DispatchGroup()
+        
+        for article in spotlightarticles {
+            var tempimages: [UIImage] = []
+            
+            for imagepath in article.images {
+                dispatchGroup.enter()
+                imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
+                    if let uiimage = uiimage {
+                        tempimages.append(uiimage)
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                let updatedArticle = studentachievement(
+                    documentID: article.documentID,
+                    achievementtitle: article.achievementtitle,
+                    achievementdescription: article.achievementdescription,
+                    articleauthor: article.articleauthor,
+                    publisheddate: article.publisheddate,
+                    images: article.images,
+                    imagedata: tempimages
+                )
+                returnlist.append(updatedArticle)
+                spotlightarticles = returnlist
+                completion(spotlightarticles)
+            }
+        }
+    }
 }

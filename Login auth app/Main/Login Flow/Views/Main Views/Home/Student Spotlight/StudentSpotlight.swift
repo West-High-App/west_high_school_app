@@ -12,6 +12,9 @@ struct StudentSpotlight: View {
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
     var spotlightManager = studentachievementlist()
+    @StateObject var imagemanager = imageManager()
+    @State var spotlightarticles: [studentachievement] = []
+    @State var hasAppeared = false
     @State var newstitlearray: [studentachievement] = []
     // delete init under if being stupid
     init() {
@@ -31,7 +34,7 @@ struct StudentSpotlight: View {
         //NavigationView{
         VStack {
 
-            List(spotlightManager.allstudentachievementlist, id: \.id)
+            List(spotlightarticles, id: \.id)
             {news in
                 achievementcell(feat: news)
                     .background( NavigationLink("", destination: SpotlightArticles(currentstudentdub: news)).opacity(0) )
@@ -40,22 +43,53 @@ struct StudentSpotlight: View {
             }
         }
         .onAppear {
-            permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
-                self.hasPermissionSpotlight = result
+            
+            if !hasAppeared {
+            spotlightarticles = spotlightManager.allstudentachievementlist
+            var returnlist: [studentachievement] = []
+            
+            let dispatchGroup = DispatchGroup() // Create a Dispatch Group
+            
+            for article in spotlightarticles {
+                var tempimages: [UIImage] = []
+                
+                for imagepath in article.images {
+                    dispatchGroup.enter() // Enter the Dispatch Group before each async call
+                    imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
+                        if let uiimage = uiimage {
+                            tempimages.append(uiimage)
+                        }
+                        dispatchGroup.leave() // Leave the Dispatch Group when the async call is done
+                    }
+                }
+                
+                dispatchGroup.notify(queue: .main) { // This block will be executed after all async calls are done
+                    returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
+                    
+                    spotlightarticles = returnlist
+                    
+                    permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
+                        self.hasPermissionSpotlight = result
+                    }
+                }
             }
-        }            .navigationBarTitle(Text("Student Spotlight"))
+            
+            hasAppeared = true
+        }
+        }
 
-
+        .navigationBarTitle(Text("Student Spotlight"))
         }
     }
     
     
     struct achievementcell: View{
         var feat: studentachievement
-        
+        @StateObject var imagemanager = imageManager()
+        @State var imagedata: [UIImage] = []
         var body:some View{
             VStack{
-                Image(feat.images.first!)
+                Image(uiImage: feat.imagedata.first ?? UIImage())
                     .resizable()
                     .cornerRadius(10)
                     .aspectRatio(contentMode: .fit)

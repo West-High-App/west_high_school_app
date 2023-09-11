@@ -15,41 +15,53 @@ struct SplashScreenView: View {
     @State private var opacity = 0.5
     
     var body: some View {
-        if isActive{
+        
+        ZStack {
             AuthView()
-        }
-        else{
-            ZStack{
-                westblue
-                VStack{
-                    ZStack{
-                        Image("Regents Logo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width:300)
-                            .padding(30)
+            
+            if !isActive {
+                ZStack{
+                    westblue
+                    VStack{
+                        ZStack{
+                            Image("Regents Logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width:300)
+                                .padding(30)
+                        }
+                        .scaleEffect(size)
+                        .opacity(opacity)
+                        .onAppear{
+                            withAnimation(.easeIn(duration: 1.2)){
+                                self.size = 0.9
+                                self.opacity = 1.0
+                            }
+                        }
                     }
-                    .scaleEffect(size)
-                    .opacity(opacity)
                     .onAppear{
-                        withAnimation(.easeIn(duration: 1.2)){
-                            self.size = 0.9
-                            self.opacity = 1.0
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5){
+                            withAnimation {
+                                self.isActive = true
+                            }
                         }
                     }
                 }
-                .onAppear{
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
-                        self.isActive = true
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        withAnimation(.linear(duration: 0.5)) {
+                            self.opacity = 0.0
+                        }
                     }
                 }
+                
+                .ignoresSafeArea()
+                
+                
             }
-            .ignoresSafeArea()
-
-
         }
         
-
     }
 }
 

@@ -56,7 +56,7 @@ struct ImagePickerView: View {
                     imagename = uploadPhoto()
                     getImageFromStorage(fileName: imagename) { image in
                         imagetoshow = image
-                        print(imagetoshow)
+                        print(imagetoshow ?? "")
                     }
                 } label: {
                     Text("Publish Image")
@@ -170,7 +170,7 @@ class imageManager: ObservableObject {
     @State var imagename: String = ""
     
     func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
-        
+            print("FILENAME : \(fileName)")
             let storageRef = Storage.storage().reference()
             let fileRef = storageRef.child(fileName)
             fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
@@ -179,6 +179,7 @@ class imageManager: ObservableObject {
                         completion(image)
                     } else {
                         completion(nil)
+                        print("Completion 1")
                     }
                 } else {
                     print("ERROR")

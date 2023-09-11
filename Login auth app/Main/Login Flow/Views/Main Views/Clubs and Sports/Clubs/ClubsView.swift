@@ -26,6 +26,8 @@ struct ClubsHibabi: View {
     @State var clubshowingAllNews = 1
     @State private var clubcount = 0
     
+    @State private var isLoading = false
+    
     @State private var hasAppeared = false
     @State var imagemanager = imageManager()
 
@@ -134,6 +136,9 @@ struct ClubsHibabi: View {
                     }
                     else {
                         VStack {
+                            if isLoading {
+                                Text("Loading")
+                            }
                             if clubselected == 1 {
                                 if userInfo.loginStatus != "google" {
                                     Text("Log in to save favorites!")
@@ -251,15 +256,17 @@ struct ClubsHibabi: View {
                 
                 
                 if !hasAppeared {
+                    isLoading = true
+                    print("IS LOADING = TURE")
                     let dispatchGroup = DispatchGroup()
 
                     var tempylist2: [club] = []
-                    
+                    print("1")
                     for club in clubsmanager.favoriteslist {
                         dispatchGroup.enter()
                         
                         imagemanager.getImageFromStorage(fileName: club.clubimage) { image in
-                            
+                            print("2")
                             var tempclub2 = club
                             if let image = image {
                                 tempclub2.imagedata = image
@@ -274,7 +281,7 @@ struct ClubsHibabi: View {
                     dispatchGroup.notify(queue: .main) { [self] in
                         self.clubsmanager.favoriteslist = tempylist2
                     }
-                    
+                    print("3")
                     var tempylist: [club] = []
                     
                     for club in clubsmanager.allclublist {
@@ -301,6 +308,9 @@ struct ClubsHibabi: View {
                     
                     
                     hasAppeared = true
+                    isLoading = false
+                    print("IS LOADING = FALSE")
+
                 }
                 
             }

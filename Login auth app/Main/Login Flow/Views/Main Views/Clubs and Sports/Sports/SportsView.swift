@@ -72,31 +72,25 @@ struct SportsHibabi: View {
     }
     // MARK: functions
         
-    func filteredList(fromList: [sport]) -> [sport] {
-        templist = []
-        for item in vm.filteredItems {
-            var shouldAdd = true
-            if selectedGender != 1 {
-                if item.tags[0] != selectedGender {
-                    shouldAdd = false
-                }
-            }
-            if selectedSeason != 1 {
-                if item.tags[1] != selectedSeason {
-                    shouldAdd = false
-                }
-            }
-            if selectedTeam != 1 {
-                if item.tags[2] != selectedSeason {
-                    shouldAdd = false
-                }
-            }
-            if shouldAdd {
-                templist.append(item)
+    func filteredList(fromList list: [sport]) -> [sport] {
+        if selectedGender == 1 && selectedSeason == 1 && selectedTeam == 1 {
+            // All filters are set to 1, return the original list
+            return list
+        } else {
+            return list.filter { sport in
+                let sportTags = sport.tags // Assuming tags is an array of ints [Int]
+                
+                // Check if the selected filters match the sport's tags
+                let genderMatch = selectedGender == 1 || sportTags[0] == selectedGender
+                let seasonMatch = selectedSeason == 1 || sportTags[1] == selectedSeason
+                let teamMatch = selectedTeam == 1 || sportTags[2] == selectedTeam
+                
+                return genderMatch && seasonMatch && teamMatch
             }
         }
-        return templist
     }
+
+
     
     func countFilters() -> String{
         var filterz = 0
@@ -192,7 +186,7 @@ struct SportsHibabi: View {
                             }
                         }
                         List { // MARK: foreach my sports
-                            ForEach(sportsmanager.favoriteslist) { item in
+                            ForEach(filteredList(fromList: sportsmanager.favoriteslist)) { item in
                                 if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                     NavigationLink {
                                         SportsMainView(selectedsport: item)
@@ -273,7 +267,7 @@ struct SportsHibabi: View {
                             }
                         }
                         List { // MARK: foreach browse
-                            ForEach(filteredSports) { item in
+                            ForEach(filteredList(fromList: filteredSports)) { item in
                                 if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                     NavigationLink {
                                         SportsMainView(selectedsport: item)

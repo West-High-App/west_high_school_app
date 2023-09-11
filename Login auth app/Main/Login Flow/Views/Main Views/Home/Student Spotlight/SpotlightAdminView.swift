@@ -13,6 +13,11 @@ struct SpotlightAdminView: View {
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var achievementToDelete: studentachievement?
     
+    @StateObject var imagemanager = imageManager()
+    @State var displayimages: [UIImage] = []
+    @State var currentimage: UIImage?
+    @State var isDisplayingAddImage = false
+    
     var body: some View {
         VStack {
             Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
@@ -39,12 +44,15 @@ struct SpotlightAdminView: View {
                             achievementToDelete = achievement
                         }
                     }
+                    .onTapGesture {
+                        print("TAPPED THAT SHIT")
+                    }
             }
             .navigationBarTitle(Text("Edit Achievements"))
         }
-        .sheet(isPresented: $isPresentingAddAchievement) {
-            AchievementDetailView(dataManager: dataManager)
-        }
+       .sheet(isPresented: $isPresentingAddAchievement) {
+           AchievementDetailView(dataManager: dataManager, editingAchievement: nil, displayimages: [])
+       }
         .sheet(item: $selectedAchievement) { achievement in
             AchievementDetailView(dataManager: dataManager, editingAchievement: achievement)
         }
@@ -80,6 +88,7 @@ struct AchievementRowView: View {
                     .font(.subheadline)
                 Text(achievement.achievementdescription)
                     .font(.subheadline)
+                    .lineLimit(3)
                 Text(achievement.articleauthor)
                     .font(.subheadline)
             }
@@ -101,7 +110,12 @@ struct AchievementDetailView: View {
     @State private var articleAuthor = ""
     @State private var publishedDate = ""
     
+    @StateObject var imagemanager = imageManager()
     var editingAchievement: studentachievement?
+    @State var displayimages: [String] = []// make string
+    @State var displayimagesdata: [UIImage] = [] // init to get this from displayimages
+    @State var currentimage: UIImage?
+    @State var isDisplayingAddImage = false
     
     // Define arrays for month and day options
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -120,6 +134,33 @@ struct AchievementDetailView: View {
                     TextField("Published Date", text: $publishedDate)
                 }
                 
+                Section("Image") {
+                    List {
+                        ForEach(displayimagesdata, id: \.self) { image in
+                            
+                            Image(uiImage: image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 200, height: 200)
+                                .cornerRadius(10)
+                        }
+                    }
+                    Button("Upload New Image") {
+                        isDisplayingAddImage = true
+                    }
+                    
+                    .sheet(isPresented: $isDisplayingAddImage) {
+                        ImagePicker(selectedImage: $currentimage, isPickerShowing: $isDisplayingAddImage)
+                    }
+                }.onChange(of: currentimage) { newImage in
+                    if let currentimage = newImage {
+                        print("UPDATED IMAGE")
+                        displayimagesdata.append(currentimage)
+                        print(displayimagesdata)
+                    }
+                }
+
+
                 Button("Publish New Achievement") {
                     isConfirmingAddAchievement = true
                 }
@@ -133,13 +174,20 @@ struct AchievementDetailView: View {
                     title: Text("You Are Publishing Changes"),
                     message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(achievementTitle)\nDescription: \(achievementDescription)\nAuthor: \(articleAuthor)\nPublished Date: \(publishedDate)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
+                        
+                        
+                        var images: [String] = []
+                        for image in displayimagesdata {
+                            images.append(imagemanager.uploadPhoto(file: image))
+                        }
+                        
                         let achievementToSave = studentachievement(
                             documentID: "NAN",
                             achievementtitle: achievementTitle,
                             achievementdescription: achievementDescription,
                             articleauthor: articleAuthor,
                             publisheddate: publishedDate,
-                            images: []
+                            images: images, imagedata: []
                         )
                         dataManager.createAchievement(achievement: achievementToSave) { error in
                             if let error = error {
@@ -159,6 +207,16 @@ struct AchievementDetailView: View {
                     articleAuthor = achievement.articleauthor
                     publishedDate = achievement.publisheddate
                 }
+               
+                for image in displayimages {
+                    
+                    imagemanager.getImageFromStorage(fileName: image) { uiimage in
+                        if let uiimage = uiimage {
+                            displayimagesdata.append(uiimage)
+                        }
+                    }
+                }
+                
             }
         }
     }

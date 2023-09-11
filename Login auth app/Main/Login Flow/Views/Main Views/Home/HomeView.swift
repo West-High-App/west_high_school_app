@@ -31,6 +31,7 @@ struct HomeView: View {
     //var safeArea: EdgeInsets
     //var size: CGSize
     // delete init under if being stupid
+
     init(safeArea: EdgeInsets, size: CGSize) {
         self.safeArea = safeArea
         self.size = size
@@ -45,6 +46,11 @@ struct HomeView: View {
             return firstDate < secondDate
         }.reversed()
         }
+    
+    @State var hasAppeared = false
+    
+    @StateObject var imagemanager = imageManager()
+    @State var spotlightarticles: [studentachievement] = []
     
     @EnvironmentObject var userInfo: UserInfo
     @State var date = Date()
@@ -61,6 +67,7 @@ struct HomeView: View {
         }
     }
     
+
     // MARK: VIEW
     var safeArea: EdgeInsets
     var size: CGSize
@@ -99,7 +106,7 @@ struct HomeView: View {
                                     .padding(.leading, 15)
                                     .foregroundColor(westblue)
                                     .bold()
-                                    .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
+                                    .font(.system(size: 24, weight: .semibold, design: .rounded))
                                     //.padding(.horizontal)
                                     //.padding(.vertical, -5)
 
@@ -110,6 +117,7 @@ struct HomeView: View {
                                     HStack{
                                         Text("See more")
                                             .padding(.trailing,-15)
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
                                     }
                                     .padding(.horizontal,34)
                                 }.foregroundStyle(.blue)
@@ -140,6 +148,7 @@ struct HomeView: View {
                                     Text("Edit Upcoming Events")
                                         .foregroundColor(.blue)
                                         .padding(10)
+                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
                                         .background(Rectangle()
                                             .foregroundColor(.white)
                                             .cornerRadius(10)
@@ -174,8 +183,7 @@ struct HomeView: View {
                                 Text("Student Spotlight")
                                     .foregroundColor(westblue)
                                     .bold()
-                                    .font(
-                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
+                                    .font(.system(size: 24, weight: .semibold, design: .rounded))
                                     .padding(.horizontal)
 
                                 Spacer()
@@ -185,6 +193,7 @@ struct HomeView: View {
                                 } label: {
                                     HStack{
                                         Text("See more")
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
                                             .padding(.trailing,-15)
                                     }
                                     .padding(.horizontal,34)
@@ -225,20 +234,26 @@ struct HomeView: View {
                             }
                             
                             VStack { // articles
-                                NavigationLink {
-                                    SpotlightArticles(currentstudentdub: spotlightManager.firstcurrentevent)
-                                } label: {
-                                    MostRecentAchievementCell(feat: spotlightManager.firstcurrentevent)
+                                if spotlightarticles.count > 0 {
+                                    NavigationLink { // ADD IFS HERE
+                                        SpotlightArticles(currentstudentdub: spotlightarticles[0])
+                                    } label: {
+                                        MostRecentAchievementCell(feat: spotlightarticles[0])
+                                    }
                                 }
-                                NavigationLink {
-                                    SpotlightArticles(currentstudentdub: spotlightManager.secondcurrentevent)
-                                } label: {
-                                    MostRecentAchievementCell(feat: spotlightManager.secondcurrentevent)
+                                if spotlightarticles.count > 1 {
+                                    NavigationLink {
+                                        SpotlightArticles(currentstudentdub: spotlightarticles[1])
+                                    } label: {
+                                        MostRecentAchievementCell(feat: spotlightarticles[1])
+                                    }
                                 }
-                                NavigationLink {
-                                    SpotlightArticles(currentstudentdub: spotlightManager.thirdcurrentevent)
-                                } label: {
-                                    MostRecentAchievementCell(feat: spotlightManager.thirdcurrentevent)
+                                if spotlightarticles.count > 2 {
+                                    NavigationLink {
+                                        SpotlightArticles(currentstudentdub: spotlightarticles[2])
+                                    } label: {
+                                        MostRecentAchievementCell(feat: spotlightarticles[2])
+                                    }
                                 }
 
 
@@ -253,50 +268,53 @@ struct HomeView: View {
                     }
                     .zIndex(0)
                     
-                    Button {
-                        let center = UNUserNotificationCenter.current()
-                        
-                        let content = UNMutableNotificationContent()
-                        content.title = "Emergency Announcment"
-                        content.body = "skool is getting shot up guys run"
-                        
-                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-                        
-                        //creating request
-                        let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
-                        
-                        center.add(request){error in
-                            if let error = error {
-                                print(error)
+                    if false {
+                        Button {
+                            let center = UNUserNotificationCenter.current()
+                            
+                            let content = UNMutableNotificationContent()
+                            content.title = "Emergency Announcment"
+                            content.body = "skool is getting shot up guys run"
+                            
+                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                            
+                            //creating request
+                            let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
+                            
+                            center.add(request){error in
+                                if let error = error {
+                                    print(error)
+                                }
                             }
+                        } label: {
+                            
+                            HStack{
+                                Spacer()
+                                Image(systemName: "bell.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width:20)
+                                Text("Send Notification")
+                                    .fontWeight(.semibold)
+                                    .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
+                                Image(systemName: "bell.fill")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width:20)
+                                Spacer()
+                                
+                            }
+                            .padding(.vertical, 8)
+                            .background(Rectangle()
+                                .cornerRadius(9.0)
+                                .padding(.horizontal)
+                                .shadow(radius: 5, x: 3, y: 3)
+                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                         }
-                    } label: {
-                        
-                        HStack{
-                            Spacer()
-                            Image(systemName: "bell.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width:20)
-                            Text("Send Notification")
-                                .fontWeight(.semibold)
-                                .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
-                            Image(systemName: "bell.fill")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width:20)
-                            Spacer()
-
-                        }
-                        .padding(.vertical, 8)
-                        .background(Rectangle()
-                            .cornerRadius(9.0)
-                            .padding(.horizontal)
-                            .shadow(radius: 5, x: 3, y: 3)
-                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                     }
                     
                 }
+                .padding(.bottom, 10)
                 .overlay(alignment: .top) {
                     HeaderView()
                 }
@@ -309,6 +327,45 @@ struct HomeView: View {
                     permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
                         self.hasPermissionUpcomingEvents = result
                     }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
+                        // MARK: this is stupid but fuck it
+                        if !hasAppeared {
+                            spotlightarticles = spotlightManager.allstudentachievementlist
+                            var returnlist: [studentachievement] = []
+                            
+                            let dispatchGroup = DispatchGroup()
+                            
+                            for article in spotlightarticles {
+                                var tempimages: [UIImage] = []
+                                
+                                for imagepath in article.images {
+                                    dispatchGroup.enter()
+                                    imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
+                                        if let uiimage = uiimage {
+                                            print("SUCCESFULLY RETRIEVED UI IMAGE")
+                                            print(uiimage)
+                                            tempimages.append(uiimage)
+                                        }
+                                        dispatchGroup.leave()
+                                    }
+                                }
+                                
+                                dispatchGroup.notify(queue: .main) {
+                                    returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
+                                    
+                                    spotlightarticles = returnlist
+                                    print("SPOTLIGHT ARTICLES:")
+                                    print(spotlightarticles)
+                                }
+                            }
+                            
+                            hasAppeared = true
+                        }
+                    }
+                    
+                    
                 }
                 
             }
@@ -354,8 +411,7 @@ struct HomeView: View {
                             Text(date, style: .date)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.2)
-                                .font(
-                                    .custom("Trebuchet MS", fixedSize: 50))
+                                .font(.system(size: 50, weight: .semibold, design: .rounded))
                                 .foregroundColor(yellow)
                                 .padding(.horizontal)
                                 .fontWeight(.semibold)
@@ -369,8 +425,7 @@ struct HomeView: View {
                                     .lineLimit(2)
                                     .minimumScaleFactor(0.2)
                                     .multilineTextAlignment(.center)
-                                    .font(
-                                        .custom("Trebuchet MS", fixedSize: 32))
+                                    .font(.system(size: 32, weight: .semibold, design: .rounded))
                                     .fontWeight(.medium)
                                     .padding(.horizontal)
                                     .foregroundColor(westyellow)
@@ -381,8 +436,8 @@ struct HomeView: View {
                                     .lineLimit(2)
                                     .minimumScaleFactor(0.2)
                                     .multilineTextAlignment(.center)
-                                    .font(
-                                        .custom("Trebuchet MS", fixedSize: 32))
+                                    .font(.system(size: 32, weight: .semibold, design: .rounded))
+                                    .fontWeight(.medium)
                                     .fontWeight(.medium)
                                     .padding(.horizontal)
                                     .foregroundColor(westyellow)
@@ -428,7 +483,7 @@ struct HomeView: View {
                         Spacer()
                         Text("REGENTS")
                             .offset(y:15)
-                            .font(                                .custom("Trebuchet MS", fixedSize: 30))
+                            .font(.system(size: 30, weight: .semibold, design: .rounded))
                             .foregroundStyle(westyellow)
                             .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                             .offset(y: -titleProgress < 0.75 ? 0 : 100)
@@ -509,13 +564,14 @@ struct MostRecentAnnouncementCell: View{
             HStack {
                 Text(news.title)
                     .foregroundColor(.black)
-                    .fontWeight(.semibold)
+                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .fontWeight(.medium)
                     .padding(.horizontal)
                     .padding(.vertical, -5)
                 Spacer()
                 Text(news.publisheddate)
                     .foregroundColor(.gray)
-                    .fontWeight(.regular)
+                    .font(.system(size: 17, weight: .regular, design: .rounded))
                     .padding(.horizontal)
                     .padding(.vertical, -5)
             }
@@ -525,6 +581,7 @@ struct MostRecentAnnouncementCell: View{
             
             Text(news.description)
                 .lineLimit(3)
+                .font(.system(size: 17, weight: .regular, design: .rounded))
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.black)
                 .padding(.horizontal)
@@ -533,6 +590,8 @@ struct MostRecentAnnouncementCell: View{
                 Spacer()
                 Text("Read more...")
                     .padding(.horizontal)
+                    .font(.system(size: 17, weight: .regular, design: .rounded))
+
                     .padding(.top, 1)
                     .foregroundColor(.gray)
                 Spacer()
@@ -554,18 +613,19 @@ struct UpcomingEventCell: View{
         HStack {
             VStack {
                 Text(event.month)
-                    .font(.system(size: 14))
+                    .font(.system(size: 14, weight: .regular, design: .rounded))
                     .foregroundColor(.red)
                 Text(event.day)
-                    .font(.system(size: 24))
+                    .font(.system(size: 24, weight: .regular, design: .rounded))
             }.padding(.vertical, -5)
                 .padding(.leading, 20)
                 .padding(.trailing, 10)
             Divider()
             VStack(alignment: .leading) {
                 Text(event.eventname)
-                    .fontWeight(.semibold)
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
                 Text(event.time)
+                    .font(.system(size: 17, weight: .regular, design: .rounded))
             }.padding(.vertical, -5)
                 .padding(.horizontal)
             Spacer()
@@ -579,10 +639,21 @@ struct UpcomingEventCell: View{
 
 struct MostRecentAchievementCell: View{
     var feat: studentachievement
+    @StateObject var imagemanager = imageManager()
+    @State var imagedata = UIImage()
+    
+    func refreshImage() {
+        imagemanager.getImageFromStorage(fileName: feat.images.first!) { uiimage in
+            if let uiimage = uiimage {
+                print("GOT HOME IMAGE DATA")
+                imagedata = uiimage
+            }
+        }
+    }
     
     var body:some View{
         VStack(alignment:.leading){
-            Image(feat.images.first!)
+            Image(uiImage: imagedata)
                 .resizable()
                 .cornerRadius(10)
                 .aspectRatio(contentMode: .fit)
@@ -622,6 +693,18 @@ struct MostRecentAchievementCell: View{
 
             }
         }
+        
+        .onAppear {
+            
+            imagemanager.getImageFromStorage(fileName: feat.images.first!) { uiimage in
+                if let uiimage = uiimage {
+                    print("GOT HOME IMAGE DATA")
+                    imagedata = uiimage
+                }
+            }
+            
+        }
+        
         .padding(.horizontal)
         .padding(.vertical)
         .background(Rectangle()

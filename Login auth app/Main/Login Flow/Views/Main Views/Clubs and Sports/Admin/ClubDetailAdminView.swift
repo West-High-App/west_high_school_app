@@ -227,6 +227,9 @@ struct ClubDetailAdminView: View {
                 }
                 .sheet(isPresented: $isDisplayingAddImage) {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
+                        .onDisappear() {
+                            print("DISAPPEARED")
+                        }
                 }
                 
                 Button {

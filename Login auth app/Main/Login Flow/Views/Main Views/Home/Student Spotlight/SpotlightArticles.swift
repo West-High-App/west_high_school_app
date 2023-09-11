@@ -9,6 +9,12 @@ import SwiftUI
 
 struct SpotlightArticles: View {
     var currentstudentdub: studentachievement
+    
+    @State var imagemanager = imageManager()
+    @State var spotlightmanager = studentachievementlist()
+    @State var imagesdata: [UIImage] = []
+    @State var hasAppeared = false
+    
     var body: some View {
         GeometryReader { geo in
         ScrollView{
@@ -17,21 +23,20 @@ struct SpotlightArticles: View {
                         TabView {
                             
                             // Loop through each recipe
-                            ForEach (0..<currentstudentdub.images.count) { index in
+                            ForEach(currentstudentdub.imagedata.indices, id: \.self) { index in
                                 ZStack {
                                     Rectangle()
                                         .foregroundColor(.white)
                                     
                                     VStack(spacing: 0) {
-                                        Image(currentstudentdub.images[index])
+                                        Image(uiImage: currentstudentdub.imagedata[index])
                                             .resizable()
                                             .aspectRatio(contentMode: .fill)
                                             .clipped()
                                     }
                                 }
-                                .frame(width: geo.size.width - 40, height: geo.size.height - 100, alignment: .center)
-                                .cornerRadius(15)
                             }
+
                             
                         }
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
@@ -43,6 +48,9 @@ struct SpotlightArticles: View {
 
                     .padding()
                     Spacer()
+                }.onAppear {
+                    print("WOKRING LIST??")
+                    print(currentstudentdub.imagedata)
                 }
 //                Image(currentstudentdub.images.first!)
 //                    .resizable()
@@ -95,7 +103,10 @@ struct SpotlightArticles: View {
                         .padding(.vertical, 5)
                 }
 
-            }
+        }.onAppear {
+            ()
+        }
+
         }
         
     }
@@ -103,7 +114,7 @@ struct SpotlightArticles: View {
 
 struct SpotlightArticles_Previews: PreviewProvider {
     static var previews: some View {
-        SpotlightArticles(currentstudentdub: studentachievement(documentID: "testID" , achievementtitle: "test", achievementdescription: "building go boom boom", articleauthor: "alah akbar", publisheddate: "Sept 11, 2001", images: ["west", "west"]))
+        SpotlightArticles(currentstudentdub: studentachievement(documentID: "testID" , achievementtitle: "test", achievementdescription: "building go boom boom", articleauthor: "alah akbar", publisheddate: "Sept 11, 2001", images: ["west", "west"], imagedata: []))
     }
 }
 //(documentID: "testID", title: "Test", publisheddate: "Jan 5, 2023", description: "Description", newsimagename: "West Regents Logo")

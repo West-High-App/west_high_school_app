@@ -207,6 +207,7 @@ struct HelpSupportView: View {
                 .cornerRadius(20)
                 .padding(.horizontal,5)
             }
+            
             .padding(.horizontal, 5)
             
         }
