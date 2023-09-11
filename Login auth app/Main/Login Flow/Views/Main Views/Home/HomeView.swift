@@ -3,7 +3,7 @@
 //  West Ap
 //
 //  Created by August Andersen on 5/19/23.
-//
+// testing push from west_high_app_2 (i think)
 
 import SwiftUI
 import UserNotifications
