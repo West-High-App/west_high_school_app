@@ -4,7 +4,6 @@
 - general permissions manager in app (admins can use to manager who can edit general permissions fields) - august
 - variables refreshing when updated to firebase (possibly DispatchQueue.main.async, or related to @State vs. @StateObject) - aiden
 - info view (move things around, replace contact and staff with webview, remove settings, move privacy policy, etc.) - aiden
-- update privacy policy/terms of service - august
 - ui for guest log in - aiden
 - date manager - aiden
 - sort other stuff by alphabetical order - august
