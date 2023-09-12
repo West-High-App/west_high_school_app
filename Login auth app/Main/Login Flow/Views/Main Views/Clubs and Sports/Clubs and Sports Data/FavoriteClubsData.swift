@@ -31,8 +31,6 @@ class FavoriteClubs: ObservableObject {
                         let favoritedClubs = data["favoritedClubs"] as? [String] ?? []
                         if email == user {
                             returnvalue = favoritedClubs
-                            print(returnvalue)
-                            print("CLUb RETURN VALUE")
                         }
                     }
                 }

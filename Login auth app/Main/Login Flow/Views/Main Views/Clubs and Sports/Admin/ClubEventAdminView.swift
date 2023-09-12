@@ -70,8 +70,6 @@ struct ClubsEventsAdminView: View {
                 }
                 if let events = events {
                     eventlist = events
-                    print("UPDATED THAT SHIT")
-                    print(eventlist)
                 }
             }
         }

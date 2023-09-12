@@ -8,12 +8,13 @@
 import Foundation
 import Firebase
 
-struct sportNews: Identifiable, Codable {
+struct sportNews: Identifiable {
     let newstitle: String
     let newsimage: [String]
     let newsdescription: String
     let newsdate: String
     let author: String
+    var imagedata: [UIImage] // , imagedata: []
     var id = UUID()
     let documentID: String
 }
@@ -24,7 +25,7 @@ class sportsNewslist: ObservableObject {
         newsimage: ["football"],
         newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
         newsdate: "Nov 15, 2022",
-        author: "Emily Thompson", documentID: "NAN")]
+        author: "Emily Thompson", imagedata: [], documentID: "NAN")]
     
     init() {
         getSportsNews()
@@ -50,7 +51,7 @@ class sportsNewslist: ObservableObject {
                     let author = data["author"] as? String ?? ""
                     let documentID = document.documentID
                     
-                    let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID)
+                    let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, imagedata: [], documentID: documentID)
                     templist.append(sportnews)
                 }
                 
@@ -94,7 +95,7 @@ class sportsNewslist: ObservableObject {
     
 }
 
-struct clubNews: Identifiable, Codable {
+struct clubNews: Identifiable {
     let newstitle: String
     let newsimage: [String]
     let newsdescription: String
@@ -102,6 +103,7 @@ struct clubNews: Identifiable, Codable {
     let author: String
     var id = UUID()
     let documentID: String
+    var imagedata: [UIImage] // , imagedata: []
 }
 
 class clubsNewslist: ObservableObject{
@@ -110,7 +112,7 @@ class clubsNewslist: ObservableObject{
         newsimage: ["roboticsclub"],
         newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app", newsdate: "Apr 1, 2023",
         author: "aiden jamae lee lmfao remember",
-        documentID: "NAN")]
+        documentID: "NAN", imagedata: [])]
     
     init() {
         getClubNews()
@@ -135,7 +137,7 @@ class clubsNewslist: ObservableObject{
                     let newsdate = data["newsdata"] as? String ?? ""
                     let author = data["author"] as? String ?? ""
                     let documentID = document.documentID
-                    let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID)
+                    let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID, imagedata: [])
                     templist.append(clubnews)
                 }
                 

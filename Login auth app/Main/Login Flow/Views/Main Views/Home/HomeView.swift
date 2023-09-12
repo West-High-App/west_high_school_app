@@ -89,8 +89,8 @@ struct HomeView: View {
                             //temp
 
                             NavigationLink {
-                                AnnouncementsDetailView(currentnews: newsDataManager.topfive[0])
-                            } label:{
+                                HomeAnnouncementsDetailView(currentnews: newsDataManager.topfive[0])
+                            } label: {
                                 MostRecentAnnouncementCell(news: newsDataManager.topfive[0])
                             }
                         }
@@ -344,8 +344,6 @@ struct HomeView: View {
                                     dispatchGroup.enter()
                                     imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
                                         if let uiimage = uiimage {
-                                            print("SUCCESFULLY RETRIEVED UI IMAGE")
-                                            print(uiimage)
                                             tempimages.append(uiimage)
                                         }
                                         dispatchGroup.leave()
@@ -356,8 +354,6 @@ struct HomeView: View {
                                     returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
                                     
                                     spotlightarticles = returnlist
-                                    print("SPOTLIGHT ARTICLES:")
-                                    print(spotlightarticles)
                                 }
                             }
                             
@@ -609,6 +605,7 @@ struct MostRecentAnnouncementCell: View{
 
 struct UpcomingEventCell: View{
     var event: event
+    @State var hasAppeared = false
     var body:some View{
         HStack {
             VStack {
@@ -640,16 +637,8 @@ struct UpcomingEventCell: View{
 struct MostRecentAchievementCell: View{
     var feat: studentachievement
     @StateObject var imagemanager = imageManager()
+    @State var hasAppeared = false
     @State var imagedata = UIImage()
-    
-    func refreshImage() {
-        imagemanager.getImageFromStorage(fileName: feat.images.first!) { uiimage in
-            if let uiimage = uiimage {
-                print("GOT HOME IMAGE DATA")
-                imagedata = uiimage
-            }
-        }
-    }
     
     var body:some View{
         VStack(alignment:.leading){
@@ -695,12 +684,14 @@ struct MostRecentAchievementCell: View{
         }
         
         .onAppear {
-            
-            imagemanager.getImageFromStorage(fileName: feat.images.first!) { uiimage in
-                if let uiimage = uiimage {
-                    print("GOT HOME IMAGE DATA")
-                    imagedata = uiimage
+            if !hasAppeared {
+                imagemanager.getImageFromStorage(fileName: feat.images.first!) { uiimage in
+                    if let uiimage = uiimage {
+                        imagedata = uiimage
+                    }
                 }
+                hasAppeared = true
+            } else {
             }
             
         }

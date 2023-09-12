@@ -28,6 +28,7 @@ struct SportsHibabi: View {
     @State var tempSelection = 1
     @State var selectedTeam = 1
     @State var isFiltering = false
+    @State var isLoading = false
     @State var isFilteringNews = false
     @State var showingAllNews = 1
     @State private var count = 0
@@ -38,7 +39,6 @@ struct SportsHibabi: View {
     init() {
         sportsNewsManager.getSportsNews()
         newstitlearray = sportsNewsManager.allsportsnewslist
-        print("WE WERE HERE")
     }
     class ScreenSize {
         let screen: CGRect
@@ -89,8 +89,6 @@ struct SportsHibabi: View {
             }
         }
     }
-
-
     
     func countFilters() -> String{
         var filterz = 0
@@ -114,68 +112,203 @@ struct SportsHibabi: View {
     var body: some View {
         // MARK: body
         NavigationView{
-            VStack {
-
-                Picker(selection: $selected, label: Text(""), content: { // picker at top
-                    Text("My Sports").tag(1)
-                    Text("Browse").tag(2)
-                    Text("Sports News").tag(3)
+            ZStack {
+                VStack {
                     
-                }).pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal,30)
-                    .onAppear() {
-                        if count == 0 {
-                            vm.sortFavs()
-                            count = 1
-                        }
-                        templist = filteredList(fromList: vm.filteredItems)
+                    Picker(selection: $selected, label: Text(""), content: { // picker at top
+                        Text("My Sports").tag(1)
+                        Text("Browse").tag(2)
+                        Text("Sports News").tag(3)
                         
-                    }
-                    .onChange(of: selected) { newValue in
-                        if (selected == 1 && tempSelection == 2) {
-                            vm.sortFavs()
-                            tempSelection = selected
-                        }
-                        else if (selected == 2 && tempSelection == 1) {
-                            vm.sortFavs()
-                            tempSelection = selected
-                        }
-                        templist = filteredList(fromList: vm.filteredItems)
-                    }
-                
-                // MARK: my sports
-                if selected == 1 {
-                    if hasPermissionSports {
-                        NavigationLink {
-                            SportsAdminView()
-                        } label: {
-                            Text("EDIT SPORTS")
-                        }
-                    }
-                    if userInfo.loginStatus != "google" {
-                        Text("Log in to save favorites!")
-                    }
-                    if selected == 1 && vm.savedItems.count == 0 {
-                        VStack {
-                            Spacer()
-                            Text("Add a sport to get started!")
-                            Button {
-                                selected = 2
-                            } label: {
-                                Text("Browse Sports")
-                                    .foregroundColor(.white)
-                                    .fontWeight(.semibold)
-                                    .padding(.all, 15.0)
-                                    .background(.primary)
-                                    .cornerRadius(15.0)
-                            }.searchable(text: $searchText)
-                            Spacer()
+                    }).pickerStyle(SegmentedPickerStyle())
+                        .padding(.horizontal,30)
+                        .onAppear() {
+                            if count == 0 {
+                                vm.sortFavs()
+                                count = 1
+                            }
+                            templist = filteredList(fromList: vm.filteredItems)
                             
                         }
+                        .onChange(of: selected) { newValue in
+                            if (selected == 1 && tempSelection == 2) {
+                                vm.sortFavs()
+                                tempSelection = selected
+                            }
+                            else if (selected == 2 && tempSelection == 1) {
+                                vm.sortFavs()
+                                tempSelection = selected
+                            }
+                            templist = filteredList(fromList: vm.filteredItems)
+                        }
+                    
+                    // MARK: my sports
+                    if selected == 1 {
+                        if hasPermissionSports {
+                            NavigationLink {
+                                SportsAdminView()
+                            } label: {
+                                Text("EDIT SPORTS")
+                            }
+                        }
+                        if userInfo.loginStatus != "google" {
+                            Text("Log in to save favorites!")
+                        }
+                        if selected == 1 && vm.savedItems.count == 0 {
+                            VStack {
+                                Spacer()
+                                Text("Add a sport to get started!")
+                                Button {
+                                    selected = 2
+                                } label: {
+                                    Text("Browse Sports")
+                                        .foregroundColor(.white)
+                                        .fontWeight(.semibold)
+                                        .padding(.all, 15.0)
+                                        .background(.primary)
+                                        .cornerRadius(15.0)
+                                }.searchable(text: $searchText)
+                                Spacer()
+                                
+                            }
+                        }
+                        else {
+                            Button {
+                                isFiltering = true
+                            } label: {
+                                HStack {
+                                    Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
+                                        .padding(.horizontal)
+                                        .padding(.top, 1)
+                                        .foregroundColor(.blue)
+                                    Spacer()
+                                }
+                            }
+                            List { // MARK: foreach my sports
+                                ForEach(filteredList(fromList: sportsmanager.favoriteslist)) { item in
+                                    if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
+                                        NavigationLink {
+                                            SportsMainView(selectedsport: item)
+                                                .environmentObject(vm)
+                                        }label: {
+                                            HStack {
+                                                Image(uiImage: item.imagedata)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 50, height: 50)
+                                                    .cornerRadius(1000)
+                                                    .padding(.trailing, 10)
+                                                VStack (alignment: .center){
+                                                    HStack {
+                                                        Text(item.sportname)
+                                                            .foregroundColor(.primary)
+                                                            .lineLimit(2)
+                                                            .minimumScaleFactor(0.9)
+                                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                        Spacer()
+                                                    }
+                                                    HStack {
+                                                        Text(item.sportsteam)
+                                                            .foregroundColor(.secondary)
+                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                        Spacer()
+                                                    }
+                                                }
+                                                Spacer()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .searchable(text: $searchText)
+                        }
                     }
-                    else {
+                    
+                    // MARK: browse
+                    else if selected == 2 {
+                        
+                        if hasPermissionSports {
+                            NavigationLink {
+                                SportsAdminView()
+                            } label: {
+                                Text("EDIT SPORTS")
+                            }
+                        }
+                        
+                        if selected == 1 && vm.savedItems.count == 0 {
+                            VStack {
+                                Spacer()
+                                Text("Add a sport to get started!")
+                                Button {
+                                    selected = 2
+                                } label: {
+                                    Text("Browse Sports")
+                                        .foregroundColor(.white)
+                                        .fontWeight(.semibold)
+                                        .padding(.all, 15.0)
+                                        .background(.primary)
+                                        .cornerRadius(15.0)
+                                }.searchable(text: $searchText)
+                                Spacer()
+                                
+                            }
+                        }
+                        else {
+                            Button {
+                                isFiltering = true
+                            } label: {
+                                HStack {
+                                    Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
+                                        .padding(.horizontal)
+                                        .padding(.top, 1)
+                                        .foregroundColor(.blue)
+                                    Spacer()
+                                }
+                            }
+                            List { // MARK: foreach browse
+                                ForEach(filteredList(fromList: filteredSports)) { item in
+                                    if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
+                                        NavigationLink {
+                                            SportsMainView(selectedsport: item)
+                                                .environmentObject(vm)
+                                        }label: {
+                                            HStack {
+                                                Image(uiImage: item.imagedata)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 50, height: 50)
+                                                    .cornerRadius(1000)
+                                                    .padding(.trailing, 10)
+                                                VStack (alignment: .center){
+                                                    HStack {
+                                                        Text(item.sportname)
+                                                            .foregroundColor(.primary)
+                                                            .lineLimit(2)
+                                                            .minimumScaleFactor(0.9)
+                                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                        Spacer()
+                                                    }
+                                                    HStack {
+                                                        Text(item.sportsteam)
+                                                            .foregroundColor(.secondary)
+                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                        Spacer()
+                                                    }
+                                                }
+                                                Spacer()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .searchable(text: $searchText)
+                        }
+                    }
+                    
+                    // MARK: sports news
+                    else if selected == 3 {
                         Button {
-                            isFiltering = true
+                            isFilteringNews = true
                         } label: {
                             HStack {
                                 Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
@@ -185,221 +318,127 @@ struct SportsHibabi: View {
                                 Spacer()
                             }
                         }
-                        List { // MARK: foreach my sports
-                            ForEach(filteredList(fromList: sportsmanager.favoriteslist)) { item in
-                                if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
-                                    NavigationLink {
-                                        SportsMainView(selectedsport: item)
-                                            .environmentObject(vm)
-                                    }label: {
-                                        HStack {
-                                            Image(uiImage: item.imagedata)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 50, height: 50)
-                                                .cornerRadius(1000)
-                                                .padding(.trailing, 10)
-                                            VStack (alignment: .center){
-                                                HStack {
-                                                    Text(item.sportname)
-                                                        .foregroundColor(.primary)
-                                                        .lineLimit(2)
-                                                        .minimumScaleFactor(0.9)
-                                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                                    Spacer()
-                                                }
-                                                HStack {
-                                                    Text(item.sportsteam)
-                                                        .foregroundColor(.secondary)
-                                                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                    Spacer()
-                                                }
-                                            }
-                                            Spacer()
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        .searchable(text: $searchText)
-                    }
-                }
-                
-                // MARK: browse
-                else if selected == 2 {
-                    
-                    if hasPermissionSports {
-                        NavigationLink {
-                            SportsAdminView()
-                        } label: {
-                            Text("EDIT SPORTS")
-                        }
-                    }
-
-                    if selected == 1 && vm.savedItems.count == 0 {
-                        VStack {
-                            Spacer()
-                            Text("Add a sport to get started!")
-                            Button {
-                                selected = 2
+                        
+                        if hasPermissionSportsNews {
+                            NavigationLink {
+                                SportsNewsAdminView()
                             } label: {
-                                Text("Browse Sports")
-                                    .foregroundColor(.white)
-                                    .fontWeight(.semibold)
-                                    .padding(.all, 15.0)
-                                    .background(.primary)
-                                    .cornerRadius(15.0)
-                            }.searchable(text: $searchText)
-                            Spacer()
-                            
-                        }
-                    }
-                    else {
-                        Button {
-                            isFiltering = true
-                        } label: {
-                            HStack {
-                                Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
-                                    .padding(.horizontal)
-                                    .padding(.top, 1)
-                                    .foregroundColor(.blue)
-                                Spacer()
+                                Text("edit sports news")
                             }
                         }
-                        List { // MARK: foreach browse
-                            ForEach(filteredList(fromList: filteredSports)) { item in
-                                if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
-                                    NavigationLink {
-                                        SportsMainView(selectedsport: item)
-                                            .environmentObject(vm)
-                                    }label: {
-                                        HStack {
-                                            Image(uiImage: item.imagedata)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 50, height: 50)
-                                                .cornerRadius(1000)
-                                                .padding(.trailing, 10)
-                                            VStack (alignment: .center){
-                                                HStack {
-                                                    Text(item.sportname)
-                                                        .foregroundColor(.primary)
-                                                        .lineLimit(2)
-                                                        .minimumScaleFactor(0.9)
-                                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                                    Spacer()
-                                                }
-                                                HStack {
-                                                    Text(item.sportsteam)
-                                                        .foregroundColor(.secondary)
-                                                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                    Spacer()
-                                                }
-                                            }
-                                            Spacer()
-                                        }
-                                    }
+                        
+                        
+                        List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
+                            
+                            sportnewscell(feat: news)
+                                .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                            
+                        }.searchable(text: $searchText)
+                    }
+                }
+                .navigationTitle("Sports")
+                
+                .onAppear { // MARK: onAppear
+                    permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
+                        self.hasPermissionSportsNews = result
+                    }
+                    permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
+                        self.hasPermissionSports = result
+                    }
+                    
+                    
+                    // images
+                    
+                    if !hasAppeared {
+                        isLoading = true
+                        print("LOADING...")
+                        let dispatchGroup = DispatchGroup()
+                        
+                        var templist2: [sport] = []
+                        
+                        for sport in sportsmanager.favoriteslist {
+                            dispatchGroup.enter()
+                            
+                            imagesManager.getImageFromStorage(fileName: sport.sportsimage) { image in
+                                
+                                var tempsport2 = sport
+                                if let image = image {
+                                    tempsport2.imagedata = image
                                 }
+                                
+                                templist2.append(tempsport2)
+                                dispatchGroup.leave()
+                                
                             }
                         }
-                        .searchable(text: $searchText)
-                    }
-                }
-                
-                // MARK: sports news
-                else if selected == 3 {
-                    Button {
-                        isFilteringNews = true
-                    } label: {
-                        HStack {
-                            Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
-                                .padding(.horizontal)
-                                .padding(.top, 1)
-                                .foregroundColor(.blue)
-                            Spacer()
+                        
+                        dispatchGroup.notify(queue: .main) { [self] in
+                            self.sportsmanager.favoriteslist = templist2
                         }
-                    }
-                    
-                    if hasPermissionSportsNews {
-                        NavigationLink {
-                            SportsNewsAdminView()
-                        } label: {
-                            Text("edit sports news")
-                        }
-                    }
-
-                    
-                    List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
                         
-                        sportnewscell(feat: news)
-                            .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                        var templist: [sport] = []
                         
-                    }.searchable(text: $searchText)
-                }
-                    }
-            .navigationTitle("Sports")
-            
-            .onAppear {
-                permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
-                    self.hasPermissionSportsNews = result
-                }
-                permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
-                    self.hasPermissionSports = result
-                }
-                
-                
-                // images
-                
-                
-                if !hasAppeared {
-                    let dispatchGroup = DispatchGroup()
-
-                    var templist2: [sport] = []
-                    
-                    for sport in sportsmanager.favoriteslist {
-                        dispatchGroup.enter()
-                        
-                        imagesManager.getImageFromStorage(fileName: sport.sportsimage) { image in
+                        for sport in sportsmanager.allsportlist {
+                            dispatchGroup.enter()
                             
-                            var tempsport2 = sport
-                            if let image = image {
-                                tempsport2.imagedata = image
+                            imagesManager.getImageFromStorage(fileName: sport.sportsimage) { image in
+                                
+                                var tempsport = sport
+                                if let image = image {
+                                    tempsport.imagedata = image
+                                }
+                                
+                                templist.append(tempsport)
+                                dispatchGroup.leave()
                             }
-                            
-                            templist2.append(tempsport2)
-                            dispatchGroup.leave()
-
                         }
-                    }
-                    
-                    dispatchGroup.notify(queue: .main) { [self] in
-                        self.sportsmanager.favoriteslist = templist2
-                    }
-                    
-                    var templist: [sport] = []
-                    
-                    for sport in sportsmanager.allsportlist {
-                        dispatchGroup.enter()
                         
-                        imagesManager.getImageFromStorage(fileName: sport.sportsimage) { image in
-                            
-                            var tempsport = sport
-                            if let image = image {
-                                tempsport.imagedata = image
-                            }
-                            
-                            templist.append(tempsport)
-                            dispatchGroup.leave()
+                        dispatchGroup.notify(queue: .main) { [self] in
+                            self.sportsmanager.allsportlist = templist
                         }
-                    }
-                    
-                    dispatchGroup.notify(queue: .main) { [self] in
-                        self.sportsmanager.allsportlist = templist
+                        
+                        var templist3: [sportNews] = []
+                        
+                        for news in sportsNewsManager.allsportsnewslist {
+                            dispatchGroup.enter()
+                            
+                            imagesManager.getImageFromStorage(fileName: news.newsimage[0]) { uiimage in
+                                
+                                var tempnews = news
+                                if let uiimage = uiimage {
+                                    tempnews.imagedata.removeAll()
+                                    tempnews.imagedata.append(uiimage)
+                                }
+                                
+                                templist3.append(tempnews)
+                                dispatchGroup.leave()
+                            }
+                        }
+                        
+                        dispatchGroup.notify(queue: .main) { [self] in
+                            self.sportsNewsManager.allsportsnewslist = templist3
+                            print("DONE LOADING")
+                            isLoading = false
+                        }
+                        hasAppeared = true
                     }
                 }
-            }
-            
-            // MARK: sheets and stuff
+                
+                if isLoading {
+                    ZStack {
+                        Color.white
+                            .edgesIgnoringSafeArea(.all)
+                        
+                        VStack {
+                            ProgressView("Loading...")
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        }
+                    }
+                }
+                
+                
+                // MARK: sheets and stuff
             }.sheet(isPresented: $isFiltering, content: {
                 HStack {
                     Button {
@@ -443,7 +482,7 @@ struct SportsHibabi: View {
                         } label: {
                             Text("Gender")
                         }
-
+                        
                     }
                     HStack {
                         Picker(selection: $selectedSeason) {
@@ -473,7 +512,7 @@ struct SportsHibabi: View {
                         } label: {
                             Text("Team")
                         }
-
+                        
                     }
                 }
             })
@@ -512,10 +551,12 @@ struct SportsHibabi: View {
                         } label: {
                             Text("Showing")
                         }
-
+                        
                     }
                 }
             })
+            
+        }
         }
     }
 
@@ -525,11 +566,19 @@ struct sportnewscell: View{
     
     var body:some View{
         VStack{
-            Image(feat.newsimage.first!)
-                .resizable()
-                .cornerRadius(10)
-                .aspectRatio(contentMode: .fit)
-                .padding(.vertical, 2)
+            if feat.imagedata.count > 0 {
+                Image(uiImage: feat.imagedata[0])
+                    .resizable()
+                    .cornerRadius(10)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.vertical, 2)
+            } else {
+                Image(uiImage: UIImage())
+                    .resizable()
+                    .cornerRadius(10)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.vertical, 2)
+            }
             VStack(alignment: .leading, spacing:2){
                 HStack {
                     Text(feat.newsdate)

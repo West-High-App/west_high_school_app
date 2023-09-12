@@ -290,7 +290,7 @@ struct SportsDetailAdminView: View {
                         sportsimage = imagemanager.uploadPhoto(file: displayimage)
                     }
                     
-                    imagemanager.deleteImage(imageFileName: "") { error in
+                    imagemanager.deleteImage(imageFileName: originalImage) { error in
                         if let error = error {
                             print(error.localizedDescription)
                         }
@@ -318,8 +318,6 @@ struct SportsDetailAdminView: View {
         
         .navigationTitle("Edit Sport")
             .onAppear {
-                print("### EDITING SPPORT")
-                print(editingsport)
                 // initialing properties
                 sportname = editingsport.sportname
                 sportcoaches = editingsport.sportcoaches
@@ -339,8 +337,6 @@ struct SportsDetailAdminView: View {
                 originalImage = editingsport.sportsimage
                 imagemanager.getImageFromStorage(fileName: sportsimage) { image in
                     displayimage = image
-                    print("IMNAGE")
-                    print(image)
                 }
             }
     }

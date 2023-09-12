@@ -22,10 +22,14 @@ struct ClubsDetailView: View {
     @State private var confirming2 = false
     @State var upcomingeventlist: [sportEvent] = [] // supposed to be clubEvent
     @StateObject var clubeventmanager = clubEventManager()
+    
+    @State var hasAppeared = false
     @State var displayedimage: UIImage?
     @State var originalimage = UIImage()
     @StateObject var imagemanager = imageManager()
+    
     var currentclub: club
+    
     var safeArea: EdgeInsets
     var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
@@ -214,12 +218,8 @@ struct ClubsDetailView: View {
                     }
                     
                     favoritesManager.getFavorites { list in
-                        print(list)
                         for item in list {
-                            print(item)
-                            print(currentclub.clubname)
                             if currentclub.clubname == item {
-                                print("TRUUUUUE")
                                 isFavorited = true
                             }
                         }
@@ -227,8 +227,6 @@ struct ClubsDetailView: View {
                     
                     permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { permission in
                         hasPermissionClub = permission
-                        print("HAS PERMISSION BRO WHAAAT")
-                        print(hasPermissionClub)
                     }
                     if currentclub.adminemails.contains(userInfo.email) {
                         hasPermissionClub = true

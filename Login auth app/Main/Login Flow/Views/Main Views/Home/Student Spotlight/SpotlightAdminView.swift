@@ -45,7 +45,6 @@ struct SpotlightAdminView: View {
                         }
                     }
                     .onTapGesture {
-                        print("TAPPED THAT SHIT")
                     }
             }
             .navigationBarTitle(Text("Edit Achievements"))
@@ -154,9 +153,7 @@ struct AchievementDetailView: View {
                     }
                 }.onChange(of: currentimage) { newImage in
                     if let currentimage = newImage {
-                        print("UPDATED IMAGE")
                         displayimagesdata.append(currentimage)
-                        print(displayimagesdata)
                     }
                 }
 

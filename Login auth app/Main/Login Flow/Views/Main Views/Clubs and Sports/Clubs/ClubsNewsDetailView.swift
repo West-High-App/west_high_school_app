@@ -23,7 +23,7 @@ var currentclubnews: clubNews
                                             .foregroundColor(.white)
                                         
                                         VStack(spacing: 0) {
-                                            Image(currentclubnews.newsimage[index])
+                                            Image(uiImage: currentclubnews.imagedata[0] ?? UIImage())
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fill)
                                                 .frame(width: 500, height: 500)
@@ -112,6 +112,6 @@ struct ClubsNewsDetailView_Previews: PreviewProvider {
             newsimage: ["roboticsclub"],
             newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app", newsdate: "Apr 1, 2023",
             author: "aiden jamae lee lmfao remember",
-            documentID: "NAN"))
+            documentID: "NAN", imagedata: []))
     }
 }

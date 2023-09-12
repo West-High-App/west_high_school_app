@@ -23,10 +23,6 @@ class sportEventManager: ObservableObject {
     @Published var topthree: [sportEvent] = []
     @Published var hasInitialized: Bool = false
     
-    init() {
-        print(self.sportsEvents)
-    }
-    
     func getSportsEvent(forSport: String, completion: @escaping ([sportEvent]?, Error?) -> Void) {
         var returnValue: [sportEvent] = []
         

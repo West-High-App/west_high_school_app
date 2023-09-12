@@ -13,6 +13,13 @@ struct ClubNewsAdminView: View {
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var achievementToDelete: clubNews?
     
+    
+    // images
+    @StateObject var imagemanager = imageManager()
+    @State var originalImage = ""
+    @State var displayimage: UIImage?
+    @State var isDisplayingAddImage = false
+    
     var body: some View {
         VStack {
             Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
@@ -110,6 +117,10 @@ struct clubNewsRowlView: View {
     @State var newsdate = ""
     @State var author = ""
     
+    @StateObject var imagemanager = imageManager()
+    @State var displayimage: UIImage?
+    @State var isDisplayingAddImage = false
+    
     var editingAchievement: clubNews?
     
     @State private var isConfirmingAddAchievement = false
@@ -125,6 +136,20 @@ struct clubNewsRowlView: View {
                     TextField("Date", text: $newsdate)
                 }
                 
+                Section(header: Text("Image")) {
+                    
+                    Image(uiImage: displayimage ?? UIImage())
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 200, height: 200)
+                        .cornerRadius(10)
+                    Button("Upload New Image") {
+                        isDisplayingAddImage = true
+                    }
+                }.sheet(isPresented: $isDisplayingAddImage) {
+                    ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
+                }
+                
                 Button("Publish New Sport News") {
                     isConfirmingAddAchievement = true
                 }
@@ -138,7 +163,18 @@ struct clubNewsRowlView: View {
                     title: Text("You Are Publishing Changes"),
                     message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(newstitle)\nDescription: \(newsdescription)\nAuthor: \(author)\nPublished Date: \(newsdate)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
-                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: ["west"], newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: "NAN")
+                        
+                        var imagedata: [UIImage] = []
+                        
+                        imagedata.removeAll()
+                        imagedata.append(displayimage ?? UIImage())
+                        
+                        if let displayimage = displayimage {
+                            newsimage.removeAll()
+                            newsimage.append(imagemanager.uploadPhoto(file: displayimage))
+                        }
+                        
+                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: "NAN", imagedata: imagedata)
                         dataManager.createClubNews(clubNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating club news: \(error.localizedDescription)")

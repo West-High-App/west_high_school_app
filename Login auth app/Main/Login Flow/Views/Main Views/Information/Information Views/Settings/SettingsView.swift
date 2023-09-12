@@ -42,59 +42,11 @@ struct SettingsView: View {
                         }
                     }
                     .padding(.vertical,15)
-                    NavigationLink {
-                        HelpSupportView()
-                    } label: {
-                        HStack{
-                            Image(systemName: "headphones")
-                                .font(.system(size: 30))
-                            Spacer()
-                                .frame(width:15)
-                            Text("Help & Support")
-                                .font(.system(size: 24))
-                        }
 
-                    }
-                    .padding(.vertical,15)
-                    NavigationLink {
-                        ContactUsView()
-                    } label: {
-                        HStack{
-                            Image(systemName: "phone.circle")
-                                .font(.system(size: 30))
-                            Spacer()
-                                .frame(width:15)
-                            Text("Contact Us")
-                                .font(.system(size: 24))
-                        }
-
-                    }
-                    .padding(.vertical,15)
-                    Button {
-                        do {
-                            try Auth.auth().signOut()
-                            userInfo.loginStatus = "none"
-                        } catch let signOutError {
-                            print("tried to sign out failed")
-                            print(signOutError.localizedDescription)
-                        }
-                        
-                    } label: {
-                        HStack{
-                            Image(systemName: "rectangle.portrait.and.arrow.right")
-                                .font(.system(size: 30))
-                            Spacer()
-                                .frame(width:15)
-                            Text("Sign Out")
-                                .font(.system(size: 24))
-                        }
-                        .padding(.vertical,15)
-                        .foregroundColor(.red)
-                        }
                 }
                 .font(.system(size: 22, weight: .regular, design: .rounded))
             }
-            .navigationBarTitle("Settings")
+            .navigationBarTitle("Terms & Policies")
     }
 }
 

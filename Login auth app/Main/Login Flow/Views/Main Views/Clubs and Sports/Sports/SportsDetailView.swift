@@ -237,7 +237,6 @@ struct SportsDetailView: View {
                             print("Error: \(error.localizedDescription)")
                         }
                         if let events = events {
-                            print(events)
                             upcomingeventslist = events
                         }
                         
@@ -255,13 +254,8 @@ struct SportsDetailView: View {
             }
             .onAppear {
                 favoritesManager.getFavorites { list in
-                    print("LIST BABY")
-                    print(list)
                     for item in list {
-                        print(item)
-                        print("\(currentsport.sportname) \(currentsport.sportsteam)")
                         if "\(currentsport.sportname) \(currentsport.sportsteam)" == item {
-                            print("TRUUUUUE")
                             isFavorited = true
                         }
                     }

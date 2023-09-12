@@ -23,7 +23,7 @@ var currentnews: sportNews
                                             .foregroundColor(.white)
                                         
                                         VStack(spacing: 0) {
-                                            Image(currentnews.newsimage[index])
+                                            Image(uiImage: currentnews.imagedata[index])
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fill)
                                                 .frame(width: 500, height: 500)
@@ -109,6 +109,6 @@ struct SportsNewsDetailView_Previews: PreviewProvider {
             newsimage: ["football"],
             newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
             newsdate: "Nov 15, 2022",
-            author: "Emily Thompson", documentID: "NAN"))
+            author: "Emily Thompson", imagedata: [], documentID: "NAN"))
     }
 }

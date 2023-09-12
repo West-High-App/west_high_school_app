@@ -64,8 +64,6 @@ struct SportEventsAdminView: View {
                 }
                 if let events = events {
                     eventlist = events
-                    print("UPDATED THAT SHIT")
-                    print(eventlist)
                 }
             }
         }

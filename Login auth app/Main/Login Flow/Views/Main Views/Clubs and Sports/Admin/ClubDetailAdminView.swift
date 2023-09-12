@@ -228,7 +228,6 @@ struct ClubDetailAdminView: View {
                 .sheet(isPresented: $isDisplayingAddImage) {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
                         .onDisappear() {
-                            print("DISAPPEARED")
                         }
                 }
                 
@@ -292,8 +291,6 @@ struct ClubDetailAdminView: View {
                 originalImage = editingclub.clubimage
                 imagemanager.getImageFromStorage(fileName: clubimage) { image in
                     displayimage = image
-                    print("IMNAGE")
-                    print(image)
                 }
             }
         

@@ -25,7 +25,6 @@ struct ImagePickerView: View {
             Button {
                 getImageFromStorage(fileName: imagename) { image in
                     imagetoshow = image
-                    print(imagetoshow)
                 }
             } label: {
                 Text("Refresh")
@@ -56,7 +55,6 @@ struct ImagePickerView: View {
                     imagename = uploadPhoto()
                     getImageFromStorage(fileName: imagename) { image in
                         imagetoshow = image
-                        print(imagetoshow ?? "")
                     }
                 } label: {
                     Text("Publish Image")
@@ -97,7 +95,7 @@ struct ImagePickerView: View {
         
         let storageRef = Storage.storage().reference()
         
-        let imageData = selectedImage!.jpegData(compressionQuality: 0.8)
+        let imageData = selectedImage!.jpegData(compressionQuality: 0.01)
         
         guard imageData != nil else {
             return ""
@@ -120,7 +118,6 @@ struct ImagePickerView: View {
                     if error == nil {
                         DispatchQueue.main.async {
                             self.retrievedImages.append(self.selectedImage!)
-                            print("UPDATED TO PATH: \(path)")
                             imagename = path
                         }
                     }
@@ -170,7 +167,6 @@ class imageManager: ObservableObject {
     @State var imagename: String = ""
     
     func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
-            print("FILENAME : \(fileName)")
             let storageRef = Storage.storage().reference()
             let fileRef = storageRef.child(fileName)
             fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
@@ -193,7 +189,7 @@ class imageManager: ObservableObject {
         
         let storageRef = Storage.storage().reference()
         
-        let imageData = file.jpegData(compressionQuality: 0.8)
+        let imageData = file.jpegData(compressionQuality: 0.01)
         
         guard imageData != nil else {
             return ""

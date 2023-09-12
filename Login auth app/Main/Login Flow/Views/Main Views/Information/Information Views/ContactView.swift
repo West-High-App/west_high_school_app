@@ -71,7 +71,7 @@ struct ContactView: View {
                             )
                             .padding(.bottom, 10)
                         Spacer()
-                    }                    
+                    }
                 }
                 .padding(.vertical,50)
             }

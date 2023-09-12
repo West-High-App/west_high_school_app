@@ -6,72 +6,33 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct InformationView: View {
+    @EnvironmentObject var userInfo: UserInfo
+    @State var isPresentingLogoutConfirmation = false
     var body: some View {
             NavigationView{
                 List{
-                    NavigationLink {
-                        LunchMenuView()
-                    } label: {
-                        Image(systemName: "fork.knife.circle")
-                        Text("School Lunch Menu")
-                        
-                    }
-                    .padding(.vertical,15)
+                    
                     NavigationLink {
                         StaffView()
                     } label: {
-                        Image(systemName: "person")
-                        Text("School Staff")
-                    }
-                    .padding(.vertical,15)
-                    NavigationLink {
-                        SocialView()
-                    } label: {
-                        Image(systemName: "network")
-                        Text("School Socials")
-                    }
-                    .padding(.vertical,15)
-                    NavigationLink {
-                        ClassesView()
-                    } label: {
-                        Image(systemName: "menucard")
-                        Text("Avaliable Classes")
-                    }
-                    .padding(.vertical,15)
-                    NavigationLink {
-                        ContactView()
-                    } label: {
                         Image(systemName: "phone")
-                        Text("Contact Us")
+                        Text("School Contacts")
                     }
-                    .padding(.vertical,15)
+                    .padding(.vertical,10)
+                    
+                    
                     NavigationLink {
-                        NavigatingSchoolView()
+                        LunchMenuView()
                     } label: {
-                        Image(systemName: "map")
-                        Text("Navigating the School")
+                        Image(systemName: "fork.knife")
+                        Text("Lunch Menu")
                     }
-                    .padding(.vertical,15)
-                    NavigationLink {
-                        MentalHealthView()
-                    } label: {
-                        Image(systemName: "heart")
-                        Text("Mental Health Resources")
-                    }
-                    .padding(.vertical,15)
-                    NavigationLink {
-                        SchoolPolicyGuideView()
-                    } label: {
-                        HStack{
-                            Image(systemName: "book.closed")
-                                .padding(.leading,3)
-                            Text("School Policy Guide")
-                                .padding(.leading,3)
-                        }
-                    }
-                    .padding(.vertical,15)
+                    .padding(.vertical,10)
+                    
+                    
                     NavigationLink {
                         TransportationView()
                     } label: {
@@ -79,18 +40,85 @@ struct InformationView: View {
                         Text("Transportation")
                     }
                     .padding(.vertical,10)
+                    
+                    
+                    NavigationLink {
+                        ClassesView()
+                    } label: {
+                        Image(systemName: "menucard")
+                        Text("Class List")
+                    }
+                    .padding(.vertical,10)
+                    
+                    
+                    NavigationLink {
+                        SchoolPolicyGuideView()
+                    } label: {
+                        HStack{
+                            Image(systemName: "list.bullet")
+                                .padding(.leading,3)
+                            Text("School Policy Guide")
+                                .padding(.leading,3)
+                        }
+                    }
+                    .padding(.vertical,10)
+                    
+                    
+                    NavigationLink {
+                        MentalHealthView()
+                    } label: {
+                        Image(systemName: "heart")
+                        Text("Mental Health Resources")
+                    }
+                    .padding(.vertical,10)
+                    
+                    
+                    NavigationLink {
+                        HelpSupportView()
+                    } label: {
+                        Image(systemName: "questionmark.circle")
+                        Text("Help & Support")
+                    }.padding(.vertical, 10)
+                    
+                    
                     NavigationLink {
                         SettingsView()
                     } label: {
-                        Image(systemName: "gear")
-                        Text("Settings")
-                    }
-                    .padding(.vertical,10)
+                        Image(systemName: "book.closed")
+                        Text("Terms & Policies")
+                    }.padding(.vertical, 10)
+                    
+                    Button {
+                        isPresentingLogoutConfirmation = true
+                        
+                    } label: {
+                        HStack{
+                            Spacer()
+                            Text("Sign Out")
+                            Spacer()
+                        }
+                        .padding(.vertical,5)
+                        .foregroundColor(.red)
+                        }
+                    
+                    
                 }
-                .font(.system(size: 22, weight: .regular, design: .rounded))
+                .font(.system(size: 22, weight: .medium, design: .rounded))
                 .navigationBarTitle("Information")
+                
+                
+                .confirmationDialog("Log Out", isPresented: $isPresentingLogoutConfirmation) {
+                    Button("Sign Out", role: .destructive) {
+                        do {
+                            try Auth.auth().signOut()
+                            userInfo.loginStatus = "none"
+                        } catch let signOutError {
+                            print("tried to sign out failed")
+                            print(signOutError.localizedDescription)
+                        }
+                    }
+                }
             }
-        
     }
 }
     

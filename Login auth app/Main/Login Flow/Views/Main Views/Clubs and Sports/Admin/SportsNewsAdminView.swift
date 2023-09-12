@@ -13,6 +13,12 @@ struct SportsNewsAdminView: View {
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var achievementToDelete: sportNews?
     
+    //images
+    @StateObject var imagemanager = imageManager()
+    @State var originalImage = ""
+    @State var displayimage: UIImage?
+    @State var isDisplayingAddImage = false
+    
     var body: some View {
         VStack {
             Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
@@ -113,6 +119,12 @@ struct sportNewsRowlView: View {
     @State var newsdate = ""
     @State var author = ""
     
+    // images
+    @StateObject var imagemanager = imageManager()
+    @State var originalImage = ""
+    @State var displayimage: UIImage?
+    @State var isDisplayingAddImage = false
+    
     var editingAchievement: sportNews?
     
     @State private var isConfirmingAddAchievement = false
@@ -128,6 +140,19 @@ struct sportNewsRowlView: View {
                     TextField("Date", text: $newsdate)
                 }
                 
+                Section(header: Text("Image")) {
+                    Image(uiImage: displayimage ?? UIImage())
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 200, height: 200)
+                        .cornerRadius(10)
+                    Button("Upload New Image") {
+                        isDisplayingAddImage = true
+                    }
+                }.sheet(isPresented: $isDisplayingAddImage) {
+                    ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
+                }
+                
                 Button("Publish New Sport News") {
                     isConfirmingAddAchievement = true
                 }
@@ -141,7 +166,25 @@ struct sportNewsRowlView: View {
                     title: Text("You Are Publishing Changes"),
                     message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(newstitle)\nDescription: \(newsdescription)\nAuthor: \(author)\nPublished Date: \(newsdate)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
-                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: ["west"], newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: "NAN")
+                        
+                        var imagedata: [UIImage] = []
+                        
+                        imagedata.removeAll()
+                        imagedata.append(displayimage ?? UIImage())
+                        
+                        if let displayimage = displayimage {
+                            newsimage.removeAll()
+                            newsimage.append(imagemanager.uploadPhoto(file: displayimage))
+                        }
+                        
+                        imagemanager.deleteImage(imageFileName: originalImage) { error in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            }
+                        }
+                         // MARK: ain't working around here
+                        
+                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, imagedata: imagedata, documentID: "NAN")
                         dataManager.createSportNews(sportNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating sport news: \(error.localizedDescription)")
@@ -159,6 +202,7 @@ struct sportNewsRowlView: View {
                     newsdescription = achievement.newsdescription
                     author = achievement.author
                     newsdate = achievement.newsdate
+                    originalImage = achievement.newsimage.first ?? ""
                 }
             }
         }

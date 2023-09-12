@@ -3,16 +3,37 @@
 //  West App
 //
 //  Created by Aiden Lee on 5/23/23.
-//
+// SwiftUIWebView(url: URL(string:"https://west.madison.k12.wi.us/families/menus"))
 
 import SwiftUI
 
 struct StaffView: View {
-
+@State var isLoading = false
     var body: some View {
-        VStack{
+        ZStack{
             SwiftUIWebView(url: URL(string:"https://west.madison.k12.wi.us/contact-us"))
-                // uuhhhh
+            
+            if isLoading {
+                ZStack {
+                    Color.white
+                        .edgesIgnoringSafeArea(.all)
+                    
+                    VStack {
+                        Spacer()
+                        ProgressView("Loading...")
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        Spacer()
+                    }
+                }
+            }
+            
+        }.onAppear() {
+            isLoading = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                
+                isLoading = false
+            }
         }
     }
 }
