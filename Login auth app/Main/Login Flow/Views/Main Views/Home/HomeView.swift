@@ -24,6 +24,7 @@ struct HomeView: View {
     var permissionsManager = permissionsDataManager()
     @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermissionSpotlight = false
+    @State private var hasAdmin = false
 
     @ObservedObject var spotlightManager = studentachievementlist()
     @State var newstitlearray: [studentachievement] = []
@@ -74,78 +75,32 @@ struct HomeView: View {
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     var body: some View {
-        NavigationView{
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack{
-                    // artwork
-                    Artwork()
-                    // Since We ignored Top Edge
-                    GeometryReader{ proxy in
-                        
-                    }
-                    .zIndex(1)
+        ZStack {
+            StudentSpotlight()
+            ClubsHibabi()
+            SportsHibabi()
+            StaffView()
+            LunchMenuView()
+            ClassesView()
+            SchoolPolicyGuideView()
+            MentalHealthView()
+            //MARK: HOME
+            NavigationView{
+                ScrollView(.vertical, showsIndicators: false) {
                     VStack{
-                        VStack{
-                            //temp
-
-                            NavigationLink {
-                                HomeAnnouncementsDetailView(currentnews: newsDataManager.topfive[0])
-                            } label: {
-                                MostRecentAnnouncementCell(news: newsDataManager.topfive[0])
-                            }
-                        }
-                        .padding(.bottom, 10)
-                        
-                        //SNACK SPLICE BOISSSSSS
-                        
-                        //MARK: upcoming events
-                        VStack{
-                            HStack {
-                                Text("Upcoming Events")
-                                    .lineLimit(1)
-                                    .padding(.leading, 15)
-                                    .foregroundColor(westblue)
-                                    .bold()
-                                    .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                    //.padding(.horizontal)
-                                    //.padding(.vertical, -5)
-
-                                Spacer()
-                                NavigationLink {
-                                    UpcomingEventsView()
-                                } label: {
-                                    HStack{
-                                        Text("See more")
-                                            .padding(.trailing,-15)
-                                            .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    }
-                                    .padding(.horizontal,34)
-                                }.foregroundStyle(.blue)
-                                
-                                //Button {
-                                //    AnnouncementsView()
-                                //} label: {
-                                //    Label("See more", systemImage: "greaterthan")
-                                //        .padding(.horizontal)
-                                //        .padding(.vertical, -5)
-                                //}
-                                
-                            }
-                            .foregroundStyle(.black)
-                            .padding(.horizontal)
-                            .padding(.vertical, 8)
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .padding(.horizontal)
-                                .shadow(radius: 5, x: 3, y: 3)
-                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                            // edit button
+                        // artwork
+                        Artwork()
+                        // Since We ignored Top Edge
+                        GeometryReader{ proxy in
                             
-                            if hasPermissionUpcomingEvents {
+                        }
+                        .zIndex(1)
+                        VStack{
+                            if hasAdmin {
                                 NavigationLink {
-                                    UpcomingEventsAdminView()
+                                    PermissionsAdminView()
                                 } label: {
-                                    Text("Edit Upcoming Events")
+                                    Text("Edit Permissions")
                                         .foregroundColor(.blue)
                                         .padding(10)
                                         .font(.system(size: 17, weight: .semibold, design: .rounded))
@@ -154,220 +109,294 @@ struct HomeView: View {
                                             .cornerRadius(10)
                                             .shadow(radius: 2, x: 1, y: 1))                        }
                             }
-                            
-                            VStack {
-                                UpcomingEventCell(event: dataManager.firstcurrentevent)
-                                Divider()
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 5)
-                                UpcomingEventCell(event: dataManager.secondcurrentEvent)
-                                Divider()
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 5)
-                                UpcomingEventCell(event: dataManager.thirdcurrentEvent)
-                            }
-                            .foregroundStyle(.black)
-                            .padding(.all) //EDIT
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .padding(.horizontal)
-                                .shadow(radius: 5, x: 2, y: 2)
-                                        
-                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                        }
-                        
-                        //MARK: student spotlight
-                        
-                        VStack{
-                            HStack {
-                                Text("Student Spotlight")
-                                    .foregroundColor(westblue)
-                                    .bold()
-                                    .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                    .padding(.horizontal)
-
-                                Spacer()
+                            VStack{
+                                //temp
                                 
                                 NavigationLink {
-                                    StudentSpotlight()
+                                    HomeAnnouncementsDetailView(currentnews: newsDataManager.topfive[0])
                                 } label: {
-                                    HStack{
-                                        Text("See more")
-                                            .font(.system(size: 17, weight: .regular, design: .rounded))
-                                            .padding(.trailing,-15)
-                                    }
-                                    .padding(.horizontal,34)
-                                }.foregroundStyle(.blue)
-                                
-                                //Button {
-                                //    AnnouncementsView()
-                                //} label: {
-                                //    Label("See more", systemImage: "greaterthan")
-                                //        .padding(.horizontal)
-                                //        .padding(.vertical, -5)
-                                //}
-                                
+                                    MostRecentAnnouncementCell(news: newsDataManager.topfive[0])
+                                }
                             }
-                            .foregroundStyle(.black)
-                            .padding(.horizontal)
-                            .padding(.vertical, 8)
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .padding(.horizontal)
-                                .shadow(radius: 5, x: 3, y: 3)
-                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                            .padding(.bottom, 10)
                             
-                            if hasPermissionSpotlight {
-                                NavigationLink {
-                                    SpotlightAdminView()
-                                } label: {
-                                    Text("Edit Spotlight Articles")
-                                        .foregroundColor(.blue)
-                                        .padding(10)
-                                        .background(Rectangle()
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                            .shadow(radius: 2, x: 1, y: 1))
+                            //SNACK SPLICE BOISSSSSS
+                            
+                            //MARK: upcoming events
+                            VStack{
+                                HStack {
+                                    Text("Upcoming Events")
+                                        .lineLimit(1)
+                                        .padding(.leading, 15)
+                                        .foregroundColor(westblue)
+                                        .bold()
+                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                    //.padding(.horizontal)
+                                    //.padding(.vertical, -5)
                                     
-                                }
-
-                            }
-                            
-                            VStack { // articles
-                                if spotlightarticles.count > 0 {
-                                    NavigationLink { // ADD IFS HERE
-                                        SpotlightArticles(currentstudentdub: spotlightarticles[0])
-                                    } label: {
-                                        MostRecentAchievementCell(feat: spotlightarticles[0])
-                                    }
-                                }
-                                if spotlightarticles.count > 1 {
+                                    Spacer()
                                     NavigationLink {
-                                        SpotlightArticles(currentstudentdub: spotlightarticles[1])
+                                        UpcomingEventsView()
                                     } label: {
-                                        MostRecentAchievementCell(feat: spotlightarticles[1])
-                                    }
-                                }
-                                if spotlightarticles.count > 2 {
-                                    NavigationLink {
-                                        SpotlightArticles(currentstudentdub: spotlightarticles[2])
-                                    } label: {
-                                        MostRecentAchievementCell(feat: spotlightarticles[2])
-                                    }
-                                }
-
-
-
-                            }
-                            .padding(.horizontal)
-                        }
-                        .padding(.top,10)
-                        
-                        
-                        
-                    }
-                    .zIndex(0)
-                    
-                    if false {
-                        Button {
-                            let center = UNUserNotificationCenter.current()
-                            
-                            let content = UNMutableNotificationContent()
-                            content.title = "Emergency Announcment"
-                            content.body = "skool is getting shot up guys run"
-                            
-                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-                            
-                            //creating request
-                            let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
-                            
-                            center.add(request){error in
-                                if let error = error {
-                                    print(error)
-                                }
-                            }
-                        } label: {
-                            
-                            HStack{
-                                Spacer()
-                                Image(systemName: "bell.fill")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width:20)
-                                Text("Send Notification")
-                                    .fontWeight(.semibold)
-                                    .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
-                                Image(systemName: "bell.fill")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width:20)
-                                Spacer()
-                                
-                            }
-                            .padding(.vertical, 8)
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .padding(.horizontal)
-                                .shadow(radius: 5, x: 3, y: 3)
-                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                        }
-                    }
-                    
-                }
-                .padding(.bottom, 10)
-                .overlay(alignment: .top) {
-                    HeaderView()
-                }
-                
-                // checking for permissions on appear
-                .onAppear {
-                    permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
-                        self.hasPermissionSpotlight = result
-                    }
-                    permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
-                        self.hasPermissionUpcomingEvents = result
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
-                        // MARK: this is stupid but fuck it ERROR come from here
-                        if !hasAppeared {
-                            spotlightarticles = spotlightManager.allstudentachievementlist
-                            var returnlist: [studentachievement] = []
-                            
-                            let dispatchGroup = DispatchGroup()
-                            
-                            for article in spotlightarticles {
-                                var tempimages: [UIImage] = []
-                                
-                                for imagepath in article.images {
-                                    dispatchGroup.enter()
-                                    imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
-                                        if let uiimage = uiimage {
-                                            tempimages.append(uiimage)
+                                        HStack{
+                                            Text("See more")
+                                                .padding(.trailing,-15)
+                                                .font(.system(size: 17, weight: .regular, design: .rounded))
                                         }
-                                        dispatchGroup.leave()
+                                        .padding(.horizontal,34)
+                                    }.foregroundStyle(.blue)
+                                    
+                                    //Button {
+                                    //    AnnouncementsView()
+                                    //} label: {
+                                    //    Label("See more", systemImage: "greaterthan")
+                                    //        .padding(.horizontal)
+                                    //        .padding(.vertical, -5)
+                                    //}
+                                    
+                                }
+                                .foregroundStyle(.black)
+                                .padding(.horizontal)
+                                .padding(.vertical, 8)
+                                .background(Rectangle()
+                                    .cornerRadius(9.0)
+                                    .padding(.horizontal)
+                                    .shadow(radius: 5, x: 3, y: 3)
+                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                // edit button
+                                
+                                if hasPermissionUpcomingEvents {
+                                    NavigationLink {
+                                        UpcomingEventsAdminView()
+                                    } label: {
+                                        Text("Edit Upcoming Events")
+                                            .foregroundColor(.blue)
+                                            .padding(10)
+                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                            .background(Rectangle()
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
+                                                .shadow(radius: 2, x: 1, y: 1))                        }
+                                }
+                                
+                                VStack {
+                                    UpcomingEventCell(event: dataManager.firstcurrentevent)
+                                    Divider()
+                                        .padding(.horizontal)
+                                        .padding(.vertical, 5)
+                                    UpcomingEventCell(event: dataManager.secondcurrentEvent)
+                                    Divider()
+                                        .padding(.horizontal)
+                                        .padding(.vertical, 5)
+                                    UpcomingEventCell(event: dataManager.thirdcurrentEvent)
+                                }
+                                .foregroundStyle(.black)
+                                .padding(.all) //EDIT
+                                .background(Rectangle()
+                                    .cornerRadius(9.0)
+                                    .padding(.horizontal)
+                                    .shadow(radius: 5, x: 2, y: 2)
+                                            
+                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                            }
+                            
+                            //MARK: student spotlight
+                            
+                            VStack{
+                                HStack {
+                                    Text("Student Spotlight")
+                                        .foregroundColor(westblue)
+                                        .bold()
+                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                        .padding(.horizontal)
+                                    
+                                    Spacer()
+                                    
+                                    NavigationLink {
+                                        StudentSpotlight()
+                                    } label: {
+                                        HStack{
+                                            Text("See more")
+                                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                .padding(.trailing,-15)
+                                        }
+                                        .padding(.horizontal,34)
+                                    }.foregroundStyle(.blue)
+                                    
+                                    //Button {
+                                    //    AnnouncementsView()
+                                    //} label: {
+                                    //    Label("See more", systemImage: "greaterthan")
+                                    //        .padding(.horizontal)
+                                    //        .padding(.vertical, -5)
+                                    //}
+                                    
+                                }
+                                .foregroundStyle(.black)
+                                .padding(.horizontal)
+                                .padding(.vertical, 8)
+                                .background(Rectangle()
+                                    .cornerRadius(9.0)
+                                    .padding(.horizontal)
+                                    .shadow(radius: 5, x: 3, y: 3)
+                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                
+                                if hasPermissionSpotlight {
+                                    NavigationLink {
+                                        SpotlightAdminView()
+                                    } label: {
+                                        Text("Edit Spotlight Articles")
+                                            .foregroundColor(.blue)
+                                            .padding(10)
+                                            .background(Rectangle()
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
+                                                .shadow(radius: 2, x: 1, y: 1))
+                                        
+                                    }
+                                    
+                                }
+                                
+                                VStack { // articles
+                                    if spotlightarticles.count > 0 {
+                                        NavigationLink { // ADD IFS HERE
+                                            SpotlightArticles(currentstudentdub: spotlightarticles[0])
+                                        } label: {
+                                            MostRecentAchievementCell(feat: spotlightarticles[0])
+                                        }
+                                    }
+                                    if spotlightarticles.count > 1 {
+                                        NavigationLink {
+                                            SpotlightArticles(currentstudentdub: spotlightarticles[1])
+                                        } label: {
+                                            MostRecentAchievementCell(feat: spotlightarticles[1])
+                                        }
+                                    }
+                                    if spotlightarticles.count > 2 {
+                                        NavigationLink {
+                                            SpotlightArticles(currentstudentdub: spotlightarticles[2])
+                                        } label: {
+                                            MostRecentAchievementCell(feat: spotlightarticles[2])
+                                        }
+                                    }
+                                    
+                                    
+                                    
+                                }
+                                .padding(.horizontal)
+                            }
+                            .padding(.top,10)
+                            
+                            
+                            
+                        }
+                        .zIndex(0)
+                        
+                        if false {
+                            Button {
+                                let center = UNUserNotificationCenter.current()
+                                
+                                let content = UNMutableNotificationContent()
+                                content.title = "Emergency Announcment"
+                                content.body = "skool is getting shot up guys run"
+                                
+                                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                                
+                                //creating request
+                                let request = UNNotificationRequest(identifier: "Identifier", content: content, trigger: trigger)
+                                
+                                center.add(request){error in
+                                    if let error = error {
+                                        print(error)
+                                    }
+                                }
+                            } label: {
+                                
+                                HStack{
+                                    Spacer()
+                                    Image(systemName: "bell.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width:20)
+                                    Text("Send Notification")
+                                        .fontWeight(.semibold)
+                                        .font(                                        .custom("Apple SD Gothic Neo", fixedSize: 24))
+                                    Image(systemName: "bell.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width:20)
+                                    Spacer()
+                                    
+                                }
+                                .padding(.vertical, 8)
+                                .background(Rectangle()
+                                    .cornerRadius(9.0)
+                                    .padding(.horizontal)
+                                    .shadow(radius: 5, x: 3, y: 3)
+                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                            }
+                        }
+                        
+                    }
+                    .padding(.bottom, 10)
+                    .overlay(alignment: .top) {
+                        HeaderView()
+                    }
+                    
+                    // checking for permissions on appear
+                    .onAppear {
+                        permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
+                            self.hasPermissionSpotlight = result
+                        }
+                        permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
+                            self.hasPermissionUpcomingEvents = result
+                        }
+                        permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { result in
+                            self.hasAdmin = result
+                        }
+                        
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
+                            // MARK: this is stupid but fuck it ERROR come from here
+                            if !hasAppeared {
+                                spotlightarticles = spotlightManager.allstudentachievementlist
+                                var returnlist: [studentachievement] = []
+                                
+                                let dispatchGroup = DispatchGroup()
+                                
+                                for article in spotlightarticles {
+                                    var tempimages: [UIImage] = []
+                                    
+                                    for imagepath in article.images {
+                                        dispatchGroup.enter()
+                                        imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
+                                            if let uiimage = uiimage {
+                                                tempimages.append(uiimage)
+                                            }
+                                            dispatchGroup.leave()
+                                        }
+                                    }
+                                    
+                                    dispatchGroup.notify(queue: .main) {
+                                        returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
+                                        
+                                        spotlightarticles = returnlist
                                     }
                                 }
                                 
-                                dispatchGroup.notify(queue: .main) {
-                                    returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
-                                    
-                                    spotlightarticles = returnlist
-                                }
+                                hasAppeared = true
                             }
-                            
-                            hasAppeared = true
                         }
+                        
+                        
                     }
                     
-                    
                 }
-                
+                .background(westblue)
+                .coordinateSpace(name: "SCROLL")
+                .padding(.top, -60)
             }
-            .background(westblue)
-            .coordinateSpace(name: "SCROLL")
-            .padding(.top, -60)
         }
 
 

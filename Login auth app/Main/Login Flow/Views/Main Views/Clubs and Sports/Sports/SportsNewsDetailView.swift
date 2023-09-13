@@ -23,11 +23,13 @@ var currentnews: sportNews
                                             .foregroundColor(.white)
                                         
                                         VStack(spacing: 0) {
-                                            Image(uiImage: currentnews.imagedata[index])
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 500, height: 500)
-                                                .clipped()
+                                            if currentnews.imagedata.count > 0 {
+                                                Image(uiImage: currentnews.imagedata[index])
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 500, height: 500)
+                                                    .clipped()
+                                            }
                                         }
                                     }
                                     .frame(width: geo.size.width, height: geo.size.height - 100, alignment: .center)

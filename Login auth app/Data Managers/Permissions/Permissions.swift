@@ -3,9 +3,9 @@ import Firebase
 
 struct permission: Identifiable {
     let id = UUID()
-    let dataType: String
-    let allowedUsers: [String]
-    let documentID: String
+    var dataType: String
+    var allowedUsers: [String]
+    var documentID: String
 }
 
 class permissionsDataManager: ObservableObject {
@@ -40,6 +40,8 @@ class permissionsDataManager: ObservableObject {
                     }
                 }
             }
+            print("PERMISSIONS:")
+            print(self.permissions)
             completion(returnValue)
         }
     }
@@ -55,5 +57,70 @@ class permissionsDataManager: ObservableObject {
                 completion(error)
             }
         }
+    
+        
+    func updatePermissions(newpermissions: [String: [String]], oldpermissions: [String: [String]], completion: @escaping () -> Void) {
+        print("updating permissions")
+        var newPermissionsList: [String: [String]] = [:]
+        
+        for (newDataType, newAllowedUsers) in newpermissions {
+                
+            for (oldDataType, oldAllowedUsers) in oldpermissions {
+                
+                if (newDataType == oldDataType) && newAllowedUsers != oldAllowedUsers {
+                    
+                    newPermissionsList[oldDataType] = newAllowedUsers
+                    
+                }
+                
+            }
+            
+            }
+        let db = Firestore.firestore()
+        let ref = db.collection("Permissions")
+        ref.getDocuments { snapshot, error in
+            
+            guard error == nil else {
+                print("Error: \(error!.localizedDescription)")
+                completion()
+                return
+            }
+            if let snapshot = snapshot {
+                
+                for document in snapshot.documents {
+                    let data = document.data()
+                    let dataType = data["dataType"] as? String ?? ""
+                    let documentID = document.documentID
+                    
+                    for permission in newPermissionsList {
+                        
+                        if permission.key == dataType {
+                            print("found matching docs")
+                            let documentRef = db.collection("Permissions").document(documentID)
+                            documentRef.setData([
+                            
+                                "dataType": dataType,
+                                "allowedUsers": permission.value
+                                
+                            ], merge: true) { error in
+                                if let error = error {
+                                    print("Error: \(error.localizedDescription)")
+                                }
+                                completion()
+                            }
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+        
+        
+        
+    }
 }
 

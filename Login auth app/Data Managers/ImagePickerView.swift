@@ -165,11 +165,12 @@ class imageManager: ObservableObject {
     @State var selectedImage: UIImage?
     @State var imagetoshow: UIImage?
     @State var imagename: String = ""
+    @State var bandwidth = 0
     
     func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
             let storageRef = Storage.storage().reference()
             let fileRef = storageRef.child(fileName)
-            fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+            fileRef.getData(maxSize: 300 * 1024) { data, error in
                 if error == nil, let imageData = data {
                     if let image = UIImage(data: imageData) {
                         completion(image)
@@ -186,10 +187,10 @@ class imageManager: ObservableObject {
         }
     
     func uploadPhoto(file: UIImage) -> String{
-        
         let storageRef = Storage.storage().reference()
         
-        let imageData = file.jpegData(compressionQuality: 0.01)
+        let maxsize = 1024 * 300 // 150kb
+        let imageData = jpegDataWithMaxFileSize(image: file, maxSizeInBytes: maxsize)
         
         guard imageData != nil else {
             return ""
@@ -221,6 +222,20 @@ class imageManager: ObservableObject {
                 }
             }
         }
+    
+    
+    func jpegDataWithMaxFileSize(image: UIImage, maxSizeInBytes: Int) -> Data? {
+        var compression: CGFloat = 1.0
+        var imageData = image.jpegData(compressionQuality: compression)
+
+        while let data = imageData, data.count > maxSizeInBytes, compression > 0.0 {
+            compression -= 0.1
+            imageData = image.jpegData(compressionQuality: compression)
+        }
+
+        return imageData
+    }
+
     
     
 }
