@@ -24,6 +24,8 @@ struct SportsDetailView: View {
     @State var currentsportID = ""
     @State var upcomingeventslist: [sportEvent] = []
     @State var topthree: [sportEvent] = []
+    @EnvironmentObject var sportfavoritesmanager: FavoriteSportsManager
+
     var safeArea: EdgeInsets
     var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
@@ -59,7 +61,10 @@ struct SportsDetailView: View {
                                             .cornerRadius(10)
                                     }.confirmationDialog("Add to My Sports", isPresented: $confirming) {
                                         Button("Add to My Sports") {
+                                            sportfavoritesmanager.addFavorite(sport: currentsport)
                                             favoritesManager.addFavorite(sport: currentsport)
+                                            isFavorited = true
+
                                         }
                                     }
                                 } else {
@@ -79,7 +84,9 @@ struct SportsDetailView: View {
                                         .cornerRadius(10)
                                     }.confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
                                         Button("Remove from My Sports", role: .destructive) {
+                                            sportfavoritesmanager.removeFavorite(sport: currentsport)
                                             favoritesManager.removeFavorite(sport: currentsport)
+                                            isFavorited = false
                                         }
                                     }
                                 }

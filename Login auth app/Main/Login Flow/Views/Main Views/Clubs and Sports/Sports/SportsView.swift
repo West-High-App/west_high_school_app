@@ -12,6 +12,7 @@ struct SportsHibabi: View {
     // MARK: initializers
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
+    @StateObject var sportfavoritesmanager = FavoriteSportsManager()
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
     @State var sportsNewsManager = sportsNewslist()
@@ -185,11 +186,12 @@ struct SportsHibabi: View {
                                 }
                             }
                             List { // MARK: foreach my sports
-                                ForEach(filteredList(fromList: sportsmanager.favoriteslist)) { item in
+                                ForEach(filteredList(fromList: sportfavoritesmanager.favoriteSports)) { item in
                                     if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                         NavigationLink {
                                             SportsMainView(selectedsport: item)
                                                 .environmentObject(vm)
+                                                .environmentObject(sportfavoritesmanager)
                                         }label: {
                                             HStack {
                                                 Image(uiImage: item.imagedata)
@@ -271,6 +273,7 @@ struct SportsHibabi: View {
                                         NavigationLink {
                                             SportsMainView(selectedsport: item)
                                                 .environmentObject(vm)
+                                                .environmentObject(sportfavoritesmanager)
                                         }label: {
                                             HStack {
                                                 Image(uiImage: item.imagedata)
@@ -374,6 +377,7 @@ struct SportsHibabi: View {
                         
                         dispatchGroup.notify(queue: .main) { [self] in
                             self.sportsmanager.favoriteslist = templist2
+                            self.sportfavoritesmanager.favoriteSports = templist2
                         }
                         
                         var templist: [sport] = []
@@ -614,5 +618,20 @@ struct sportnewscell: View{
 struct SportsHibabi_Previews: PreviewProvider {
     static var previews: some View {
         SportsHibabi()
+    }
+}
+
+
+class FavoriteSportsManager: ObservableObject {
+    @Published var favoriteSports: [sport] = []
+
+    func addFavorite(sport: sport) {
+        favoriteSports.append(sport)
+    }
+
+    func removeFavorite(sport: sport) {
+        if let index = favoriteSports.firstIndex(where: { $0.id == sport.id }) {
+            favoriteSports.remove(at: index)
+        }
     }
 }

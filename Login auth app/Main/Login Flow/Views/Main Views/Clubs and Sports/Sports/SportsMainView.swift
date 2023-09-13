@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct SportsMainView: View {
+    @EnvironmentObject var sportfavoritesmanager: FavoriteSportsManager
     var selectedsport:sport
     var body: some View {
         GeometryReader {
@@ -17,6 +18,7 @@ struct SportsMainView: View {
             let currentsport = selectedsport
             SportsDetailView(currentsport: currentsport, safeArea: safeArea, size: size)
                 .ignoresSafeArea(.container, edges: .top)
+                .environmentObject(sportfavoritesmanager)
         }
         //.background(.blue)
     }
