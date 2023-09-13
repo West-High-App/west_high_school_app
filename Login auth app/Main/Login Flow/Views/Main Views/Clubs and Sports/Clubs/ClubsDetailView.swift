@@ -28,6 +28,8 @@ struct ClubsDetailView: View {
     @State var originalimage = UIImage()
     @StateObject var imagemanager = imageManager()
     
+    @EnvironmentObject var clubfavoritesmanager: FavoriteClubsManager
+    
     var currentclub: club
     
     var safeArea: EdgeInsets
@@ -61,7 +63,9 @@ struct ClubsDetailView: View {
                                         .cornerRadius(10)
                                 }.confirmationDialog("Add to My Clubs", isPresented: $confirming) {
                                     Button("Add to My Clubs") {
+                                        clubfavoritesmanager.addFavorite(club: currentclub)
                                         favoritesManager.addFavorite(club: currentclub)
+                                        isFavorited = true
                                     }
                                 }
                             } else {
@@ -81,7 +85,9 @@ struct ClubsDetailView: View {
                                         .cornerRadius(10)
                                 }.confirmationDialog("Remove from My Clubs", isPresented: $confirming2) {
                                     Button("Remove from My Clubs", role: .destructive) {
+                                        clubfavoritesmanager.removeFavorite(club: currentclub)
                                         favoritesManager.removeFavorite(club: currentclub)
+                                        isFavorited = false
                                     }
                                 }
                             }

@@ -14,6 +14,9 @@ struct ClubsHibabi: View {
     @State private var hasPermissionClubNews = false
     @State private var hasPermissionClubs = false
     
+    @StateObject var clubfavoritesmanager = FavoriteClubsManager()
+
+    
     var clubNewsManager = clubsNewslist()
     @ObservedObject var clubsmanager = clubManager()
     @State var newstitlearray:[clubNews] = []
@@ -25,6 +28,7 @@ struct ClubsHibabi: View {
     @State var clubtempSelection = 1
     @State var clubshowingAllNews = 1
     @State private var clubcount = 0
+    @State var favoriteclublist: [club] = []
     
     @State private var isLoading = false
     
@@ -118,7 +122,7 @@ struct ClubsHibabi: View {
                                 
                             }
                             
-                            if clubselected == 1 && clubsmanager.favoriteslist.count == 0 {
+                            if clubselected == 1 && favoriteclublist.count == 0 {
                                 VStack {
                                     Spacer()
                                     Text("Add a club to get started!")
@@ -146,11 +150,12 @@ struct ClubsHibabi: View {
                                             Text("Log in to save favorites!")
                                         }
                                         List {// MARK: foreach 1 or 2
-                                            ForEach(clubsmanager.favoriteslist) { item in
+                                            ForEach(clubfavoritesmanager.favoriteClubs) { item in
                                                 if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
                                                     NavigationLink {
                                                         ClubsMainView(selectedclub: item)
                                                             .environmentObject(vmm)
+                                                            .environmentObject(clubfavoritesmanager)
                                                     } label: {
                                                         HStack {
                                                             Image(uiImage: item.imagedata)
@@ -189,6 +194,7 @@ struct ClubsHibabi: View {
                                                     NavigationLink {
                                                         ClubsMainView(selectedclub: item)
                                                             .environmentObject(vmm)
+                                                            .environmentObject(clubfavoritesmanager)
                                                     } label: {
                                                         HStack {
                                                             Image(uiImage: item.imagedata)
@@ -257,6 +263,10 @@ struct ClubsHibabi: View {
                         }
                         
                         
+                        favoriteclublist = clubfavoritesmanager.favoriteClubs
+                        
+                        
+                        
                         if !hasAppeared {
                             isLoading = true
                             print("LOADING...")
@@ -280,6 +290,8 @@ struct ClubsHibabi: View {
                             
                             dispatchGroup.notify(queue: .main) { [self] in
                                 self.clubsmanager.favoriteslist = tempylist2
+                                self.favoriteclublist = tempylist2
+                                self.clubfavoritesmanager.favoriteClubs = tempylist2
                             }
                             var tempylist: [club] = []
                             
@@ -412,3 +424,18 @@ struct ClubsHibabi_Previews: PreviewProvider {
     }
 }
 
+
+
+class FavoriteClubsManager: ObservableObject {
+    @Published var favoriteClubs: [club] = []
+
+    func addFavorite(club: club) {
+        favoriteClubs.append(club)
+    }
+
+    func removeFavorite(club: club) {
+        if let index = favoriteClubs.firstIndex(where: { $0.id == club.id }) {
+            favoriteClubs.remove(at: index)
+        }
+    }
+}

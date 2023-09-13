@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ClubsMainView: View {
     var selectedclub:club
+    @EnvironmentObject var clubfavoritesmanager: FavoriteClubsManager
     var body: some View {
         GeometryReader {
             let safeArea = $0.safeAreaInsets
@@ -16,6 +17,7 @@ struct ClubsMainView: View {
             let currentclub = selectedclub
             ClubsDetailView(currentclub: currentclub, safeArea: safeArea, size: size)
                 .ignoresSafeArea(.container, edges: .top)
+                .environmentObject(clubfavoritesmanager)
         }
         //.background(.blue)
     }
