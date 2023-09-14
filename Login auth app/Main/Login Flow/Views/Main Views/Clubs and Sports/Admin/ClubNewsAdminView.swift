@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ClubNewsAdminView: View {
+struct ClubNewsAdminView: View { // hello
     @StateObject var dataManager = clubsNewslist()
     
     @State private var isPresentingAddAchievement = false
