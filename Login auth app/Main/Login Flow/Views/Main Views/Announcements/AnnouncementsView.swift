@@ -29,11 +29,11 @@ struct AnnouncementsView: View {
                             Text("Edit Announcements")
                                 .foregroundColor(.blue)
                                 .padding(10)
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
                                 .background(Rectangle()
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
-                                    .shadow(radius: 2, x: 1, y: 1))
-                        }
+                                    .shadow(radius: 2, x: 1, y: 1))                        }
                     }
 
                     List(newsDataManager.topfive, id: \.id){news in

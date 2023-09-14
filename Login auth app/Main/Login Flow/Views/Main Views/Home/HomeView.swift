@@ -15,6 +15,7 @@ struct HomeView: View {
 //        let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
 //        setContentOffset(desiredOffset, animated: true)
 //    }
+    @State var screen = ScreenSize()
     @State var clubmanager = clubManager()
     @ObservedObject var newsDataManager = Newslist()
     @ObservedObject var dataManager = upcomingEventsDataManager()
@@ -166,6 +167,7 @@ struct HomeView: View {
                                         Text("Edit Upcoming Events")
                                             .foregroundColor(.blue)
                                             .padding(10)
+                                            .frame(width: screen.screenWidth-30)
                                             .font(.system(size: 17, weight: .semibold, design: .rounded))
                                             .background(Rectangle()
                                                 .foregroundColor(.white)
@@ -201,6 +203,7 @@ struct HomeView: View {
                                     Text("Student Spotlight")
                                         .foregroundColor(westblue)
                                         .bold()
+                                        .minimumScaleFactor(0.8)
                                         .font(.system(size: 24, weight: .semibold, design: .rounded))
                                         .padding(.horizontal)
                                         .lineLimit(1)
@@ -242,14 +245,13 @@ struct HomeView: View {
                                     } label: {
                                         Text("Edit Spotlight Articles")
                                             .foregroundColor(.blue)
-                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
                                             .padding(10)
+                                            .frame(width: screen.screenWidth-30)
+                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
                                             .background(Rectangle()
                                                 .foregroundColor(.white)
                                                 .cornerRadius(10)
-                                                .shadow(radius: 2, x: 1, y: 1))
-                                        
-                                    }
+                                                .shadow(radius: 2, x: 1, y: 1))                        }
                                     
                                 }
                                 
@@ -676,6 +678,7 @@ struct MostRecentAchievementCell: View{
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 250)
+                .frame(maxWidth: screen.screenWidth - 60)
                 .clipped()
                 .cornerRadius(9)
             VStack(alignment: .leading, spacing:2){

@@ -125,8 +125,14 @@ struct ClubsHibabi: View {
                                 NavigationLink {
                                     ClubsAdminView()
                                 } label: {
-                                    Text("Edit clubs")
-                                }
+                                    Text("Edit Clubs")
+                                        .foregroundColor(.blue)
+                                        .padding(10)
+                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                        .background(Rectangle()
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 2, x: 1, y: 1))                        }
                                 
                             }
                             
@@ -245,8 +251,14 @@ struct ClubsHibabi: View {
                                 NavigationLink {
                                     ClubNewsAdminView()
                                 } label: {
-                                    Text("edit club news")
-                                }
+                                    Text("Edit Club News")
+                                        .foregroundColor(.blue)
+                                        .padding(10)
+                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                        .background(Rectangle()
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 2, x: 1, y: 1))                        }
                                 
                             }
                             List(filteredClubsNews, id: \.id) { news in
@@ -373,21 +385,26 @@ struct ClubsHibabi: View {
 
 struct clubnewscell: View{
     var feat: clubNews
+    @State var screen = ScreenSize()
     
     var body:some View{
         VStack{
             if feat.imagedata.count > 0 {
                 Image(uiImage: feat.imagedata[0])
                     .resizable()
-                    .cornerRadius(10)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.vertical, 2)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .frame(maxWidth: screen.screenWidth - 60)
+                    .clipped()
+                    .cornerRadius(9)
             } else {
                 Image(uiImage: UIImage())
                     .resizable()
-                    .cornerRadius(10)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.vertical, 2)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .frame(maxWidth: screen.screenWidth - 60)
+                    .clipped()
+                    .cornerRadius(9)
             }
             VStack(alignment: .leading, spacing:2){
                 HStack {

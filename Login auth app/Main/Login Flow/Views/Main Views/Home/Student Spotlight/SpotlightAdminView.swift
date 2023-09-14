@@ -25,7 +25,7 @@ struct SpotlightAdminView: View {
             Button {
                 isPresentingAddAchievement = true
             } label: {
-                Text("Add Achievement")
+                Text("Add Article")
                     .foregroundColor(.blue)
                     .padding(10)
                     .background(Rectangle()
@@ -47,7 +47,7 @@ struct SpotlightAdminView: View {
                     .onTapGesture {
                     }
             }
-            .navigationBarTitle(Text("Edit Achievements"))
+            .navigationBarTitle(Text("Edit Articles"))
         }
        .sheet(isPresented: $isPresentingAddAchievement) {
            AchievementDetailView(dataManager: dataManager, editingAchievement: nil, displayimages: [])
@@ -126,9 +126,9 @@ struct AchievementDetailView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Achievement Details")) {
-                    TextField("Achievement Title", text: $achievementTitle)
-                    TextField("Achievement Description", text: $achievementDescription)
+                Section(header: Text("Article Details")) {
+                    TextField("Article Title", text: $achievementTitle)
+                    TextField("Article Description", text: $achievementDescription)
                     TextField("Article Author", text: $articleAuthor)
                     TextField("Published Date", text: $publishedDate)
                 }
@@ -158,11 +158,11 @@ struct AchievementDetailView: View {
                 }
 
 
-                Button("Publish New Achievement") {
+                Button("Publish New Article") {
                     isConfirmingAddAchievement = true
                 }
             }
-            .navigationBarTitle(editingAchievement == nil ? "Add Achievement" : "Edit Achievement")
+            .navigationBarTitle(editingAchievement == nil ? "Add Article" : "Edit Article")
             .navigationBarItems(trailing: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             })

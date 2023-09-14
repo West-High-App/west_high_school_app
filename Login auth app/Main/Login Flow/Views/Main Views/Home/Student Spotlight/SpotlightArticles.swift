@@ -72,7 +72,7 @@ struct SpotlightArticles: View {
                     .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                     
                 }.cornerRadius(30)
-                    .frame(height: 250)
+                    .frame(width: screen.screenWidth - 30, height: 250)
                     .shadow(color: .gray, radius: 8, x:2, y:3)
                 
                     .padding(.horizontal)

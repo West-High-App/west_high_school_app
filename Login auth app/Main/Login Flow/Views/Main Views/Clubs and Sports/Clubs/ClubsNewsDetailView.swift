@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ClubsNewsDetailView: View {
     var currentclubnews: clubNews
+    @State var screen = ScreenSize()
     var body: some View {
             ScrollView{
                 VStack{
@@ -20,7 +21,7 @@ struct ClubsNewsDetailView: View {
                             .padding(.horizontal)
                         Spacer()
                     }
-
+                    
                     HStack {
                         Text(currentclubnews.author)
                             .foregroundColor(Color.gray)
@@ -37,8 +38,8 @@ struct ClubsNewsDetailView: View {
                             .padding(.horizontal)
                         Spacer()
                     }
-
-
+                    
+                    
                     VStack {
                         TabView {
                             
@@ -51,8 +52,11 @@ struct ClubsNewsDetailView: View {
                                     VStack(spacing: 0) {
                                         Image(uiImage: currentclubnews.imagedata[index])
                                             .resizable()
+                                            .padding(.bottom, 2)
                                             .aspectRatio(contentMode: .fill)
+                                            .frame(width: screen.screenWidth - 20, height: 250)
                                             .clipped()
+                                            .cornerRadius(30)
                                     }
                                 }
                             }
@@ -63,14 +67,12 @@ struct ClubsNewsDetailView: View {
                         .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                         
                     }.cornerRadius(30)
-                        .frame(height: 500)
+                        .frame(width: screen.screenWidth - 20, height: 250)
                         .shadow(color: .gray, radius: 8, x:2, y:3)
                         .padding(.horizontal)
                     Spacer()
-                }.onAppear {
-                }
-
-                Text(currentclubnews.newsdescription)
+                    
+                    Text(currentclubnews.newsdescription)
                         .multilineTextAlignment(.leading)
                         .foregroundColor(Color.black)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
@@ -83,14 +85,8 @@ struct ClubsNewsDetailView: View {
                             .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                         .padding(.bottom)
                     
-                
+                }
             }
-
-        
-        
-        
-        
-        
         }
     }
 

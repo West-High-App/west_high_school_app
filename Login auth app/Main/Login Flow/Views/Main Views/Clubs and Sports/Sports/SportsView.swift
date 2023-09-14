@@ -24,7 +24,7 @@ struct SportsHibabi: View {
     @State var newstitlearray:[sportNews] = []
     @State var vm = ViewModel()
     @State var searchText = "" // text for search field
-    @State var selected = 2 // which tab is selected
+    @State var selected = 1 // which tab is selected
     @State var selectedGender = 1
     @State var selectedSeason = 1
     @State var tempSelection = 1
@@ -118,6 +118,7 @@ struct SportsHibabi: View {
                 VStack {
                     
                     Picker(selection: $selected, label: Text(""), content: { // picker at top
+                        Text("My Sports").tag(1)
                         Text("Browse").tag(2)
                         Text("Sports News").tag(3)
                         
@@ -145,13 +146,6 @@ struct SportsHibabi: View {
                     
                     // MARK: my sports
                     if selected == 1 {
-                        if hasPermissionSports {
-                            NavigationLink {
-                                SportsAdminView()
-                            } label: {
-                                Text("EDIT SPORTS")
-                            }
-                        }
                         if userInfo.loginStatus != "google" {
                             Text("Log in to save favorites!")
                         }
@@ -175,6 +169,20 @@ struct SportsHibabi: View {
                         }
                         else {
                             
+                            if hasPermissionSports {
+                                NavigationLink {
+                                    SportsAdminView()
+                                } label: {
+                                    Text("Edit Sports")
+                                        .foregroundColor(.blue)
+                                        .padding(10)
+                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                        .background(Rectangle()
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 2, x: 1, y: 1))                        }
+                            }
+                            
                             Button {
                                 isFiltering = true
                             } label: {
@@ -186,6 +194,7 @@ struct SportsHibabi: View {
                                     Spacer()
                                 }
                             }
+                            
                             
                             List { // MARK: foreach my sports
                                 //ForEach(filteredList(fromList: sportfavoritesmanager.favoriteSports)) {
@@ -238,8 +247,14 @@ struct SportsHibabi: View {
                             NavigationLink {
                                 SportsAdminView()
                             } label: {
-                                Text("EDIT SPORTS")
-                            }
+                                Text("Edit Sports")
+                                    .foregroundColor(.blue)
+                                    .padding(10)
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                    .background(Rectangle()
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                        .shadow(radius: 2, x: 1, y: 1))                        }
                         }
                         
                         // if selected == 1 && sportfavoritesmanager.favoriteSports.count == 0 {
@@ -314,6 +329,21 @@ struct SportsHibabi: View {
                     
                     // MARK: sports news
                     else if selected == 3 {
+                        
+                        if hasPermissionSportsNews {
+                            NavigationLink {
+                                SportsNewsAdminView()
+                            } label: {
+                                Text("Edit Sports News")
+                                    .foregroundColor(.blue)
+                                    .padding(10)
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                    .background(Rectangle()
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                        .shadow(radius: 2, x: 1, y: 1))                        }
+                        }
+                        
                         Button {
                             isFilteringNews = true
                         } label: {
@@ -325,15 +355,6 @@ struct SportsHibabi: View {
                                 Spacer()
                             }
                         }
-                        
-                        if hasPermissionSportsNews {
-                            NavigationLink {
-                                SportsNewsAdminView()
-                            } label: {
-                                Text("edit sports news")
-                            }
-                        }
-                        
                         
                         List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
                             
@@ -582,21 +603,25 @@ struct SportsHibabi: View {
 // MARK: sportnewscell
 struct sportnewscell: View{
     var feat: sportNews
-    
+    @State var screen = ScreenSize()
     var body:some View{
         VStack{
             if feat.imagedata.count > 0 {
                 Image(uiImage: feat.imagedata[0])
                     .resizable()
-                    .cornerRadius(10)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.vertical, 2)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .frame(maxWidth: screen.screenWidth - 60)
+                    .clipped()
+                    .cornerRadius(9)
             } else {
                 Image(uiImage: UIImage())
                     .resizable()
-                    .cornerRadius(10)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.vertical, 2)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .frame(maxWidth: screen.screenWidth - 60)
+                    .clipped()
+                    .cornerRadius(9)
             }
             VStack(alignment: .leading, spacing:2){
                 HStack {
@@ -617,7 +642,7 @@ struct sportnewscell: View{
                     .foregroundColor(.secondary)
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .padding(.leading, 5)
-                    .lineLimit(1)
+                    .lineLimit(2)
 //                    Text("Click here to read more")
 //                        .foregroundColor(.blue)
 //                        .lineLimit(2)

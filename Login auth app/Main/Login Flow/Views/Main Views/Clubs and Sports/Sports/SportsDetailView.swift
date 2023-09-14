@@ -109,11 +109,11 @@ struct SportsDetailView: View {
                                 Text("Edit Sport")
                                     .foregroundColor(.blue)
                                     .padding(10)
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
                                     .background(Rectangle()
                                         .foregroundColor(.white)
                                         .cornerRadius(10)
-                                        .shadow(radius: 2, x:1, y:1))
-                            }
+                                        .shadow(radius: 2, x: 1, y: 1))                        }
                         }
 
                         
@@ -132,8 +132,14 @@ struct SportsDetailView: View {
                                     NavigationLink {
                                         SportEventsAdminView(currentsport:  currentsportID)
                                     } label: {
-                                        Text("edit sports events")
-                                    }
+                                        Text("Edit Sport Events")
+                                            .foregroundColor(.blue)
+                                            .padding(10)
+                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                            .background(Rectangle()
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
+                                                .shadow(radius: 2, x: 1, y: 1))                        }
                                 }
                                 VStack {
                                     ForEach(upcomingeventslist) { event in

@@ -119,8 +119,14 @@ struct ClubsDetailView: View {
                                     NavigationLink {
                                         ClubsEventsAdminView(currentclub: currentclub.clubname)
                                     } label: {
-                                        Text("Edit club events")
-                                    }
+                                        Text("Edit Club Events")
+                                            .foregroundColor(.blue)
+                                            .padding(10)
+                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                            .background(Rectangle()
+                                                .foregroundColor(.white)
+                                                .cornerRadius(10)
+                                                .shadow(radius: 2, x: 1, y: 1))                        }
                                 }
 
                                 ForEach(upcomingeventlist) { event in
@@ -308,8 +314,14 @@ struct ClubsDetailView: View {
                                 NavigationLink {
                                     ClubDetailAdminView(editingclub: currentclub)
                                 } label: {
-                                    Text("edit club details")
-                                }
+                                    Text("Edit Club")
+                                        .foregroundColor(.blue)
+                                        .padding(10)
+                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                        .background(Rectangle()
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                            .shadow(radius: 2, x: 1, y: 1))                        }
                             }
 
                         }

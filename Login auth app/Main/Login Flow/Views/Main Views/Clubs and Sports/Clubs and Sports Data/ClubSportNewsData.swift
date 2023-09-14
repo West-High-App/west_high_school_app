@@ -134,7 +134,7 @@ class clubsNewslist: ObservableObject{
                     let newstitle = data["newstitle"] as? String ?? ""
                     let newsimage = data["newsimage"] as? [String] ?? []
                     let newsdescription = data["newsdescription"] as? String ?? ""
-                    let newsdate = data["newsdata"] as? String ?? ""
+                    let newsdate = data["newsdate"] as? String ?? ""
                     let author = data["author"] as? String ?? ""
                     let documentID = document.documentID
                     let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID, imagedata: [])

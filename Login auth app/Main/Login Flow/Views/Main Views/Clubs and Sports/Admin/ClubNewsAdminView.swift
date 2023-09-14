@@ -27,7 +27,7 @@ struct ClubNewsAdminView: View {
             Button {
                 isPresentingAddAchievement = true
             } label: {
-                Text("Add Sport News")
+                Text("Add Club Article")
                     .foregroundColor(.blue)
                     .padding(10)
                     .background(Rectangle()
@@ -60,7 +60,7 @@ struct ClubNewsAdminView: View {
                     .listRowSeparator(.hidden)
             }
 
-            .navigationBarTitle(Text("Edit Sport News"))
+            .navigationBarTitle(Text("Edit Club Articles"))
         }
         .sheet(isPresented: $isPresentingAddAchievement) {
             clubNewsRowlView(dataManager: dataManager)
@@ -129,7 +129,7 @@ struct clubNewsRowlView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Sports News Details")) {
+                Section(header: Text("Club Article Details")) {
                     TextField("Title", text: $newstitle)
                     TextField("Description", text: $newsdescription)
                     TextField("Author", text: $author)
@@ -150,7 +150,7 @@ struct clubNewsRowlView: View {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
                 }
                 
-                Button("Publish New Sport News") {
+                Button("Publish New Club Article") {
                     isConfirmingAddAchievement = true
                 }
             }
