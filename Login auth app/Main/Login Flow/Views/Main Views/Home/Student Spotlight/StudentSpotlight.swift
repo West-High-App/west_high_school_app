@@ -13,22 +13,11 @@ struct StudentSpotlight: View {
     var userInfo = UserInfo()
     var spotlightManager = studentachievementlist()
     @StateObject var imagemanager = imageManager()
-    @State var spotlightarticles: [studentachievement] = []
+    @State var spotlightarticles: [studentachievement]
     @State var hasAppeared = false
     @State var newstitlearray: [studentachievement] = []
-    @State var isLoading = true
+    @State var isLoading = false
     // delete init under if being stupid
-    init() {
-        spotlightManager.getAchievements()
-        newstitlearray = newstitlearray.sorted { first, second in
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM d, yyyy"
-            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-            return firstDate < secondDate
-        }.reversed()
-    }
-
     
     var body: some View {
 
@@ -44,8 +33,13 @@ struct StudentSpotlight: View {
                     }
                 }
                 .onAppear {
-                    
                     if !hasAppeared {
+                        permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
+                            self.hasPermissionSpotlight = result
+                        }
+                        hasAppeared = true
+                    }
+                    if  false { // !hasAppeared
                         print("LOADING....")
                         
                         spotlightarticles = spotlightManager.allstudentachievementlist
@@ -71,9 +65,6 @@ struct StudentSpotlight: View {
                                 
                                 spotlightarticles = returnlist
                                 
-                                permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
-                                    self.hasPermissionSpotlight = result
-                                }
                                 isLoading = false
                                 print("DONE LOADING")
                             }
@@ -111,8 +102,9 @@ struct StudentSpotlight: View {
                 Image(uiImage: feat.imagedata.first ?? UIImage())
                     .resizable()
                     .cornerRadius(10)
-                    .aspectRatio(contentMode: .fit)
                     .padding(.vertical, 2)
+                    .aspectRatio(contentMode: .fill)
+                    .clipped()
                 VStack(alignment: .leading, spacing:2){
                     HStack{
                         Text("By " + feat.articleauthor)
@@ -155,6 +147,6 @@ struct StudentSpotlight: View {
 
 struct StudentSpotlight_Previews: PreviewProvider {
     static var previews: some View {
-        StudentSpotlight()
+        StudentSpotlight(spotlightarticles: [])
     }
 }

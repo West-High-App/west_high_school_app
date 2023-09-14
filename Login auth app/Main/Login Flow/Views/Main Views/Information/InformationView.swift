@@ -11,10 +11,23 @@ import Firebase
 struct InformationView: View {
     @EnvironmentObject var userInfo: UserInfo
     @State var isPresentingLogoutConfirmation = false
+    @State var hasAdmin = false
+    @StateObject var permissionsManager = permissionsDataManager()
+    @State var hasAppeared = false
     var body: some View {
             NavigationView{
                 List{
-                    
+                    if hasAdmin {
+                        NavigationLink {
+                            PermissionsAdminView()
+                        } label: {
+                            Image(systemName: "lock")
+                            Text("Edit Admin Permissions")
+                                .padding(10)
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        }.foregroundColor(.blue)
+
+                    }
                     NavigationLink {
                         StaffView()
                     } label: {
@@ -118,6 +131,17 @@ struct InformationView: View {
                         }
                     }
                 }
+            }.onAppear {
+                
+                if !hasAppeared {
+                    
+                    permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { bool in
+                        hasAdmin = bool
+                    }
+                    
+                    hasAppeared = true
+                }
+                
             }
     }
 }

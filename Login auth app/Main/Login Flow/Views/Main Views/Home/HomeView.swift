@@ -78,7 +78,6 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
-            StudentSpotlight()
             ClubsHibabi()
             SportsHibabi()
             StaffView()
@@ -98,19 +97,6 @@ struct HomeView: View {
                         }
                         .zIndex(1)
                         VStack{
-                            if hasAdmin {
-                                NavigationLink {
-                                    PermissionsAdminView()
-                                } label: {
-                                    Text("Edit Permissions")
-                                        .foregroundColor(.blue)
-                                        .padding(10)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                        .background(Rectangle()
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                            .shadow(radius: 2, x: 1, y: 1))                        }
-                            }
                             VStack{
                                 //temp
                                 
@@ -215,7 +201,7 @@ struct HomeView: View {
                                     Spacer()
                                     
                                     NavigationLink {
-                                        StudentSpotlight()
+                                        StudentSpotlight(spotlightarticles: spotlightarticles)
                                     } label: {
                                         HStack{
                                             Text("See more")
@@ -259,9 +245,9 @@ struct HomeView: View {
                                     
                                 }
                                 
-                                VStack { // articles
+                                VStack { // MARK: student spotlight
                                     if spotlightarticles.count > 0 {
-                                        NavigationLink { // ADD IFS HERE
+                                        NavigationLink {
                                             SpotlightArticles(currentstudentdub: spotlightarticles[0])
                                         } label: {
                                             MostRecentAchievementCell(feat: spotlightarticles[0])
