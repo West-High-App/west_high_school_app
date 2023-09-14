@@ -14,9 +14,45 @@ struct InformationView: View {
     @State var hasAdmin = false
     @StateObject var permissionsManager = permissionsDataManager()
     @State var hasAppeared = false
+    @State var isAccountViewActive = false
+    @State var isShowingAccountDetails = false
     var body: some View {
             NavigationView{
                 List{
+                    
+                    NavigationLink() {
+                        // isShowingAccountDetails = true
+                        AccountView()
+                            .environmentObject(userInfo)
+                    } label: {
+                        if userInfo.loginStatus == "google" {
+                            HStack {
+                                AsyncImage(url: Auth.auth().currentUser?.photoURL) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 50, height: 50)
+                                            .cornerRadius(100)
+                                    default:
+                                        EmptyView()
+                                    }
+                                }
+                                Text(userInfo.displayName) // if google login, do image + full name, otherwise do person.circle + guest
+                            }.foregroundColor(.primary)
+                        } else {
+                            HStack {
+                                Image(systemName: "person.circle")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                Text("Guest User")
+                            }.foregroundColor(.primary)
+                        }
+                    }.padding(.vertical, 10)
+                    
                     if hasAdmin {
                         NavigationLink {
                             PermissionsAdminView()
@@ -28,6 +64,7 @@ struct InformationView: View {
                         }.foregroundColor(.blue)
 
                     }
+                    
                     NavigationLink {
                         StaffView()
                     } label: {
@@ -101,8 +138,8 @@ struct InformationView: View {
                         Text("Terms & Policies")
                     }.padding(.vertical, 10)
                     
-                    Button {
-                        isPresentingLogoutConfirmation = true
+                    /* Button {
+                    isPresentingLogoutConfirmation = true
                         
                     } label: {
                         HStack{
@@ -112,26 +149,58 @@ struct InformationView: View {
                         }
                         .padding(.vertical,5)
                         .foregroundColor(.red)
-                        }
+                        } */
                     
                     
                 }
                 .font(.system(size: 22, weight: .medium, design: .rounded))
                 .navigationBarTitle("Information")
                 
-                
-                .confirmationDialog("Log Out", isPresented: $isPresentingLogoutConfirmation) {
-                    Button("Sign Out", role: .destructive) {
-                        do {
-                            try Auth.auth().signOut()
-                            userInfo.loginStatus = "none"
-                        } catch let signOutError {
-                            print("tried to sign out failed")
-                            print(signOutError.localizedDescription)
+                .sheet(isPresented: $isShowingAccountDetails) {
+                    
+                    VStack {
+                        Text(userInfo.displayName)
+                        Text(userInfo.email)
+                        Text(Auth.auth().currentUser?.phoneNumber ?? "")
+                        AsyncImage(url: Auth.auth().currentUser?.photoURL) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 50, height: 50)
+                            default:
+                                EmptyView()
+                            }
                         }
+                        Button {
+                            do {
+                                try Auth.auth().signOut()
+                                userInfo.loginStatus = "none"
+                            } catch let signOutError {
+                                print("tried to sign out failed")
+                                print(signOutError.localizedDescription)
+                            }
+                        } label: {
+                            HStack{
+                                Spacer()
+                                Text("Sign Out")
+                                Spacer()
+                            }
+                            .padding(.vertical,5)
+                            .foregroundColor(.red)
+                        }
+                        
                     }
+                    
                 }
-            }.onAppear {
+                
+            }
+            
+            
+            .onAppear {
                 
                 if !hasAppeared {
                     

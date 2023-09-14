@@ -83,6 +83,7 @@
 		22DECD6A2AAB656300061E60 /* ImagePickerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DECD692AAB656300061E60 /* ImagePickerData.swift */; };
 		22DECD6C2AAB65B800061E60 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 22DECD6B2AAB65B800061E60 /* FirebaseStorage */; };
 		22DF41432AB2481A00D25707 /* PermissionsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF41422AB2481A00D25707 /* PermissionsAdminView.swift */; };
+		22DF41452AB3586E00D25707 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DF41442AB3586E00D25707 /* AccountView.swift */; };
 		E8150E3E2A9E49C300BD6853 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8150E3D2A9E49C300BD6853 /* SplashScreenView.swift */; };
 		E82562D72A84D0DA000AF117 /* ClubsMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82562D62A84D0DA000AF117 /* ClubsMainView.swift */; };
 		E82562DB2A867858000AF117 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E82562DA2A867858000AF117 /* GoogleService-Info.plist */; };
@@ -169,6 +170,7 @@
 		22DECD672AAB655000061E60 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		22DECD692AAB656300061E60 /* ImagePickerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerData.swift; sourceTree = "<group>"; };
 		22DF41422AB2481A00D25707 /* PermissionsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsAdminView.swift; sourceTree = "<group>"; };
+		22DF41442AB3586E00D25707 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		E8150E3D2A9E49C300BD6853 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		E82562D62A84D0DA000AF117 /* ClubsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsMainView.swift; sourceTree = "<group>"; };
 		E82562DA2A867858000AF117 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				2270B24F2A68E6BF00823E58 /* InformationView.swift */,
+				22DF41442AB3586E00D25707 /* AccountView.swift */,
 				2270B2512A68E6C300823E58 /* Information Views */,
 			);
 			path = Information;
@@ -556,7 +559,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 228362D02A2AB3D70061BFAE /* Build configuration list for PBXProject "West High App" */;
+			buildConfigurationList = 228362D02A2AB3D70061BFAE /* Build configuration list for PBXProject "West High" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -629,6 +632,7 @@
 				E87ADFEB2AA13B89009D9512 /* PrivacyPolicyView.swift in Sources */,
 				2270B2502A68E6BF00823E58 /* InformationView.swift in Sources */,
 				22DECD682AAB655000061E60 /* ImagePickerView.swift in Sources */,
+				22DF41452AB3586E00D25707 /* AccountView.swift in Sources */,
 				228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */,
 				22830A042A86D01300AE9C08 /* Notifications.swift in Sources */,
 				2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */,
@@ -857,7 +861,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		228362D02A2AB3D70061BFAE /* Build configuration list for PBXProject "West High App" */ = {
+		228362D02A2AB3D70061BFAE /* Build configuration list for PBXProject "West High" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				228362E12A2AB3D80061BFAE /* Debug */,
