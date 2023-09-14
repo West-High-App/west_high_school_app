@@ -12,6 +12,7 @@ struct SportsHibabi: View {
     // MARK: initializers
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
+    @State var favoriteslist: [sport] = []
     @StateObject var sportfavoritesmanager = FavoriteSportsManager()
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
@@ -23,7 +24,7 @@ struct SportsHibabi: View {
     @State var newstitlearray:[sportNews] = []
     @State var vm = ViewModel()
     @State var searchText = "" // text for search field
-    @State var selected = 1 // which tab is selected
+    @State var selected = 2 // which tab is selected
     @State var selectedGender = 1
     @State var selectedSeason = 1
     @State var tempSelection = 1
@@ -117,7 +118,6 @@ struct SportsHibabi: View {
                 VStack {
                     
                     Picker(selection: $selected, label: Text(""), content: { // picker at top
-                        Text("My Sports").tag(1)
                         Text("Browse").tag(2)
                         Text("Sports News").tag(3)
                         
@@ -155,7 +155,7 @@ struct SportsHibabi: View {
                         if userInfo.loginStatus != "google" {
                             Text("Log in to save favorites!")
                         }
-                        if selected == 1 && vm.savedItems.count == 0 {
+                        if selected == 1 && sportfavoritesmanager.favoriteSports.count == 0 {
                             VStack {
                                 Spacer()
                                 Text("Add a sport to get started!")
@@ -174,6 +174,7 @@ struct SportsHibabi: View {
                             }
                         }
                         else {
+                            
                             Button {
                                 isFiltering = true
                             } label: {
@@ -185,8 +186,12 @@ struct SportsHibabi: View {
                                     Spacer()
                                 }
                             }
+                            
                             List { // MARK: foreach my sports
-                                ForEach(filteredList(fromList: sportfavoritesmanager.favoriteSports)) { item in
+                                //ForEach(filteredList(fromList: sportfavoritesmanager.favoriteSports)) {
+                                
+                                ForEach(                                sportfavoritesmanager.favoriteSports) {
+                                item in
                                     if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                         NavigationLink {
                                             SportsMainView(selectedsport: item)
@@ -237,7 +242,8 @@ struct SportsHibabi: View {
                             }
                         }
                         
-                        if selected == 1 && vm.savedItems.count == 0 {
+                        // if selected == 1 && sportfavoritesmanager.favoriteSports.count == 0 {
+                        if false {
                             VStack {
                                 Spacer()
                                 Text("Add a sport to get started!")
@@ -255,7 +261,6 @@ struct SportsHibabi: View {
                                 
                             }
                         }
-                        else {
                             Button {
                                 isFiltering = true
                             } label: {
@@ -305,7 +310,6 @@ struct SportsHibabi: View {
                                 }
                             }
                             .searchable(text: $searchText)
-                        }
                     }
                     
                     // MARK: sports news
@@ -342,19 +346,23 @@ struct SportsHibabi: View {
                 .navigationTitle("Sports")
                 
                 .onAppear { // MARK: onAppear
-                    permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
-                        self.hasPermissionSportsNews = result
-                    }
-                    permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
-                        self.hasPermissionSports = result
-                    }
                     
                     
                     // images
+                    sportfavoritesmanager.favoriteSports = sportsmanager.favoriteslist
                     
                     if !hasAppeared {
+                        
                         isLoading = true
                         print("LOADING...")
+                        
+                        permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
+                            self.hasPermissionSportsNews = result
+                        }
+                        permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
+                            self.hasPermissionSports = result
+                        }
+                        
                         let dispatchGroup = DispatchGroup()
                         
                         var templist2: [sport] = []
@@ -422,10 +430,17 @@ struct SportsHibabi: View {
                         dispatchGroup.notify(queue: .main) { [self] in
                             self.sportsNewsManager.allsportsnewslist = templist3
                             print("DONE LOADING")
+                            
+                            print("SPORT FAVORITES LIST")
+                            print(sportfavoritesmanager.favoriteSports)
+                            favoriteslist = sportfavoritesmanager.favoriteSports
+                            print(favoriteslist)
+                            
                             isLoading = false
                         }
                         hasAppeared = true
                     }
+                    
                 }
                 
                 if isLoading {

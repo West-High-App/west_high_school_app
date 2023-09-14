@@ -13,7 +13,8 @@ struct AnnouncementsView: View {
     @StateObject var userInfo = UserInfo()
     
     @State private var hasPermission = false
-        
+    @State var hasAppeared = false
+    
     init() {
         newsDataManager.getAnnouncements()    }
     
@@ -58,8 +59,11 @@ struct AnnouncementsView: View {
                         Text("Announcements"))
                 }
             }.onAppear {
-                permissionsManager.checkPermissions(dataType: "Announcements", user: userInfo.email) { result in
-                    self.hasPermission = result
+                if !hasAppeared {
+                    permissionsManager.checkPermissions(dataType: "Announcements", user: userInfo.email) { result in
+                        self.hasPermission = result
+                    }
+                    hasAppeared = true
                 }
             }
     }

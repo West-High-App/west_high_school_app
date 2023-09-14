@@ -79,6 +79,14 @@ struct ClubsHibabi: View {
             }
     }
     
+    private var filteredClubsNews: [clubNews] {
+        return searchText == ""
+        ? clubNewsManager.allclubsnewslist
+            : clubNewsManager.allclubsnewslist.filter {
+                $0.newstitle.lowercased().contains(searchText.lowercased())
+            }
+    }
+    
         // MARK: view
     var body: some View {
         ZStack {
@@ -241,35 +249,30 @@ struct ClubsHibabi: View {
                                 }
                                 
                             }
-                            List(clubNewsManager.allclubsnewslist, id: \.id) { news in
-                                
+                            List(filteredClubsNews, id: \.id) { news in
                                 clubnewscell(feat: news)
-                                    .background( NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news)).opacity(0) )
-                                
-                                
-                                
+                                    .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news)).opacity(0))
                             }
-                            .searchable(text: $clubsearchText)
+                            .searchable(text: $searchText)
                         }
                         
                     }
                     
                     .onAppear { // MARK: on appear
-                        permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
-                            self.hasPermissionClubNews = result
-                        }
-                        permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
-                            self.hasPermissionClubs = result
-                        }
-                        
                         
                         favoriteclublist = clubfavoritesmanager.favoriteClubs
-                        
-                        
                         
                         if !hasAppeared {
                             isLoading = true
                             print("LOADING...")
+
+                            permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
+                                self.hasPermissionClubNews = result
+                            }
+                            permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
+                                self.hasPermissionClubs = result
+                            }
+                            
                             let dispatchGroup = DispatchGroup()
                             
                             var tempylist2: [club] = []

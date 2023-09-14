@@ -74,6 +74,8 @@ struct HomeView: View {
     var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
+    
+
     var body: some View {
         ZStack {
             StudentSpotlight()
@@ -345,21 +347,22 @@ struct HomeView: View {
                     
                     // checking for permissions on appear
                     .onAppear {
-                        permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
-                            self.hasPermissionSpotlight = result
-                        }
-                        permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
-                            self.hasPermissionUpcomingEvents = result
-                        }
-                        permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { result in
-                            self.hasAdmin = result
-                        }
-                        
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
                             // MARK: this is stupid but fuck it ERROR come from here
                             if !hasAppeared {
+                                
+                                permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
+                                    self.hasPermissionSpotlight = result
+                                }
+                                permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
+                                    self.hasPermissionUpcomingEvents = result
+                                }
+                                permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { result in
+                                    self.hasAdmin = result
+                                }
+                                
                                 spotlightarticles = spotlightManager.allstudentachievementlist
                                 var returnlist: [studentachievement] = []
                                 
