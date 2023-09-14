@@ -12,8 +12,8 @@ struct LunchMenuView: View {
     @State var isLoading = false
         var body: some View {
             ZStack{
-                SwiftUIWebView(url: URL(string:"https://west.madison.k12.wi.us/families/menus"))
-                
+                SwiftUIWebView(url: URL(string: "https://west.madison.k12.wi.us/families/menus/")) // https://west.madison.k12.wi.us/families/menus
+                                //
                 if isLoading {
                     ZStack {
                         Color.white
@@ -31,7 +31,7 @@ struct LunchMenuView: View {
                 
             }.onAppear() {
                 isLoading = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     
                     isLoading = false
                     

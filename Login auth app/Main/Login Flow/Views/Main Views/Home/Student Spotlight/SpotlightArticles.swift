@@ -14,6 +14,8 @@ struct SpotlightArticles: View {
     @State var spotlightmanager = studentachievementlist()
     @State var imagesdata: [UIImage] = []
     @State var hasAppeared = false
+    @State var screen = ScreenSize()
+
     
     var body: some View {
         ScrollView{
@@ -58,6 +60,7 @@ struct SpotlightArticles: View {
                                     Image(uiImage: currentstudentdub.imagedata[index])
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
+                                        .frame(width: screen.screenWidth - 30, height: 250)
                                         .clipped()
                                 }
                             }
@@ -69,7 +72,7 @@ struct SpotlightArticles: View {
                     .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                     
                 }.cornerRadius(30)
-                    .frame(height: 500)
+                    .frame(height: 250)
                     .shadow(color: .gray, radius: 8, x:2, y:3)
                 
                     .padding(.horizontal)

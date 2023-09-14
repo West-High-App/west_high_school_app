@@ -28,6 +28,9 @@ struct HomeView: View {
 
     @ObservedObject var spotlightManager = studentachievementlist()
     @State var newstitlearray: [studentachievement] = []
+    @State var upcomingeventsdataManager = upcomingEventsDataManager()
+    
+    @State var hasPermissionsUpcomingEvents = false
     //var notiManager = NotificationsManager()
     //var safeArea: EdgeInsets
     //var size: CGSize
@@ -36,6 +39,7 @@ struct HomeView: View {
     init(safeArea: EdgeInsets, size: CGSize) {
         self.safeArea = safeArea
         self.size = size
+        upcomingeventsdataManager.getUpcomingEvents()
         newsDataManager.getAnnouncements()
         spotlightManager.getAchievements()
         dataManager.getUpcomingEvents()
@@ -78,13 +82,15 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
-            ClubsHibabi()
-            SportsHibabi()
+            SwiftUIWebView(url: URL(string:"https://www.google.com/maps")!)
             StaffView()
-            LunchMenuView()
+            LunchMenuView() // tryna load this shit early
             ClassesView()
             SchoolPolicyGuideView()
-            MentalHealthView()
+            ClubsHibabi()
+            SportsHibabi()
+            AnnouncementsView()
+            UpcomingEventsView(upcomingeventslist: upcomingeventsdataManager.allupcomingeventslist, permission: hasPermissionsUpcomingEvents)
             //MARK: HOME
             NavigationView{
                 ScrollView(.vertical, showsIndicators: false) {
@@ -124,7 +130,7 @@ struct HomeView: View {
                                     
                                     Spacer()
                                     NavigationLink {
-                                        UpcomingEventsView()
+                                        UpcomingEventsView(upcomingeventslist: upcomingeventsdataManager.allupcomingeventslist, permission: hasPermissionsUpcomingEvents)
                                     } label: {
                                         HStack{
                                             Text("See more")
@@ -197,6 +203,7 @@ struct HomeView: View {
                                         .bold()
                                         .font(.system(size: 24, weight: .semibold, design: .rounded))
                                         .padding(.horizontal)
+                                        .lineLimit(1)
                                     
                                     Spacer()
                                     
@@ -235,6 +242,7 @@ struct HomeView: View {
                                     } label: {
                                         Text("Edit Spotlight Articles")
                                             .foregroundColor(.blue)
+                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
                                             .padding(10)
                                             .background(Rectangle()
                                                 .foregroundColor(.white)
@@ -347,6 +355,9 @@ struct HomeView: View {
                                 }
                                 permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { result in
                                     self.hasAdmin = result
+                                }
+                                permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
+                                    self.hasPermissionsUpcomingEvents = result
                                 }
                                 
                                 spotlightarticles = spotlightManager.allstudentachievementlist
@@ -628,7 +639,7 @@ struct UpcomingEventCell: View{
         HStack {
             VStack {
                 Text(event.month)
-                    .font(.system(size: 14, weight: .regular, design: .rounded))
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
                     .foregroundColor(.red)
                 Text(event.day)
                     .font(.system(size: 24, weight: .regular, design: .rounded))
@@ -657,17 +668,18 @@ struct MostRecentAchievementCell: View{
     @StateObject var imagemanager = imageManager()
     @State var hasAppeared = false
     @State var imagedata = UIImage()
+    @State var screen = ScreenSize()
     
     var body:some View{
         VStack(alignment:.leading){
             Image(uiImage: imagedata)
                 .resizable()
-                .cornerRadius(10)
-                .aspectRatio(contentMode: .fit)
-                .padding(.vertical, 2)
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 250)
+                .clipped()
+                .cornerRadius(9)
             VStack(alignment: .leading, spacing:2){
                 HStack {
-                    Spacer()
                     Text(feat.achievementtitle)
                         .foregroundColor(.black)
                         .lineLimit(2)
@@ -675,22 +687,17 @@ struct MostRecentAchievementCell: View{
                         .font(.system(size: 24, weight: .semibold, design: .rounded))
                     Spacer()
                 }
-                Text(feat.achievementdescription)
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(.secondary)
-                    .lineLimit(3)
-                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-                    .padding(.leading, 5)
-                HStack{
-                    Text("Read more")
-                        .foregroundColor(.blue)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                        .padding(.leading, 5)
-                    Spacer()
-                    Text("By : " + feat.articleauthor)
-                        .foregroundColor(.gray)
+                HStack {
+                    Text(feat.achievementdescription)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.secondary)
+                        .lineLimit(3)
                         .font(.system(size: 18, weight: .regular, design: .rounded))
-                        .padding(.trailing, 5)
+                    Spacer()
+                }
+                HStack{
+                    Text("Read more...")
+                        .font(.system(size: 18, weight: .regular, design: .rounded))
                 }
 //                    Text("Click here to read more")
 //                        .foregroundColor(.blue)
@@ -699,7 +706,13 @@ struct MostRecentAchievementCell: View{
 //                        .padding(.leading, 5)
 
             }
-        }
+        }.padding(.horizontal)
+            .padding(.vertical)
+            .background(Rectangle()
+                .cornerRadius(9)
+                //.padding(.leading,20)
+                .shadow(radius: 10)
+                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
         
         .onAppear {
             if !hasAppeared {
@@ -713,14 +726,6 @@ struct MostRecentAchievementCell: View{
             }
             
         }
-        
-        .padding(.horizontal)
-        .padding(.vertical)
-        .background(Rectangle()
-            .cornerRadius(20.0)
-            //.padding(.leading,20)
-            .shadow(radius: 10)
-            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
     }
 }
 

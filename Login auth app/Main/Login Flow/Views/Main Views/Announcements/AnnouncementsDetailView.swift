@@ -39,7 +39,7 @@ struct HomeAnnouncementsDetailView: View {
                 HStack {
                     Text(currentnews.title)
                         .foregroundColor(Color.black)
-                        .font(.system(size: 32, weight: .semibold, design: .rounded))
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
                         .lineLimit(2)
                         .padding(.leading)
                     Spacer()

@@ -87,7 +87,7 @@ struct AnnouncementsView: View {
                             .padding(.leading, 5)
                         Text(news.description)
                             .foregroundColor(.secondary)
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .font(.system(size: 18, weight: .medium, design: .rounded))
                             .padding(.leading, 5)
                             .lineLimit(2)
                     }

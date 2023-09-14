@@ -8,64 +8,75 @@
 import SwiftUI
 
 struct UpcomingEventsView: View {
-    @StateObject var dataManager = upcomingEventsDataManager()
+    @StateObject var upcomingeventsdataManager = upcomingEventsDataManager()
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
     @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermission = false
-    init() {
-        dataManager.getUpcomingEvents()
-    }
+    @State private var hasAppeared = false
+    var upcomingeventslist: [event]
+    var permission: Bool
     
     var body: some View {
-                VStack {
-
-                    List(dataManager.allupcomingeventslist, id: \.id){event in
-                        HStack {
-                            VStack {
-                                Text(event.month)
-                                    .font(.system(size: 14))
-                                    .foregroundColor(.red)
-                                Text(event.day)
-                                    .font(.system(size: 24))
-                            }
-                            .frame(width:50,height:30)
-                            Divider()
-                            VStack(alignment: .leading) {
-                                Text(event.eventname)
-                                    .fontWeight(.semibold)
-                                Text(event.time)
-                            }
-                            .padding(.vertical, -5)
-                            .padding(.leading, 5)
-                            Spacer()
+        ScrollView {
+            VStack {
+                HStack {
+                    Text("Upcoming Events")
+                        .foregroundColor(Color.black)
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .lineLimit(2)
+                        .padding(.leading)
+                    Spacer()
+                }
+                HStack {
+                    Text("Calendar")
+                        .foregroundColor(Color.gray)
+                        .font(.system(size: 26, weight: .semibold, design: .rounded))
+                        .lineLimit(1)
+                        .padding(.leading)
+                    Spacer()
+                }
+                ForEach(upcomingeventslist, id: \.id){event in
+                    HStack {
+                        VStack {
+                            Text(event.month)
+                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                .foregroundColor(.red)
+                            Text(event.day)
+                                .font(.system(size: 26, weight: .regular, design: .rounded))
 
                         }
-
-                            .padding()
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .shadow(radius: 5, x: 2, y: 2)
-                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                        .frame(width:50,height:50)
+                        Divider()
+                        VStack(alignment: .leading) {
+                            Text(event.eventname)
+                                .lineLimit(2)
+                                .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                            Text(event.time)
+                                .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                .lineLimit(1)
+                        }
+                        .padding(.leading, 5)
+                        Spacer()
                         
                     }
-                }
-                .navigationBarTitle(Text("Upcoming Events"))
-                .onAppear {
-                    permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
-                        self.hasPermissionUpcomingEvents = result
-                    }
-                }
-
-        
-        
-
-        
+                    
+                    .padding()
+                    .background(Rectangle()
+                        .cornerRadius(9.0)
+                        .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)
+                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                    
+                }.padding(.horizontal)
+                    .padding(.vertical, 5)
+            }
+        }
     }
 }
 
 struct UpcomingEventsView_Previews: PreviewProvider {
+    @State var upcomingeventsdataManager = upcomingEventsDataManager()
     static var previews: some View {
-        UpcomingEventsView()
+        UpcomingEventsView(upcomingeventslist: [], permission: true)
     }
 }

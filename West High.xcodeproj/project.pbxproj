@@ -159,7 +159,7 @@
 		228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsData.swift; sourceTree = "<group>"; };
 		228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsAdminView.swift; sourceTree = "<group>"; };
 		22830A032A86D01300AE9C08 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
-		228362D52A2AB3D70061BFAE /* West High App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "West High App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		228362D52A2AB3D70061BFAE /* West High.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "West High.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		228362DA2A2AB3D70061BFAE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		228362DC2A2AB3D80061BFAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		228362DF2A2AB3D80061BFAE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -171,6 +171,7 @@
 		22DECD692AAB656300061E60 /* ImagePickerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerData.swift; sourceTree = "<group>"; };
 		22DF41422AB2481A00D25707 /* PermissionsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsAdminView.swift; sourceTree = "<group>"; };
 		22DF41442AB3586E00D25707 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		22DF41B52AB37BB300D25707 /* West High App copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "West High App copy-Info.plist"; path = "/Users/augustelholm/Documents/west_high_final/west_high_app/West High App copy-Info.plist"; sourceTree = "<absolute>"; };
 		E8150E3D2A9E49C300BD6853 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		E82562D62A84D0DA000AF117 /* ClubsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsMainView.swift; sourceTree = "<group>"; };
 		E82562DA2A867858000AF117 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -460,13 +461,14 @@
 				2270B1F82A68D5ED00823E58 /* Login auth app test */,
 				228362D62A2AB3D70061BFAE /* Products */,
 				228362F52A2C1E720061BFAE /* Frameworks */,
+				22DF41B52AB37BB300D25707 /* West High App copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
 		228362D62A2AB3D70061BFAE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				228362D52A2AB3D70061BFAE /* West High App.app */,
+				228362D52A2AB3D70061BFAE /* West High.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -515,9 +517,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		228362D42A2AB3D70061BFAE /* West High App */ = {
+		228362D42A2AB3D70061BFAE /* West High */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 228362E32A2AB3D80061BFAE /* Build configuration list for PBXNativeTarget "West High App" */;
+			buildConfigurationList = 228362E32A2AB3D80061BFAE /* Build configuration list for PBXNativeTarget "West High" */;
 			buildPhases = (
 				228362D12A2AB3D70061BFAE /* Sources */,
 				228362D22A2AB3D70061BFAE /* Frameworks */,
@@ -527,7 +529,7 @@
 			);
 			dependencies = (
 			);
-			name = "West High App";
+			name = "West High";
 			packageProductDependencies = (
 				228362E92A2AB9700061BFAE /* FirebaseAnalytics */,
 				228362EB2A2AB9700061BFAE /* FirebaseAnalyticsSwift */,
@@ -541,7 +543,7 @@
 				22DECD6B2AAB65B800061E60 /* FirebaseStorage */,
 			);
 			productName = "Login auth app";
-			productReference = 228362D52A2AB3D70061BFAE /* West High App.app */;
+			productReference = 228362D52A2AB3D70061BFAE /* West High.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -577,7 +579,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				228362D42A2AB3D70061BFAE /* West High App */,
+				228362D42A2AB3D70061BFAE /* West High */,
 			);
 		};
 /* End PBXProject section */
@@ -870,7 +872,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		228362E32A2AB3D80061BFAE /* Build configuration list for PBXNativeTarget "West High App" */ = {
+		228362E32A2AB3D80061BFAE /* Build configuration list for PBXNativeTarget "West High" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				228362E42A2AB3D80061BFAE /* Debug */,

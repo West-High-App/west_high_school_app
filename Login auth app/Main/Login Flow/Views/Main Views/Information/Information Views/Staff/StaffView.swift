@@ -11,8 +11,7 @@ struct StaffView: View {
 @State var isLoading = false
     var body: some View {
         ZStack{
-            SwiftUIWebView(url: URL(string:"https://west.madison.k12.wi.us/contact-us"))
-            
+            SwiftUIWebView(url: URL(string:"https://west.madison.k12.wi.us/contact-us/")!) //
             if isLoading {
                 ZStack {
                     Color.white
@@ -30,7 +29,7 @@ struct StaffView: View {
             
         }.onAppear() {
             isLoading = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 
                 isLoading = false
             }

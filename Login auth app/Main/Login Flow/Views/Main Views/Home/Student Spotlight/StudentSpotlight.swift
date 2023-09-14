@@ -17,19 +17,52 @@ struct StudentSpotlight: View {
     @State var hasAppeared = false
     @State var newstitlearray: [studentachievement] = []
     @State var isLoading = false
+    
+    class ScreenSize {
+        let screen: CGRect
+        let screenWidth: CGFloat
+        let screenHeight: CGFloat
+        
+        init() {
+            screen = UIScreen.main.bounds
+            screenWidth = screen.width
+            screenHeight = screen.height
+        }
+    }
     // delete init under if being stupid
     
     var body: some View {
 
             ZStack {
-                VStack {
-                    
-                    List(spotlightarticles, id: \.id)
-                    {news in
-                        achievementcell(feat: news)
-                            .background( NavigationLink("", destination: SpotlightArticles(currentstudentdub: news)).opacity(0) )
-                            .listRowSeparator(.hidden)
-                        
+                ScrollView {
+                    VStack {
+                        HStack {
+                            Text("Student Spotlight")
+                                .foregroundColor(Color.black)
+                                .font(.system(size: 32, weight: .bold, design: .rounded))
+                                .lineLimit(2)
+                                .padding(.leading)
+                            Spacer()
+                        }
+                        HStack {
+                            Text("Articles")
+                                .foregroundColor(Color.gray)
+                                .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                .lineLimit(1)
+                                .padding(.leading)
+                            Spacer()
+                        }
+                        ForEach(spotlightarticles, id: \.id)
+                        {news in
+                            NavigationLink {
+                                SpotlightArticles(currentstudentdub: news)
+                            } label: {
+                                achievementcell(feat: news)
+                                   // .background( NavigationLink("", destination: SpotlightArticles(currentstudentdub: news)).opacity(0) )
+                                   // .listRowSeparator(.hidden)
+                            }.buttonStyle(PlainButtonStyle())
+                        }
+                            .padding(.horizontal)
                     }
                 }
                 .onAppear {
@@ -91,20 +124,34 @@ struct StudentSpotlight: View {
         
         }
     }
+
+class ScreenSize {
+    let screen: CGRect
+    let screenWidth: CGFloat
+    let screenHeight: CGFloat
     
-    
+    init() {
+        screen = UIScreen.main.bounds
+        screenWidth = screen.width
+        screenHeight = screen.height
+    }
+}
+
     struct achievementcell: View{
         var feat: studentachievement
         @StateObject var imagemanager = imageManager()
         @State var imagedata: [UIImage] = []
+        @State var screen = ScreenSize()
+        
         var body:some View{
             VStack{
                 Image(uiImage: feat.imagedata.first ?? UIImage())
                     .resizable()
-                    .cornerRadius(10)
-                    .padding(.vertical, 2)
+                    .padding(.bottom, 2)
                     .aspectRatio(contentMode: .fill)
+                    .frame(width: screen.screenWidth - 20, height: 250)
                     .clipped()
+                    .cornerRadius(30)
                 VStack(alignment: .leading, spacing:2){
                     HStack{
                         Text("By " + feat.articleauthor)
@@ -130,7 +177,9 @@ struct StudentSpotlight: View {
 //                        .font(.system(size: 18, weight: .semibold, design: .rounded))
 //                        .padding(.leading, 5)
 
-                }
+                }.padding(.horizontal)
+                Divider()
+                    .padding(.horizontal)
             }
                 .padding(.vertical, 5)
                 .listRowBackground(
@@ -143,7 +192,7 @@ struct StudentSpotlight: View {
                 )
         }
     }
-//}
+
 
 struct StudentSpotlight_Previews: PreviewProvider {
     static var previews: some View {
