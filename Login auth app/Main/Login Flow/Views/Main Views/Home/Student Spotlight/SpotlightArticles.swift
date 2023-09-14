@@ -16,98 +16,82 @@ struct SpotlightArticles: View {
     @State var hasAppeared = false
     
     var body: some View {
-        GeometryReader { geo in
-                ScrollView{
-                    VStack{
-                        VStack {
-                            TabView {
-                                
-                                // Loop through each recipe
-                                ForEach(currentstudentdub.imagedata.indices, id: \.self) { index in
-                                    ZStack {
-                                        Rectangle()
-                                            .foregroundColor(.white)
-                                        
-                                        VStack(spacing: 0) {
-                                            Image(uiImage: currentstudentdub.imagedata[index])
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .clipped()
-                                        }
-                                    }
-                                }
-                                
-                                
-                            }
-                            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-                            
-                        }.cornerRadius(30)
-                            .frame(height: 500)
-                            .shadow(color: .gray, radius: 8, x:2, y:3)
+        ScrollView{
+            VStack{
+                HStack {
+                    Text(currentstudentdub.achievementtitle)
+                        .foregroundColor(Color.black)
+                        .font(.system(size: 35, weight: .bold, design: .rounded))
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.3)
+                        .padding(.horizontal)
+                    Spacer()
+                }
+                HStack {
+                    Text(currentstudentdub.articleauthor)
+                        .foregroundColor(Color.gray)
+                        .font(.system(size: 26, weight: .semibold, design: .rounded))
+                        .lineLimit(1)
+                        .padding(.horizontal)
+                    Spacer()
+                }
+                HStack {
+                    Text(currentstudentdub.publisheddate)
+                        .foregroundColor(Color.gray)
+                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                        .lineLimit(1)
+                        .padding(.horizontal)
+                    Spacer()
+                }
+
+
+                VStack {
+                    TabView {
                         
-                            .padding()
-                        Spacer()
-                    }.onAppear {
-                    }
-                    //                Image(currentstudentdub.images.first!)
-                    //                    .resizable()
-                    //                    .cornerRadius(20)
-                    //                    .aspectRatio(contentMode: .fit)
-                    //                    .padding(.horizontal,10)
-                    //                    .padding(.top,10)
-                    //.padding(.leading,10)
-                    VStack{
-                        VStack{
-                            Text(currentstudentdub.achievementtitle)
-                            //.padding(.leading,10)
-                                .lineLimit(2)
-                                .padding(.horizontal,5)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color.black)
-                                .font(.system(size: 32, weight: .semibold, design: .rounded))
-                            HStack{
-                                Text(currentstudentdub.publisheddate)
-                                    .padding(.leading)
-                                    .foregroundColor(Color.black)
-                                    .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                Spacer()
-                                Text("By " + currentstudentdub.articleauthor)
-                                    .foregroundColor(Color.black)
-                                    .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                    .padding(.trailing)
+                        // Loop through each recipe
+                        ForEach(currentstudentdub.imagedata.indices, id: \.self) { index in
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.white)
+                                
+                                VStack(spacing: 0) {
+                                    Image(uiImage: currentstudentdub.imagedata[index])
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .clipped()
+                                }
                             }
-                            .padding(.horizontal, 10)
-                            .padding(.vertical,10)
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .padding(.horizontal)
-                                .shadow(radius: 5, x: 3, y: 3)
-                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                            .padding(.bottom, 10)
                         }
                         
-                        Text(currentstudentdub.achievementdescription)
-                            .multilineTextAlignment(.leading)
-                            .foregroundColor(Color.black)
-                            .font(.system(size: 24, weight: .regular, design: .rounded))
-                            .padding(.horizontal,30)
-                            .padding(.vertical)
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .padding(.horizontal)
-                                .shadow(radius: 5, x: 3, y: 3)
-                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                            .padding(.vertical, 5)
+                        
                     }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                     
-                }.onAppear {
-                    ()
-                }
-            
+                }.cornerRadius(30)
+                    .frame(height: 500)
+                    .shadow(color: .gray, radius: 8, x:2, y:3)
+                
+                    .padding(.horizontal)
+                Spacer()
+            }.onAppear {
+            }
 
+            Text(currentstudentdub.achievementdescription)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(Color.black)
+                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                    .padding(.horizontal, 25)
+                    .padding(.vertical, 5)
+                    .background(Rectangle()
+                        .cornerRadius(10)
+                        .padding(.horizontal)
+                        .shadow(radius: 5, x: 3, y: 3)
+                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                    .padding(.bottom)
+                
+            
         }
-        
     }
 }
 
