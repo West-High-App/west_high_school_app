@@ -20,22 +20,42 @@ struct SpotlightAdminView: View {
     
     var body: some View {
         VStack {
-            Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
-                .padding()
+            HStack {
+                Text("Edit Spotlight Articles")
+                    .foregroundColor(Color.black)
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .lineLimit(2)
+                    .padding(.leading)
+                Spacer()
+            }
+            HStack {
+                Text("You are currently editing source data. Any changes will be made public across all devices.")
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 5)
+                Spacer()
+            }
+            
             Button {
                 isPresentingAddAchievement = true
             } label: {
-                Text("Add Article")
-                    .foregroundColor(.blue)
-                    .padding(10)
-                    .background(Rectangle()
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 2, x: 1, y: 1))
+                Text("Add Spotlight Article")
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
             
             List(dataManager.newstitlearray, id: \.id) { achievement in
-                AchievementRowView(achievement: achievement)
+                
+                VStack (alignment: .leading) {
+                    
+                    Text(achievement.achievementtitle)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    Text(achievement.publisheddate)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                    Text(achievement.achievementdescription)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                        .lineLimit(2)
+                    
+                }
+                
                     .buttonStyle(PlainButtonStyle())
                     .contextMenu {
                         Button("Delete", role: .destructive) {
@@ -47,7 +67,6 @@ struct SpotlightAdminView: View {
                     .onTapGesture {
                     }
             }
-            .navigationBarTitle(Text("Edit Articles"))
         }
        .sheet(isPresented: $isPresentingAddAchievement) {
            AchievementDetailView(dataManager: dataManager, editingAchievement: nil, displayimages: [])

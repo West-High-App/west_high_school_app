@@ -12,6 +12,8 @@ struct ClubsAdminView: View {
     //MARK: initializer
     @StateObject var db = clubManager()
     
+    @State var clubslist: [club]
+    
     @State var isPresentingAddClub = false
     @State var isPresentingDeleteClub = false
     @State var isConfirmingAddClub = false
@@ -34,19 +36,18 @@ struct ClubsAdminView: View {
     var body: some View {
         
         VStack {
-            
-            Text("NOTE: You are currently editing source data. Any changes you make will be published across all devices.")
+            HStack {
+                Text("You are currently editing source data. Any changes will be made public across all devices.")
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 5)
+                Spacer()
+            }
             
             Button {
                 isPresentingAddClub = true
             } label: {
                 Text("Add Club")
-                    .foregroundColor(.blue)
-                    .padding(10)
-                    .background(Rectangle()
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 2, x: 1, y: 1))
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
             
             List(db.allclublist, id: \.id) {
@@ -54,10 +55,12 @@ struct ClubsAdminView: View {
                 
                 VStack(alignment: .leading) {
                     Text(club.clubname)
-                        .font(.headline)
-                    Text(club.clubmeetingroom)
-                        .font(.subheadline)
-                    Text(club.documentID)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    Text("Room: \(club.clubmeetingroom)")
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                    Text(club.clubdescription)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                        .lineLimit(1)
                 }.contextMenu {
                     Button("Delete", role: .destructive) {
                         temptitle = club.clubname
@@ -73,15 +76,18 @@ struct ClubsAdminView: View {
         
             .sheet(isPresented: $isPresentingAddClub) {
                 
-                VStack {
-                    HStack {
-                        Button("Cancel") {
-                            isPresentingAddClub = false
-                        }.padding()
-                        Spacer()
+                HStack {
+                    Spacer()
+                    Button("Cancel") {
+                        isPresentingAddClub = false
                     }
+                    .padding([.horizontal, .top])
                 }
-                
+                Text("Add Club")
+                    .foregroundColor(Color.black)
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .lineLimit(2)
+                    .padding(.leading)
                 
                 Form {
                     Section(header: Text("Sport Details")) {
@@ -90,7 +96,7 @@ struct ClubsAdminView: View {
                         Text("Additional information can be added after creation of sport.")
                     }
                     
-                    Button ("Publish new club") {
+                    Button ("Publish New Club") {
                         adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                         
                         clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, imagedata: UIImage(), documentID: "NAN", id: 0)
@@ -104,9 +110,8 @@ struct ClubsAdminView: View {
                         }
                         isPresentingAddClub = false
                         db.getClubs() {clubs in}
-                    }
+                    }.font(.system(size: 17, weight: .semibold, design: .rounded))
                 }
-                
                 Spacer()
             }
         
@@ -132,6 +137,6 @@ struct ClubsAdminView: View {
 
 struct ClubsAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubsAdminView()
+        ClubsAdminView(clubslist: [])
     }
 }

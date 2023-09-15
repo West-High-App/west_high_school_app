@@ -33,29 +33,30 @@ struct SportsAdminView: View {
     // MARK: body
     var body: some View {
         VStack {
-            Text("NOTE: You are currently editing source data. Any changes you make will be published across all devices.")
-            
+            HStack {
+                Text("You are currently editing source data. Any changes will be made public across all devices.")
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 5)
+                Spacer()
+            }
             
             Button {
                 isPresentingAddSport = true
             } label: {
                 Text("Add Sport")
-                    .foregroundColor(.blue)
-                    .padding(10)
-                    .background(Rectangle()
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 2, x: 1, y: 1))
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
-            // list with all sports
+
             List(db.allsportlist, id: \.id) { sport in
                 
                 VStack(alignment: .leading) {
                     Text(sport.sportname)
-                        .font(.headline)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
                     Text(sport.sportsteam)
-                        .font(.subheadline)
-                    Text(sport.documentID)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                    Text(sport.info)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                        .lineLimit(1)
                 }
                 .contextMenu {
                     Button("Delete", role: .destructive) {
@@ -71,14 +72,19 @@ struct SportsAdminView: View {
         
         
             .sheet(isPresented: $isPresentingAddSport) {
-                VStack {
-                    HStack {
-                        Button("Cancel") {
-                            isPresentingAddSport = false
-                        }.padding()
-                        Spacer()
+                
+                HStack {
+                    Spacer()
+                    Button("Cancel") {
+                        isPresentingAddSport = false
                     }
+                    .padding([.horizontal, .top])
                 }
+                Text("Add Club")
+                    .foregroundColor(Color.black)
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .lineLimit(2)
+                    .padding(.leading)
                 
                 
                 Form {
@@ -106,7 +112,7 @@ struct SportsAdminView: View {
                         isPresentingAddSport = false
                         db.getSports() { sports in }
                         
-                    }
+                    }.font(.system(size: 17, weight: .semibold, design: .rounded))
                 }
                 
                 

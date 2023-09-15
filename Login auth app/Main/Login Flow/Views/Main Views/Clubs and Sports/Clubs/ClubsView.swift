@@ -97,7 +97,7 @@ struct ClubsHibabi: View {
                         Picker(selection: $clubselected, label: Text(""), content: { // picker at top
                             Text("My Clubs").tag(1)
                             Text("Browse").tag(2)
-                            Text("Clubs News").tag(3)
+                            Text("News").tag(3)
                             
                             
                         }).pickerStyle(SegmentedPickerStyle())
@@ -121,22 +121,6 @@ struct ClubsHibabi: View {
                             }
                         
                         if clubselected == 1 || clubselected == 2 {
-                            
-                            if hasPermissionClubs {
-                                
-                                NavigationLink {
-                                    ClubsAdminView()
-                                } label: {
-                                    Text("Edit Clubs")
-                                        .foregroundColor(.blue)
-                                        .padding(10)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                        .background(Rectangle()
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                            .shadow(radius: 2, x: 1, y: 1))                        }
-                                
-                            }
                             
                             if clubselected == 1 && favoriteclublist.count == 0 {
                                 VStack {
@@ -244,30 +228,40 @@ struct ClubsHibabi: View {
                                     }
                                     
                                 }.searchable(text: $clubsearchText)
+                                    .navigationBarItems(trailing:
+                                        Group {
+                                            if hasPermissionClubs {
+                                                NavigationLink {
+                                                    ClubsAdminView(clubslist: clubsmanager.allclublist)
+                                                } label: {
+                                                    Text("Edit")
+                                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                }
+                                            }
+                                        }
+                                    )
                             }
                             
                         }
                         else if clubselected == 3 {
-                            if hasPermissionClubNews {
-                                NavigationLink {
-                                    ClubNewsAdminView()
-                                } label: {
-                                    Text("Edit Club News")
-                                        .foregroundColor(.blue)
-                                        .padding(10)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                        .background(Rectangle()
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                            .shadow(radius: 2, x: 1, y: 1))                        }
-                                
-                            }
                             //mark
                             List(filteredClubsNews, id: \.id) { news in
                                 clubnewscell(feat: news)
                                     .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news)).opacity(0))
                             }
                             .searchable(text: $searchText)
+                            .navigationBarItems(trailing:
+                                Group {
+                                    if hasPermissionClubNews {
+                                        NavigationLink {
+                                            ClubNewsAdminView()
+                                        } label: {
+                                            Text("Edit")
+                                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                        }
+                                    }
+                                }
+                            )
                         }
                         
                     }

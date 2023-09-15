@@ -145,13 +145,6 @@ struct SportsHibabi: View {
                     
                     // MARK: my sports
                     if selected == 1 {
-                        if hasPermissionSports {
-                            NavigationLink {
-                                SportsAdminView()
-                            } label: {
-                                Text("EDIT SPORTS")
-                            }
-                        }
                         if userInfo.loginStatus != "google" {
                             Text("Log in to save favorites!")
                         }
@@ -228,14 +221,6 @@ struct SportsHibabi: View {
                     
                     // MARK: browse
                     else if selected == 2 {
-                        
-                        if hasPermissionSports {
-                            NavigationLink {
-                                SportsAdminView()
-                            } label: {
-                                Text("EDIT SPORTS")
-                            }
-                        }
                         
                         if selected == 1 && vm.savedItems.count == 0 {
                             VStack {
@@ -322,14 +307,6 @@ struct SportsHibabi: View {
                             }
                         }
                         
-                        if hasPermissionSportsNews {
-                            NavigationLink {
-                                SportsNewsAdminView()
-                            } label: {
-                                Text("edit sports news")
-                            }
-                        }
-                        
                         
                         List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
                             
@@ -339,6 +316,31 @@ struct SportsHibabi: View {
                         }.searchable(text: $searchText)
                     }
                 }
+                
+                .navigationBarItems(trailing:
+                    Group {
+                    if selected == 3 {
+                        if hasPermissionSportsNews {
+                            NavigationLink {
+                                SportsNewsAdminView()
+                            } label: {
+                                Text("Edit")
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            }
+                        }
+                    } else {
+                        if hasPermissionSports {
+                            NavigationLink {
+                                SportsAdminView()
+                            } label: {
+                                Text("Edit")
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            }
+                        }
+                    }
+                    }
+                )
+                
                 .navigationTitle("Sports")
                 
                 .onAppear { // MARK: onAppear

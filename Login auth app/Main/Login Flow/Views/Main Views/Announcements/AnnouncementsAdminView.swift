@@ -16,22 +16,31 @@ struct AnnouncementsAdminView: View {
    
    var body: some View {
        VStack {
-           Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
-               .padding()
+           VStack(alignment: .leading) {
+               HStack {
+                   Text("You are currently editing source data. Any changes will be made public across all devices.")
+                       .padding(.horizontal, 20)
+                       .padding(.bottom, 5)
+                   Spacer()
+               }
+           }
            Button {
                isPresentingAddAnnouncement = true
            } label: {
                Text("Add Announcement")
-                   .foregroundColor(.blue)
-                   .padding(10)
-                   .background(Rectangle()
-                       .foregroundColor(.white)
-                       .cornerRadius(10)
-                       .shadow(radius: 2, x: 1, y: 1))
+                   .font(.system(size: 17, weight: .semibold, design: .rounded))
            }
            
            List(dataManager.topfive, id: \.id){announcement in
-               AnnouncementRowView(announcement: announcement)
+               VStack(alignment: .leading) {
+                   Text(announcement.title)
+                       .font(.system(size: 17, weight: .semibold, design: .rounded))
+                   Text(announcement.publisheddate)
+                       .font(.system(size: 17, weight: .regular, design: .rounded))
+                   Text(announcement.description)
+                       .font(.system(size: 17, weight: .regular, design: .rounded))
+                       .lineLimit(2)
+               }
                    .buttonStyle(PlainButtonStyle())
                    .contextMenu {
                        Button("Delete", role: .destructive) {

@@ -18,22 +18,39 @@ struct UpcomingEventsAdminView: View {
     }
     var body: some View {
             VStack {
-                Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
-                    .padding()
+                HStack {
+                    Text("Edit Upcoming Events")
+                        .foregroundColor(Color.black)
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .lineLimit(2)
+                        .padding(.leading)
+                    Spacer()
+                }
+                HStack {
+                    Text("You are currently editing source data. Any changes will be made public across all devices.")
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 5)
+                    Spacer()
+                }
+                
                 Button {
                     isPresentingAddEvent = true
                 } label: {
                     Text("Add Upcoming Event")
-                        .foregroundColor(.blue)
-                        .padding(10)
-                        .background(Rectangle()
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .shadow(radius: 2, x:1, y:1))
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
                 }
                 
                 List(dataManager.allupcomingeventslist) { event in
-                    EventRowView(event: event)
+                    VStack (alignment: .leading) {
+                        
+                        Text(event.eventname)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        Text("\(event.month) \(event.day), \(event.year)")
+                            .font(.system(size: 17, weight: .regular, design: .rounded))
+                        Text(event.time)
+                            .font(.system(size: 17, weight: .regular, design: .rounded))
+                        
+                    }
                         .buttonStyle(PlainButtonStyle())
                         .contextMenu {
                             Button("Delete", role: .destructive) {
@@ -43,7 +60,6 @@ struct UpcomingEventsAdminView: View {
                             }
                         }
                 }
-                .navigationBarTitle(Text("Edit Upcoming Events"))
             }
         .sheet(isPresented: $isPresentingAddEvent) {
             EventDetailView(dataManager: dataManager)

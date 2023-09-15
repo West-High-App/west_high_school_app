@@ -34,12 +34,15 @@ struct AccountView: View {
                                 EmptyView()
                             }
                         }
-                        Text(userInfo.displayName)
-                            .font(.system(size: 22, weight: .medium, design: .rounded))
-                            .padding(.vertical)
+                        VStack (alignment: .leading){
+                            Text("August Andersen")
+                                .font(.system(size: 22, weight: .medium, design: .rounded))
+                                .lineLimit(2)
+                            Text(userInfo.email)
+                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                .lineLimit(1)
+                        }.padding(.horizontal, 10)
                     }
-                    Text("Email: \(userInfo.email)")
-                        .font(.system(size: 20, weight: .regular, design: .rounded))
                     } else {
                         HStack {
                             Image(systemName: "person.circle")
@@ -60,7 +63,7 @@ struct AccountView: View {
                         HStack{
                             Spacer()
                             Text("Sign Out")
-                                .font(.system(size: 22, weight: .medium, design: .rounded))
+                                .font(.system(size: 20, weight: .medium, design: .rounded))
                             Spacer()
                         }
                         .padding(.vertical,5)

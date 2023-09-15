@@ -21,45 +21,45 @@ struct SportsNewsAdminView: View {
     
     var body: some View {
         VStack {
-            Text("This is the control panel. Click the button down below to add a new entry. All entries will be posted to the entire school, please be mindful as there are consequences for unprofessional posting. Hold down on the entry to delete it.")
-                .padding()
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("You are currently editing source data. Any changes will be made public across all devices.")
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 5)
+                    Spacer()
+                }
+            }
             Button {
                 isPresentingAddAchievement = true
             } label: {
-                Text("Add Sport News")
-                    .foregroundColor(.blue)
-                    .padding(10)
-                    .background(Rectangle()
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 2, x: 1, y: 1))
+                Text("Add Sports Article")
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
             
-            List(dataManager.allsportsnewslist, id: \.id) { sportNews in
-                sportNewsRowView(sportNews: sportNews)
+            List(dataManager.allsportsnewslist, id: \.id) { news in
+                
+                VStack (alignment: .leading){
+                    Text(news.newstitle)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    Text(news.newsdate)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                    Text(news.newsdescription)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                        .lineLimit(2)
+                }
         
                     .buttonStyle(PlainButtonStyle())
                     .contextMenu {
                         Button("Delete", role: .destructive) {
-                            tempAchievementTitle = sportNews.newstitle
+                            tempAchievementTitle = news.newstitle
                             isConfirmingDeleteAchievement = true
-                            achievementToDelete = sportNews
+                            achievementToDelete = news
                         }
 
                         
                     }
                     .padding(.trailing)
                     .padding(.vertical,8)
-                    .listRowBackground(
-                        Rectangle()
-                            .cornerRadius(15)
-                            .foregroundColor(Color(red: 220/255, green: 220/255, blue: 220/255))
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 7)
-                            .shadow(radius: 5)
-
-                    )
-                    .listRowSeparator(.hidden)
                 
             }
             .navigationBarTitle(Text("Edit Sport News"))
@@ -160,7 +160,8 @@ struct sportNewsRowlView: View {
                 
                 Button("Publish New Sport News") {
                     isConfirmingAddAchievement = true
-                }
+                }.font(.system(size: 17, weight: .semibold, design: .rounded))
+
             }
             .navigationBarTitle(editingAchievement == nil ? "Add Sport News" : "Edit Sport News")
             .navigationBarItems(trailing: Button("Cancel") {
