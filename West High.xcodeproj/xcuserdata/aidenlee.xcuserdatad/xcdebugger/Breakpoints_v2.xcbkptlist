@@ -23,117 +23,21 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5090FF05-E7E8-4C4C-8BB6-C1CCC2199BAD"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "339"
-            endingLineNumber = "339"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8AF3947D-7233-4A84-9293-114EE6163367"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "HomeView"
-            landmarkType = "14">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8B8715A4-3D54-4DC3-A4C2-F07C83490349"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "528"
-            endingLineNumber = "528"
-            landmarkName = "HeaderView()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "50891516-56B9-42DA-A416-9DD91E744854"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "529"
-            endingLineNumber = "529"
-            landmarkName = "HeaderView()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "19FB6269-B256-477C-A8BE-A96FF54A07C6"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "513"
-            endingLineNumber = "513"
-            landmarkName = "HeaderView()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "284DC08C-9BC2-4176-84AC-61C7ABEFB071"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "481"
-            endingLineNumber = "481"
-            landmarkName = "Artwork()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "F9AEC8AA-D9CD-4A19-AF56-EC0E8604E05A"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Login auth app/Main/Login Flow/Views/Main Views/Clubs and Sports/Clubs/ClubsView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "429"
-            endingLineNumber = "429"
+            startingLineNumber = "430"
+            endingLineNumber = "430"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
                <Location
                   uuid = "F9AEC8AA-D9CD-4A19-AF56-EC0E8604E05A - 47fc99f57769d93"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, SwiftUI.Spacer)&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.lineLimit(Swift.Optional&lt;Swift.Int&gt;) -&gt; some&gt;&gt;.0)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.cornerRadius(_: CoreGraphics.CGFloat, antialiased: Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.cornerRadius(_: CoreGraphics.CGFloat, antialiased: Swift.Bool) -&gt; some&gt;&gt;.0&gt;, SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, SwiftUI.Spacer)&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.lineLimit(Swift.Optional&lt;Swift.Int&gt;) -&gt; some&gt;&gt;.0)&gt;&gt;)&gt; in West_High.clubnewscell.body.getter : some"
@@ -148,7 +52,7 @@
                </Location>
                <Location
                   uuid = "F9AEC8AA-D9CD-4A19-AF56-EC0E8604E05A - 47fc99f57769d93"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, SwiftUI.Spacer)&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.lineLimit(Swift.Optional&lt;Swift.Int&gt;) -&gt; some&gt;&gt;.0)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.cornerRadius(_: CoreGraphics.CGFloat, antialiased: Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.cornerRadius(_: CoreGraphics.CGFloat, antialiased: Swift.Bool) -&gt; some&gt;&gt;.0&gt;, SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, SwiftUI.Spacer)&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.lineLimit(Swift.Optional&lt;Swift.Int&gt;) -&gt; some&gt;&gt;.0)&gt;&gt;)&gt; in West_High.clubnewscell.body.getter : some"
@@ -161,7 +65,86 @@
                   endingLineNumber = "429"
                   offsetFromSymbolStart = "1868">
                </Location>
+               <Location
+                  uuid = "F9AEC8AA-D9CD-4A19-AF56-EC0E8604E05A - 47fc99f57769c72"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, SwiftUI.Spacer)&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.lineLimit(Swift.Optional&lt;Swift.Int&gt;) -&gt; some&gt;&gt;.0)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI._ConditionalContent&lt;&lt;&lt;opaque return type of SwiftUI.View.cornerRadius(_: CoreGraphics.CGFloat, antialiased: Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.cornerRadius(_: CoreGraphics.CGFloat, antialiased: Swift.Bool) -&gt; some&gt;&gt;.0&gt;, SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(SwiftUI.HStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, SwiftUI.Spacer)&gt;&gt;, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.lineLimit(Swift.Optional&lt;Swift.Int&gt;) -&gt; some&gt;&gt;.0)&gt;&gt;)&gt; in West_High.clubnewscell.body.getter : some"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aidenlee/Documents/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Clubs%20and%20Sports/Clubs/ClubsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "430"
+                  endingLineNumber = "430"
+                  offsetFromSymbolStart = "1868">
+               </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B5C9EAB9-1B4A-41AB-9243-558AF7017ACB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Clubs and Sports/Clubs and Sports Data/ClubSportNewsData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "getSportsNews()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B5C9EAB9-1B4A-41AB-9243-558AF7017ACB - 5d10cdd7bfa06f2e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRQuerySnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in West_High.sportsNewslist.getSportsNews() -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aidenlee/Documents/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Clubs%20and%20Sports/Clubs%20and%20Sports%20Data/ClubSportNewsData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "2336">
+               </Location>
+               <Location
+                  uuid = "B5C9EAB9-1B4A-41AB-9243-558AF7017ACB - 5d10cdd7bfa06f2e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRQuerySnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in West_High.sportsNewslist.getSportsNews() -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aidenlee/Documents/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Clubs%20and%20Sports/Clubs%20and%20Sports%20Data/ClubSportNewsData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "2452">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7A0BA7B7-1B3A-4C18-80DB-B3A033A5B974"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/Student Spotlight/SpotlightData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "getAchievements()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

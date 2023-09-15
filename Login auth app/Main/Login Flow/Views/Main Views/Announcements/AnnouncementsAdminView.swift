@@ -132,7 +132,7 @@ struct AnnouncementDetailView: View {
            .alert(isPresented: $isConfirmingAddAnnouncement) {
                Alert(
                    title: Text("You Are Publishing Changes"),
-                   message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(announcementTitle)\nPublished Date: \(announcementPublishedDate)\nDescription: \(announcementDescription)"),
+                   message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(announcementTitle)\nDescription: \(announcementDescription)"),
                    primaryButton: .destructive(Text("Publish Changes")) {
                        let announcementToSave = Newstab(
                            documentID: "NAN",

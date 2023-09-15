@@ -22,9 +22,7 @@ class studentachievementlist: ObservableObject{
     
     @Published var allstudentachievementlist: [studentachievement] = []
     @Published var newstitlearray: [studentachievement] = []
-    @Published var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
-    @Published var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
-    @Published var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
+
     @StateObject var imagemanager = imageManager()
 
     
@@ -64,15 +62,6 @@ class studentachievementlist: ObservableObject{
                                     let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
                                     return firstDate < secondDate
                                 }.reversed()
-                                if let firstEvent = self.newstitlearray.first {
-                                self.firstcurrentevent = firstEvent
-                                }
-                                if self.newstitlearray.count > 1 {
-                                self.secondcurrentevent =   self.newstitlearray[1]
-                                }
-                                if self.allstudentachievementlist.count > 2 {
-                                self.thirdcurrentevent = self.newstitlearray[2]
-                        }
                     
                             }
             }

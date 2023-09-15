@@ -109,6 +109,13 @@ struct AchievementDetailView: View {
     @State private var articleAuthor = ""
     @State private var publishedDate = ""
     
+    
+    let calendar = Calendar.current
+    @State private var selectedMonthIndex = Calendar.current.component(.month, from: Date()) - 1
+    @State private var selectedDayIndex = Calendar.current.component(.day, from: Date()) - 1
+    @State private var selectedYearIndex = 0
+    let year = Calendar.current.component(.year, from: Date())
+    
     @StateObject var imagemanager = imageManager()
     var editingAchievement: studentachievement?
     @State var displayimages: [String] = []// make string
@@ -130,7 +137,6 @@ struct AchievementDetailView: View {
                     TextField("Article Title", text: $achievementTitle)
                     TextField("Article Description", text: $achievementDescription)
                     TextField("Article Author", text: $articleAuthor)
-                    TextField("Published Date", text: $publishedDate)
                 }
                 
                 Section("Image") {
@@ -169,7 +175,7 @@ struct AchievementDetailView: View {
             .alert(isPresented: $isConfirmingAddAchievement) {
                 Alert(
                     title: Text("You Are Publishing Changes"),
-                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(achievementTitle)\nDescription: \(achievementDescription)\nAuthor: \(articleAuthor)\nPublished Date: \(publishedDate)"),
+                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(achievementTitle)\nDescription: \(achievementDescription)\nAuthor: \(articleAuthor)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
                         
                         
@@ -183,7 +189,7 @@ struct AchievementDetailView: View {
                             achievementtitle: achievementTitle,
                             achievementdescription: achievementDescription,
                             articleauthor: articleAuthor,
-                            publisheddate: publishedDate,
+                            publisheddate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)",
                             images: images, imagedata: []
                         )
                         dataManager.createAchievement(achievement: achievementToSave) { error in

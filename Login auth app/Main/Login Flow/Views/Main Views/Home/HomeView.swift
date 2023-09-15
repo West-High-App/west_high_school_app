@@ -2,7 +2,7 @@
 //  HomeView.swift
 //  West Ap
 //
-//  Created by August Andersen on 5/19/23.
+//  Created by blud what i litterally created this August Andersen on 5/19/23.
 // testing push from west_high_app_2 (i think)
 
 import SwiftUI
@@ -15,6 +15,9 @@ struct HomeView: View {
 //        let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
 //        setContentOffset(desiredOffset, animated: true)
 //    }
+    @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
+    @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
+    @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
     @State var screen = ScreenSize()
     @State var clubmanager = clubManager()
     @ObservedObject var newsDataManager = Newslist()
@@ -46,7 +49,7 @@ struct HomeView: View {
         dataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM dd, yyyy"
+            dateFormatter.dateFormat = "MMM d, yyyy"
             let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
             let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
             return firstDate < secondDate
@@ -211,7 +214,7 @@ struct HomeView: View {
                                     Spacer()
                                     
                                     NavigationLink {
-                                        StudentSpotlight()
+                                        StudentSpotlight(spotlightarticles: spotlightarticles)
                                     } label: {
                                         HStack{
                                             Text("See more")
@@ -254,27 +257,27 @@ struct HomeView: View {
                                                 .shadow(radius: 2, x: 1, y: 1))                        }
                                     
                                 }
-                                //EREN JAEGAR
+                                
                                 VStack { // MARK: student spotlight
                                     if spotlightarticles.count > 0 {
                                         NavigationLink {
-                                            SpotlightArticles(currentstudentdub: spotlightarticles[0])
+                                            SpotlightArticles(currentstudentdub: firstcurrentevent)
                                         } label: {
-                                            MostRecentAchievementCell(feat: spotlightarticles[0])
+                                            MostRecentAchievementCell(feat: firstcurrentevent)
                                         }
                                     }
                                     if spotlightarticles.count > 1 {
                                         NavigationLink {
-                                            SpotlightArticles(currentstudentdub: spotlightarticles[1])
+                                            SpotlightArticles(currentstudentdub: secondcurrentevent)
                                         } label: {
-                                            MostRecentAchievementCell(feat: spotlightarticles[1])
+                                            MostRecentAchievementCell(feat: secondcurrentevent)
                                         }
                                     }
                                     if spotlightarticles.count > 2 {
                                         NavigationLink {
-                                            SpotlightArticles(currentstudentdub: spotlightarticles[2])
+                                            SpotlightArticles(currentstudentdub: thirdcurrentevent)
                                         } label: {
-                                            MostRecentAchievementCell(feat: spotlightarticles[2])
+                                            MostRecentAchievementCell(feat: thirdcurrentevent)
                                         }
                                     }
                                     
@@ -362,7 +365,7 @@ struct HomeView: View {
                                     self.hasPermissionsUpcomingEvents = result
                                 }
                                 
-                                spotlightarticles = spotlightManager.newstitlearray
+                                spotlightarticles = spotlightManager.allstudentachievementlist
                                 var returnlist: [studentachievement] = []
                                 
                                 let dispatchGroup = DispatchGroup()
@@ -384,11 +387,29 @@ struct HomeView: View {
                                         returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
                                         
                                         spotlightarticles = returnlist
+                                        self.spotlightarticles = self.spotlightarticles.sorted { first, second in
+                                            let dateFormatter = DateFormatter()
+                                            dateFormatter.dateFormat = "MMM dd, yyyy"
+                                            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+                                            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+                                            return firstDate < secondDate
+                                        }.reversed()
+                                        if self.spotlightarticles.count > 0{
+                                            self.firstcurrentevent = self.spotlightarticles[0]
+                                        }
+                                        if self.spotlightarticles.count > 1 {
+                                            self.secondcurrentevent =   self.spotlightarticles[1]
+                                        }
+                                        if self.spotlightarticles.count > 2 {
+                                            self.thirdcurrentevent = self.spotlightarticles[2]
+                                }
                                     }
+                                    
                                 }
                                 
                                 hasAppeared = true
                             }
+
                         }
                         
                         
@@ -674,7 +695,7 @@ struct MostRecentAchievementCell: View{
     
     var body:some View{
         VStack(alignment:.leading){
-            Image(uiImage: imagedata)
+            Image(uiImage: feat.imagedata.first ?? UIImage())
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 250)

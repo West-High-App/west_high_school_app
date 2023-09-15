@@ -260,6 +260,7 @@ struct ClubsHibabi: View {
                                             .shadow(radius: 2, x: 1, y: 1))                        }
                                 
                             }
+                            //mark
                             List(filteredClubsNews, id: \.id) { news in
                                 clubnewscell(feat: news)
                                     .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news)).opacity(0))
