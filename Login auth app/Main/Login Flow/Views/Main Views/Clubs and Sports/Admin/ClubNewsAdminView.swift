@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ClubNewsAdminView: View { // hello
     @StateObject var dataManager = clubsNewslist()
-    
+
     @State private var isPresentingAddAchievement = false
     @State private var selectedAchievement: clubNews?
     @State private var showAlert = false

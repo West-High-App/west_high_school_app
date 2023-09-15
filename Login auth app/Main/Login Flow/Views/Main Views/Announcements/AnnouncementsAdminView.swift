@@ -91,8 +91,14 @@ struct AnnouncementRowView: View {
    }
 }
 
+
 struct AnnouncementDetailView: View {
    @Environment(\.presentationMode) var presentationMode
+    let calendar = Calendar.current
+    @State private var selectedMonthIndex = Calendar.current.component(.month, from: Date()) - 1
+    @State private var selectedDayIndex = Calendar.current.component(.day, from: Date()) - 1
+    @State private var selectedYearIndex = 0
+    let year = Calendar.current.component(.year, from: Date())
    @ObservedObject var dataManager: Newslist
    @State private var announcementTitle = ""
    @State private var announcementPublishedDate = ""
@@ -112,9 +118,7 @@ struct AnnouncementDetailView: View {
            Form {
                Section(header: Text("Announcement Details")) {
                    TextField("Announcement Title", text: $announcementTitle)
-                   TextField("Published Date", text: $announcementPublishedDate)
                    TextField("Announcement Description", text: $announcementDescription)
-                   TextField("Image Name", text: $announcementImageName)
                }
                
                Button("Publish New Announcement") {
@@ -133,10 +137,10 @@ struct AnnouncementDetailView: View {
                        let announcementToSave = Newstab(
                            documentID: "NAN",
                            title: announcementTitle,
-                           publisheddate: announcementPublishedDate,
-                           description: announcementDescription,
-                           newsimagename: announcementImageName
+                           publisheddate:"\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)",
+                           description: announcementDescription
                        )
+                       
                        dataManager.createAnnouncement(announcement: announcementToSave) { error in
                            if let error = error {
                                print("Error creating announcement: \(error.localizedDescription)")
@@ -153,7 +157,8 @@ struct AnnouncementDetailView: View {
                    announcementTitle = announcement.title
                    announcementPublishedDate = announcement.publisheddate
                    announcementDescription = announcement.description
-                   announcementImageName = announcement.newsimagename
+    
+
                }
            }
        }

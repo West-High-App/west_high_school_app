@@ -14,11 +14,10 @@ struct Newstab: Identifiable {
     let title:String
     let publisheddate:String // format: Jun 15, 2023, Feb 28, 1998, etc.
     let description: String
-    let newsimagename: String
 }
 
 class Newslist: ObservableObject {
-    @Published var topfive: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...", newsimagename: "Loading...")]
+    @Published var topfive: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...")]
     @Published var newstitlearray: [Newstab] = []
     init() {
         getAnnouncements()
@@ -43,14 +42,14 @@ class Newslist: ObservableObject {
                     let publisheddate = data["publisheddate"] as? String ?? ""
                     let newsimagename = data["newsimagename"] as? String ?? ""
                     let documentID = document.documentID
-                    let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description, newsimagename: newsimagename)
+                    let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description)
                     templist.append(newstab)  // Add the newstab to the temporary array
                 }
                 DispatchQueue.main.async {
                     self.topfive = Array(templist[0...])
                     self.topfive = self.topfive.sorted { first, second in
                         let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "MMM, d yyyy"
+                        dateFormatter.dateFormat = "MMM dd, yyyy"
                         let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
                         let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
                         return firstDate < secondDate
@@ -67,7 +66,6 @@ class Newslist: ObservableObject {
             "title": announcement.title,
             "description": announcement.description,
             "publisheddate": announcement.publisheddate,
-            "newsimagename": announcement.newsimagename
         ]) { error in
             completion(error)
             if error == nil {

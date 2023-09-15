@@ -73,6 +73,6 @@ struct HomeAnnouncementsDetailView: View {
 struct AnnouncementsDetailView_Previews: PreviewProvider {
     var newsDataManager = Newslist()
     static var previews: some View {
-        HomeAnnouncementsDetailView(currentnews: Newstab(documentID: "testID", title: "This is my title yessir it pretty long", publisheddate: "Jan 5, 2023", description: "Description mouhwe gou weoguh weoug wneouwehg oweun woeung oweugh woe ngouwenf owuend woe ouwengouw efnoweu dnouweng owuehg oweunf ouwednouwe owuenc owueng owuen ouwn ouwenoguwe ouwendouwe gouwen owueh uowecnoweun wouenc weoug hwouenwo uenf.", newsimagename: "West Regents Logo"))
+        HomeAnnouncementsDetailView(currentnews: Newstab(documentID: "testID", title: "This is my title yessir it pretty long", publisheddate: "Jan 5, 2023", description: "Description mouhwe gou weoguh weoug wneouwehg oweun woeung oweugh woe ngouwenf owuend woe ouwengouw efnoweu dnouweng owuehg oweunf ouwednouwe owuenc owueng owuen ouwn ouwenoguwe ouwendouwe gouwen owueh uowecnoweun wouenc weoug hwouenwo uenf."))
     }
 }

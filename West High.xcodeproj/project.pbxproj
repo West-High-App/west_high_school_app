@@ -171,7 +171,6 @@
 		22DECD692AAB656300061E60 /* ImagePickerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerData.swift; sourceTree = "<group>"; };
 		22DF41422AB2481A00D25707 /* PermissionsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsAdminView.swift; sourceTree = "<group>"; };
 		22DF41442AB3586E00D25707 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
-		22DF41B52AB37BB300D25707 /* West High App copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "West High App copy-Info.plist"; path = "/Users/augustelholm/Documents/west_high_final/west_high_app/West High App copy-Info.plist"; sourceTree = "<absolute>"; };
 		E8150E3D2A9E49C300BD6853 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		E82562D62A84D0DA000AF117 /* ClubsMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsMainView.swift; sourceTree = "<group>"; };
 		E82562DA2A867858000AF117 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -461,7 +460,6 @@
 				2270B1F82A68D5ED00823E58 /* Login auth app test */,
 				228362D62A2AB3D70061BFAE /* Products */,
 				228362F52A2C1E720061BFAE /* Frameworks */,
-				22DF41B52AB37BB300D25707 /* West High App copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -810,11 +808,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Login-auth-app-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "West High App";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -841,11 +841,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Login-auth-app-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "West High App";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
