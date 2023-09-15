@@ -712,15 +712,6 @@ struct MostRecentAchievementCell: View{
                     Spacer()
                 }
                 HStack {
-                    Text(feat.publisheddate)
-                        .multilineTextAlignment(.leading)
-                        .foregroundColor(.secondary)
-                        .lineLimit(3)
-                        .font(.system(size: 18, weight: .regular, design: .rounded))
-                    Spacer()
-                }
-
-                HStack {
                     Text(feat.achievementdescription)
                         .multilineTextAlignment(.leading)
                         .foregroundColor(.secondary)

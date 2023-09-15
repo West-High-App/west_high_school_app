@@ -87,7 +87,7 @@ struct ClubsDetailView: View {
                                     Button("Remove from My Clubs", role: .destructive) {
                                         clubfavoritesmanager.removeFavorite(club: currentclub)
                                         favoritesManager.removeFavorite(club: currentclub)
-                                        isFavorited = false
+                                        self.isFavorited = false
                                     }
                                 }
                             }
@@ -273,6 +273,7 @@ struct ClubsDetailView: View {
                 .resizable()
                 .scaledToFill()
                 .aspectRatio(contentMode: .fill)
+                .blur(radius: 5)
                 .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0 ))
                 .clipped()
                 .ignoresSafeArea()

@@ -40,8 +40,6 @@ class permissionsDataManager: ObservableObject {
                     }
                 }
             }
-            print("PERMISSIONS:")
-            print(self.permissions)
             completion(returnValue)
         }
     }

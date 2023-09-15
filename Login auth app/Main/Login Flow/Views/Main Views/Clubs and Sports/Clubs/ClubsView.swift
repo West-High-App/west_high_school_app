@@ -99,6 +99,7 @@ struct ClubsHibabi: View {
                             Text("Browse").tag(2)
                             Text("Clubs News").tag(3)
                             
+                            
                         }).pickerStyle(SegmentedPickerStyle())
                             .padding(.horizontal,30)
                             .onAppear() {
@@ -108,6 +109,7 @@ struct ClubsHibabi: View {
                                 }
                             }
                             .onChange(of: clubselected) { newValue in
+                                print("CHANGE THIS SHIT")
                                 if (clubselected == 1 && clubtempSelection == 2) {
                                     vmm.clubsortFavs()
                                     clubtempSelection = clubselected
@@ -381,6 +383,10 @@ struct ClubsHibabi: View {
                     }
                     
                 }
+            }.onAppear {
+                
+                print("VIEW APPEARED")
+                
             }
 
             

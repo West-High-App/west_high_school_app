@@ -3,4 +3,129 @@
    uuid = "F881F60F-3C4C-49D3-BC04-074C2953802A"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/HomeView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "HomeView"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - 6d933d010f96991e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of West_High.HomeView.hasPermissionsUpcomingEvents : Swift.Bool"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - 804880ff7ce2bf15"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "West_High.HomeView.hasPermissionsUpcomingEvents.getter : Swift.Bool"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "180">
+               </Location>
+               <Location
+                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - 5ee293fbf35e1781"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "West_High.HomeView.hasPermissionsUpcomingEvents.setter : Swift.Bool"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "168">
+               </Location>
+               <Location
+                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - f85017aa90030108"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "West_High.HomeView.hasPermissionsUpcomingEvents.modify : Swift.Bool"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "260">
+               </Location>
+               <Location
+                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - ec7c96e9d28a1cc4"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "West_High.HomeView.hasPermissionsUpcomingEvents.modify : Swift.Bool with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - 33f170be88f70b39"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "West_High.HomeView.$hasPermissionsUpcomingEvents.getter : SwiftUI.Binding&lt;Swift.Bool&gt;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "196">
+               </Location>
+               <Location
+                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - a2418159fc5d1e5"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "West_High.HomeView.init(safeArea: SwiftUI.EdgeInsets, size: __C.CGSize) -&gt; West_High.HomeView"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "3520">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

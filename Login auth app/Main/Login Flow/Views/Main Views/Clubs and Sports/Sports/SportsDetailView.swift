@@ -24,7 +24,7 @@ struct SportsDetailView: View {
     @State var currentsportID = ""
     @State var upcomingeventslist: [sportEvent] = []
     @State var topthree: [sportEvent] = []
-    @EnvironmentObject var sportfavoritesmanager: FavoriteSportsManager
+    @ObservedObject var sportfavoritesmanager = FavoriteSportsManager()
 
     var safeArea: EdgeInsets
     var size: CGSize
@@ -291,6 +291,7 @@ struct SportsDetailView: View {
                 .resizable()
                 .scaledToFill()
                 .aspectRatio(contentMode: .fill)
+                .blur(radius: 5)
                 .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0 ))
                 .clipped()
                 .overlay(content: {

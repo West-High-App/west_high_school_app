@@ -13,7 +13,7 @@ struct SportsHibabi: View {
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
     @State var favoriteslist: [sport] = []
-    @StateObject var sportfavoritesmanager = FavoriteSportsManager()
+    @ObservedObject var sportfavoritesmanager = FavoriteSportsManager() // this one
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
     @StateObject var sportsNewsManager = sportsNewslist()
@@ -198,8 +198,7 @@ struct SportsHibabi: View {
                             List { // MARK: foreach my sports
                                 //ForEach(filteredList(fromList: sportfavoritesmanager.favoriteSports)) {
                                 
-                                ForEach(                                sportfavoritesmanager.favoriteSports) {
-                                item in
+                                ForEach(sportfavoritesmanager.favoriteSports, id: \.id) { item in
                                     if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                         NavigationLink {
                                             SportsMainView(selectedsport: item)
@@ -231,6 +230,13 @@ struct SportsHibabi: View {
                                                 }
                                                 Spacer()
                                             }
+                                        }.onDisappear {
+                                            
+                                            let tempselected = selected
+                                            selected = 2
+                                            selected = 1
+                                            selected = tempselected
+                                            
                                         }
                                     }
                                 }
@@ -392,7 +398,7 @@ struct SportsHibabi: View {
                         
                         dispatchGroup.notify(queue: .main) { [self] in
                             self.sportsmanager.favoriteslist = templist2
-                            self.sportfavoritesmanager.favoriteSports = templist2
+                            self.sportfavoritesmanager.favoriteSports = templist2 // boom
                         }
                         
                         var templist: [sport] = []
