@@ -29,13 +29,6 @@ struct LunchMenuView: View {
                     }
                 }
                 
-            }.onAppear() {
-                isLoading = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    
-                    isLoading = false
-                    
-                }
             }
         }
     }

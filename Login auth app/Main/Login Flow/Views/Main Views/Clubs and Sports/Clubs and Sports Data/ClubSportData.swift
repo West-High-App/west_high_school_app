@@ -302,4 +302,3 @@ class clubManager: ObservableObject {
     
 }
 
-

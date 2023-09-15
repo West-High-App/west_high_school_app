@@ -24,7 +24,7 @@ struct SportsDetailView: View {
     @State var currentsportID = ""
     @State var upcomingeventslist: [sportEvent] = []
     @State var topthree: [sportEvent] = []
-    @ObservedObject var sportfavoritesmanager = FavoriteSportsManager()
+    @EnvironmentObject var sportfavoritesmanager: FavoriteSportsManager
 
     var safeArea: EdgeInsets
     var size: CGSize
@@ -109,11 +109,11 @@ struct SportsDetailView: View {
                                 Text("Edit Sport")
                                     .foregroundColor(.blue)
                                     .padding(10)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
                                     .background(Rectangle()
                                         .foregroundColor(.white)
                                         .cornerRadius(10)
-                                        .shadow(radius: 2, x: 1, y: 1))                        }
+                                        .shadow(radius: 2, x:1, y:1))
+                            }
                         }
 
                         
@@ -132,14 +132,8 @@ struct SportsDetailView: View {
                                     NavigationLink {
                                         SportEventsAdminView(currentsport:  currentsportID)
                                     } label: {
-                                        Text("Edit Sport Events")
-                                            .foregroundColor(.blue)
-                                            .padding(10)
-                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                            .background(Rectangle()
-                                                .foregroundColor(.white)
-                                                .cornerRadius(10)
-                                                .shadow(radius: 2, x: 1, y: 1))                        }
+                                        Text("edit sports events")
+                                    }
                                 }
                                 VStack {
                                     ForEach(upcomingeventslist) { event in
@@ -291,7 +285,6 @@ struct SportsDetailView: View {
                 .resizable()
                 .scaledToFill()
                 .aspectRatio(contentMode: .fill)
-                .blur(radius: 5)
                 .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0 ))
                 .clipped()
                 .overlay(content: {

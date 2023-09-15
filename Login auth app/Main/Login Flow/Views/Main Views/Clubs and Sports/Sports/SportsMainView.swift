@@ -32,4 +32,3 @@ struct SportsMainView_Previews: PreviewProvider {
     }
 }
 
-

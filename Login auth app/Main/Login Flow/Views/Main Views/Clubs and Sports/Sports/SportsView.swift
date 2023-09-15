@@ -12,11 +12,10 @@ struct SportsHibabi: View {
     // MARK: initializers
     var permissionsManager = permissionsDataManager()
     var userInfo = UserInfo()
-    @State var favoriteslist: [sport] = []
-    @ObservedObject var sportfavoritesmanager = FavoriteSportsManager() // this one
+    @StateObject var sportfavoritesmanager = FavoriteSportsManager()
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
-    @StateObject var sportsNewsManager = sportsNewslist()
+    @State var sportsNewsManager = sportsNewslist()
     @State var favoritesManager = FavoriteSports()
     @State var favorites: [sport] = []
     @ObservedObject var sportsmanager = sportsManager()
@@ -40,6 +39,7 @@ struct SportsHibabi: View {
 
     init() {
         sportsNewsManager.getSportsNews()
+        newstitlearray = sportsNewsManager.allsportsnewslist
     }
     class ScreenSize {
         let screen: CGRect
@@ -145,6 +145,13 @@ struct SportsHibabi: View {
                     
                     // MARK: my sports
                     if selected == 1 {
+                        if hasPermissionSports {
+                            NavigationLink {
+                                SportsAdminView()
+                            } label: {
+                                Text("EDIT SPORTS")
+                            }
+                        }
                         if userInfo.loginStatus != "google" {
                             Text("Log in to save favorites!")
                         }
@@ -167,21 +174,6 @@ struct SportsHibabi: View {
                             }
                         }
                         else {
-                            
-                            if hasPermissionSports {
-                                NavigationLink {
-                                    SportsAdminView()
-                                } label: {
-                                    Text("Edit Sports")
-                                        .foregroundColor(.blue)
-                                        .padding(10)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                        .background(Rectangle()
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                            .shadow(radius: 2, x: 1, y: 1))                        }
-                            }
-                            
                             Button {
                                 isFiltering = true
                             } label: {
@@ -193,12 +185,8 @@ struct SportsHibabi: View {
                                     Spacer()
                                 }
                             }
-                            
-                            
                             List { // MARK: foreach my sports
-                                //ForEach(filteredList(fromList: sportfavoritesmanager.favoriteSports)) {
-                                
-                                ForEach(sportfavoritesmanager.favoriteSports, id: \.id) { item in
+                                ForEach(filteredList(fromList: sportfavoritesmanager.favoriteSports)) { item in
                                     if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                         NavigationLink {
                                             SportsMainView(selectedsport: item)
@@ -230,13 +218,6 @@ struct SportsHibabi: View {
                                                 }
                                                 Spacer()
                                             }
-                                        }.onDisappear {
-                                            
-                                            let tempselected = selected
-                                            selected = 2
-                                            selected = 1
-                                            selected = tempselected
-                                            
                                         }
                                     }
                                 }
@@ -252,18 +233,11 @@ struct SportsHibabi: View {
                             NavigationLink {
                                 SportsAdminView()
                             } label: {
-                                Text("Edit Sports")
-                                    .foregroundColor(.blue)
-                                    .padding(10)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    .background(Rectangle()
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
-                                        .shadow(radius: 2, x: 1, y: 1))                        }
+                                Text("EDIT SPORTS")
+                            }
                         }
                         
-                        // if selected == 1 && sportfavoritesmanager.favoriteSports.count == 0 {
-                        if false {
+                        if selected == 1 && vm.savedItems.count == 0 {
                             VStack {
                                 Spacer()
                                 Text("Add a sport to get started!")
@@ -281,6 +255,7 @@ struct SportsHibabi: View {
                                 
                             }
                         }
+                        else {
                             Button {
                                 isFiltering = true
                             } label: {
@@ -330,26 +305,34 @@ struct SportsHibabi: View {
                                 }
                             }
                             .searchable(text: $searchText)
+                        }
                     }
                     
                     // MARK: sports news
                     else if selected == 3 {
+                        Button {
+                            isFilteringNews = true
+                        } label: {
+                            HStack {
+                                Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
+                                    .padding(.horizontal)
+                                    .padding(.top, 1)
+                                    .foregroundColor(.blue)
+                                Spacer()
+                            }
+                        }
                         
                         if hasPermissionSportsNews {
                             NavigationLink {
                                 SportsNewsAdminView()
                             } label: {
-                                Text("Edit Sports News")
-                                    .foregroundColor(.blue)
-                                    .padding(10)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    .background(Rectangle()
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
-                                        .shadow(radius: 2, x: 1, y: 1))                        }
+                                Text("edit sports news")
+                            }
                         }
-                                                
+                        
+                        
                         List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
+                            
                             sportnewscell(feat: news)
                                 .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
                             
@@ -359,23 +342,19 @@ struct SportsHibabi: View {
                 .navigationTitle("Sports")
                 
                 .onAppear { // MARK: onAppear
+                    permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
+                        self.hasPermissionSportsNews = result
+                    }
+                    permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
+                        self.hasPermissionSports = result
+                    }
                     
                     
                     // images
-                    sportfavoritesmanager.favoriteSports = sportsmanager.favoriteslist
                     
                     if !hasAppeared {
-                        
                         isLoading = true
                         print("LOADING...")
-                        
-                        permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
-                            self.hasPermissionSportsNews = result
-                        }
-                        permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
-                            self.hasPermissionSports = result
-                        }
-                        
                         let dispatchGroup = DispatchGroup()
                         
                         var templist2: [sport] = []
@@ -398,7 +377,7 @@ struct SportsHibabi: View {
                         
                         dispatchGroup.notify(queue: .main) { [self] in
                             self.sportsmanager.favoriteslist = templist2
-                            self.sportfavoritesmanager.favoriteSports = templist2 // boom
+                            self.sportfavoritesmanager.favoriteSports = templist2
                         }
                         
                         var templist: [sport] = []
@@ -442,25 +421,11 @@ struct SportsHibabi: View {
                         
                         dispatchGroup.notify(queue: .main) { [self] in
                             self.sportsNewsManager.allsportsnewslist = templist3
-                            self.sportsNewsManager.allsportsnewslist = self.sportsNewsManager.allsportsnewslist.sorted { first, second in
-                                let dateFormatter = DateFormatter()
-                                dateFormatter.dateFormat = "MMM dd, yyyy"
-                                let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
-                                let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
-                                return firstDate < secondDate
-                            }.reversed()
                             print("DONE LOADING")
-                            
-                            print("SPORT FAVORITES LIST")
-                            print(sportfavoritesmanager.favoriteSports)
-                            favoriteslist = sportfavoritesmanager.favoriteSports
-                            print(favoriteslist)
-                            
                             isLoading = false
                         }
                         hasAppeared = true
                     }
-                    
                 }
                 
                 if isLoading {
@@ -602,25 +567,21 @@ struct SportsHibabi: View {
 // MARK: sportnewscell
 struct sportnewscell: View{
     var feat: sportNews
-    @State var screen = ScreenSize()
+    
     var body:some View{
         VStack{
             if feat.imagedata.count > 0 {
                 Image(uiImage: feat.imagedata[0])
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
+                    .cornerRadius(10)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.vertical, 2)
             } else {
                 Image(uiImage: UIImage())
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
+                    .cornerRadius(10)
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.vertical, 2)
             }
             VStack(alignment: .leading, spacing:2){
                 HStack {
@@ -641,7 +602,7 @@ struct sportnewscell: View{
                     .foregroundColor(.secondary)
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .padding(.leading, 5)
-                    .lineLimit(2)
+                    .lineLimit(1)
 //                    Text("Click here to read more")
 //                        .foregroundColor(.blue)
 //                        .lineLimit(2)

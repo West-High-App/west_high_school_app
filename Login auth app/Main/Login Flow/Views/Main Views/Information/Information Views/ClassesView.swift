@@ -31,13 +31,6 @@ struct ClassesView: View {
                     }
                 }
                 
-            }.onAppear() {
-                isLoading = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    
-                    isLoading = false
-                    
-                }
             }
         }
     }
