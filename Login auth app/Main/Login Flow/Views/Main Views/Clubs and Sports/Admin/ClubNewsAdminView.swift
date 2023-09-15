@@ -116,7 +116,13 @@ struct clubNewsRowlView: View {
     @State var newsdescription = ""
     @State var newsdate = ""
     @State var author = ""
-    
+    let calendar = Calendar.current
+    @State private var selectedMonthIndex = Calendar.current.component(.month, from: Date()) - 1
+    @State private var selectedDayIndex = Calendar.current.component(.day, from: Date()) - 1
+    @State private var selectedYearIndex = 0
+    let year = Calendar.current.component(.year, from: Date())
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    let days = Array(1...31)
     @StateObject var imagemanager = imageManager()
     @State var displayimage: UIImage?
     @State var isDisplayingAddImage = false
@@ -133,7 +139,6 @@ struct clubNewsRowlView: View {
                     TextField("Title", text: $newstitle)
                     TextField("Description", text: $newsdescription)
                     TextField("Author", text: $author)
-                    TextField("Date", text: $newsdate)
                 }
                 
                 Section(header: Text("Image")) {
@@ -174,7 +179,7 @@ struct clubNewsRowlView: View {
                             newsimage.append(imagemanager.uploadPhoto(file: displayimage))
                         }
                         
-                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: "NAN", imagedata: imagedata)
+                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", author: author, documentID: "NAN", imagedata: imagedata)
                         dataManager.createClubNews(clubNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating club news: \(error.localizedDescription)")

@@ -46,7 +46,7 @@ struct HomeView: View {
         dataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM d, yyyy"
+            dateFormatter.dateFormat = "MMM dd, yyyy"
             let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
             let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
             return firstDate < secondDate
@@ -211,7 +211,7 @@ struct HomeView: View {
                                     Spacer()
                                     
                                     NavigationLink {
-                                        StudentSpotlight(spotlightarticles: spotlightarticles)
+                                        StudentSpotlight()
                                     } label: {
                                         HStack{
                                             Text("See more")
@@ -254,7 +254,7 @@ struct HomeView: View {
                                                 .shadow(radius: 2, x: 1, y: 1))                        }
                                     
                                 }
-                                
+                                //EREN JAEGAR
                                 VStack { // MARK: student spotlight
                                     if spotlightarticles.count > 0 {
                                         NavigationLink {
@@ -362,7 +362,7 @@ struct HomeView: View {
                                     self.hasPermissionsUpcomingEvents = result
                                 }
                                 
-                                spotlightarticles = spotlightManager.allstudentachievementlist
+                                spotlightarticles = spotlightManager.newstitlearray
                                 var returnlist: [studentachievement] = []
                                 
                                 let dispatchGroup = DispatchGroup()
@@ -690,6 +690,15 @@ struct MostRecentAchievementCell: View{
                         .font(.system(size: 24, weight: .semibold, design: .rounded))
                     Spacer()
                 }
+                HStack {
+                    Text(feat.publisheddate)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.secondary)
+                        .lineLimit(3)
+                        .font(.system(size: 18, weight: .regular, design: .rounded))
+                    Spacer()
+                }
+
                 HStack {
                     Text(feat.achievementdescription)
                         .multilineTextAlignment(.leading)

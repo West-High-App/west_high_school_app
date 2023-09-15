@@ -13,9 +13,8 @@ struct StudentSpotlight: View {
     var userInfo = UserInfo()
     var spotlightManager = studentachievementlist()
     @StateObject var imagemanager = imageManager()
-    @State var spotlightarticles: [studentachievement]
+    @StateObject var achievementmanager = studentachievementlist()
     @State var hasAppeared = false
-    @State var newstitlearray: [studentachievement] = []
     @State var isLoading = false
     
     class ScreenSize {
@@ -52,7 +51,7 @@ struct StudentSpotlight: View {
                                 .padding(.leading)
                             Spacer()
                         }
-                        ForEach(spotlightarticles, id: \.id)
+                        ForEach(achievementmanager.newstitlearray, id: \.id)
                         {news in
                             NavigationLink {
                                 SpotlightArticles(currentstudentdub: news)
@@ -72,15 +71,12 @@ struct StudentSpotlight: View {
                         }
                         hasAppeared = true
                     }
-                    if  false { // !hasAppeared
-                        print("LOADING....")
-                        
-                        spotlightarticles = spotlightManager.allstudentachievementlist
+                    if  false {
                         var returnlist: [studentachievement] = []
                         
                         let dispatchGroup = DispatchGroup() // Create a Dispatch Group
                         
-                        for article in spotlightarticles {
+                        for article in achievementmanager.allstudentachievementlist {
                             var tempimages: [UIImage] = []
                             
                             for imagepath in article.images {
@@ -96,7 +92,7 @@ struct StudentSpotlight: View {
                             dispatchGroup.notify(queue: .main) { // This block will be executed after all async calls are done
                                 returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
                                 
-                                spotlightarticles = returnlist
+                                achievementmanager.newstitlearray = returnlist
                                 
                                 isLoading = false
                                 print("DONE LOADING")
@@ -106,6 +102,7 @@ struct StudentSpotlight: View {
                         hasAppeared = true
                     }
                 }
+
                 if isLoading {
                     ZStack {
                         Color.white
@@ -118,6 +115,8 @@ struct StudentSpotlight: View {
                         }
                     }
                 }
+                
+                
                 
                 
             }
@@ -145,13 +144,23 @@ class ScreenSize {
         
         var body:some View{
             VStack{
-                Image(uiImage: feat.imagedata.first ?? UIImage())
-                    .resizable()
-                    .padding(.bottom, 2)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: screen.screenWidth - 20, height: 250)
-                    .clipped()
-                    .cornerRadius(30)
+                if feat.imagedata.count > 0 {
+                    Image(uiImage: feat.imagedata[0])
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 250)
+                        .frame(maxWidth: screen.screenWidth - 60)
+                        .clipped()
+                        .cornerRadius(9)
+                } else {
+                    Image(uiImage: UIImage())
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 250)
+                        .frame(maxWidth: screen.screenWidth - 60)
+                        .clipped()
+                        .cornerRadius(9)
+                }
                 VStack(alignment: .leading, spacing:2){
                     HStack{
                         Text("By " + feat.articleauthor)
@@ -196,6 +205,6 @@ class ScreenSize {
 
 struct StudentSpotlight_Previews: PreviewProvider {
     static var previews: some View {
-        StudentSpotlight(spotlightarticles: [])
+        StudentSpotlight()
     }
 }

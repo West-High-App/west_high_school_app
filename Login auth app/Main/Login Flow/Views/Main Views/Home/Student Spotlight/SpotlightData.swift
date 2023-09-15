@@ -59,7 +59,7 @@ class studentachievementlist: ObservableObject{
                                 self.allstudentachievementlist = templist
                                 self.newstitlearray = self.allstudentachievementlist.sorted { first, second in
                                     let dateFormatter = DateFormatter()
-                                    dateFormatter.dateFormat = "MMM d, yyyy"
+                                    dateFormatter.dateFormat = "MMM dd, yyyy"
                                     let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
                                     let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
                                     return firstDate < secondDate

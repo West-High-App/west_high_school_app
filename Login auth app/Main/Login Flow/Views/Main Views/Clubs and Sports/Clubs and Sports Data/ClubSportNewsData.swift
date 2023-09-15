@@ -20,13 +20,12 @@ struct sportNews: Identifiable {
 }
 
 class sportsNewslist: ObservableObject {
-    @Published var allsportsnewslist = [sportNews(
+    @Published var allsportsnewslist : [sportNews] = [sportNews(
         newstitle: "Varsity Football Team Wins Regional Championship",
         newsimage: ["football"],
         newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
         newsdate: "Nov 15, 2022",
         author: "Emily Thompson", imagedata: [], documentID: "NAN")]
-    
     init() {
         getSportsNews()
     }
@@ -56,7 +55,15 @@ class sportsNewslist: ObservableObject {
                 }
                 
                 DispatchQueue.main.async {
-                    self.allsportsnewslist = templist
+                    self.allsportsnewslist = Array(templist[0...])
+                    self.allsportsnewslist = self.allsportsnewslist.sorted { first, second in
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "MMM dd, yyyy"
+                        let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
+                        let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
+                        return firstDate < secondDate
+                    }.reversed()
+
                 }
             }
         }
@@ -142,7 +149,14 @@ class clubsNewslist: ObservableObject{
                 }
                 
                 DispatchQueue.main.async {
-                    self.allclubsnewslist = templist
+                    self.allclubsnewslist = Array(templist[0...])
+                    self.allclubsnewslist = self.allclubsnewslist.sorted { first, second in
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "MMM dd, yyyy"
+                        let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
+                        let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
+                        return firstDate < secondDate
+                    }.reversed()
                 }
             }
         }

@@ -49,7 +49,6 @@ extension Date {
         return dayAfter.month != month
     }
 }
-
 class customObject: NSObject, Identifiable {
 
     var title: String = ""

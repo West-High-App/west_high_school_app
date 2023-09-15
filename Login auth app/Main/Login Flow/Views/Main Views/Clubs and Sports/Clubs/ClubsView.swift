@@ -245,8 +245,7 @@ struct ClubsHibabi: View {
                             }
                             
                         }
-                        //you thought i was feeling you???
-                        else if clubselected == 3 { // penis
+                        else if clubselected == 3 {
                             if hasPermissionClubNews {
                                 NavigationLink {
                                     ClubNewsAdminView()
@@ -330,7 +329,6 @@ struct ClubsHibabi: View {
                             
                             
                             var templist: [clubNews] = []
-                            
                             for news in clubNewsManager.allclubsnewslist {
                                 dispatchGroup.enter()
                                 
@@ -348,6 +346,13 @@ struct ClubsHibabi: View {
                             
                             dispatchGroup.notify(queue: .main) { [self] in
                                 self.clubNewsManager.allclubsnewslist = templist
+                                self.clubNewsManager.allclubsnewslist = self.clubNewsManager.allclubsnewslist.sorted { first, second in
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.dateFormat = "MMM dd, yyyy"
+                                    let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
+                                    let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
+                                    return firstDate < secondDate
+                                }.reversed()
                                 print("DONE LOADING")
                                 isLoading = false
                             }

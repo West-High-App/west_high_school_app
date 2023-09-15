@@ -118,7 +118,13 @@ struct sportNewsRowlView: View {
     @State var newsdescription = ""
     @State var newsdate = ""
     @State var author = ""
-    
+    let calendar = Calendar.current
+    @State private var selectedMonthIndex = Calendar.current.component(.month, from: Date()) - 1
+    @State private var selectedDayIndex = Calendar.current.component(.day, from: Date()) - 1
+    @State private var selectedYearIndex = 0
+    let year = Calendar.current.component(.year, from: Date())
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    let days = Array(1...31)
     // images
     @StateObject var imagemanager = imageManager()
     @State var originalImage = ""
@@ -137,7 +143,6 @@ struct sportNewsRowlView: View {
                     TextField("Title", text: $newstitle)
                     TextField("Description", text: $newsdescription)
                     TextField("Author", text: $author)
-                    TextField("Date", text: $newsdate)
                 }
                 
                 Section(header: Text("Image")) {
@@ -164,7 +169,7 @@ struct sportNewsRowlView: View {
             .alert(isPresented: $isConfirmingAddAchievement) {
                 Alert(
                     title: Text("You Are Publishing Changes"),
-                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(newstitle)\nDescription: \(newsdescription)\nAuthor: \(author)\nPublished Date: \(newsdate)"),
+                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(newstitle)\nDescription: \(newsdescription)\nAuthor: \(author)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
                         
                         var imagedata: [UIImage] = []
@@ -184,7 +189,7 @@ struct sportNewsRowlView: View {
                         }
                          // MARK: ain't working around here
                         
-                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, imagedata: imagedata, documentID: "NAN")
+                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", author: author, imagedata: imagedata, documentID: "NAN")
                         dataManager.createSportNews(sportNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating sport news: \(error.localizedDescription)")
@@ -211,6 +216,6 @@ struct sportNewsRowlView: View {
 
 struct SportsNewsAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        SpotlightAdminView()
+        SportsNewsAdminView()
     }
 }

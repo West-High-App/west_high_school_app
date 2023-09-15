@@ -16,7 +16,7 @@ struct SportsHibabi: View {
     @StateObject var sportfavoritesmanager = FavoriteSportsManager()
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
-    @State var sportsNewsManager = sportsNewslist()
+    @StateObject var sportsNewsManager = sportsNewslist()
     @State var favoritesManager = FavoriteSports()
     @State var favorites: [sport] = []
     @ObservedObject var sportsmanager = sportsManager()
@@ -40,7 +40,6 @@ struct SportsHibabi: View {
 
     init() {
         sportsNewsManager.getSportsNews()
-        newstitlearray = sportsNewsManager.allsportsnewslist
     }
     class ScreenSize {
         let screen: CGRect
@@ -343,21 +342,8 @@ struct SportsHibabi: View {
                                         .cornerRadius(10)
                                         .shadow(radius: 2, x: 1, y: 1))                        }
                         }
-                        
-                        Button {
-                            isFilteringNews = true
-                        } label: {
-                            HStack {
-                                Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
-                                    .padding(.horizontal)
-                                    .padding(.top, 1)
-                                    .foregroundColor(.blue)
-                                Spacer()
-                            }
-                        }
-                        
+                                                
                         List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
-                            
                             sportnewscell(feat: news)
                                 .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
                             
@@ -450,6 +436,13 @@ struct SportsHibabi: View {
                         
                         dispatchGroup.notify(queue: .main) { [self] in
                             self.sportsNewsManager.allsportsnewslist = templist3
+                            self.sportsNewsManager.allsportsnewslist = self.sportsNewsManager.allsportsnewslist.sorted { first, second in
+                                let dateFormatter = DateFormatter()
+                                dateFormatter.dateFormat = "MMM dd, yyyy"
+                                let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
+                                let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
+                                return firstDate < secondDate
+                            }.reversed()
                             print("DONE LOADING")
                             
                             print("SPORT FAVORITES LIST")

@@ -34,7 +34,7 @@ struct SpotlightAdminView: View {
                         .shadow(radius: 2, x: 1, y: 1))
             }
             
-            List(dataManager.allstudentachievementlist, id: \.id) { achievement in
+            List(dataManager.newstitlearray, id: \.id) { achievement in
                 AchievementRowView(achievement: achievement)
                     .buttonStyle(PlainButtonStyle())
                     .contextMenu {
