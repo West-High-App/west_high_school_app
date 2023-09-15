@@ -27,13 +27,13 @@ struct SplashScreenView: View {
                             Image("Regents Logo")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width:150)
+                                .frame(width:200)
                                 .padding(30)
                         }
                         .scaleEffect(size)
                         .opacity(opacity)
                         .onAppear{
-                            withAnimation(.easeIn(duration: 1.2)){
+                            withAnimation(.easeIn(duration: 2.0)){
                                 self.size = 0.9
                                 self.opacity = 1.0
                             }
@@ -41,7 +41,7 @@ struct SplashScreenView: View {
                     }
                     .onAppear{
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5){
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5){
                             withAnimation {
                                 self.isActive = true
                             }
@@ -49,7 +49,7 @@ struct SplashScreenView: View {
                     }
                 }
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                         withAnimation(.linear(duration: 0.5)) {
                             self.opacity = 0.0
                         }
@@ -63,6 +63,12 @@ struct SplashScreenView: View {
         }
         
     }
+}
+
+class Loading: ObservableObject {
+    
+    @Published var hasLoaded = false
+    
 }
 
 struct SplashScreenView_Previews: PreviewProvider {

@@ -22,6 +22,7 @@ struct HomeView: View {
     @State var clubmanager = clubManager()
     @ObservedObject var newsDataManager = Newslist()
     @ObservedObject var dataManager = upcomingEventsDataManager()
+     @StateObject var loading = Loading()
 
     // permissions
     @ObservedObject var sportsnewsmanager = sportsNewslist()
@@ -45,7 +46,7 @@ struct HomeView: View {
         self.size = size
         upcomingeventsdataManager.getUpcomingEvents()
         newsDataManager.getAnnouncements()
-        spotlightManager.getAchievements()
+         spotlightManager.getAchievements{_, _ in}
         dataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
             let dateFormatter = DateFormatter()
@@ -346,9 +347,10 @@ struct HomeView: View {
                     
                     // checking for permissions on appear
                     .onAppear {
-                        
-                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                              
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                             print("IS DONE LOADING?")
+                             print(loading.hasLoaded)
                             // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
                             // MARK: this is stupid but fuck it ERROR come from here
                             if !hasAppeared {

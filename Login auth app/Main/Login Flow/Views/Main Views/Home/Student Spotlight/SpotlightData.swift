@@ -24,21 +24,40 @@ class studentachievementlist: ObservableObject{
     @Published var newstitlearray: [studentachievement] = []
 
     @StateObject var imagemanager = imageManager()
+    @ObservedObject var loading = Loading()
 
     
     init() {
-        getAchievements()
+        getAchievements { list, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            }
+            if let list = list {
+                self.allstudentachievementlist = list
+                self.newstitlearray = self.allstudentachievementlist.sorted { first, second in
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "MMM dd, yyyy"
+                    let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+                    let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+                    return firstDate < secondDate
+                }.reversed()
+            }
+            self.loading.hasLoaded = true
+        }
     }
     
-    func getAchievements() {
+    func getAchievements(completion: @escaping ([studentachievement]?, Error?) -> Void) {
         var templist: [studentachievement] = []
         let db = Firestore.firestore()
         let collection = db.collection("StudentAchievements")
+        
         collection.getDocuments { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
+                completion(nil, error)
                 return
             }
+            
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     let data = document.data()
@@ -54,19 +73,13 @@ class studentachievementlist: ObservableObject{
                 }
                 
                 DispatchQueue.main.async {
-                                self.allstudentachievementlist = templist
-                                self.newstitlearray = self.allstudentachievementlist.sorted { first, second in
-                                    let dateFormatter = DateFormatter()
-                                    dateFormatter.dateFormat = "MMM dd, yyyy"
-                                    let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-                                    let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-                                    return firstDate < secondDate
-                                }.reversed()
-                    
-                            }
+                    self.allstudentachievementlist = templist
+                    completion(templist, nil)
+                }
             }
         }
     }
+
     
     func createAchievement(achievement: studentachievement, completion: @escaping (Error?) -> Void) {
         print("Creating new student spotlight...")
@@ -80,7 +93,7 @@ class studentachievementlist: ObservableObject{
         ]) { error in
             completion(error)
             if error == nil {
-                self.getAchievements()
+                self.getAchievements {_, _ in}
             }
         }
         print("Article creating with ID: \(achievement.documentID)")
@@ -94,7 +107,7 @@ class studentachievementlist: ObservableObject{
         ref.delete { error in
             completion(error)
             if error == nil {
-                self.getAchievements()
+                self.getAchievements{_, _ in}
             }
         }
         print("Achievement deleted")
