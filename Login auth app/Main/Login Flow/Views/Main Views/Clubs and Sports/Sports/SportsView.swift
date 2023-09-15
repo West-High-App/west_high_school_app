@@ -295,18 +295,6 @@ struct SportsHibabi: View {
                     
                     // MARK: sports news
                     else if selected == 3 {
-                        Button {
-                            isFilteringNews = true
-                        } label: {
-                            HStack {
-                                Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
-                                    .padding(.horizontal)
-                                    .padding(.top, 1)
-                                    .foregroundColor(.blue)
-                                Spacer()
-                            }
-                        }
-                        
                         
                         List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
                             

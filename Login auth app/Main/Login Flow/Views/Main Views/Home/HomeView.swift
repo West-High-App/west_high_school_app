@@ -347,6 +347,7 @@ struct HomeView: View {
                     // checking for permissions on appear
                     .onAppear {
                         
+                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
                             // MARK: this is stupid but fuck it ERROR come from here

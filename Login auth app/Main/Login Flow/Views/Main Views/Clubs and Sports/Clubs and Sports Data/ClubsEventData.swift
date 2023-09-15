@@ -90,12 +90,12 @@ class clubEventManager: ObservableObject {
                         let title = clubEvent.title
                         let subtitle = clubEvent.subtitle
                         let date = clubEvent.date
-                        eventtoadd = ["title": title, "subtitle": subtitle, "data": date]
+                        eventtoadd = ["title": title, "subtitle": subtitle, "date": date]
                         
                         eventlist.append(eventtoadd)
                         
                         collection.document(eventdocumentID).updateData([
-                            "events": date
+                            "events": eventlist
                         ]) { error in
                             if let error = error {
                                 print("Error updating document \(error)")

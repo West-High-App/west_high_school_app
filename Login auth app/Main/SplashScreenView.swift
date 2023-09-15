@@ -27,7 +27,7 @@ struct SplashScreenView: View {
                             Image("Regents Logo")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width:300)
+                                .frame(width:150)
                                 .padding(30)
                         }
                         .scaleEffect(size)

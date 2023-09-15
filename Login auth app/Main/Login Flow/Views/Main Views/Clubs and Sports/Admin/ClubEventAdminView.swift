@@ -102,6 +102,8 @@ struct ClubsEventsAdminView: View {
                     Button("Publish new sport event") {
                         eventToSave = clubEvent(documentID: "NAN", title: title, subtitle: subtitle, date: date)
                         if let eventToSave = eventToSave {
+                            print("Event to save")
+                            print(eventToSave)
                             dataManager.createClubEvent(forClub: currentclub, clubEvent: eventToSave)
                             isPresetingAddEvent = false
                             
