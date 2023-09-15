@@ -14,12 +14,11 @@ struct AnnouncementsDetailView: View {
                     Spacer()
                 }
                 
-                Text(currentnews.description)
+                LinkTextView(text: currentnews.description)
                     .multilineTextAlignment(.leading)
-                    .foregroundColor(Color.black)
                     .font(.system(size: 17, weight: .regular, design: .rounded))
                     .padding(.horizontal, 25)
-                    .padding(.vertical)
+                    .padding(.vertical, 10)
                     .background(Rectangle()
                         .cornerRadius(10)
                         .padding(.horizontal)
@@ -53,12 +52,12 @@ struct HomeAnnouncementsDetailView: View {
                     Spacer()
                 }
                 
-                Text(currentnews.description)
+                LinkTextView(text: currentnews.description)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(Color.black)
                     .font(.system(size: 17, weight: .regular, design: .rounded))
                     .padding(.horizontal, 25)
-                    .padding(.vertical)
+                    .padding(.vertical, 10)
                     .background(Rectangle()
                         .cornerRadius(10)
                         .padding(.horizontal)
