@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SportsDetailView: View {
     var permissionsManager = permissionsDataManager()
-    var userInfo = UserInfo()
+    @EnvironmentObject var userInfo: UserInfo
+    @EnvironmentObject var sportsmanager: sportsManager
     @State private var hasPermissionSport = false
     @State private var canEditSport = false
     @State var selected = 1

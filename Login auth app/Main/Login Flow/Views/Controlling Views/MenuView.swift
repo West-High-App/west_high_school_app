@@ -70,18 +70,23 @@ struct MenuView : View {
             TabView(selection: $selected){
                 
                 HomeMainView()
+                    .environmentObject(userInfo)
                     .tag(tabItems[0])
                     .ignoresSafeArea(.all)
                 AnnouncementsView()
+                    .environmentObject(userInfo)
                     .tag(tabItems[1])
                     .ignoresSafeArea(.all)
                 ClubsHibabi()
+                    .environmentObject(userInfo)
                     .tag(tabItems[2])
                     .ignoresSafeArea(.all)
                 SportsHibabi()
+                    .environmentObject(userInfo)
                     .tag(tabItems[3])
                     .ignoresSafeArea(.all)
                 InformationView()
+                    .environmentObject(userInfo)
                     .tag(tabItems[4])
                     .ignoresSafeArea(.all)
             }

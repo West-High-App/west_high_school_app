@@ -10,15 +10,13 @@ import SwiftUI
 struct ClubsHibabi: View {
     
     var permissionsManager = permissionsDataManager()
-    var userInfo = UserInfo()
+    @EnvironmentObject var userInfo: UserInfo
     @State private var hasPermissionClubNews = false
     @State private var hasPermissionClubs = false
-    
+    @StateObject var clubsmanager = clubManager.shared
     @StateObject var clubfavoritesmanager = FavoriteClubsManager()
 
-    
-    var clubNewsManager = clubsNewslist()
-    @ObservedObject var clubsmanager = clubManager()
+    @StateObject var clubNewsManager = clubsNewslist.shared
     @State var newstitlearray:[clubNews] = []
     @StateObject var vmm = ClubViewModel()
     @State var clubsearchText = "" // text for search field
@@ -156,6 +154,7 @@ struct ClubsHibabi: View {
                                                         ClubsMainView(selectedclub: item)
                                                             .environmentObject(vmm)
                                                             .environmentObject(clubfavoritesmanager)
+                                                            .environmentObject(clubsmanager)
                                                     } label: {
                                                         HStack {
                                                             Image(uiImage: item.imagedata)
@@ -195,6 +194,7 @@ struct ClubsHibabi: View {
                                                         ClubsMainView(selectedclub: item)
                                                             .environmentObject(vmm)
                                                             .environmentObject(clubfavoritesmanager)
+                                                            .environmentObject(clubsmanager)
                                                     } label: {
                                                         HStack {
                                                             Image(uiImage: item.imagedata)
@@ -247,7 +247,7 @@ struct ClubsHibabi: View {
                             //mark
                             List(filteredClubsNews, id: \.id) { news in
                                 clubnewscell(feat: news)
-                                    .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news)).opacity(0))
+                                    .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
                             }
                             .searchable(text: $searchText)
                             .navigationBarItems(trailing:

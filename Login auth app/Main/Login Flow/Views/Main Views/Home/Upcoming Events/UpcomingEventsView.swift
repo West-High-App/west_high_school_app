@@ -10,7 +10,7 @@ import SwiftUI
 struct UpcomingEventsView: View {
     @StateObject var upcomingeventsdataManager = upcomingEventsDataManager()
     var permissionsManager = permissionsDataManager()
-    var userInfo = UserInfo()
+    @EnvironmentObject var userInfo: UserInfo
     @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermission = false
     @State private var hasAppeared = false

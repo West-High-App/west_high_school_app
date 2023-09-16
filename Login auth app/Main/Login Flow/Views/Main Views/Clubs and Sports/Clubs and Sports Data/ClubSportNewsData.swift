@@ -121,6 +121,8 @@ class clubsNewslist: ObservableObject{
         author: "aiden jamae lee lmfao remember",
         documentID: "NAN", imagedata: [])]
     
+    static let shared = clubsNewslist()
+    
     init() {
         getClubNews()
     }

@@ -3,7 +3,7 @@ import SwiftUI
 struct AnnouncementsView: View {
     @StateObject var newsDataManager = Newslist()
     var permissionsManager = permissionsDataManager()
-    @StateObject var userInfo = UserInfo()
+    @EnvironmentObject var userInfo: UserInfo
 
     @State private var hasPermission = false
     @State var hasAppeared = false

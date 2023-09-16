@@ -5,6 +5,8 @@ class UserInfo: ObservableObject {
     private let loginStatusKey = "loginStatusKey"
     private let emailKey = "emailKey"
     
+    static let shared = UserInfo()
+    
     @Published var loginStatus: String {
         didSet {
             KeychainWrapper.standard.set(loginStatus, forKey: loginStatusKey)

@@ -63,9 +63,13 @@ struct WestHighApp: App {
         FirebaseApp.configure()
     }
     
+    @StateObject var userInfo = UserInfo.shared
+        
     var body: some Scene {
         WindowGroup {
             SplashScreenView() // SplashScreenView -- Splash Screen View - Leads to AuthView
+                .environmentObject(userInfo)
+
         }
     }
 }

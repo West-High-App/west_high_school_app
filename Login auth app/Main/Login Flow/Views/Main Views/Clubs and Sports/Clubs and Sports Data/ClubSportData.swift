@@ -30,6 +30,8 @@ class sportsManager: ObservableObject {
     var favoritesports = FavoriteSports()
     @Published var favoriteslist: [sport] = []
     
+    static let shared = sportsManager()
+
     init() {
         getSports() { sports in }
         getFavorites { favorites in
@@ -176,6 +178,8 @@ class clubManager: ObservableObject {
     @Published var allclublist: [club] = []
     var favoriteclubs = FavoriteClubs() // make favorite clubs
     @Published var favoriteslist: [club] = []
+    
+    static let shared = clubManager()
     
     init() {
         getClubs() { clubs in

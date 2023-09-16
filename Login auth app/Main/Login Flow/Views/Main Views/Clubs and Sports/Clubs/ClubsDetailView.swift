@@ -10,12 +10,13 @@ import SwiftUI
 struct ClubsDetailView: View {
     @State var selected = 1
     var permissionsManager = permissionsDataManager()
-    var userInfo = UserInfo()
+
+    @EnvironmentObject var userInfo: UserInfo
     @State private var hasPermissionClub = false
     @State private var canEditClub = false
     @State var isFavorited = false
     @State var favoritesManager = FavoriteClubs()
-    @State var clubsmanager = clubManager()
+    @EnvironmentObject var clubsmanager: clubManager
     @State var favorites: [club] = []
     @EnvironmentObject var vmm: ClubsHibabi.ClubViewModel
     @State private var confirming = false

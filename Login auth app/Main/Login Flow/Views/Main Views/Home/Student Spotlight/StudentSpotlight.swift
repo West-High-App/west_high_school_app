@@ -10,7 +10,7 @@ import SwiftUI
 struct StudentSpotlight: View {
     @State private var hasPermissionSpotlight = false
     var permissionsManager = permissionsDataManager()
-    var userInfo = UserInfo()
+    @EnvironmentObject var userInfo: UserInfo
     var spotlightManager = studentachievementlist()
     @StateObject var imagemanager = imageManager()
     @State var spotlightarticles: [studentachievement]

@@ -11,14 +11,14 @@ import SwiftUI
 struct SportsHibabi: View {
     // MARK: initializers
     var permissionsManager = permissionsDataManager()
-    var userInfo = UserInfo()
+    @EnvironmentObject var userInfo: UserInfo
     @StateObject var sportfavoritesmanager = FavoriteSportsManager()
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
     @State var sportsNewsManager = sportsNewslist()
     @State var favoritesManager = FavoriteSports()
     @State var favorites: [sport] = []
-    @ObservedObject var sportsmanager = sportsManager()
+    @StateObject var sportsmanager = sportsManager.shared
     @State var displaylist: [sport] = []
     @State var newstitlearray:[sportNews] = []
     @State var vm = ViewModel()
@@ -299,7 +299,7 @@ struct SportsHibabi: View {
                         List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
                             
                             sportnewscell(feat: news)
-                                .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                                .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news).environmentObject(sportsmanager)).opacity(0) )
                             
                         }.searchable(text: $searchText)
                     }

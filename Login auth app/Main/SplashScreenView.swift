@@ -16,6 +16,8 @@ struct SplashScreenView: View {
     @State var isShutDown = false
     @State var shutdownMessage = ""
     @State var shutdownmanager = ShutdownManager()
+    @EnvironmentObject var userInfo: UserInfo
+
     
     init() {
         shutdownmanager.fetchData { [self] bool, string in
@@ -33,6 +35,7 @@ struct SplashScreenView: View {
         
         ZStack {
             AuthView()
+                .environmentObject(userInfo)
             
             if !isActive {
                 ZStack{
