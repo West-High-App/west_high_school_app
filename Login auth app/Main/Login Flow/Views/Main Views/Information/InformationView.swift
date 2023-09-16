@@ -93,14 +93,14 @@ struct InformationView: View {
                     
                     
                     NavigationLink {
-                        ClassesView()
+                        ClassesListView()
                     } label: {
-                        Image(systemName: "menucard")
-                        Text("Class List")
+                        Image(systemName: "book")
+                        Text("Courses Info")
                     }
                     .padding(.vertical,10)
                     
-                    
+
                     NavigationLink {
                         SchoolPolicyGuideView()
                     } label: {
@@ -130,26 +130,7 @@ struct InformationView: View {
                         Text("Help & Support")
                     }.padding(.vertical, 10)
                     
-                    
-                    NavigationLink {
-                        SettingsView()
-                    } label: {
-                        Image(systemName: "book.closed")
-                        Text("Terms & Policies")
-                    }.padding(.vertical, 10)
-                    
-                    /* Button {
-                    isPresentingLogoutConfirmation = true
-                        
-                    } label: {
-                        HStack{
-                            Spacer()
-                            Text("Sign Out")
-                            Spacer()
-                        }
-                        .padding(.vertical,5)
-                        .foregroundColor(.red)
-                        } */
+                    MyCustomListItemSubview()
                     
                     
                 }
@@ -214,11 +195,30 @@ struct InformationView: View {
             }
     }
 }
-    
+
+
+struct MyCustomListItemSubview: View {
+    var body: some View {
+        NavigationLink {
+            SettingsView()
+        } label: {
+            Image(systemName: "book.closed")
+            Text("Terms & Policies")
+        }.padding(.vertical, 10)
+
+        NavigationLink {
+            JobInternshipView()
+        } label: {
+            Image(systemName: "magnifyingglass")
+            Text("Jobs & Internships ")
+        }
+        .padding(.vertical,10)
+    }
+}
 
 struct InformationView_Previews: PreviewProvider {
     static var previews: some View {
-        InformationView()
+        InformationView().environmentObject(UserInfo())
     }
 }
     

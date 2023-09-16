@@ -160,6 +160,51 @@ If you're in crisis, please check the crisis line information below to speak to 
             .scaleEffect(1)
             
             
+            VStack(alignment: .leading, spacing:10){
+                Text("Contact Social Workers")
+                    .font(
+                        .custom(
+                            "arial",
+                            fixedSize: 24)
+                        .weight(.semibold)
+                    )
+                Text("Eve Bertrand (Ash & Highland)\nCall or text (Google Voice #): ‪(608) 571-7106‬\n\(Text("embertrand@madison.k12.wi.us").underline())")
+                Text("Shari Weinstein (Van Hise)\n Google Voice Phone Number: ‪(608) 501-3480‬\n\(Text("embertrand@madison.k12.wi.us").underline())")
+                Text("Leslie Winston (Regent & ELL)\nGoogle Voice Phone Number: (608) 509-4462\n\(Text("lswinston@madison.k12.wi.us").underline())")
+
+            }
+            .tint(.white)
+            //41,52,145
+            .padding(10)
+            .foregroundColor(Color(red: 253/255, green: 253/255, blue: 254/255))
+            .background(Color(red: 41/255, green: 52/255, blue: 145/255))
+            .cornerRadius(10)
+            .scaleEffect(1)
+            
+            VStack(alignment: .leading, spacing:10){
+                Text("Contact Psychologists")
+                    .font(
+                        .custom(
+                            "arial",
+                            fixedSize: 24)
+                        .weight(.semibold)
+                    )
+
+
+                Text("Brooke Gard (Regent & Highland SLC)\nGoogle Voice: 608-620-3248\n\(Text("bbgard@madison.k12.wi.us").underline())")
+                Text("Joel Porter (Ash SLC)\n West Office Phone: 608-204-3074\n\(Text("jsporter@madison.k12.wi.us").underline())")
+                Text("Julianne Zygmunt (Van Hise & Highland)\nGoogle Voice: (608)571-6828\n\(Text("jmdileo@madison.k12.wi.us").underline())")
+
+            }
+            .tint(.white)
+            //41,52,145
+            .padding(10)
+            .foregroundColor(Color(red: 253/255, green: 253/255, blue: 254/255))
+            .background(Color(red: 41/255, green: 52/255, blue: 145/255))
+            .cornerRadius(10)
+            .scaleEffect(1)
+            
+            
         }
     }
 }

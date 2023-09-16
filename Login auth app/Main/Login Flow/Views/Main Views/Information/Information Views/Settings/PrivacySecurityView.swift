@@ -42,6 +42,13 @@ struct PrivacySecurityView: View {
                     Text("Users will also hold some level of personal responsibility while using the West High app. Any users permitted to edit or post on the West High app will be expected to follow basic guidelines. Disrespectful and harmful behavior while posting will not be tolerated. Any inappropriate posts will be removed and the user will be reprimanded for their actions.\n")
                     Spacer()
                 }
+                VStack{
+                    Text("The usage of the West High App should not interfere with classroom activities during the school day in any sort. Students are expected to be off their phones during the instructional period. Please reference the West Cell Phone Policy for more information. \n")
+                    HStack{
+                        Text("[West Cell Phone Policy](https://docs.google.com/document/d/1yW5470XYlBNkroQMjA9dGXkDBAhtlHOEbdD_qj_TBac/edit)\n")
+                        Spacer()
+                    }
+                }
                 
                 VStack{
                     Text("You should be aware that there are certain things that West High will not take responsibility for. Certain functions of the app will require the app to have an active internet connection. The connection can be Wi-Fi or provided by your mobile network provider, but West High cannot take responsibility for the app not working at full functionality if you don’t have access to Wi-Fi, and you don’t have any of your data allowance left.\n")
