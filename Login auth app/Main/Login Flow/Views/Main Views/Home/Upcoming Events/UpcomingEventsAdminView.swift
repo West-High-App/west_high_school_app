@@ -186,7 +186,7 @@ struct EventDetailView: View {
                             time: eventTime,
                             month: months[selectedMonthIndex],
                             day: "\(days[selectedDayIndex])",
-                            year: eventyear,
+                            year: years[selectedYearIndex],
                             publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)"
                         )
                         dataManager.createEvent(event: eventToSave) { error in
