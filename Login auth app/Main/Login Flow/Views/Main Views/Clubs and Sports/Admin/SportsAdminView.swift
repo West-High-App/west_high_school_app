@@ -113,6 +113,7 @@ struct SportsAdminView: View {
                         db.getSports() { sports in }
                         
                     }.font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .foregroundColor(.red)
                 }
                 
                 

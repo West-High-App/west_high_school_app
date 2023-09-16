@@ -170,7 +170,7 @@ struct ClubsHibabi: View {
                                                                         .foregroundColor(.primary)
                                                                         .lineLimit(2)
                                                                         .minimumScaleFactor(0.9)
-                                                                        .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
                                                                     Spacer()
                                                                 }
                                                                 HStack {
@@ -209,7 +209,7 @@ struct ClubsHibabi: View {
                                                                         .foregroundColor(.primary)
                                                                         .lineLimit(2)
                                                                         .minimumScaleFactor(0.9)
-                                                                        .font(.system(size: 28, weight: .semibold, design: .rounded))
+                                                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
                                                                     Spacer()
                                                                 }
                                                                 HStack {
@@ -274,11 +274,19 @@ struct ClubsHibabi: View {
                             isLoading = true
                             print("LOADING...")
 
+                            if userInfo.isAdmin {
+                                self.hasPermissionClubNews = true
+                                self.hasPermissionClubs
+                            }
                             permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
                                 self.hasPermissionClubNews = result
                             }
                             permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
                                 self.hasPermissionClubs = result
+                                if result == true {
+                                    userInfo.isClubsAdmin = true
+                                    print("became club admin")
+                                }
                             }
                             
                             let dispatchGroup = DispatchGroup()

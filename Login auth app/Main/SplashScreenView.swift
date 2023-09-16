@@ -13,6 +13,21 @@ struct SplashScreenView: View {
     @State private var isActive = false
     @State private var size = 0.8
     @State private var opacity = 0.5
+    @State var isShutDown = false
+    @State var shutdownMessage = ""
+    @State var shutdownmanager = ShutdownManager()
+    
+    init() {
+        shutdownmanager.fetchData { [self] bool, string in
+            
+            shutdownmanager.isShutDown = bool
+            shutdownmanager.shutdownMessage = string
+            print("FROM INIT")
+            print(shutdownmanager.isShutDown)
+            print(shutdownmanager.shutdownMessage)
+            
+        }
+    }
     
     var body: some View {
         

@@ -12,6 +12,7 @@ class permissionsDataManager: ObservableObject {
     @Published var permissions: [String: [String]] = [:]
     
     func checkPermissions(dataType: String, user: String, completion: @escaping (Bool) -> Void) {
+        print("Checking permissions..")
         self.permissions.removeAll()
         let db = Firestore.firestore()
         let ref = db.collection("Permissions")

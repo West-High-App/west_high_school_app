@@ -72,7 +72,9 @@ class Newslist: ObservableObject {
                 self.getAnnouncements()
             }
         }
-        print("ANnouncement created with documentID: \(announcement.documentID)")
+        print("Announcement created with documentID: \(announcement.documentID)")
+        self.topfive.append(announcement)
+        self.filterByDate()
     }
 
     func deleteAnnouncement(announcement: Newstab, completion: @escaping (Error?) -> Void) { //

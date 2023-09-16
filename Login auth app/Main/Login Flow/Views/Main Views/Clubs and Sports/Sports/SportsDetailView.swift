@@ -248,8 +248,8 @@ struct SportsDetailView: View {
                         }
                         
                     })
-                    permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
-                        canEditSport = result
+                    if userInfo.isSportsAdmin {
+                        canEditSport = true
                     }
                     if currentsport.adminemails.contains(userInfo.email) {
                         canEditSport = true

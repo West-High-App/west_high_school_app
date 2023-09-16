@@ -214,6 +214,11 @@ struct ClubsDetailView: View {
                     
                 }
                 .onAppear {
+                    if userInfo.isClubsAdmin {
+                        print("IS ADMIN")
+                    } else {
+                        print("IS NOT ADMIN")
+                    }
                     clubeventmanager.getClubsEvent(forClub: currentclub.clubname) { events, error in
                         if let error = error {
                             print(error.localizedDescription)
@@ -237,11 +242,13 @@ struct ClubsDetailView: View {
                         }
                     }
                     
-                    permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { permission in
-                        hasPermissionClub = permission
+                    if userInfo.isClubsAdmin {
+                        hasPermissionClub = true
+                        print("is club admin")
                     }
                     if currentclub.adminemails.contains(userInfo.email) {
                         hasPermissionClub = true
+                        print("contains email")
                     }
                     
                     

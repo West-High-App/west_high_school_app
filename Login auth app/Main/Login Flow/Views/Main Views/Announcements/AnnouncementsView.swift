@@ -53,6 +53,9 @@ struct AnnouncementsView: View {
                 permissionsManager.checkPermissions(dataType: "Announcements", user: userInfo.email) { result in
                     self.hasPermission = result
                 }
+                if userInfo.isAdmin {
+                    self.hasPermission = true
+                }
                 hasAppeared = true
             }
         }

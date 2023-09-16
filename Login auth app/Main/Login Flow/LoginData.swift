@@ -17,6 +17,10 @@ class UserInfo: ObservableObject {
         }
     }
     
+    @Published var isAdmin = false
+    @Published var isClubsAdmin = false
+    @Published var isSportsAdmin = false
+    
     // Data available when user signs in with Google (if loginStatus = "google")
     @Published var displayName: String = ""
     

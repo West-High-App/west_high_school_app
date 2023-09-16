@@ -56,11 +56,16 @@ struct MenuView : View {
     @EnvironmentObject var userInfo: UserInfo
     @EnvironmentObject var dataManager: DataManager
     @State var selected: MenuItem = .home
+    @State var isShutDown = false
+    @State var shutdownMessage = ""
+    @StateObject var shutdownmanager = ShutdownManager()
+    let westyellow = Color(red:248/255, green:222/255, blue:8/255)
+    let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     init() {
         UITabBar.appearance().isHidden = true
     }
     var body: some View{
-        
+        if !isShutDown {
         VStack(spacing: 0){
             TabView(selection: $selected){
                 
@@ -83,7 +88,42 @@ struct MenuView : View {
             Spacer(minLength: 0)
             CustomTabbarView(tabItems: tabItems, selected: $selected)
         }
+        .onAppear {
+            shutdownmanager.fetchData { bool, string in
+                print("FROM ON APPEAR")
+                print(bool)
+                print(string)
+                isShutDown = bool
+                shutdownMessage = string
+            }
+        }
         .ignoresSafeArea(.all, edges: .bottom)
+        } else {
+            ZStack { // shut down view
+                westblue
+                    .ignoresSafeArea()
+                VStack {
+                    Text("West App has been temporarily shut down.")
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.2)
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 26, weight: .semibold, design: .rounded))
+                        .fontWeight(.medium)
+                        .padding(.horizontal)
+                        .foregroundColor(westyellow)
+                        .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                    Text(shutdownMessage)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.2)
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                        .fontWeight(.medium)
+                        .padding()
+                        .foregroundColor(westyellow)
+                        .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                }
+            }
+        }
     }
 }
 struct CustomTabbarView: View {

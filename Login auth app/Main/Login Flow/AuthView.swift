@@ -10,6 +10,7 @@ import Firebase
 import GoogleSignIn
 import GoogleSignInSwift
 import FirebaseAuth
+import SystemConfiguration
 
 struct GoogleSignInResultModel {
     let idToken: String
@@ -21,16 +22,8 @@ func SignInGoogle(tokens: GoogleSignInResultModel, bypass: Bool) async throws ->
     print("Signing in to Google.")
     let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
     let _ = try await Auth.auth().signIn(with: credential)
-    let allowedDomain = "@madison.k12.wi.us"
-    //if Auth.auth().currentUser?.email?.contains(allowedDomain) != nil && bypass == false {
-    //    print("Incorrect domain.")
-    //    try Auth.auth().signOut()
-    //    return false
-    //}
-    // else {
-        print("Domain verified.")
-        return true
-    // }
+    print("Domain verified.")
+    return true
     }
 
 
@@ -58,6 +51,8 @@ final class AuthenticationViewModel: ObservableObject {
     
 }
 
+import FirebaseFirestore
+
 struct AuthView: View {
     
     @State private var email = ""
@@ -71,158 +66,214 @@ struct AuthView: View {
     @StateObject private var viewModel = AuthenticationViewModel()
     @StateObject var dataManager = DataManager()
     @StateObject var userInfo = UserInfo()
+    @State var shutdownmanager = ShutdownManager()
+    
+    // check for internet connection
+    func isInternetAvailable() -> Bool {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+
+        guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        }) else {
+            return false
+        }
+
+        var flags: SCNetworkReachabilityFlags = []
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
+            return false
+        }
+
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+
+        return isReachable && !needsConnection
+    }
+
     
     var body: some View {
         
-        if userInfo.loginStatus == "google" {
-            MenuView()
-                .environmentObject(userInfo)
-                .onAppear {
-                    userInfo.displayName = Auth.auth().currentUser?.displayName ?? "student"
-                    userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
-                }
-        }
-        
-        else if userInfo.loginStatus == "guest" {
-            MenuView()
-                .environmentObject(userInfo)
-                .onAppear {
-                    userInfo.displayName = "guest"
-                    userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
-                }
-        }
-        
-        else {
-            NavigationView {
-                ZStack {
-                    westblue
-                    VStack {
-                        
-                         // GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
-                        Text("West High School")
-                            .foregroundColor(.black)
-                            .font(.system(size: 32, weight: .bold, design: .rounded))
-                            .padding(.horizontal)
-                            .padding(.bottom, 5.0)
-                            .padding(.top, 25.0)
-                        Button {
-                            Task {
-                                do {
-                                    if count == 0 {
-                                        if try await viewModel.signInWithGoogle(bypassing: false) {
-                                            
-                                            print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
-                                            
-                                            userInfo.loginStatus = "google"
-                                            count = 1
-                                        }
-                                        else {
-                                            print("Unsuccesful login.")
-                                            showingDomainError = true
-                                        }
-                                    }
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
+        if isInternetAvailable() {
+                if userInfo.loginStatus == "google" {
+                        MenuView()
+                            .environmentObject(userInfo)
+                            .onAppear {
+                                userInfo.displayName = Auth.auth().currentUser?.displayName ?? "student"
+                                userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
                             }
-                        } label : {
-                            HStack {
-                                Spacer()
-                                Image("Google Logo")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(height: 35)
-                                    .background(
-                                    Circle()
-                                        .foregroundColor(.white)
-                                    )
-                                Text("Sign in With Google")
-                                    .font(.body)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 20)
-                                    .cornerRadius(9)
-                                Spacer()
-                            }.background(
-                                Rectangle()
-                                    .cornerRadius(9.0)
-                                    .frame(width: 315, height: 50)
-                                    .foregroundColor(Color.blue)
-                            )
-                            .padding(.all)
-                        }
-                        
-                        Button {
+                    }
+            
+                else if userInfo.loginStatus == "guest" {
+                        MenuView()
+                            .environmentObject(userInfo)
+                            .onAppear {
+                                userInfo.displayName = "guest"
+                                userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
+                            }
+                }
+            
+            else {
+                NavigationView {
+                    ZStack {
+                        westblue
+                        VStack {
                             
-                            userInfo.loginStatus = "guest"
-                            print("Logged in as guest.")
-                            
-                        } label: {
-                            Text("Continue as Guest")
-                                .font(.body)
+                            // GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
+                            Text("West High School")
                                 .foregroundColor(.black)
-                                .padding(.horizontal, 20)
-                                .padding(.all)
-                                .cornerRadius(9)
-                                .background(
+                                .font(.system(size: 32, weight: .bold, design: .rounded))
+                                .padding(.horizontal)
+                                .padding(.bottom, 5.0)
+                                .padding(.top, 25.0)
+                            Button {
+                                Task {
+                                    do {
+                                        if count == 0 {
+                                            if try await viewModel.signInWithGoogle(bypassing: false) {
+                                                
+                                                print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
+                                                
+                                                userInfo.loginStatus = "google"
+                                                count = 1
+                                            }
+                                            else {
+                                                print("Unsuccesful login.")
+                                                showingDomainError = true
+                                            }
+                                        }
+                                    } catch {
+                                        print(error.localizedDescription)
+                                    }
+                                }
+                            } label : {
+                                HStack {
+                                    Spacer()
+                                    Image("Google Logo")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: 35)
+                                        .background(
+                                            Circle()
+                                                .foregroundColor(.white)
+                                        )
+                                    Text("Sign in With Google")
+                                        .font(.body)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 20)
+                                        .cornerRadius(9)
+                                    Spacer()
+                                }.background(
                                     Rectangle()
                                         .cornerRadius(9.0)
                                         .frame(width: 315, height: 50)
-                                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))
+                                        .foregroundColor(Color.blue)
                                 )
-                        }
-                        
-                    }.accentColor(westblue)
-                        .padding([.leading, .trailing, .bottom])
-                        .padding(.top, 50)
-                        .background(Rectangle()
-                            .cornerRadius(9.0)
-                            .frame(width: 350)
-                            .shadow(radius: 5, x: 3, y: 3)
-                            .foregroundColor(.white))
-                    VStack {
-                        Image("Regents Logo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150)
-                        Spacer()
-                            .frame(height: 290)
-                    }
-                }.ignoresSafeArea()
-            }.accentColor(.white)
-                .environmentObject(userInfo)
-            
-                .alert(isPresented: $showingDomainError) {
-                    Alert (
-                        title: Text("Incorrect Domain"),
-                        message: Text("You must have a 'madison.k12.wi.us' email to sign in with Google."),
-                        primaryButton: .destructive(Text("Bypass Domain Verification")) {
-                            print("Bypassing Domain Verification...")
-                            
-                            Task {
-                                do {
-                                    if count == 0 {
-                                        if try await viewModel.signInWithGoogle(bypassing: true) {
-                                            print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
-                                            userInfo.loginStatus = "google"
-                                            count = 1
-                                        }
-                                        else {
-                                            print("Unsuccesful login.")
-                                            showingDomainError = true
-                                        }
-                                    }
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
+                                .padding(.all)
                             }
                             
-                        },
-                        secondaryButton: .default(Text("Cancel")) {
-                            showingDomainError = false
+                            Button {
+                                userInfo.loginStatus = "guest"
+                                print("Logged in as guest.")
+                                
+                            } label: {
+                                Text("Continue as Guest")
+                                    .font(.body)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.black)
+                                    .padding(.horizontal, 20)
+                                    .padding(.all)
+                                    .cornerRadius(9)
+                                    .background(
+                                        Rectangle()
+                                            .cornerRadius(9.0)
+                                            .frame(width: 315, height: 50)
+                                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))
+                                    )
+                            }
+                            
+                        }.accentColor(westblue)
+                            .padding([.leading, .trailing, .bottom])
+                            .padding(.top, 50)
+                            .background(Rectangle()
+                                .cornerRadius(9.0)
+                                .frame(width: 350)
+                                .shadow(radius: 5, x: 3, y: 3)
+                                .foregroundColor(.white))
+                        VStack {
+                            Image("Regents Logo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150)
+                            Spacer()
+                                .frame(height: 290)
                         }
+                    }.ignoresSafeArea()
+                }.accentColor(.white)
+                    .environmentObject(userInfo)
+                
+                    .alert(isPresented: $showingDomainError) {
+                        Alert (
+                            title: Text("Incorrect Domain"),
+                            message: Text("You must have a 'madison.k12.wi.us' email to sign in with Google."),
+                            primaryButton: .destructive(Text("Bypass Domain Verification")) {
+                                print("Bypassing Domain Verification...")
+                                
+                                Task {
+                                    do {
+                                        if count == 0 {
+                                            if try await viewModel.signInWithGoogle(bypassing: true) {
+                                                print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
+                                                userInfo.loginStatus = "google"
+                                                count = 1
+                                            }
+                                            else {
+                                                print("Unsuccesful login.")
+                                                showingDomainError = true
+                                            }
+                                        }
+                                    } catch {
+                                        print(error.localizedDescription)
+                                    }
+                                }
+                                
+                            },
+                            secondaryButton: .default(Text("Cancel")) {
+                                showingDomainError = false
+                            }
                         )
+                    }
+            }
+        } else { // no internet
+            ZStack {
+                westblue
+                    .ignoresSafeArea()
+                VStack {
+                    Text("No connection")
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.2)
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 26, weight: .semibold, design: .rounded))
+                        .fontWeight(.medium)
+                        .padding(.horizontal)
+                        .foregroundColor(westyellow)
+                        .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                    Text("Please check your connection and try again.")
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.2)
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                        .fontWeight(.medium)
+                        .padding()
+                        .foregroundColor(westyellow)
+                        .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                 }
+
+            }
         }
         
     }
@@ -234,3 +285,36 @@ struct AuthView: View {
             AuthView()
         }
     }
+
+
+class ShutdownManager: ObservableObject {
+    var isShutDown = false
+    var shutdownMessage = "No info to display"
+    
+    func fetchData(completion: @escaping (Bool, String) -> Void) {
+        let db = Firestore.firestore()
+        let shutdownRef = db.collection("Shutdown")
+        
+        var ref1a = false
+        var ref2a = ""
+        shutdownRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            }
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    let data = document.data()
+                    let ref1 = data["isShutDown"] as? Bool ?? false
+                    let ref2 = data["shutdownMessage"] as? String ?? "No info to display"
+                    ref1a = ref1
+                    ref2a = ref2
+                }
+            }
+            print("SHUTDOWN MANAGER UPDATE:")
+            print(ref1a)
+            print(ref2a)
+            completion(ref1a, ref2a)
+        }
+    }
+}
+

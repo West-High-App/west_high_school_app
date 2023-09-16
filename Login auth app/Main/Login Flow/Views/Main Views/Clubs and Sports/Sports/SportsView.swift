@@ -332,19 +332,26 @@ struct SportsHibabi: View {
                 .navigationTitle("Sports")
                 
                 .onAppear { // MARK: onAppear
-                    permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
-                        self.hasPermissionSportsNews = result
-                    }
-                    permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
-                        self.hasPermissionSports = result
-                    }
-                    
                     
                     // images
                     
                     if !hasAppeared {
                         isLoading = true
-                        print("LOADING...")
+                        
+                        if userInfo.isAdmin {
+                            self.hasPermissionSports = true
+                            self.hasPermissionSportsNews = true
+                        }
+                        permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
+                            self.hasPermissionSportsNews = result
+                        }
+                        permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
+                            self.hasPermissionSports = result
+                            if result {
+                                userInfo.isSportsAdmin = true
+                            }
+                        }
+                        
                         let dispatchGroup = DispatchGroup()
                         
                         var templist2: [sport] = []
@@ -411,7 +418,6 @@ struct SportsHibabi: View {
                         
                         dispatchGroup.notify(queue: .main) { [self] in
                             self.sportsNewsManager.allsportsnewslist = templist3
-                            print("DONE LOADING")
                             isLoading = false
                         }
                         hasAppeared = true

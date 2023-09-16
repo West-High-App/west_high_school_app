@@ -2,17 +2,18 @@ import SwiftUI
 
 struct SpotlightAdminView: View {
     @StateObject var dataManager = studentachievementlist()
-    
+
     @State private var isPresentingAddAchievement = false
     @State private var selectedAchievement: studentachievement?
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var tempAchievementTitle = ""
-    
+    @State var achievementlist: [studentachievement] = []
+
     @State private var isConfirmingDeleteAchievement = false
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var achievementToDelete: studentachievement?
-    
+
     @StateObject var imagemanager = imageManager()
     @State var displayimages: [UIImage] = []
     @State var currentimage: UIImage?
@@ -34,18 +35,16 @@ struct SpotlightAdminView: View {
                     .padding(.bottom, 5)
                 Spacer()
             }
-            
+
             Button {
                 isPresentingAddAchievement = true
             } label: {
                 Text("Add Spotlight Article")
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
-            
-            List(dataManager.newstitlearray, id: \.id) { achievement in
-                
-                VStack (alignment: .leading) {
-                    
+
+            List(achievementlist, id: \.id) { achievement in
+                VStack(alignment: .leading) {
                     Text(achievement.achievementtitle)
                         .font(.system(size: 17, weight: .semibold, design: .rounded))
                     Text(achievement.publisheddate)
@@ -53,24 +52,30 @@ struct SpotlightAdminView: View {
                     Text(achievement.achievementdescription)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                         .lineLimit(2)
-                    
                 }
-                
-                    .buttonStyle(PlainButtonStyle())
-                    .contextMenu {
-                        Button("Delete", role: .destructive) {
-                            tempAchievementTitle = achievement.achievementtitle
-                            isConfirmingDeleteAchievement = true
-                            achievementToDelete = achievement
-                        }
+                .buttonStyle(PlainButtonStyle())
+                .contextMenu {
+                    Button("Delete", role: .destructive) {
+                        tempAchievementTitle = achievement.achievementtitle
+                        isConfirmingDeleteAchievement = true
+                        achievementToDelete = achievement
                     }
-                    .onTapGesture {
-                    }
+                }
             }
         }
-       .sheet(isPresented: $isPresentingAddAchievement) {
-           AchievementDetailView(dataManager: dataManager, editingAchievement: nil, displayimages: [])
-       }
+        .onAppear {
+            dataManager.getAchievements { list, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+                else if let list = list {
+                    achievementlist = list
+                }
+            }
+        }
+        .sheet(isPresented: $isPresentingAddAchievement) {
+            AchievementDetailView(dataManager: dataManager, editingAchievement: nil, displayimages: [])
+        }
         .sheet(item: $selectedAchievement) { achievement in
             AchievementDetailView(dataManager: dataManager, editingAchievement: achievement)
         }
@@ -83,6 +88,9 @@ struct SpotlightAdminView: View {
                         dataManager.deleteAchievment(achievement: achievementToDelete) { error in
                             if let error = error {
                                 print("Error deleting achievement: \(error.localizedDescription)")
+                            } else {
+                                dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
+                                achievementlist.removeAll {$0 == achievementToDelete}
                             }
                         }
                     }
@@ -95,10 +103,9 @@ struct SpotlightAdminView: View {
 
 struct AchievementRowView: View {
     var achievement: studentachievement
-    
+
     var body: some View {
-        //EREN JAEGER
-        HStack{
+        HStack {
             VStack(alignment: .leading) {
                 Text(achievement.achievementtitle)
                     .font(.headline)
@@ -113,10 +120,12 @@ struct AchievementRowView: View {
             Spacer()
         }
         .padding()
-        .background(Rectangle()
-            .cornerRadius(9.0)
-            .shadow(radius: 5, x: 0, y: 0)
-            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+        .background(
+            Rectangle()
+                .cornerRadius(9.0)
+                .shadow(radius: 5, x: 0, y: 0)
+                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))
+        )
     }
 }
 
@@ -211,6 +220,7 @@ struct AchievementDetailView: View {
                             publisheddate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)",
                             images: images, imagedata: []
                         )
+                        dataManager.allstudentachievementlist.append(achievementToSave)
                         dataManager.createAchievement(achievement: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating achievement: \(error.localizedDescription)")

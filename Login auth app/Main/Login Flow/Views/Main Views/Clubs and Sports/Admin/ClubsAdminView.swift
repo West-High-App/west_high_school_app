@@ -15,6 +15,7 @@ struct ClubsAdminView: View {
     @State var clubslist: [club]
     
     @State var isPresentingAddClub = false
+    @State var isPresentingConfirmClub = false
     @State var isPresentingDeleteClub = false
     @State var isConfirmingAddClub = false
     @State var temptitle = ""
@@ -97,7 +98,7 @@ struct ClubsAdminView: View {
                     }
                     
                     Button ("Publish New Club") {
-                        adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
+                       adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                         
                         clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, imagedata: UIImage(), documentID: "NAN", id: 0)
                         
@@ -111,10 +112,11 @@ struct ClubsAdminView: View {
                         isPresentingAddClub = false
                         db.getClubs() {clubs in}
                     }.font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .foregroundColor(.red)
                 }
                 Spacer()
             }
-        
+
             .alert(isPresented: $isPresentingDeleteClub) {
                 Alert(
                 
