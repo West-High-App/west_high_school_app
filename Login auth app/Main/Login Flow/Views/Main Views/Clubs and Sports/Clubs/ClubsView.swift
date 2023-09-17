@@ -83,6 +83,7 @@ struct ClubsHibabi: View {
             : clubNewsManager.allclubsnewslist.filter {
                 $0.newstitle.lowercased().contains(searchText.lowercased())
             }
+        
     }
     
         // MARK: view
