@@ -80,7 +80,7 @@ struct SportsAdminView: View {
                     }
                     .padding([.horizontal, .top])
                 }
-                Text("Add Club")
+                Text("Add Sport")
                     .foregroundColor(Color.black)
                     .font(.system(size: 32, weight: .bold, design: .rounded))
                     .lineLimit(2)
@@ -99,7 +99,7 @@ struct SportsAdminView: View {
                         
                             adminemails = adminsstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                             
-                            sportToAdd = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: UIImage(), documentID: "NAN", sportid: "\(sportname) \(sportsteam)", id: 0)
+                            sportToAdd = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: nil, documentID: "NAN", sportid: "\(sportname) \(sportsteam)", id: 0)
                             if let sportToAdd = sportToAdd {
                                 db.createSport(sport: sportToAdd) { error in
                                     if let error = error {

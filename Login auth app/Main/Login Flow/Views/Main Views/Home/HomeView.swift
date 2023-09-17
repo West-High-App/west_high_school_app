@@ -109,7 +109,7 @@ struct HomeView: View {
             //MARK: HOME
              if !isShutDown {
                   NavigationView{
-                       ScrollView(.vertical, showsIndicators: false) {
+                       ScrollView(.vertical) {
                             VStack{
                                  // artwork
                                  Artwork()

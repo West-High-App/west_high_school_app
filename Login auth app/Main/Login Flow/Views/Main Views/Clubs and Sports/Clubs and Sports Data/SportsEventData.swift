@@ -22,6 +22,9 @@ class sportEventManager: ObservableObject {
     @Published var sportsEvents = [sportEvent(documentID: "NAN", title: "Placeholder data", subtitle: "This one is made harcoded in teh app", date: "Aug 30 2023")]
     @Published var topthree: [sportEvent] = []
     @Published var hasInitialized: Bool = false
+    @Published var eventDictionary: [String: [sportEvent]] = [:]
+    
+    static let shared = sportEventManager()
     
     func getSportsEvent(forSport: String, completion: @escaping ([sportEvent]?, Error?) -> Void) {
         var returnValue: [sportEvent] = []
@@ -57,7 +60,8 @@ class sportEventManager: ObservableObject {
                         
                     }
                 }
-                
+                self.eventDictionary[forSport] = returnValue
+                self.sportsEvents = returnValue
                 completion(returnValue, nil)
             }
         }
@@ -153,14 +157,16 @@ class sportEventManager: ObservableObject {
     
     func getDatePart(event: sportEvent, part: String) -> String {
         let dateList = event.date.components(separatedBy: " ")
-        if part == "month" {
-            return dateList[0]
-        }
-        if part == "day" {
-            return dateList[1]
-        }
-        if part == "year" {
-            return dateList[2]
+        if dateList.count == 3 {
+            if part == "month" {
+                return dateList[0]
+            }
+            if part == "day" {
+                return dateList[1]
+            }
+            if part == "year" {
+                return dateList[2]
+            }
         }
         return ""
     }

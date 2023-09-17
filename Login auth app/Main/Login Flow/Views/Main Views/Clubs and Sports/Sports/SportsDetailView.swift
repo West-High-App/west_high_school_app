@@ -11,268 +11,292 @@ struct SportsDetailView: View {
     var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
     @EnvironmentObject var sportsmanager: sportsManager
+    @EnvironmentObject var sporteventmanager: sportEventManager
     @State private var hasPermissionSport = false
     @State private var canEditSport = false
     @State var selected = 1
     @State var isFavorited = false
     @State var favoritesManager = FavoriteSports()
     @State var favorites: [sport] = []
+    @State var sportEvents: [sportEvent] = []
     @EnvironmentObject var vm: SportsHibabi.ViewModel
-    @StateObject var sporteventmanager = sportEventManager()
     @State private var confirming = false
     @State private var confirming2 = false
+    @State var screen = ScreenSize()
+    @State var hasAppeared = false
+    
     var currentsport: sport
+    
     @State var currentsportID = ""
     @State var upcomingeventslist: [sportEvent] = []
     @State var topthree: [sportEvent] = []
     @EnvironmentObject var sportfavoritesmanager: FavoriteSportsManager
-
+    
     var safeArea: EdgeInsets
     var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     //MARK: view
     var body: some View {
-            ScrollView(.vertical, showsIndicators: false) {
+        ScrollView (showsIndicators: false){
+            VStack {
                 VStack{
-                    Artwork()
-                    // Since We ignored Top Edge
-                    GeometryReader{ proxy in
-                        let minY = proxy.frame(in: .named("SCROLL")).minY - safeArea.top
+                    HStack {
+                        Text(currentsport.sportname)
+                            .foregroundColor(Color.black)
+                            .font(.system(size: 35, weight: .bold, design: .rounded))
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.3)
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                    HStack {
+                        Text(currentsport.sportsteam)
+                            .foregroundColor(Color.gray)
+                            .font(.system(size: 26, weight: .semibold, design: .rounded))
+                            .lineLimit(1)
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                    
+                    if currentsport.imagedata != nil {
+                        VStack {
+                            
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.white)
+                                
+                                VStack(spacing: 0) {
+                                    Image(uiImage: currentsport.imagedata!)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                        .clipped()
+                                        .onAppear {
+                                            print(currentsport.imagedata)
+                                        }
+                                }
+                            }
+                            
+                        }.cornerRadius(30)
+                            .frame(width: screen.screenWidth - 30, height: 250)
+                            .shadow(color: .gray, radius: 8, x:2, y:3)
                         
-                        HStack{
-                            Spacer()
-                            VStack {
-
-                                if isFavorited == false {
-                                    Button {
-                                        confirming = true
-                                    } label: {
-                                        HStack {
-                                            Image(systemName: "plus.app")
-                                                .resizable()
-                                                .foregroundColor(westblue)
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(height: 24)
-                                            Text("Add to my Sports")
-                                                .foregroundColor(westblue)
-                                                .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                        }.padding(.all, 10)
-                                            .background(Color(hue: 0, saturation: 0, brightness: 0.95, opacity: 0.90))
-                                            .cornerRadius(10)
-                                    }.confirmationDialog("Add to My Sports", isPresented: $confirming) {
-                                        Button("Add to My Sports") {
-                                            sportfavoritesmanager.addFavorite(sport: currentsport)
-                                            favoritesManager.addFavorite(sport: currentsport)
-                                            isFavorited = true
-
-                                        }
+                            .padding(.horizontal)
+                    }
+                    Spacer()
+                }
+                
+                Text(currentsport.info)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(Color.black)
+                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                    .padding(.horizontal, 25)
+                    .padding(.vertical, 5)
+                
+                Picker(selection: $selected, label: Text(""), content: {
+                    Text("Upcoming").tag(1)
+                    Text("Members (\(currentsport.sportsroster.count + currentsport.sportscaptains.count))").tag(2)
+                }).pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal)
+                
+                
+                // upcoming events view
+                
+                if selected == 1 {
+                    
+                    if hasPermissionSport {
+                        NavigationLink {
+                            SportEventsAdminView(currentsport: "\(currentsport.sportname) \(currentsport.sportsteam)")
+                        } label: {
+                            Text("Edit Upcoming Events")
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        }
+                        
+                    }
+                    if sportEvents.count < 1 {
+                        Text("No upcoming events.")
+                    } else {
+                        List {
+                            ForEach(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) {event in
+                                HStack {
+                                    VStack {
+                                        Text(sporteventmanager.getDatePart(event: event, part: "month"))
+                                            .font(.system(size: 16, weight: .medium, design: .rounded))
+                                            .foregroundColor(.red)
+                                        Text(sporteventmanager.getDatePart(event: event, part: "day"))
+                                            .font(.system(size: 26, weight: .regular, design: .rounded))
+                                        
                                     }
-                                } else {
-                                    Button (role: .destructive){
-                                        confirming2 = true
-                                    } label: {
-                                        HStack {
-                                            Image(systemName: "xmark.app")
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(height: 24)
-                                            Text("Remove Sport")
-                                                .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                        }
-                                        .padding(.all, 10)
-                                        .background(Color(hue: 0, saturation: 0, brightness: 0.95, opacity: 0.90))
-                                        .cornerRadius(10)
-                                    }.confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
-                                        Button("Remove from My Sports", role: .destructive) {
-                                            sportfavoritesmanager.removeFavorite(sport: currentsport)
-                                            favoritesManager.removeFavorite(sport: currentsport)
-                                            isFavorited = false
+                                    .frame(width:50,height:50)
+                                    Divider()
+                                        .padding(.vertical, 10)
+                                    VStack(alignment: .leading) {
+                                        Text(event.title)
+                                            .lineLimit(2)
+                                            .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                                        Text(event.subtitle)
+                                            .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                            .lineLimit(1)
+                                    }
+                                    .padding(.leading, 5)
+                                    Spacer()
+                                    
+                                }
+                            }
+                        }.frame(height: 450)
+                    }
+                    
+                }
+                
+                // members view
+                
+                if selected == 2 {
+                    
+                    if currentsport.sportcoaches.count == 0 && currentsport.sportscaptains.count == 0 && currentsport.sportsroster.count == 0 {
+                        Text("No members.")
+                    } else {
+                        
+                        List{
+                            if currentsport.sportcoaches.count > 0 {
+                                Section{
+                                    ForEach(currentsport.sportcoaches, id: \.self){coach in
+                                        HStack{
+                                            Text(coach)
                                         }
                                     }
                                 }
+                                header:{
+                                    if currentsport.sportcoaches.count == 1 {
+                                        Text("Coach")
+                                    } else {
+                                        Text("Coaches")
+                                    }
+                                }
                             }
-                            .padding(.top,-60)
-                            .frame(maxWidth: .infinity, maxHeight:.infinity)
-                            .offset(y: minY < 50 ? -(minY - 50) : 0)
-                            Spacer()
+                            
+                            if currentsport.sportscaptains.count > 0 {
+                                Section {
+                                    ForEach(currentsport.sportscaptains, id: \.self) { captain in
+                                        HStack {
+                                            Text(captain)
+                                        }
+                                    }
+                                } header:{
+                                    if currentsport.sportscaptains.count == 1 {
+                                        Text("Captain")
+                                    } else {
+                                        Text("Captains")
+                                    }
+                                }
+                            }
+                            
+                            if currentsport.sportsroster.count > 0 {
+                                Section {
+                                    ForEach(currentsport.sportsroster, id: \.self) { member in
+                                        HStack {
+                                            Text(member)
+                                        }
+                                    }
+                                } header: {
+                                        Text("Members")
+                                }
+                            }
+                            
+                        }.frame(height: 450)
+                    }
+                }
+                
+                
+            }.padding(.top, 100)
+            
+                .onAppear {
+                    // getting events (only once, then it saves)
+                    if sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
+                        sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+                            if let events = events {
+                                self.sportEvents = events
+                            }
+                        }
+                    } else {
+                        self.sportEvents = sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
+                    }
+                    
+                    // checking if club is a favorite
+                    if sportsmanager.favoriteslist.contains(currentsport) {
+                        self.isFavorited = true
+                    }
+                    for sport in sportsmanager.favoriteslist {
+                        let currentsportid = "\(currentsport.sportname) \(currentsport.sportsteam)"
+                        if currentsportid == "\(sport.sportname) \(sport.sportsteam)" {
+                            self.isFavorited = true
                         }
                     }
                     
-                    .zIndex(1)
+                    // checking permissions
+                    if userInfo.isSportsAdmin || userInfo.isAdmin || currentsport.adminemails.contains(userInfo.email) {
+                        hasPermissionSport = true
+                    }
                     
-                    VStack{
-                        
-                        if canEditSport {
+                    // formatting stuff
+                    
+                }
+            
+                .navigationBarItems(trailing:
+                                        Group {
+                    HStack {
+                        if hasPermissionSport {
                             NavigationLink {
                                 SportsDetailAdminView(editingsport: currentsport)
                             } label: {
-                                Text("Edit Sport")
-                                    .foregroundColor(.blue)
-                                    .padding(10)
-                                    .background(Rectangle()
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
-                                        .shadow(radius: 2, x:1, y:1))
-                            }
-                        }
-
-                        
-                        Picker(selection: $selected, label: Text(""), content: {
-                            Text("Upcoming").tag(1)
-                            Text("Members").tag(2)
-                            Text("Information").tag(3)
-
-                        })
-                        .pickerStyle(SegmentedPickerStyle())
-
-
-                        if selected == 1{
-                            VStack{
-                                if canEditSport {
-                                    NavigationLink {
-                                        SportEventsAdminView(currentsport:  currentsportID)
-                                    } label: {
-                                        Text("edit sports events")
-                                    }
-                                }
-                                VStack {
-                                    ForEach(upcomingeventslist) { event in
-                                        HStack {
-                                            VStack {
-                                                Text(sporteventmanager.getDatePart(event: event, part: "month"))
-                                                    .font(.system(size: 14))
-                                                    .foregroundColor(.red)
-                                                Text(sporteventmanager.getDatePart(event: event, part: "day"))
-                                                    .font(.system(size: 24))
-                                            }.padding(.vertical, -5)
-                                                .padding(.leading, 20)
-                                                .padding(.trailing, 10)
-                                            Divider()
-                                            VStack(alignment: .leading) {
-                                                Text(event.title)
-                                                    .fontWeight(.semibold)
-                                                Text(event.subtitle)
-                                            }.padding(.vertical, -5)
-                                                .padding(.horizontal)
-                                            Spacer()
-                                        }
-                                        Divider()
-                                            .padding(.horizontal)
-                                            .padding(.vertical, 5)
-                                    }
-                                }
-                                .foregroundStyle(.black)
-                                .padding(.all) //EDIT
-                                .background(Rectangle()
-                                    .cornerRadius(9.0)
-                                    .padding(.horizontal)
-                                    .shadow(radius: 5, x: 2, y: 2)
-                                            
-                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                            }
-                                .padding(.all)
-                                .background(Color(red: 250/255, green: 250/255, blue: 250/255))
-                                .cornerRadius(12)
-                            }
-                        if selected == 2{
-                            VStack{
-                                NavigationView{
-                                    List{
-                                        Section{
-                                            ForEach(currentsport.sportcoaches, id: \.self){captain in
-                                                HStack{
-                                                    //Image(systemName: "star")
-                                                    Text(captain)
-                                                }
-                                            }
-                                        }
-                                        header:{
-                                          Text("Coaches")
-                                        }
-                                        Section{
-                                            ForEach(currentsport.sportscaptains, id: \.self){captain in
-                                                HStack{
-                                                    //Image(systemName: "star")
-                                                    Text(captain)
-                                                }
-                                            }
-                                        }
-                                        header:{
-                                            Text("Captains")
-                                        }
-                                        Section{
-                                            ForEach(currentsport.sportsroster, id: \.self){player in
-                                                HStack{
-                                                    //Image(systemName: "person.crop.circle")
-                                                    Text(player)
-                                                }
-                                            }
-                                        }
-                                        header:{
-                                            Text("Roster")
-                                        }
-                                    }
-
-                                }
-                            }
-                            .padding(.horizontal, -15)
-                            .background(.gray)
-                            .cornerRadius(12)
-
-                            }
-                        if selected == 3{
-                            VStack {
-                                Text(currentsport.info)
-                                    .fontWeight(.semibold)
+                                Text("Edit")
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
                             }
                             
                         }
-                    }
-                    .padding()
-                    .background(Rectangle()
-                        .cornerRadius(20.0)
-                        //.padding(.leading,20)
-                        .shadow(radius: 10)
-                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                    .padding(.horizontal)
-                    
-                }
-                .onAppear { // all the shit yyayy
-                    currentsportID = ("\(currentsport.sportname) \(currentsport.sportsteam)")
-                    sporteventmanager.getSportsEvent(forSport: currentsportID, completion: { events, error in
-                        if let error = error {
-                            print("Error: \(error.localizedDescription)")
-                        }
-                        if let events = events {
-                            upcomingeventslist = events
-                        }
                         
-                    })
-                    if userInfo.isSportsAdmin {
-                        canEditSport = true
-                    }
-                    if currentsport.adminemails.contains(userInfo.email) {
-                        canEditSport = true
-                    }
-                }
-                .overlay(alignment: .top) {
-                    HeaderView()
-                }
-            }
-            .onAppear {
-                favoritesManager.getFavorites { list in
-                    for item in list {
-                        if "\(currentsport.sportname) \(currentsport.sportsteam)" == item {
-                            isFavorited = true
+                        if isFavorited {
+                            Button {
+                                confirming2 = true
+                            } label : {
+                                Image(systemName: "heart.fill")
+                                    .foregroundColor(.red)
+                            }
+                        } else {
+                            Button {
+                                confirming = true
+                            } label: {
+                                Image(systemName: "heart")
+                                    .foregroundColor(.red)
+                            }
                         }
                     }
                 }
-            }
-            .background(westblue)
-            .coordinateSpace(name: "SCROLL")
+                )
+            
+            // add/remove sports confirm
+                .confirmationDialog("Add to My Sports", isPresented: $confirming) {
+                    Button("Add to My Sports") {
+                        sportsmanager.favoriteslist.append(currentsport)
+                        sportfavoritesmanager.addFavorite(sport: currentsport)
+                        favoritesManager.addFavorite(sport: currentsport)
+                        isFavorited = true
+                    }
+                }
+            
+                .confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
+                    Button("Remove from My Sports", role: .destructive) {
+                        sportsmanager.favoriteslist.removeAll {$0 == currentsport}
+                        sportfavoritesmanager.removeFavorite(sport: currentsport)
+                        favoritesManager.removeFavorite(sport: currentsport)
+                        isFavorited = false
+                    }
+                }
+        }
     }
-
+    
+    
+    // MARK: dumb shit
     @ViewBuilder
     func Artwork() -> some View {
         let height = size.height * 0.65
@@ -282,7 +306,7 @@ struct SportsDetailView: View {
             let minY = proxy.frame(in: .named("SCROLL")).minY
             let progress = minY / (height * (minY > 0 ? 0.5 : 0.8))
             
-            Image(uiImage: currentsport.imagedata)
+            Image(uiImage: currentsport.imagedata ?? UIImage())
                 .resizable()
                 .scaledToFill()
                 .aspectRatio(contentMode: .fill)
@@ -390,6 +414,10 @@ struct SportsDetailView: View {
 
 struct SportsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsMainView(selectedsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(SportsHibabi.ViewModel())
+        GeometryReader {
+            let safeArea = $0.safeAreaInsets
+            let size = $0.size
+            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: nil, documentID: "NAN", sportid: "SPORT ID",  id: 1), safeArea: safeArea, size: size)
+        }
     }
 }

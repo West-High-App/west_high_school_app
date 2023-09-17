@@ -10,6 +10,8 @@ import SwiftUI
 
 struct SportsMainView: View {
     @EnvironmentObject var sportfavoritesmanager: FavoriteSportsManager
+    @EnvironmentObject var sportsmanager: sportsManager
+    @EnvironmentObject var sporteventmanager: sportEventManager
     var selectedsport:sport
     var body: some View {
         GeometryReader {
@@ -19,6 +21,8 @@ struct SportsMainView: View {
             SportsDetailView(currentsport: currentsport, safeArea: safeArea, size: size)
                 .ignoresSafeArea(.container, edges: .top)
                 .environmentObject(sportfavoritesmanager)
+                .environmentObject(sportsmanager)
+                .environmentObject(sporteventmanager)
         }
         //.background(.blue)
     }

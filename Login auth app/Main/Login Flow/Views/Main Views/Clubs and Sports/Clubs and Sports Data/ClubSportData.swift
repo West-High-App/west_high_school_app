@@ -19,7 +19,7 @@ struct sport: Identifiable, Equatable {
     var sportscaptains:[String] // array of captains in sports
     var tags: [Int] // [gender tag, season tag, team tag] all ints
     var info: String
-    var imagedata: UIImage // NOT USED IN FIREBASE
+    var imagedata: UIImage? // NOT USED IN FIREBASE
     var documentID: String // NOT USED IN FIREBASE
     var sportid: String // NOT USED IN FIREBASE
     var id: Int // NOT USED IN FIREBASE
@@ -67,7 +67,7 @@ class sportsManager: ObservableObject {
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
                     
-                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
+                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: nil, documentID: documentID, sportid: sportid, id: id))
                     tempID = tempID + 1
                     returnvalue.append(sport)
                 }

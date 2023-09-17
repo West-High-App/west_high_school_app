@@ -248,10 +248,10 @@ struct SportsDetailAdminView: View {
                 }
                 
                 Section("Image") {
-                    Image(uiImage: displayimage ?? editingsport.imagedata)
+                    Image(uiImage: displayimage ?? editingsport.imagedata ?? UIImage())
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 200, height: 200)
+                        .frame(width: 250, height: 200)
                         .cornerRadius(10)
                     Button("Upload New Image") {
                         isDisplayingAddImage = true
@@ -304,7 +304,7 @@ struct SportsDetailAdminView: View {
                     temptags.append(selectedTeam)
                     tags = temptags
                     
-                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: UIImage(), documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
+                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: nil, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
                     
                     
                     if let sporttoedit = sporttoedit {
@@ -344,6 +344,6 @@ struct SportsDetailAdminView: View {
 
 struct SportsDetailAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID", id: 1))
+        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: 1))
     }
 }

@@ -13,12 +13,13 @@ struct SportsHibabi: View {
     var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
     @StateObject var sportfavoritesmanager = FavoriteSportsManager()
+    @StateObject var sporteventmanager = sportEventManager.shared
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
     @State var sportsNewsManager = sportsNewslist()
     @State var favoritesManager = FavoriteSports()
     @State var favorites: [sport] = []
-    @StateObject var sportsmanager = sportsManager.shared
+    @StateObject var sportsmanager = sportsManager()
     @State var displaylist: [sport] = []
     @State var newstitlearray:[sportNews] = []
     @State var vm = ViewModel()
@@ -71,6 +72,17 @@ struct SportsHibabi: View {
                 $0.sportname.lowercased().contains(searchText.lowercased())
             }
     }
+    // sportsNewsManager.allsportsnewslist
+    private var filteredSportsNews: [sportNews] {
+        return searchText == ""
+        ? sportsNewsManager.allsportsnewslist
+            : sportsNewsManager.allsportsnewslist.filter {
+                $0.newstitle.lowercased().contains(searchText.lowercased())
+            }
+    }
+    
+    
+    
     // MARK: functions
         
     func filteredList(fromList list: [sport]) -> [sport] {
@@ -185,14 +197,25 @@ struct SportsHibabi: View {
                                             SportsMainView(selectedsport: item)
                                                 .environmentObject(vm)
                                                 .environmentObject(sportfavoritesmanager)
+                                                .environmentObject(sportsmanager)
+                                                .environmentObject(sporteventmanager)
                                         }label: {
                                             HStack {
-                                                Image(uiImage: item.imagedata)
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 50, height: 50)
-                                                    .cornerRadius(1000)
-                                                    .padding(.trailing, 10)
+                                                if item.imagedata != nil {
+                                                    Image(uiImage: item.imagedata!)
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 50, height: 50)
+                                                        .cornerRadius(1000)
+                                                        .padding(.trailing, 10)
+                                                } else {
+                                                    Image(systemName: "questionmark.circle")
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 50, height: 50)
+                                                        .cornerRadius(1000)
+                                                        .padding(.trailing, 10)
+                                                }
                                                 VStack (alignment: .center){
                                                     HStack {
                                                         Text(item.sportname)
@@ -259,14 +282,25 @@ struct SportsHibabi: View {
                                             SportsMainView(selectedsport: item)
                                                 .environmentObject(vm)
                                                 .environmentObject(sportfavoritesmanager)
+                                                .environmentObject(sportsmanager)
+                                                .environmentObject(sporteventmanager)
                                         }label: {
                                             HStack {
-                                                Image(uiImage: item.imagedata)
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 50, height: 50)
-                                                    .cornerRadius(1000)
-                                                    .padding(.trailing, 10)
+                                                if item.imagedata != nil {
+                                                    Image(uiImage: item.imagedata!)
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 50, height: 50)
+                                                        .cornerRadius(1000)
+                                                        .padding(.trailing, 10)
+                                                } else {
+                                                    Image(systemName: "questionmark.circle")
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 50, height: 50)
+                                                        .cornerRadius(1000)
+                                                        .padding(.trailing, 10)
+                                                }
                                                 VStack (alignment: .center){
                                                     HStack {
                                                         Text(item.sportname)
@@ -296,10 +330,10 @@ struct SportsHibabi: View {
                     // MARK: sports news
                     else if selected == 3 {
                         
-                        List(sportsNewsManager.allsportsnewslist, id: \.id) { news in
+                        List(filteredSportsNews, id: \.id) { news in
                             
                             sportnewscell(feat: news)
-                                .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news).environmentObject(sportsmanager)).opacity(0) )
+                                .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
                             
                         }.searchable(text: $searchText)
                     }

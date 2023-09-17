@@ -410,6 +410,6 @@ struct ClubsDetailView: View {
 
 struct ClubsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubsMainView(selectedclub: clubManager().allclublist.first!).environmentObject(ClubsHibabi.ClubViewModel())
+        ClubsMainView(selectedclub: club(clubname: "Chess Club", clubcaptain: ["Andrea Botez"], clubadvisor: ["Hiakru Nikamura"], clubmeetingroom: "2013", clubdescription: "For seasoned pros, or newbeginners, chess is a game that everyone can learn and improve at.", clubimage: "chess", clubmembercount: "1", clubmembers: ["John Johnson", "Bob Bobson", "Anders Anderson", "Millie Millson"], adminemails: ["augustelholm@gmail.com"], imagedata: UIImage(), documentID: "documentID", id: 1)).environmentObject(ClubsHibabi.ClubViewModel())
     }
 }
