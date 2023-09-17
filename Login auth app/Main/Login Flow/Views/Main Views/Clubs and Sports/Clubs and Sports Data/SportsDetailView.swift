@@ -72,9 +72,6 @@ struct SportsDetailView: View {
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: screen.screenWidth - 30, height: 250)
                                         .clipped()
-                                        .onAppear {
-                                            print(currentsport.imagedata)
-                                        }
                                 }
                             }
                             
@@ -107,7 +104,7 @@ struct SportsDetailView: View {
                     
                     if hasPermissionSport {
                         NavigationLink {
-                            SportEventsAdminView(currentsport: "\(currentsport.sportname) \(currentsport.sportsteam)")
+                            SportEventsAdminView(currentsport: currentsport)
                         } label: {
                             Text("Edit Upcoming Events")
                                 .font(.system(size: 17, weight: .semibold, design: .rounded))
@@ -121,10 +118,10 @@ struct SportsDetailView: View {
                             ForEach(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) {event in
                                 HStack {
                                     VStack {
-                                        Text(sporteventmanager.getDatePart(event: event, part: "month"))
+                                        Text(event.month)
                                             .font(.system(size: 16, weight: .medium, design: .rounded))
                                             .foregroundColor(.red)
-                                        Text(sporteventmanager.getDatePart(event: event, part: "day"))
+                                        Text(event.day)
                                             .font(.system(size: 26, weight: .regular, design: .rounded))
                                         
                                     }
@@ -295,121 +292,6 @@ struct SportsDetailView: View {
         }
     }
     
-    
-    // MARK: dumb shit
-    @ViewBuilder
-    func Artwork() -> some View {
-        let height = size.height * 0.65
-        GeometryReader{ proxy in
-            
-            let size = proxy.size
-            let minY = proxy.frame(in: .named("SCROLL")).minY
-            let progress = minY / (height * (minY > 0 ? 0.5 : 0.8))
-            
-            Image(uiImage: currentsport.imagedata ?? UIImage())
-                .resizable()
-                .scaledToFill()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0 ))
-                .clipped()
-                .overlay(content: {
-                    ZStack(alignment: .bottom) {
-                        // MARK: - Gradient Overlay
-                        Rectangle()
-                            .fill(
-                                .linearGradient(colors: [
-                                    westblue.opacity(0 - progress),
-                                    westblue.opacity(0 - progress),
-                                    westblue.opacity(0.05 - progress),
-                                    westblue.opacity(0.1 - progress),
-                                    westblue.opacity(0.5 - progress),
-                                    westblue.opacity(1),
-                                ], startPoint: .top, endPoint: .bottom)
-                            )
-                        VStack(spacing: 0) {
-                            Text(currentsport.sportname)
-                                .font(                                .custom("Trebuchet MS", fixedSize: 60))
-                                .foregroundStyle(westyellow)
-                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-                                .fontWeight(.bold)
-                                .multilineTextAlignment(.center)
-                            Text(currentsport.sportsteam)
-                                .bold()
-                                .font(
-                                    .custom("Apple SD Gothic Neo", fixedSize: 30))
-                                .foregroundStyle(westyellow)
-                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-
-                        }
-                        .opacity(1 + (progress > 0 ? -progress : progress))
-                        .padding(.bottom, 65)
-                        
-                        // Moving with Scroll View
-                        
-                        .offset(y: minY < 0 ? minY : 0 )
-                    }
-                })
-            
-                .offset(y: -minY)
-            
-            
-             
-        }
-        .frame(height: height + safeArea.top )
-    }
-    @ViewBuilder
-    func HeaderView() -> some View {
-        GeometryReader{ proxy in
-            let minY = proxy.frame(in: .named("SCROLL")).minY
-            let height = size.height * 0.45
-            let progress = minY / (height * (minY > 0 ? 0.5 : 0.8))
-            let titleProgress =  minY / height
-            
-            HStack {
-                Spacer(minLength: 0)
-                
-//                HStack{
-//                    VStack{
-//                        Text(currentclub.clubmeetingroom)
-//                            .font(                                .custom("Apple SD Gothic Neo", fixedSize: 32))
-//                            .foregroundStyle(westblue)
-//                            .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-//                            .offset(y: -titleProgress < 0.75 ? 0 : 100)
-//                            .animation(.easeOut(duration: 0.55), value: -titleProgress > 0.75)
-//                            .opacity(1 + (progress > 0 ? -progress : progress))
-//                        Spacer()
-//                    }
-//                    .padding(.leading)
-//                    Spacer()
-//                }
-            }
-            .overlay(content: {
-                Text(currentsport.sportname)
-                    .font(                                .custom("Apple SD Gothic Neo", fixedSize: 60))
-                    .bold()
-                    .foregroundStyle(westyellow)
-                    .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-                    .offset(y: -titleProgress > 1 ? 0 : 80)
-                    .clipped()
-                    .animation(.easeOut(duration: 0.25), value: -titleProgress > 1)
-            })
-            .padding(.top,70)
-
-            //.padding([.horizontal,.bottom], 15)
-            //.padding(safeArea.top + 20)
-//THIS PLACE IS THE LOGO DRAG EFFECT
-            //.background(
-             //   Color.blue
-              //      .opacity(-progress > 1 ? 1 : 0)
-            //)
-            
-            .offset(y: -minY)
-            
-            
-            
-        }
-        .frame(height: 35)
-    }
     }
 
 struct SportsDetailView_Previews: PreviewProvider {

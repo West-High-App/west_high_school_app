@@ -21,7 +21,7 @@ struct ClubsDetailView: View {
     @EnvironmentObject var vmm: ClubsHibabi.ClubViewModel
     @State private var confirming = false
     @State private var confirming2 = false
-    @State var upcomingeventlist: [sportEvent] = [] // supposed to be clubEvent
+    @State var upcomingeventlist: [clubEvent] = [] // supposed to be clubEvent
     @StateObject var clubeventmanager = clubEventManager()
     
     @State var hasAppeared = false
@@ -32,377 +32,265 @@ struct ClubsDetailView: View {
     @EnvironmentObject var clubfavoritesmanager: FavoriteClubsManager
     
     var currentclub: club
-    
+    @State var screen = ScreenSize()
     var safeArea: EdgeInsets
     var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     var body: some View {
-            ScrollView(.vertical, showsIndicators: false) {
+        ScrollView (showsIndicators: false){
+            VStack {
                 VStack{
-                    // MARK: - Artwork
-                    Artwork()
-                    GeometryReader{ proxy in
-                        let minY = proxy.frame(in: .named("SCROLL")).minY - safeArea.top
-                        
+                    HStack {
+                        Text(currentclub.clubname)
+                            .foregroundColor(Color.black)
+                            .font(.system(size: 35, weight: .bold, design: .rounded))
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.3)
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                    HStack {
+                        Text("Room \(currentclub.clubmeetingroom)")
+                            .foregroundColor(Color.gray)
+                            .font(.system(size: 26, weight: .semibold, design: .rounded))
+                            .lineLimit(1)
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                    
+                    if currentclub.imagedata != nil {
                         VStack {
-                            if isFavorited == false {
-                                Button {
-                                    confirming = true
-                                } label: {
-                                    HStack {
-                                        Image(systemName: "plus.app")
-                                            .resizable()
-                                            .foregroundColor(westblue)
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(height: 24)
-                                        Text("Add to my Clubs")
-                                            .foregroundColor(westblue)
-                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                    }.padding(.all, 10)
-                                        .background(Color(hue: 0, saturation: 0, brightness: 0.95, opacity: 0.90))
-                                        .cornerRadius(10)
-                                }.confirmationDialog("Add to My Clubs", isPresented: $confirming) {
-                                    Button("Add to My Clubs") {
-                                        clubfavoritesmanager.addFavorite(club: currentclub)
-                                        favoritesManager.addFavorite(club: currentclub)
-                                        isFavorited = true
-                                    }
-                                }
-                            } else {
-                                Button (role: .destructive){
-                                    confirming2 = true
-                                } label: {
-                                    HStack {
-                                        Image(systemName: "xmark.app")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(height: 24)
-                                        Text("Remove Club")
-                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                    }
-                                    .padding(.all, 10)
-                                        .background(Color(hue: 0, saturation: 0, brightness: 0.95, opacity: 0.90))
-                                        .cornerRadius(10)
-                                }.confirmationDialog("Remove from My Clubs", isPresented: $confirming2) {
-                                    Button("Remove from My Clubs", role: .destructive) {
-                                        clubfavoritesmanager.removeFavorite(club: currentclub)
-                                        favoritesManager.removeFavorite(club: currentclub)
-                                        self.isFavorited = false
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.top,-60)
-                        .frame(maxWidth: .infinity, maxHeight:.infinity)
-                        .offset(y: minY < 50 ? -(minY - 50) : 0)
-                    }
-                    .zIndex(1)
-                    
-                    VStack{
-                        Text(currentclub.clubdescription)
-                            .padding(.vertical, 2)
-                            .foregroundStyle(westblue)
-                            .font(.system(size: 20, weight: .semibold, design: .rounded))
-
-                        Picker(selection: $selected, label: Text(""), content: {
-                            Text("Upcoming").tag(1)
-                            Text("Members").tag(2)
-
-                        })
-                        .pickerStyle(SegmentedPickerStyle())
-
-
-                        if selected == 1{
-                            VStack {
-                                
-                                if hasPermissionClub {
-                                    NavigationLink {
-                                        ClubsEventsAdminView(currentclub: currentclub.clubname)
-                                    } label: {
-                                        Text("Edit Club Events")
-                                            .foregroundColor(.blue)
-                                            .padding(10)
-                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                            .background(Rectangle()
-                                                .foregroundColor(.white)
-                                                .cornerRadius(10)
-                                                .shadow(radius: 2, x: 1, y: 1))                        }
-                                }
-
-                                ForEach(upcomingeventlist) { event in
-                                    HStack {
-                                        VStack {
-                                            Text(clubeventmanager.getDatePart(event: event, part: "month"))
-                                                .font(.system(size: 14))
-                                                .foregroundColor(.red)
-                                            Text(clubeventmanager.getDatePart(event: event, part: "day"))
-                                                .font(.system(size: 24))
-                                        }.padding(.vertical, -5)
-                                            .padding(.leading, 20)
-                                            .padding(.trailing, 10)
-                                        Divider()
-                                        VStack(alignment: .leading) {
-                                            Text(event.title)
-                                                .fontWeight(.semibold)
-                                            Text(event.subtitle)
-                                        }.padding(.vertical, -5)
-                                            .padding(.horizontal)
-                                        Spacer()
-                                    }
-                                    Divider()
-                                        .padding(.horizontal)
-                                        .padding(.vertical, 5)
-                                }
-                                
-                            }
-
-                            }
-                        if selected == 2{
-                            VStack{
-                                NavigationView{
-                                    List{
-                                        Section{
-                                            ForEach(currentclub.clubadvisor, id: \.self){captain in
-                                                HStack{
-                                                    //Image(systemName: "star")
-                                                    Text(captain)
-                                                }
-                                            }
-                                        }
-                                        header:{
-                                          Text("Advisors")
-                                        }
-                                        Section{
-                                            ForEach(currentclub.clubcaptain!, id: \.self){captain in
-                                                HStack{
-                                                    //Image(systemName: "star")
-                                                    Text(captain)
-                                                }
-                                            }
-                                        }
-                                        header:{
-                                            Text("Captains")
-                                        }
-                                        Section{
-                                            ForEach(currentclub.clubmembers, id: \.self){player in
-                                                HStack{
-                                                    //Image(systemName: "person.crop.circle")
-                                                    Text(player)
-                                                }
-                                            }
-                                        }
-                                        header:{
-                                            Text("Members")
-                                        }
-                                    }
-
-                                }
-                            }
-                            .padding(.horizontal, -15)
-                            .background(.gray)
-                            .cornerRadius(12)
-
-                            }
-                    }
-                    .padding()
-                    .background(Rectangle()
-                        .cornerRadius(20.0)
-                        //.padding(.leading,20)
-                        .shadow(radius: 10)
-                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                    .padding(.horizontal)
-                    
-                }
-                .onAppear {
-                    if userInfo.isClubsAdmin {
-                        print("IS ADMIN")
-                    } else {
-                        print("IS NOT ADMIN")
-                    }
-                    clubeventmanager.getClubsEvent(forClub: currentclub.clubname) { events, error in
-                        if let error = error {
-                            print(error.localizedDescription)
-                        }
-                        if let events = events {
-                            var tempp: [sportEvent] = []
-                            for item in events {
-                                
-                                tempp.append(sportEvent(documentID: item.documentID, title: item.title, subtitle: item.subtitle, date: item.date))
-                                
-                            }
-                            upcomingeventlist = tempp
-                        }
-                    }
-                    
-                    favoritesManager.getFavorites { list in
-                        for item in list {
-                            if currentclub.clubname == item {
-                                isFavorited = true
-                            }
-                        }
-                    }
-                    
-                    if userInfo.isClubsAdmin {
-                        hasPermissionClub = true
-                        print("is club admin")
-                    }
-                    if currentclub.adminemails.contains(userInfo.email) {
-                        hasPermissionClub = true
-                        print("contains email")
-                    }
-                    
-                    
-                    
-                        imagemanager.getImageFromStorage(fileName: currentclub.clubimage) { image in
-                            displayedimage = image
-                            originalimage = image ?? UIImage()
-                    }
-                    
-                }
-                .overlay(alignment: .top) {
-                    HeaderView()
-                }
-            }
-            .background(westblue)
-            .coordinateSpace(name: "SCROLL")
-    }
-
-    @ViewBuilder
-    func Artwork() -> some View {
-        let height = size.height * 0.65
-        GeometryReader{ proxy in
-            
-            let size = proxy.size
-            let minY = proxy.frame(in: .named("SCROLL")).minY
-            let progress = minY / (height * (minY > 0 ? 0.5 : 0.8))
-            
-            Image(uiImage: currentclub.imagedata)
-                .resizable()
-                .scaledToFill()
-                .aspectRatio(contentMode: .fill)
-                .blur(radius: 5)
-                .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0 ))
-                .clipped()
-                .ignoresSafeArea()
-                .overlay(content: {
-                    ZStack(alignment: .bottom) {
-                        // MARK: - Gradient Overlay
-                        Rectangle()
-                            .fill(
-                                .linearGradient(colors: [
-                                    westblue.opacity(0 - progress),
-                                    westblue.opacity(0 - progress),
-                                    westblue.opacity(0.05 - progress),
-                                    westblue.opacity(0.1 - progress),
-                                    westblue.opacity(0.5 - progress),
-                                    westblue.opacity(1),
-                                ], startPoint: .top, endPoint: .bottom)
-                            )
-                        VStack(spacing: 0) {
-                            Text(currentclub.clubname)
-                                .font(                                .custom("Trebuchet MS", fixedSize: 60))
-                                .foregroundStyle(westyellow)
-                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-                                .fontWeight(.bold)
-                                .multilineTextAlignment(.center)
-                            Text(currentclub.clubmeetingroom)
-                                .bold()
-                                .font(
-                                    .custom("Apple SD Gothic Neo", fixedSize: 30))
-                                .foregroundStyle(westyellow)
-                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-                            Text(currentclub.clubmembercount + " members"
-                                .uppercased())
-                                .font(                                .custom("Apple SD Gothic Neo", fixedSize: 24))
-                                .bold()
-                                .foregroundStyle(westyellow)
-                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                             
-                            if hasPermissionClub {
-                                NavigationLink {
-                                    ClubDetailAdminView(editingclub: currentclub)
-                                } label: {
-                                    Text("Edit Club")
-                                        .foregroundColor(.blue)
-                                        .padding(10)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                        .background(Rectangle()
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                            .shadow(radius: 2, x: 1, y: 1))                        }
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.white)
+                                
+                                VStack(spacing: 0) {
+                                    Image(uiImage: currentclub.imagedata)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                        .clipped()
+                                }
                             }
-
-                        }
-                        .opacity(1 + (progress > 0 ? -progress : progress))
-                        .padding(.bottom, 65)
+                            
+                        }.cornerRadius(30)
+                            .frame(width: screen.screenWidth - 30, height: 250)
+                            .shadow(color: .gray, radius: 8, x:2, y:3)
                         
-                        // Moving with Scroll View
-                        
-                        .offset(y: minY < 0 ? minY : 0 )
+                            .padding(.horizontal)
                     }
-                })
-            
-                .offset(y: -minY)
-            
-            
-             
-        }
-        .frame(height: height + safeArea.top )
-    }
-    @ViewBuilder
-    func HeaderView() -> some View {
-        GeometryReader{ proxy in
-            let minY = proxy.frame(in: .named("SCROLL")).minY
-            let height = size.height * 0.45
-            let progress = minY / (height * (minY > 0 ? 0.5 : 0.8))
-            let titleProgress =  minY / height
-            
-            HStack {
-                Spacer(minLength: 0)
+                    Spacer()
+                }
                 
-//                HStack{
-//                    VStack{
-//                        Text(currentclub.clubmeetingroom)
-//                            .font(                                .custom("Apple SD Gothic Neo", fixedSize: 32))
-//                            .foregroundStyle(westblue)
-//                            .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-//                            .offset(y: -titleProgress < 0.75 ? 0 : 100)
-//                            .animation(.easeOut(duration: 0.55), value: -titleProgress > 0.75)
-//                            .opacity(1 + (progress > 0 ? -progress : progress))
-//                        Spacer()
-//                    }
-//                    .padding(.leading)
-//                    Spacer()
-//                }
-            }
-            .overlay(content: {
-                Text(currentclub.clubname)
-                    .font(                                .custom("Apple SD Gothic Neo", fixedSize: 60))
-                    .foregroundStyle(westyellow)
-                    .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-                    .offset(y: -titleProgress > 1 ? 0 : 80)
-                    .clipped()
-                    .animation(.easeOut(duration: 0.25), value: -titleProgress > 1)
-            })
-            .padding(.top,70)
+                Text(currentclub.clubdescription)
+                //saygex
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(Color.black)
+                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                    .padding(.horizontal, 25)
+                    .padding(.vertical, 5)
+                
+                Picker(selection: $selected, label: Text(""), content: {
+                    Text("Upcoming").tag(1)
+                    Text("Members (\(currentclub.clubmembers.count + (currentclub.clubcaptain?.count ?? 0)))").tag(2)
+                }).pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal)
+                // upcoming events view
+                
+                if selected == 1 {
+                    
+                    if hasPermissionClub {
+                        NavigationLink {
+                            ClubsEventsAdminView(currentclub: currentclub)
+                        } label: {
+                            Text("Edit Upcoming Events")
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        }
+                        
+                    }
+                    if upcomingeventlist.count < 1 {
+                        Text("No upcoming events.")
+                    } else {
+                        List {
+                            ForEach(clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? upcomingeventlist, id: \.id) {event in
+                                HStack {
+                                    VStack {
+                                        Text(event.month)
+                                            .font(.system(size: 16, weight: .medium, design: .rounded))
+                                            .foregroundColor(.red)
+                                        Text(event.day)
+                                            .font(.system(size: 26, weight: .regular, design: .rounded))
+                                        
+                                    }
+                                    .frame(width:50,height:50)
+                                    Divider()
+                                        .padding(.vertical, 10)
+                                    VStack(alignment: .leading) {
+                                        Text(event.title)
+                                            .lineLimit(2)
+                                            .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                                        Text(event.subtitle)
+                                            .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                            .lineLimit(1)
+                                    }
+                                    .padding(.leading, 5)
+                                    Spacer()
+                                    
+                                }
+                            }
+                        }.frame(height: 450)
+                    }
+                    
+                }
+                
+                // members view
+                
+                if selected == 2 {
+                    if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
+                        Text("No members.")
+                    } else {
+                        
+                        List{
+                            if currentclub.clubadvisor.count > 0 {
+                                Section{
+                                    ForEach(currentclub.clubadvisor, id: \.self){coach in
+                                        HStack{
+                                            Text(coach)
+                                        }
+                                    }
+                                }
+                                header:{
+                                    if currentclub.clubcaptain?.count == 1 {
+                                        Text("Coach")
+                                    } else {
+                                        Text("Coaches")
+                                    }
+                                }
+                            }
+                            
+                            if currentclub.clubcaptain?.count ?? 0 > 0 {
+                                Section {
+                                    ForEach(currentclub.clubcaptain!, id: \.self) { captain in
+                                        HStack {
+                                            Text(captain)
+                                        }
+                                    }
+                                } header:{
+                                    if currentclub.clubcaptain?.count ?? 0 == 1 {
+                                        Text("Captain")
+                                    } else {
+                                        Text("Captains")
+                                    }
+                                }
+                            }
+                            
+                            if currentclub.clubmembers.count > 0 {
+                                Section {
+                                    ForEach(currentclub.clubmembers
+                                            , id: \.self) { member in
+                                        HStack {
+                                            Text(member)
+                                        }
+                                    }
+                                } header: {
+                                        Text("Members")
+                                }
+                            }
+                            
+                        }.frame(height: 450)
+                    }
+                }
 
-            //.padding([.horizontal,.bottom], 15)
-            //.padding(safeArea.top + 20)
-//THIS PLACE IS THE LOGO DRAG EFFECT
-            //.background(
-             //   Color.blue
-              //      .opacity(-progress > 1 ? 1 : 0)
-            //)
+                
+            }.padding(.top, 100)
             
-            .offset(y: -minY)
+                .onAppear {
+                    // getting events (only once, then it saves)
+                    if clubeventmanager.eventDictionary["\(currentclub.clubname)"] == nil {
+                        clubeventmanager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
+                            if let events = events {
+                                self.upcomingeventlist = events
+                            }
+                            //saygex
+                        }
+                    } else {
+                        self.upcomingeventlist = clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? []
+                    }
+                    // checking if club is a favorite
+                    if clubsmanager.favoriteslist.contains(currentclub) {
+                        self.isFavorited = true
+                    }
+                    for sport in clubsmanager.favoriteslist {
+                        let currentsportid = "\(currentclub.clubname)"
+                        if currentsportid == "\(sport.clubname)" {
+                            self.isFavorited = true
+                        }
+                    }
+                    
+                    // checking permissions
+                    if userInfo.isClubsAdmin || userInfo.isAdmin || currentclub.adminemails.contains(userInfo.email) {
+                        hasPermissionClub = true
+                    }
+                    
+                    // formatting stuff
+                    
+                }
             
+                .navigationBarItems(trailing:
+                                        Group {
+                    HStack {
+                        if hasPermissionClub {
+                            NavigationLink {
+                                ClubDetailAdminView(editingclub: currentclub)
+                            } label: {
+                                Text("Edit")
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            }
+                            
+                        }
+                        
+                        if isFavorited {
+                            Button {
+                                confirming2 = true
+                            } label : {
+                                Image(systemName: "heart.fill")
+                                    .foregroundColor(.red)
+                            }
+                        } else {
+                            Button {
+                                confirming = true
+                            } label: {
+                                Image(systemName: "heart")
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    }
+                }
+                )
             
+            // add/remove sports confirm
+                .confirmationDialog("Add to My Clubs", isPresented: $confirming) {
+                    Button("Add to My Clubs") {
+                        clubsmanager.favoriteslist.append(currentclub)
+                        clubfavoritesmanager.addFavorite(club: currentclub)
+                        favoritesManager.addFavorite(club: currentclub)
+                        isFavorited = true
+                    }
+                }
             
+                .confirmationDialog("Remove from My Clubs", isPresented: $confirming2) {
+                    Button("Remove from My Clubs", role: .destructive) {
+                        clubsmanager.favoriteslist.removeAll {$0 == currentclub}
+                        clubfavoritesmanager.removeFavorite(club: currentclub)
+                        favoritesManager.removeFavorite(club: currentclub)
+                        isFavorited = false
+                    }
+                }
         }
-        .frame(height: 35)
+
     }
-    
         
         
     }

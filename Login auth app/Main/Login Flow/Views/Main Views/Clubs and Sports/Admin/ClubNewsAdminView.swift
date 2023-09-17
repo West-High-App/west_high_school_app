@@ -157,7 +157,7 @@ struct clubNewsRowlView: View {
                 }
                 .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
-            .navigationBarTitle(editingAchievement == nil ? "Add Sport News" : "Edit Sport News")
+            .navigationBarTitle(editingAchievement == nil ? "Add Club News" : "Edit Club News")
             .navigationBarItems(trailing: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             })

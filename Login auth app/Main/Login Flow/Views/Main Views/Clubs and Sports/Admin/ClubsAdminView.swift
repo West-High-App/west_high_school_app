@@ -91,10 +91,10 @@ struct ClubsAdminView: View {
                     .padding(.leading)
                 
                 Form {
-                    Section(header: Text("Sport Details")) {
+                    Section(header: Text("Club Details")) {
                         TextField("Club Name", text: $clubname)
                         TextField("Club Admins", text: $adminstring)
-                        Text("Additional information can be added after creation of sport.")
+                        Text("Additional information can be added after creation of club.")
                     }
                     
                     Button ("Publish New Club") {
@@ -126,7 +126,7 @@ struct ClubsAdminView: View {
                         if let clubToDelete = clubToDelete {
                             db.deleteClub(data: clubToDelete) {error in
                                 if let error = error {
-                                    print("Error deleting sport: \(error.localizedDescription)")
+                                    print("Error deleting club: \(error.localizedDescription)")
                                 }
                             }
                         }

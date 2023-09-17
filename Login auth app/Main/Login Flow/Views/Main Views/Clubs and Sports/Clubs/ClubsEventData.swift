@@ -9,19 +9,40 @@ import SwiftUI
 import Firebase
 import Foundation
 
-struct clubEvent: Identifiable {
+class clubEvent: NSObject, Identifiable {
     let id = UUID()
     let documentID: String
     let title: String
     let subtitle: String
-    let date: String
+    let month: String
+    let day: String
+    let year: String
+    var date: Date = Date()
+
+    required init(documentID: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String) {
+        self.documentID = documentID
+        self.title = title
+        self.subtitle = subtitle
+        self.month = month
+        self.day = day
+        self.year = year
+ 
+        // Set the date formatter and optionally set the formatted date from string
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM dd, yyyy"
+        if let date = dateFormatter.date(from: publisheddate) {
+            self.date = date
+        }
+    }
+
 }
 
 class clubEventManager: ObservableObject {
-    @Published var clubsEvents = [clubEvent(documentID: "NAN", title: "Loading...", subtitle: "Loading...", date: "Jan 1 2023")]
+    @Published var clubsEvents: [clubEvent] = []
     @Published var topthree: [clubEvent] = []
     @Published var hasInitialized: Bool = false
-    
+    @Published var eventDictionary: [String: [clubEvent]] = [:]
+
     init() {
         print(self.clubsEvents)
     }
@@ -48,17 +69,25 @@ class clubEventManager: ObservableObject {
                     if clubID == forClub {
                         
                         for event in events {
-                            let title = event["title"]!
-                            let subtitle = event["subtitle"]!
-                            let date = event["date"]!
-                            
-                            let newEvent = clubEvent(documentID: documentID, title: title, subtitle: subtitle, date: date)
+                            let eventname = event["title"] ?? ""
+                            let time = event["subtitle"] ?? ""
+                            let month = event["month"] ?? ""
+                            let day = event["day"] ?? ""
+                            let year = event["year"] ?? ""
+
+                            let newEvent = clubEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
                             returnValue.append(newEvent)
                         }
                     }
                 }
+                self.eventDictionary[forClub] = returnValue
+                self.eventDictionary[forClub] = self.eventDictionary[forClub]?.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
+                self.eventDictionary[forClub] = self.eventDictionary[forClub]?.reversed()
                 completion(returnValue, nil)
             }
+            
         }
     }
     
@@ -89,8 +118,11 @@ class clubEventManager: ObservableObject {
                         var eventtoadd: [String: String] = [:]
                         let title = clubEvent.title
                         let subtitle = clubEvent.subtitle
-                        let date = clubEvent.date
-                        eventtoadd = ["title": title, "subtitle": subtitle, "date": date]
+                        let month = clubEvent.month
+                        let day = clubEvent.day
+                        let year = clubEvent.year
+                        let publisheddate = "\(month) \(day), \(year)"
+                        eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate]
                         
                         eventlist.append(eventtoadd)
                         
@@ -113,8 +145,11 @@ class clubEventManager: ObservableObject {
                     var eventtoadd: [String: String] = [:]
                     let title = clubEvent.title
                     let subtitle = clubEvent.subtitle
-                    let date = clubEvent.date
-                    eventtoadd = ["title": title, "subtitle": subtitle, "date": date]
+                    let month = clubEvent.month
+                    let day = clubEvent.day
+                    let year = clubEvent.year
+                    let publisheddate = "\(month) \(day), \(year)"
+                    eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate]
                     
                     collection.addDocument(data:[
                         "clubID": forClub,
@@ -136,8 +171,11 @@ class clubEventManager: ObservableObject {
         var eventtoremove: [String: String] = [:]
         let title = clubEvent.title
         let subtitle = clubEvent.subtitle
-        let date = clubEvent.date
-        eventtoremove = ["title": title, "subtitle": subtitle, "date": date]
+        let month = clubEvent.month
+        let day = clubEvent.day
+        let year = clubEvent.year
+        let publisheddate = "\(month) \(day), \(year)"
+        eventtoremove = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate]
         
         ref.updateData([
             "events": FieldValue.arrayRemove([eventtoremove])
@@ -154,21 +192,21 @@ class clubEventManager: ObservableObject {
     }
     
     
-    func getDatePart(event: sportEvent, part: String) -> String {
-        let dateList = event.date.components(separatedBy: " ")
-        if dateList.count == 3 {
-            if part == "month" {
-                return dateList[0]
-            }
-            if part == "day" {
-                return dateList[1]
-            }
-            if part == "year" {
-                return dateList[2]
-            }
-        }
-        return ""
-    }
+//    func getDatePart(event: sportEvent, part: String) -> String {
+//        let dateList = event.date.components(separatedBy: " ")
+//        if dateList.count == 3 {
+//            if part == "month" {
+//                return dateList[0]
+//            }
+//            if part == "day" {
+//                return dateList[1]
+//            }
+//            if part == "year" {
+//                return dateList[2]
+//            }
+//        }
+//        return ""
+//    }
     
     
     
