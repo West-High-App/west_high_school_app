@@ -16,7 +16,7 @@ struct ClubsHibabi: View {
     @StateObject var clubsmanager = clubManager.shared
     @StateObject var clubfavoritesmanager = FavoriteClubsManager()
 
-    @StateObject var clubNewsManager = clubsNewslist.shared
+    @StateObject var clubNewsManager = clubsNewslist.shared // clubNewsManager = clubsNewslist.shared
     @State var newstitlearray:[clubNews] = []
     @StateObject var vmm = ClubViewModel()
     @State var clubsearchText = "" // text for search field
@@ -27,7 +27,7 @@ struct ClubsHibabi: View {
     @State var clubshowingAllNews = 1
     @State private var clubcount = 0
     @State var favoriteclublist: [club] = []
-    
+
     @State private var isLoading = false
     
     @State private var hasAppeared = false
@@ -61,13 +61,6 @@ struct ClubsHibabi: View {
     @State var favorites: [club] = []
     @State var searchText = ""
     @State var imagesManager = imageManager()
-    
-    init() {
-        clubNewsManager.getClubNews()
-        newstitlearray = clubNewsManager.allclubsnewslist
-        
-        // getting club favorites
-    }
     
     private var filteredClubs: [club] {
         return searchText == ""
@@ -270,7 +263,7 @@ struct ClubsHibabi: View {
                         }
                         else if clubselected == 3 {
                             //mark
-                            List(filteredClubsNews, id: \.id) { news in
+                            List(clubNewsManager.allclubsnewslist, id: \.id) { news in  // filteredClubNews
                                 clubnewscell(feat: news)
                                     .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
                             }
@@ -370,6 +363,7 @@ struct ClubsHibabi: View {
                                         tempnews.imagedata.append(uiimage)
                                     }
                                     templist.append(tempnews)
+                                    print("NEW ITEM BRO")
                                     dispatchGroup.leave()
                                 }
                             }

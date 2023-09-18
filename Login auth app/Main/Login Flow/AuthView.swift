@@ -315,4 +315,3 @@ class ShutdownManager: ObservableObject {
         }
     }
 }
-
