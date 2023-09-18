@@ -48,6 +48,7 @@ class FavoriteSports: ObservableObject {
             if let error = error {
                 print("Error adding favorite: \(error.localizedDescription)")
             }
+            var flag = false
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     let data = document.data()
@@ -55,16 +56,27 @@ class FavoriteSports: ObservableObject {
                     let documentID = document.documentID
                     
                     if user == email {
+                        flag = true
                         documenttoupdate = documentID
                     }
                 }
             }
-            
-            let ref = collection.document(documenttoupdate)
-            let sportid = "\(sport.sportname) \(sport.sportsteam)"
-            ref.updateData([
-                "favoritedSports": FieldValue.arrayUnion([sportid])
-            ])
+            if flag {
+                let ref = collection.document(documenttoupdate)
+                let sportid = "\(sport.sportname) \(sport.sportsteam)"
+                ref.updateData([
+                    "favoritedSports": FieldValue.arrayUnion([sportid])
+                ])
+            } else {
+                collection.addDocument(data: [
+                    "user": email,
+                    "favoritedSports": ["\(sport.sportname) \(sport.sportsteam)"]
+                ]) { error in
+                    if let error = error {
+                        print("Error: \(error.localizedDescription)")
+                    }
+                }
+            }
         }
         let _ = getFavorites() { favorites in }
     }

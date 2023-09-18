@@ -230,8 +230,6 @@ struct SportsDetailAdminView: View {
                             .tag(3)
                         Text("Spring")
                             .tag(4)
-                        Text("Year-round")
-                            .tag(5)
                     } label: {
                         Text("Season")
                     }
@@ -240,8 +238,12 @@ struct SportsDetailAdminView: View {
                             .tag(1)
                         Text("Varsity")
                             .tag(2)
-                        Text("JV")
+                        Text("JV1")
                             .tag(3)
+                        Text("JV2")
+                            .tag(4)
+                        Text("Freshman")
+                            .tag(5)
                     } label: {
                         Text("Team")
                     }

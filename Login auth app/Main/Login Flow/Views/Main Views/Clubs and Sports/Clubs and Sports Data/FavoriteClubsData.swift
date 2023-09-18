@@ -50,6 +50,7 @@ class FavoriteClubs: ObservableObject {
             if let error = error {
                 print(error.localizedDescription)
             }
+            var flag = false
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     let data = document.data()
@@ -57,16 +58,27 @@ class FavoriteClubs: ObservableObject {
                     let documentID = document.documentID
                     
                     if user == email {
+                        flag = true
                         documenttoupdate = documentID
                     }
                 }
             }
-            
-            let ref = collection.document(documenttoupdate)
-            let clubid = club.clubname
-            ref.updateData([
-                "favoritedClubs": FieldValue.arrayUnion([clubid])
-            ])
+            if flag {
+                let ref = collection.document(documenttoupdate)
+                let clubid = club.clubname
+                ref.updateData([
+                    "favoritedClubs": FieldValue.arrayUnion([clubid])
+                ])
+            } else {
+                collection.addDocument(data:[
+                    "user": email,
+                    "favoritedClubs": ["\(club.clubname)"]
+                ]) { error in
+                    if let error = error {
+                        print("Error: \(error.localizedDescription)")
+                    }
+                }
+            }
             
             
         }

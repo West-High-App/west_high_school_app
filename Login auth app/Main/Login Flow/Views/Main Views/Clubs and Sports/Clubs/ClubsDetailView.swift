@@ -51,36 +51,43 @@ struct ClubsDetailView: View {
                         Spacer()
                     }
                     HStack {
-                        Text("Room \(currentclub.clubmeetingroom)")
-                            .foregroundColor(Color.gray)
-                            .font(.system(size: 26, weight: .semibold, design: .rounded))
-                            .lineLimit(1)
-                            .padding(.horizontal)
+                        if currentclub.clubmeetingroom != "" {
+                            Text("Room \(currentclub.clubmeetingroom)")
+                                .foregroundColor(Color.gray)
+                                .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                .lineLimit(1)
+                                .padding(.horizontal)
+                        } else {
+                            Text("No meeting room")
+                                .foregroundColor(Color.gray)
+                                .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                .lineLimit(1)
+                                .padding(.horizontal)
+                        }
                         Spacer()
                     }
                     
-                    if currentclub.imagedata != nil {
-                        VStack {
-                            
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.white)
-                                
-                                VStack(spacing: 0) {
-                                    Image(uiImage: currentclub.imagedata)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: screen.screenWidth - 30, height: 250)
-                                        .clipped()
-                                }
-                            }
-                            
-                        }.cornerRadius(30)
-                            .frame(width: screen.screenWidth - 30, height: 250)
-                            .shadow(color: .gray, radius: 8, x:2, y:3)
+                    VStack {
                         
-                            .padding(.horizontal)
-                    }
+                        ZStack {
+                            Rectangle()
+                                .foregroundColor(.white)
+                            
+                            VStack(spacing: 0) {
+                                Image(uiImage: currentclub.imagedata ?? UIImage())
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: screen.screenWidth - 30, height: 250)
+                                    .clipped()
+                            }
+                        }
+                        
+                    }.cornerRadius(30)
+                        .frame(width: screen.screenWidth - 30, height: 250)
+                        .shadow(color: .gray, radius: 8, x:2, y:3)
+                    
+                        .padding(.horizontal)
+                    
                     Spacer()
                 }
                 
@@ -112,6 +119,8 @@ struct ClubsDetailView: View {
                     }
                     if upcomingeventlist.count < 1 {
                         Text("No upcoming events.")
+                        Spacer()
+                            .frame(height: 100)
                     } else {
                         List {
                             ForEach(clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? upcomingeventlist, id: \.id) {event in
@@ -150,6 +159,9 @@ struct ClubsDetailView: View {
                 if selected == 2 {
                     if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
                         Text("No members.")
+                        Spacer()
+                            .frame(height: 100)
+
                     } else {
                         
                         List{
@@ -204,7 +216,7 @@ struct ClubsDetailView: View {
                 }
 
                 
-            }.padding(.top, 100)
+            }.padding(.top, 60) // MARK: this is cheating, works only on SE and iphone 8, change this depending on waht phone you have (100 for 14 pro fx)
             
                 .onAppear {
                     // getting events (only once, then it saves)

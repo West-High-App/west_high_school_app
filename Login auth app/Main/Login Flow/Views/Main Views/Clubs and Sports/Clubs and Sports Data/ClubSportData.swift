@@ -67,7 +67,7 @@ class sportsManager: ObservableObject {
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
                     
-                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: nil, documentID: documentID, sportid: sportid, id: id))
+                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
                     tempID = tempID + 1
                     returnvalue.append(sport)
                 }

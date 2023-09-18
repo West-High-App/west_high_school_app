@@ -16,6 +16,7 @@ struct ClubsEventsAdminView: View {
     @State var isPresentingConfirmEvent = false
     @State var eventToDelete: clubEvent?
     @State var eventToSave: clubEvent?
+    @State var editingeventslist: [clubEvent] = []
     
     
     @State private var eventyear = ""
@@ -50,7 +51,7 @@ struct ClubsEventsAdminView: View {
                         .shadow(radius: 2, x: 1, y: 1))
             }
             List {
-                ForEach(dataManager.eventDictionary["\(currentclub.clubname)"] ?? eventlist, id: \.id) { event in
+                ForEach(editingeventslist, id: \.id) { event in
                     VStack(alignment: .leading) {
                         Text(event.title)
                             .fontWeight(.semibold)
@@ -62,6 +63,8 @@ struct ClubsEventsAdminView: View {
                             // isConfirmingDeleteEvent = true
                             eventToDelete = event
                             if let eventToDelete = eventToDelete {
+                                editingeventslist.removeAll {$0 == eventToDelete}
+                                print("Removed \(eventToDelete)")
                                 dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
                             }
                             dataManager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
@@ -78,12 +81,14 @@ struct ClubsEventsAdminView: View {
             }
         }.navigationTitle("Edit Club Events")
         .onAppear {
+            
             dataManager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
                 if let error = error {
                     print(error.localizedDescription)
                 }
                 if let events = events {
                     eventlist = events
+                    editingeventslist = dataManager.eventDictionary["\(currentclub.clubname)"] ?? eventlist
                 }
             }
         }
@@ -142,6 +147,9 @@ struct ClubsEventsAdminView: View {
                         if let eventToSave = eventToSave {
                             print("Event to save")
                             print(eventToSave)
+                            
+                            editingeventslist.append(eventToSave)
+
                             dataManager.createClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToSave)
                             isPresetingAddEvent = false
                             
@@ -177,6 +185,6 @@ struct ClubsEventsAdminView: View {
 
 struct ClubContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: nil, documentID: "NAN", sportid: "SPORT ID",  id: 1))
+        SportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
     }
 }

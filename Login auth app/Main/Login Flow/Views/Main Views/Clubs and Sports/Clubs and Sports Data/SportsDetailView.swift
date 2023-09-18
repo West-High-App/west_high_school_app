@@ -67,7 +67,7 @@ struct SportsDetailView: View {
                                     .foregroundColor(.white)
                                 
                                 VStack(spacing: 0) {
-                                    Image(uiImage: currentsport.imagedata!)
+                                    Image(uiImage: currentsport.imagedata ?? UIImage())
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: screen.screenWidth - 30, height: 250)
@@ -113,6 +113,8 @@ struct SportsDetailView: View {
                     }
                     if sportEvents.count < 1 {
                         Text("No upcoming events.")
+                        Spacer()
+                            .frame(height: 100)
                     } else {
                         List {
                             ForEach(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) {event in
@@ -152,6 +154,8 @@ struct SportsDetailView: View {
                     
                     if currentsport.sportcoaches.count == 0 && currentsport.sportscaptains.count == 0 && currentsport.sportsroster.count == 0 {
                         Text("No members.")
+                        Spacer()
+                            .frame(height: 100)
                     } else {
                         
                         List{
@@ -205,7 +209,7 @@ struct SportsDetailView: View {
                 }
                 
                 
-            }.padding(.top, 100)
+            }.padding(.top, 60) // MARK: this is cheating, works only on SE and iphone 8, change this depending on waht phone you have
             
                 .onAppear {
                     // getting events (only once, then it saves)
@@ -299,7 +303,7 @@ struct SportsDetailView_Previews: PreviewProvider {
         GeometryReader {
             let safeArea = $0.safeAreaInsets
             let size = $0.size
-            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: nil, documentID: "NAN", sportid: "SPORT ID",  id: 1), safeArea: safeArea, size: size)
+            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1), safeArea: safeArea, size: size)
         }
     }
 }

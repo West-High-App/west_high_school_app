@@ -5,6 +5,7 @@ struct SportEventsAdminView: View {
     @State var eventlist: [sportEvent] = []
     @StateObject var dataManager = sportEventManager()
     @EnvironmentObject var sporteventmanager: sportEventManager
+    @State var editingeventslist: [sportEvent] = []
 
     @State var temptitle = ""
     @State var isConfirmingDeleteEvent = false
@@ -45,7 +46,7 @@ struct SportEventsAdminView: View {
                         .shadow(radius: 2, x: 1, y: 1))
             }
             List {
-                ForEach(dataManager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? eventlist, id: \.id) { event in
+                ForEach(editingeventslist, id: \.id) { event in
                     VStack(alignment: .leading) {
                         Text(event.title)
                             .fontWeight(.semibold)
@@ -57,6 +58,7 @@ struct SportEventsAdminView: View {
                             // isConfirmingDeleteEvent = true
                             eventToDelete = event
                             if let eventToDelete = eventToDelete {
+                                editingeventslist.removeAll {$0 == eventToDelete}
                                 dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete)
                             }
                             dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
@@ -79,6 +81,7 @@ struct SportEventsAdminView: View {
                 }
                 if let events = events {
                     eventlist = events
+                    editingeventslist = dataManager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? eventlist
                 }
             }
         }
@@ -134,6 +137,7 @@ struct SportEventsAdminView: View {
                             year: years[selectedYearIndex],
                             publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)")
                         if let eventToSave = eventToSave {
+                            editingeventslist.append(eventToSave)
                             dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToSave)
                             isPresetingAddEvent = false
                             

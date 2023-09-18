@@ -788,6 +788,7 @@ struct MostRecentAchievementCell: View{
         .onAppear {
             if !hasAppeared {
                 imagemanager.getImageFromStorage(fileName: feat.images.first!) { uiimage in
+                     print("getting from firebase")
                     if let uiimage = uiimage {
                         imagedata = uiimage
                     }

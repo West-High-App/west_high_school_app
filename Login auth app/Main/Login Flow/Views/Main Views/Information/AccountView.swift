@@ -23,7 +23,11 @@ struct AccountView: View {
                         AsyncImage(url: Auth.auth().currentUser?.photoURL) { phase in
                             switch phase {
                             case .empty:
-                                ProgressView()
+                                Image(systemName: "person.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 50, height: 50)
+                                    .cornerRadius(100)
                             case .success(let image):
                                 image
                                     .resizable()
@@ -35,7 +39,7 @@ struct AccountView: View {
                             }
                         }
                         VStack (alignment: .leading){
-                            Text("August Andersen")
+                            Text(userInfo.displayName)
                                 .font(.system(size: 22, weight: .medium, design: .rounded))
                                 .lineLimit(2)
                             Text(userInfo.email)
