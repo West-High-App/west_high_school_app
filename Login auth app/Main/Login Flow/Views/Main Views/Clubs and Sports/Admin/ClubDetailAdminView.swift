@@ -51,7 +51,7 @@ struct ClubDetailAdminView: View {
             Form {
                 
                 Section("Description") {
-                    TextField("Description", text: $clubdescription, axis: .vertical)
+                    TextField("Description", text: $clubdescription)
                 }
                 
                 Section("Club Meeting Room") {

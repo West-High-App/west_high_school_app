@@ -58,7 +58,7 @@ struct SportsDetailAdminView: View {
                 }
                 
                 Section("Sport Info") {
-                    TextField("Info", text: $info, axis: .vertical)
+                    TextField("Info", text: $info)
                 }
                 
                 Section("Sport Members") {
