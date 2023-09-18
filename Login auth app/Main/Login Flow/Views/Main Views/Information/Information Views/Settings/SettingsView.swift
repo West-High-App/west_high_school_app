@@ -27,7 +27,7 @@ struct SettingsView: View {
                                 .font(.system(size: 24))
                         }
                     }
-                    .padding(.vertical,15)
+                    .padding(.vertical,10)
                     
                     NavigationLink {
                         PrivacySecurityView()

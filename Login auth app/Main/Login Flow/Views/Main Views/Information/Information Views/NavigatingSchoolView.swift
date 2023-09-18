@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NavigatingSchoolView: View {
     var body: some View {
-        Text("Coming soon.")
+        Text("Coming Soon.")
     }
 }
 

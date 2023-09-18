@@ -60,13 +60,10 @@ struct HelpSupportView: View {
                 VStack{
                     HStack{
                         Text("Help & Support")
+                            .foregroundColor(Color.black)
+                            .font(.system(size: 45, weight: .bold, design: .rounded))
+                            .lineLimit(2)
                             .foregroundColor(.black)
-                            .font(
-                                .custom(
-                                    "arial",
-                                    fixedSize: 45)
-                                .weight(.bold)
-                            )
                             .padding(.bottom, 10)
                             .padding(.leading,10)
                         Spacer()
@@ -87,19 +84,19 @@ struct HelpSupportView: View {
                                 Text("**Who can edit content on the app?**")
                                 Spacer()
                             }
-                            Text("Only verified users and administrators can edit content inside the app. Certain student leaders also may have access to editing the app, this includes chosen members of sports teams and chosen members of clubs.\n")
+                            Text("Only verified users and administrators can edit content inside the app. Certain student leaders also may have access to editing the app, this includes chosen members of sports teams and chosen members of clubs. Club captains and Sports team captains are able to add events and edit the homepage of their respective club & sport.\n")
                             
                             HStack{
-                                Text("**Who writes the articles?**")
+                                Text("**Who writes the news articles?**")
                                 Spacer()
                             }
-                            Text("The articles shown in the student spotlight as well as the sports and club news are written by the Regent Reporter.\n")
+                            Text("The articles shown in the student spotlight as well as the sports and club news are written by the Regent Review. If you are interested in helping out or have an article suggestion, join the Regent Review!\n")
                             
                             HStack{
-                                Text("**How can I help with the app?**")
+                                Text("**How can I help with developing the app?**")
                                 Spacer()
                             }
-                            Text("Student Council helps maintain the West High app, if you are interested in joining visit room 1209 during lunch! If you have any suggestions or improvements, contact us at westhighapp@gmail.com.\n")
+                            Text("Student Council helps maintain the West High app, if you are interested feel free to join Student Council. If you have any suggestions or improvements, contact us at westhighapp@gmail.com.\n")
                         }
                     }
                     .font(
@@ -130,25 +127,25 @@ struct HelpSupportView: View {
                 DisclosureGroup("Logging in"){
                     VStack(alignment:.leading){
                         HStack{
-                            Text("**Why can't I log in with gmail?**")
+                            Text("**Why can't I log in with my school email?**")
                             Spacer()
                         }
-                        Text("Only email accounts with the MMSD email domain (@madison.k12.wi.us) will be able to log in, this is to maximize the security of our students.\n")
+                        Text("Email accounts with the MMSD email domain (@madison.k12.wi.us) will not be able to log in because the app hasn't gotten reviewed by MMSD yet. Lets get this app to MMSD!\n")
                         
                         HStack{
                             Text("**What is logging in as a guest?**")
                             Spacer()
                         }
-                        Text("Logging in as a guest will allow you to enter the app without logging in with an MMSD email, logging in as a guest will restrict you from viewing sensitive information, such as any news articles or details to clubs and sports.\n")
+                        Text("Logging in as a guest will allow you to enter the app without logging in with an email, logging in as a guest will restrict you from editing or adding content onto the app. You willl also not be able to save favorite clubs or sports.\n")
                     }
-                    
-                    
                     .font(
                         .custom(
                             "arial",
                             fixedSize: 18)
                         .weight(.regular)
                     )
+                    .foregroundColor(.black)
+                    .padding(.vertical, 10.0)
 
                 }
                 .font(
@@ -175,7 +172,7 @@ struct HelpSupportView: View {
                                 Spacer()
                             }
                             HStack{
-                                Text("Please report any bugs or issue to WestHighApp@gmail.com, if possible please include a screenshot of the issue as well a description. Thank you for you cooperation!\n")
+                                Text("Please report any bugs or issue to westhighapp@gmail.com, if possible please include a screenshot of the issue as well a description. Thank you for you cooperation!\n")
                                 Spacer()
                             }
                             HStack{
