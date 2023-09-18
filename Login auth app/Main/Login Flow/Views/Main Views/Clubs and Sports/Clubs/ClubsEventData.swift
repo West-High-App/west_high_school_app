@@ -80,6 +80,12 @@ class clubEventManager: ObservableObject {
                         }
                     }
                 }
+                for event in returnValue{
+                    if event.date < Date.yesterday{
+                        self.deleteClubEvent(forClub: forClub, clubEvent: event)
+
+                    }
+                }
                 self.eventDictionary[forClub] = returnValue
                 self.eventDictionary[forClub] = self.eventDictionary[forClub]?.sorted(by: {
                     $0.date.compare($1.date) == .orderedDescending

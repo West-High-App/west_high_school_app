@@ -29,6 +29,7 @@ struct SportsHibabi: View {
     @State var selectedSeason = 1
     @State var tempSelection = 1
     @State var selectedTeam = 1
+    
     @State var isFiltering = false
     @State var isLoading = false
     @State var isFilteringNews = false
@@ -86,11 +87,12 @@ struct SportsHibabi: View {
     // MARK: functions
         
     func filteredList(fromList list: [sport]) -> [sport] {
+        let filteredlist = list.sorted { $0.sportname.lowercased() < $1.sportname.lowercased() }
         if selectedGender == 1 && selectedSeason == 1 && selectedTeam == 1 {
             // All filters are set to 1, return the original list
-            return list
+            return filteredlist
         } else {
-            return list.filter { sport in
+            return filteredlist.filter { sport in
                 let sportTags = sport.tags // Assuming tags is an array of ints [Int]
                 
                 // Check if the selected filters match the sport's tags

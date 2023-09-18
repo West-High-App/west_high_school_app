@@ -32,7 +32,7 @@ struct InformationView: View {
                                         Image(systemName: "person.circle")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
+                                            .frame(width: 30, height: 30)
                                             .cornerRadius(100)
                                     case .success(let image):
                                         image
@@ -50,7 +50,7 @@ struct InformationView: View {
                             HStack {
                                 Image(systemName: "person.circle")
                                     .resizable()
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: 30, height: 30)
                                 Text("Guest User")
                             }.foregroundColor(.primary)
                         }
@@ -63,7 +63,7 @@ struct InformationView: View {
                             Image(systemName: "lock")
                             Text("Edit Admin Permissions")
                                 .padding(10)
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                .font(.system(size: 22, weight: .medium, design: .rounded))
                         }.foregroundColor(.blue)
 
                     }

@@ -49,25 +49,6 @@ extension Date {
         return dayAfter.month != month
     }
 }
-class customObject: NSObject, Identifiable {
-
-    var title: String = ""
-    var desc: String = ""
-    var date: Date = Date()
- 
-    required init(title: String, desc: String, dateString: String) {
-        // Set the title and description
-        self.title = title
-        self.desc = desc
- 
-        // Set the date formatter and optionally set the formatted date from string
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM d, yyyy"
-        if let date = dateFormatter.date(from: dateString) {
-            self.date = date
-        }
-    }
-}
 
 class upcomingEventsDataManager: ObservableObject {
     @Published var allupcomingeventslist: [event] = []

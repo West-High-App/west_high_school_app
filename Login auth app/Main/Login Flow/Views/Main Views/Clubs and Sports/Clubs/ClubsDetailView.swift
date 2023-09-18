@@ -45,7 +45,7 @@ struct ClubsDetailView: View {
                         Text(currentclub.clubname)
                             .foregroundColor(Color.black)
                             .font(.system(size: 35, weight: .bold, design: .rounded))
-                            .lineLimit(2)
+                            .lineLimit(1)
                             .minimumScaleFactor(0.3)
                             .padding(.horizontal)
                         Spacer()
@@ -74,7 +74,7 @@ struct ClubsDetailView: View {
                                 .foregroundColor(.white)
                             
                             VStack(spacing: 0) {
-                                Image(uiImage: currentclub.imagedata ?? UIImage())
+                                Image(uiImage: currentclub.imagedata )
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: screen.screenWidth - 30, height: 250)

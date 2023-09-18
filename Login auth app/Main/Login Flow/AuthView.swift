@@ -141,7 +141,6 @@ struct AuthView: View {
                                                 count = 1
                                             }
                                             else {
-                                                print("Unsuccesful login.")
                                                 showingDomainError = true
                                             }
                                         }
@@ -178,7 +177,6 @@ struct AuthView: View {
                             
                             Button {
                                 userInfo.loginStatus = "guest"
-                                print("Logged in as guest.")
                                 
                             } label: {
                                 Text("Continue as Guest")

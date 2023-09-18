@@ -85,6 +85,11 @@ struct ClubsHibabi: View {
             }
         
     }
+    func filteredList(fromList list: [club]) -> [club]{
+        let filteredlist = list.sorted { $0.clubname.lowercased() < $1.clubname.lowercased() }
+        return filteredlist
+
+    }
     
         // MARK: view
     var body: some View {
@@ -149,7 +154,7 @@ struct ClubsHibabi: View {
                                             Text("Log in to save favorites!")
                                         }
                                         List {// MARK: foreach 1 or 2
-                                            ForEach(clubfavoritesmanager.favoriteClubs) { item in
+                                            ForEach(filteredList(fromList: clubfavoritesmanager.favoriteClubs)) { item in
                                                 if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
                                                     NavigationLink {
                                                         ClubsMainView(selectedclub: item)
@@ -168,14 +173,16 @@ struct ClubsHibabi: View {
                                                                 HStack {
                                                                     Text(item.clubname)
                                                                         .foregroundColor(.primary)
-                                                                        .lineLimit(2)
-                                                                        .minimumScaleFactor(0.9)
+                                                                        .lineLimit(1)
+                                                                        .minimumScaleFactor(0.5)
                                                                         .font(.system(size: 24, weight: .semibold, design: .rounded))
                                                                     Spacer()
                                                                 }
                                                                 HStack {
-                                                                    Text(item.clubname)
+                                                                    Text("Room \(item.clubmeetingroom)")
                                                                         .foregroundColor(.secondary)
+                                                                        .lineLimit(1)
+                                                                        .minimumScaleFactor(0.5)
                                                                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                                                                     Spacer()
                                                                 }
@@ -189,7 +196,8 @@ struct ClubsHibabi: View {
                                     }
                                     if clubselected == 2 {
                                         List {// MARK: foreach 1 or 2
-                                            ForEach(filteredclubs) { item in
+                
+                                            ForEach(filteredList(fromList: filteredclubs)) { item in
                                                 if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
                                                     NavigationLink {
                                                         ClubsMainView(selectedclub: item)
@@ -214,10 +222,26 @@ struct ClubsHibabi: View {
                                                                     Spacer()
                                                                 }
                                                                 HStack {
-                                                                    Text(item.clubname)
-                                                                        .foregroundColor(.secondary)
-                                                                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                                    Spacer()
+                                                                    if Int(item.clubmembercount) ?? 0 > 1{
+                                                                        Text("\(item.clubmembercount) Members")
+                                                                            .foregroundColor(.secondary)
+                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                        Spacer()
+                                                                    }
+                                                                    if Int(item.clubmembercount) ?? 0 == 1{
+                                                                        Text("\(item.clubmembercount) Member")
+                                                                            .foregroundColor(.secondary)
+                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                        Spacer()
+                                                                    }
+                                                                    if Int(item.clubmembercount) ?? 0 == 0{
+                                                                        Text("No Members")
+                                                                            .foregroundColor(.secondary)
+                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                        Spacer()
+                                                                    }
+
+
                                                                 }
                                                             }
                                                             Spacer()

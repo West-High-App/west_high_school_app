@@ -81,6 +81,12 @@ class sportEventManager: ObservableObject {
                         
                     }
                 }
+                for event in returnValue{
+                    if event.date < Date.yesterday{
+                        self.deleteSportEventNews(forSport: forSport, sportEvent: event)
+                    }
+                }
+
                 self.eventDictionary[forSport] = returnValue
                 self.eventDictionary[forSport] = self.eventDictionary[forSport]?.sorted(by: {
                     $0.date.compare($1.date) == .orderedDescending

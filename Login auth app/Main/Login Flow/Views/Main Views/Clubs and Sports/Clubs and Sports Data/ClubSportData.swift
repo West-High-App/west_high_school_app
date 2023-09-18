@@ -175,6 +175,7 @@ struct club: Identifiable, Equatable {
 }
 
 class clubManager: ObservableObject {
+    var filteredlist: [club] = []
     @Published var allclublist: [club] = []
     var favoriteclubs = FavoriteClubs() // make favorite clubs
     @Published var favoriteslist: [club] = []
@@ -210,18 +211,20 @@ class clubManager: ObservableObject {
                     let clubmeetingroom = data["clubmeetingroom"] as? String ?? ""
                     let clubdescription = data["clubdescription"] as? String ?? ""
                     let clubimage = data["clubimage"] as? String ?? ""
-                    let clubmembercount = data["clubmembercount"] as? String ?? ""
                     let clubmembers = data["clubmembers"] as? [String] ?? []
+                    let clubmembercount = String(clubmembers.count + (clubcapation?.count ?? 0)) as? String ?? ""
                     let adminemails = data["adminemails"] as? [String] ?? []
                     let documentID = document.documentID
                     
                     let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, imagedata: UIImage(), documentID: documentID, id: id)
                     id = id + 1
                     returnvalue.append(club)
+                    self.filteredlist = returnvalue.sorted { $0.clubname.lowercased() < $1.clubname.lowercased() }
+
                  }
                 
                 DispatchQueue.main.async {
-                    self.allclublist = returnvalue
+                    self.allclublist = self.filteredlist
                 }
                 
             }
