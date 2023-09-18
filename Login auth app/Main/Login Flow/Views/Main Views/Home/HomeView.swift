@@ -31,9 +31,11 @@ struct HomeView: View {
     @State private var hasPermissionSpotlight = false
     @State private var hasAdmin = false
 
-    @ObservedObject var spotlightManager = studentachievementlist()
+     @StateObject var spotlightManager = studentachievementlist.shared
     @State var newstitlearray: [studentachievement] = []
     @State var upcomingeventsdataManager = upcomingEventsDataManager()
+     
+     @State private var isLoading = false
     
     @State var hasPermissionsUpcomingEvents = false
     //var notiManager = NotificationsManager()
@@ -353,85 +355,95 @@ struct HomeView: View {
                                  HeaderView()
                             }
                             
-                            // checking for permissions on appear
-                            .onAppear {
-                                 
-                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                      print("IS DONE LOADING?")
-                                      print(loading.hasLoaded)
-                                      // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
-                                      // MARK: this is stupid but fuck it ERROR come from here
-                                      if !hasAppeared {
-                                           
-                                           permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
-                                                self.hasPermissionSpotlight = result
-                                           }
-                                           permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
-                                                self.hasPermissionUpcomingEvents = result
-                                           }
-                                           permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { result in
-                                                self.hasAdmin = result
-                                                if result {
-                                                     userInfo.isAdmin = true
-                                                     self.hasPermissionSpotlight = true
-                                                     self.hasPermissionUpcomingEvents = true
-                                                     self.hasPermissionUpcomingEvents = true
-                                                }
-                                           }
-                                           permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
-                                                self.hasPermissionsUpcomingEvents = result
-                                           }
-                                           
-                                           spotlightarticles = spotlightManager.allstudentachievementlist
-                                           var returnlist: [studentachievement] = []
-                                           
-                                           let dispatchGroup = DispatchGroup()
-                                           
-                                           for article in spotlightarticles {
-                                                var tempimages: [UIImage] = []
+                            .onChange(of: spotlightManager.allstudentachievementlist, perform: { newValue in
+                                 print("LIST CHANGED")
+                                 if newValue.count > 0 { // onAppear content
+                                      
+                                      print("LOADING HOME VIEW")
+                                      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                           print("IS DONE LOADING?")
+                                           print(loading.hasLoaded)
+                                           // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
+                                           // MARK: this is stupid but fuck it ERROR come from here
+                                           if !hasAppeared {
                                                 
-                                                for imagepath in article.images {
-                                                     dispatchGroup.enter()
-                                                     imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
-                                                          print("getting from firebase")
-
-                                                          if let uiimage = uiimage {
-                                                               tempimages.append(uiimage)
-                                                          }
-                                                          dispatchGroup.leave()
+                                                permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
+                                                     self.hasPermissionSpotlight = result
+                                                }
+                                                permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
+                                                     self.hasPermissionUpcomingEvents = result
+                                                }
+                                                permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { result in
+                                                     self.hasAdmin = result
+                                                     if result {
+                                                          userInfo.isAdmin = true
+                                                          self.hasPermissionSpotlight = true
+                                                          self.hasPermissionUpcomingEvents = true
+                                                          self.hasPermissionUpcomingEvents = true
                                                      }
                                                 }
+                                                permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
+                                                     self.hasPermissionsUpcomingEvents = result
+                                                }
                                                 
-                                                dispatchGroup.notify(queue: .main) {
-                                                     returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
+                                                spotlightarticles = spotlightManager.allstudentachievementlist
+                                                var returnlist: [studentachievement] = []
+                                                
+                                                let dispatchGroup = DispatchGroup()
+                                                
+                                                for article in spotlightarticles {
+                                                     var tempimages: [UIImage] = []
                                                      
-                                                     spotlightarticles = returnlist
-                                                     self.spotlightarticles = self.spotlightarticles.sorted { first, second in
-                                                          let dateFormatter = DateFormatter()
-                                                          dateFormatter.dateFormat = "MMM dd, yyyy"
-                                                          let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-                                                          let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-                                                          return firstDate < secondDate
-                                                     }.reversed()
-                                                     if self.spotlightarticles.count > 0{
-                                                          self.firstcurrentevent = self.spotlightarticles[0]
+                                                     for imagepath in article.images {
+                                                          dispatchGroup.enter()
+                                                          imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
+                                                               print("getting from firebase")
+
+                                                               if let uiimage = uiimage {
+                                                                    tempimages.append(uiimage)
+                                                               }
+                                                               dispatchGroup.leave()
+                                                          }
                                                      }
-                                                     if self.spotlightarticles.count > 1 {
-                                                          self.secondcurrentevent =   self.spotlightarticles[1]
+                                                     
+                                                     dispatchGroup.notify(queue: .main) {
+                                                          returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
+                                                          
+                                                          spotlightarticles = returnlist
+                                                          self.spotlightarticles = self.spotlightarticles.sorted { first, second in
+                                                               let dateFormatter = DateFormatter()
+                                                               dateFormatter.dateFormat = "MMM dd, yyyy"
+                                                               let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+                                                               let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+                                                               return firstDate < secondDate
+                                                          }.reversed()
+                                                          if self.spotlightarticles.count > 0{
+                                                               self.firstcurrentevent = self.spotlightarticles[0]
+                                                          }
+                                                          if self.spotlightarticles.count > 1 {
+                                                               self.secondcurrentevent =   self.spotlightarticles[1]
+                                                          }
+                                                          if self.spotlightarticles.count > 2 {
+                                                               self.thirdcurrentevent = self.spotlightarticles[2]
+                                                          }
+                                                          print("DONE LOADING HOMEVIEW")
                                                      }
-                                                     if self.spotlightarticles.count > 2 {
-                                                          self.thirdcurrentevent = self.spotlightarticles[2]
-                                                     }
+                                                     
                                                 }
                                                 
+                                                hasAppeared = true
                                            }
-                                           
-                                           hasAppeared = true
                                       }
                                       
                                  }
-                                 
-                                 
+                            })
+                            
+                            // checking for permissions on appear
+                            .onAppear {
+                                 isLoading = true
+                                 if spotlightManager.allstudentachievementlist.count < 1 {
+                                      print("LIST IS LESS THAN 1")
+                                 }
                             }
                             
                        }

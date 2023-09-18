@@ -20,8 +20,11 @@ struct studentachievement: Identifiable, Equatable{
  }
 class studentachievementlist: ObservableObject{
     
+    static let shared = studentachievementlist()
+    
     @Published var allstudentachievementlist: [studentachievement] = []
     @Published var newstitlearray: [studentachievement] = []
+    @Published var hasLoaded = false
 
     @StateObject var imagemanager = imageManager()
     @ObservedObject var loading = Loading()
@@ -29,6 +32,7 @@ class studentachievementlist: ObservableObject{
     
     init() {
         getAchievements { list, error in
+            print("LOADING ACHIEVMENTS LIST")
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -43,6 +47,8 @@ class studentachievementlist: ObservableObject{
                 }.reversed()
             }
             self.loading.hasLoaded = true
+            print(self.allstudentachievementlist.count)
+            self.hasLoaded = true
         }
     }
     

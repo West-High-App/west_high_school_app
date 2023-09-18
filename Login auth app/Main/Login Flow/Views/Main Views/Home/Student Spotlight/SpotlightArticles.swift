@@ -11,7 +11,6 @@ struct SpotlightArticles: View {
     var currentstudentdub: studentachievement
     
     @State var imagemanager = imageManager()
-    @State var spotlightmanager = studentachievementlist()
     @State var imagesdata: [UIImage] = []
     @State var hasAppeared = false
     @State var screen = ScreenSize()
