@@ -30,7 +30,11 @@ struct InformationView: View {
                                 AsyncImage(url: Auth.auth().currentUser?.photoURL) { phase in
                                     switch phase {
                                     case .empty:
-                                        ProgressView()
+                                        Image(systemName: "person.circle")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 50, height: 50)
+                                            .cornerRadius(100)
                                     case .success(let image):
                                         image
                                             .resizable()

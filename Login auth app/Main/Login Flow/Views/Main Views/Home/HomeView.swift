@@ -20,7 +20,7 @@ struct HomeView: View {
     @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
     @State var screen = ScreenSize()
     @State var clubmanager = clubManager()
-    @ObservedObject var newsDataManager = Newslist()
+     @StateObject var newsDataManager = Newslist.shared
     @ObservedObject var dataManager = upcomingEventsDataManager()
      @StateObject var loading = Loading()
 
@@ -91,9 +91,6 @@ struct HomeView: View {
             SwiftUIWebView(url: URL(string:"https://www.google.com/maps")!)
                   .onAppear {
                        shutdownmanager.fetchData { bool, string in
-                            print("FROM ON APPEAR")
-                            print(bool)
-                            print(string)
                             isShutDown = bool
                             shutdownMessage = string
                        }
@@ -359,7 +356,7 @@ struct HomeView: View {
                             // checking for permissions on appear
                             .onAppear {
                                  
-                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                       print("IS DONE LOADING?")
                                       print(loading.hasLoaded)
                                       // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
@@ -396,6 +393,8 @@ struct HomeView: View {
                                                 for imagepath in article.images {
                                                      dispatchGroup.enter()
                                                      imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
+                                                          print("getting from firebase")
+
                                                           if let uiimage = uiimage {
                                                                tempimages.append(uiimage)
                                                           }
@@ -788,7 +787,6 @@ struct MostRecentAchievementCell: View{
         .onAppear {
             if !hasAppeared {
                 imagemanager.getImageFromStorage(fileName: feat.images.first!) { uiimage in
-                     print("getting from firebase")
                     if let uiimage = uiimage {
                         imagedata = uiimage
                     }

@@ -19,6 +19,9 @@ struct Newstab: Identifiable {
 class Newslist: ObservableObject {
     @Published var topfive: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...")]
     @Published var newstitlearray: [Newstab] = []
+    
+    static let shared = Newslist()
+    
     init() {
         getAnnouncements()
         newstitlearray = filterByDate()
