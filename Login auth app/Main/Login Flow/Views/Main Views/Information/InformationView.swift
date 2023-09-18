@@ -19,7 +19,6 @@ struct InformationView: View {
     var body: some View {
             NavigationView{
                 List{
-                    
                     NavigationLink() {
                         // isShowingAccountDetails = true
                         AccountView()
