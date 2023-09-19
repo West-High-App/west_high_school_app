@@ -173,6 +173,6 @@ struct SportEventsAdminView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(sportEventManager())
+        SportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(sportEventManager())
     }
 }

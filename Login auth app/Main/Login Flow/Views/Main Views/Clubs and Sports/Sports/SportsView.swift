@@ -12,14 +12,12 @@ struct SportsHibabi: View {
     // MARK: initializers
     var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
-    @StateObject var sportfavoritesmanager = FavoriteSportsManager()
     @StateObject var sporteventmanager = sportEventManager.shared
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
     @State var sportsNewsManager = sportsNewslist()
-    @State var favoritesManager = FavoriteSports()
     @State var favorites: [sport] = []
-    @StateObject var sportsmanager = sportsManager()
+    @StateObject var sportsmanager = sportsManager.shared // <---------
     @State var displaylist: [sport] = []
     @State var newstitlearray:[sportNews] = []
     @State var vm = ViewModel()
@@ -82,6 +80,15 @@ struct SportsHibabi: View {
             }
     }
     
+    private var allfavoriteslist: [sport] {
+        var templist: [sport] = []
+        for sport in sportsmanager.allsportlist {
+            if sport.favoritedusers.contains(userInfo.email) {
+                templist.append(sport)
+            }
+        }
+        return templist
+    }
     
     
     // MARK: functions
@@ -158,11 +165,11 @@ struct SportsHibabi: View {
                         }
                     
                     // MARK: my sports
-                    if selected == 1 {
+                    if selected == 1 || selected == 2{
                         if userInfo.loginStatus != "google" {
                             Text("Log in to save favorites!")
                         }
-                        if selected == 1 && sportfavoritesmanager.favoriteSports.count == 0 {
+                        if selected == 1 && allfavoriteslist.count == 0 {
                             VStack {
                                 Spacer()
                                 Text("Add a sport to get started!")
@@ -193,142 +200,61 @@ struct SportsHibabi: View {
                                 }
                             }
                             List { // MARK: foreach my sports
-                                ForEach(filteredList(fromList: sportfavoritesmanager.favoriteSports)) { item in
+                                ForEach(filteredList(fromList: sportsmanager.allsportlist)) { item in
                                     if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
-                                        NavigationLink {
-                                            SportsMainView(selectedsport: item)
-                                                .environmentObject(vm)
-                                                .environmentObject(sportfavoritesmanager)
-                                                .environmentObject(sportsmanager)
-                                                .environmentObject(sporteventmanager)
-                                        }label: {
-                                            HStack {
-                                                if item.imagedata != nil {
-                                                    Image(uiImage: item.imagedata!)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 50, height: 50)
-                                                        .cornerRadius(1000)
-                                                        .padding(.trailing, 10)
-                                                } else {
-                                                    Image(systemName: "questionmark.circle")
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 50, height: 50)
-                                                        .cornerRadius(1000)
-                                                        .padding(.trailing, 10)
-                                                }
-                                                VStack (alignment: .center){
-                                                    HStack {
-                                                        Text(item.sportname)
-                                                            .foregroundColor(.primary)
-                                                            .lineLimit(2)
-                                                            .minimumScaleFactor(0.9)
-                                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                                        Spacer()
+                                        
+                                        
+                                         if (item.favoritedusers.contains(userInfo.email) && selected == 1) || selected == 2 {
+                                            
+                                            NavigationLink {
+                                                SportsMainView(selectedsport: item)
+                                                    .environmentObject(vm)
+                                                    .environmentObject(sportsmanager)
+                                                    .environmentObject(sporteventmanager)
+                                            }label: {
+                                                HStack {
+                                                    if item.imagedata != nil {
+                                                        Image(uiImage: item.imagedata!)
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 50, height: 50)
+                                                            .cornerRadius(1000)
+                                                            .padding(.trailing, 10)
+                                                    } else {
+                                                        Image(systemName: "questionmark.circle")
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 50, height: 50)
+                                                            .cornerRadius(1000)
+                                                            .padding(.trailing, 10)
                                                     }
-                                                    HStack {
-                                                        Text(item.sportsteam)
-                                                            .foregroundColor(.secondary)
-                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                        Spacer()
+                                                    VStack (alignment: .center){
+                                                        HStack {
+                                                            Text(item.sportname)
+                                                                .foregroundColor(.primary)
+                                                                .lineLimit(2)
+                                                                .minimumScaleFactor(0.9)
+                                                                .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                            Spacer()
+                                                        }
+                                                        HStack {
+                                                            Text(item.sportsteam)
+                                                                .foregroundColor(.secondary)
+                                                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                            Spacer()
+                                                        }
                                                     }
+                                                    Spacer()
                                                 }
-                                                Spacer()
                                             }
-                                        }
+                                       }
                                     }
                                 }
                             }
                             .searchable(text: $searchText)
                         }
                     }
-                    
-                    // MARK: browse
-                    else if selected == 2 {
-                        
-                        if selected == 1 && vm.savedItems.count == 0 {
-                            VStack {
-                                Spacer()
-                                Text("Add a sport to get started!")
-                                Button {
-                                    selected = 2
-                                } label: {
-                                    Text("Browse Sports")
-                                        .foregroundColor(.white)
-                                        .fontWeight(.semibold)
-                                        .padding(.all, 15.0)
-                                        .background(.primary)
-                                        .cornerRadius(15.0)
-                                }.searchable(text: $searchText)
-                                Spacer()
-                                
-                            }
-                        }
-                        else {
-                            Button {
-                                isFiltering = true
-                            } label: {
-                                HStack {
-                                    Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
-                                        .padding(.horizontal)
-                                        .padding(.top, 1)
-                                        .foregroundColor(.blue)
-                                    Spacer()
-                                }
-                            }
-                            List { // MARK: foreach browse
-                                ForEach(filteredList(fromList: filteredSports)) { item in
-                                    if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
-                                        NavigationLink {
-                                            SportsMainView(selectedsport: item)
-                                                .environmentObject(vm)
-                                                .environmentObject(sportfavoritesmanager)
-                                                .environmentObject(sportsmanager)
-                                                .environmentObject(sporteventmanager)
-                                        }label: {
-                                            HStack {
-                                                if item.imagedata != nil {
-                                                    Image(uiImage: item.imagedata!)
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 50, height: 50)
-                                                        .cornerRadius(1000)
-                                                        .padding(.trailing, 10)
-                                                } else {
-                                                    Image(systemName: "questionmark.circle")
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 50, height: 50)
-                                                        .cornerRadius(1000)
-                                                        .padding(.trailing, 10)
-                                                }
-                                                VStack (alignment: .center){
-                                                    HStack {
-                                                        Text(item.sportname)
-                                                            .foregroundColor(.primary)
-                                                            .lineLimit(2)
-                                                            .minimumScaleFactor(0.9)
-                                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                                        Spacer()
-                                                    }
-                                                    HStack {
-                                                        Text(item.sportsteam)
-                                                            .foregroundColor(.secondary)
-                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                        Spacer()
-                                                    }
-                                                }
-                                                Spacer()
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            .searchable(text: $searchText)
-                        }
-                    }
-                    
+                                    
                     // MARK: sports news
                     else if selected == 3 {
                         
@@ -410,7 +336,6 @@ struct SportsHibabi: View {
                         
                         dispatchGroup.notify(queue: .main) { [self] in
                             self.sportsmanager.favoriteslist = templist2
-                            self.sportfavoritesmanager.favoriteSports = templist2
                         }
                         
                         var templist: [sport] = []

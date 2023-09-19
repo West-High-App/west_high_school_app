@@ -13,7 +13,7 @@ struct ClubsHibabi: View {
     @EnvironmentObject var userInfo: UserInfo
     @State private var hasPermissionClubNews = false
     @State private var hasPermissionClubs = false
-    @StateObject var clubsmanager = clubManager.shared
+    @StateObject var clubsmanager = clubManager.shared 
     @StateObject var clubfavoritesmanager = FavoriteClubsManager()
 
     @StateObject var clubNewsManager = clubsNewslist.shared // clubNewsManager = clubsNewslist.shared
@@ -142,108 +142,54 @@ struct ClubsHibabi: View {
                                     if isLoading {
                                         Text("Loading")
                                     }
-                                    if clubselected == 1 {
+                                    // HERE WE GO
                                         if userInfo.loginStatus != "google" {
                                             Text("Log in to save favorites!")
                                         }
                                         List {// MARK: foreach 1 or 2
-                                            ForEach(filteredList(fromList: clubfavoritesmanager.favoriteClubs)) { item in
+                                            ForEach(filteredList(fromList: clubsmanager.allclublist)) { item in
                                                 if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
-                                                    NavigationLink {
-                                                        ClubsMainView(selectedclub: item)
-                                                            .environmentObject(vmm)
-                                                            .environmentObject(clubfavoritesmanager)
-                                                            .environmentObject(clubsmanager)
-                                                    } label: {
-                                                        HStack {
-                                                            Image(uiImage: item.imagedata)
-                                                                .resizable()
-                                                                .aspectRatio(contentMode: .fill)
-                                                                .frame(width: 50, height: 50)
-                                                                .cornerRadius(1000)
-                                                                .padding(.trailing, 10)
-                                                            VStack(alignment: .center) {
-                                                                HStack {
-                                                                    Text(item.clubname)
-                                                                        .foregroundColor(.primary)
-                                                                        .lineLimit(1)
-                                                                        .minimumScaleFactor(0.5)
-                                                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                                                    Spacer()
+                                                    
+                                                    if (item.favoritedusers.contains(userInfo.email) && clubselected == 1) || clubselected == 2 {
+                                                        
+                                                        NavigationLink {
+                                                            ClubsMainView(selectedclub: item)
+                                                                .environmentObject(vmm)
+                                                                .environmentObject(clubfavoritesmanager)
+                                                                .environmentObject(clubsmanager)
+                                                        } label: {
+                                                            HStack {
+                                                                Image(uiImage: item.imagedata)
+                                                                    .resizable()
+                                                                    .aspectRatio(contentMode: .fill)
+                                                                    .frame(width: 50, height: 50)
+                                                                    .cornerRadius(1000)
+                                                                    .padding(.trailing, 10)
+                                                                VStack(alignment: .center) {
+                                                                    HStack {
+                                                                        Text(item.clubname)
+                                                                            .foregroundColor(.primary)
+                                                                            .lineLimit(1)
+                                                                            .minimumScaleFactor(0.5)
+                                                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                                        Spacer()
+                                                                    }
+                                                                    HStack {
+                                                                        Text("Room \(item.clubmeetingroom)")
+                                                                            .foregroundColor(.secondary)
+                                                                            .lineLimit(1)
+                                                                            .minimumScaleFactor(0.5)
+                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                        Spacer()
+                                                                    }
                                                                 }
-                                                                HStack {
-                                                                    Text("Room \(item.clubmeetingroom)")
-                                                                        .foregroundColor(.secondary)
-                                                                        .lineLimit(1)
-                                                                        .minimumScaleFactor(0.5)
-                                                                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                                    Spacer()
-                                                                }
+                                                                Spacer()
                                                             }
-                                                            Spacer()
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
-                                    if clubselected == 2 {
-                                        List {// MARK: foreach 1 or 2
-                
-                                            ForEach(filteredList(fromList: filteredclubs)) { item in
-                                                if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
-                                                    NavigationLink {
-                                                        ClubsMainView(selectedclub: item)
-                                                            .environmentObject(vmm)
-                                                            .environmentObject(clubfavoritesmanager)
-                                                            .environmentObject(clubsmanager)
-                                                    } label: {
-                                                        HStack {
-                                                            Image(uiImage: item.imagedata)
-                                                                .resizable()
-                                                                .aspectRatio(contentMode: .fill)
-                                                                .frame(width: 50, height: 50)
-                                                                .cornerRadius(1000)
-                                                                .padding(.trailing, 10)
-                                                            VStack(alignment: .center) {
-                                                                HStack {
-                                                                    Text(item.clubname)
-                                                                        .foregroundColor(.primary)
-                                                                        .lineLimit(2)
-                                                                        .minimumScaleFactor(0.9)
-                                                                        .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                                                    Spacer()
-                                                                }
-                                                                HStack {
-                                                                    if Int(item.clubmembercount) ?? 0 > 1{
-                                                                        Text("\(item.clubmembercount) Members")
-                                                                            .foregroundColor(.secondary)
-                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                                        Spacer()
-                                                                    }
-                                                                    if Int(item.clubmembercount) ?? 0 == 1{
-                                                                        Text("\(item.clubmembercount) Member")
-                                                                            .foregroundColor(.secondary)
-                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                                        Spacer()
-                                                                    }
-                                                                    if Int(item.clubmembercount) ?? 0 == 0{
-                                                                        Text("No Members")
-                                                                            .foregroundColor(.secondary)
-                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                                        Spacer()
-                                                                    }
-
-
-                                                                }
-                                                            }
-                                                            Spacer()
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
                                     
                                 }.searchable(text: $clubsearchText)
                                     .navigationBarItems(trailing:

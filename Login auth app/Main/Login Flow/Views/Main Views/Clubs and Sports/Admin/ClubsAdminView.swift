@@ -100,7 +100,7 @@ struct ClubsAdminView: View {
                     Button ("Publish New Club") {
                        adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                         
-                        clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, imagedata: UIImage(), documentID: "NAN", id: 0)
+                        clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, favoritedusers: [], imagedata: UIImage(), documentID: "NAN", id: 0)
                         
                         if let clubToAdd = clubToAdd {
                             db.createClub(club: clubToAdd) {error in

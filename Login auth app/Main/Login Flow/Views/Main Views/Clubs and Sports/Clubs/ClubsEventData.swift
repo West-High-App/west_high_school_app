@@ -43,6 +43,8 @@ class clubEventManager: ObservableObject {
     @Published var hasInitialized: Bool = false
     @Published var eventDictionary: [String: [clubEvent]] = [:]
 
+    static let shared = clubEventManager()
+    
     init() {
         print(self.clubsEvents)
     }
@@ -90,7 +92,13 @@ class clubEventManager: ObservableObject {
                 self.eventDictionary[forClub] = self.eventDictionary[forClub]?.sorted(by: {
                     $0.date.compare($1.date) == .orderedDescending
                 })
+                print("Updated list: \(self.eventDictionary[forClub]?.reversed())")
                 self.eventDictionary[forClub] = self.eventDictionary[forClub]?.reversed()
+                self.clubsEvents = self.clubsEvents.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
+                self.clubsEvents = self.clubsEvents.reversed()
+                print("got sports events")
                 completion(returnValue, nil)
             }
             

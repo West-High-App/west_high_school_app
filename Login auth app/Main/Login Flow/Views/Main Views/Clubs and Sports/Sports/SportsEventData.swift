@@ -97,6 +97,8 @@ class sportEventManager: ObservableObject {
                     $0.date.compare($1.date) == .orderedDescending
                 })
                 self.sportsEvents = self.sportsEvents.reversed()
+                print("got sports events")
+                print()
                 completion(returnValue, nil)
             }
         }

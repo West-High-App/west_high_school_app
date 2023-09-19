@@ -10,13 +10,12 @@ import SwiftUI
 struct SportsDetailView: View {
     var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
-    @EnvironmentObject var sportsmanager: sportsManager
+    @EnvironmentObject var sportsmanager: sportsManager // <------
     @EnvironmentObject var sporteventmanager: sportEventManager
     @State private var hasPermissionSport = false
     @State private var canEditSport = false
     @State var selected = 1
     @State var isFavorited = false
-    @State var favoritesManager = FavoriteSports()
     @State var favorites: [sport] = []
     @State var sportEvents: [sportEvent] = []
     @EnvironmentObject var vm: SportsHibabi.ViewModel
@@ -30,7 +29,6 @@ struct SportsDetailView: View {
     @State var currentsportID = ""
     @State var upcomingeventslist: [sportEvent] = []
     @State var topthree: [sportEvent] = []
-    @EnvironmentObject var sportfavoritesmanager: FavoriteSportsManager
     
     var safeArea: EdgeInsets
     var size: CGSize
@@ -224,14 +222,8 @@ struct SportsDetailView: View {
                     }
                     
                     // checking if club is a favorite
-                    if sportsmanager.favoriteslist.contains(currentsport) {
-                        self.isFavorited = true
-                    }
-                    for sport in sportsmanager.favoriteslist {
-                        let currentsportid = "\(currentsport.sportname) \(currentsport.sportsteam)"
-                        if currentsportid == "\(sport.sportname) \(sport.sportsteam)" {
-                            self.isFavorited = true
-                        }
+                    if currentsport.favoritedusers.contains(userInfo.email) {
+                        isFavorited = true
                     }
                     
                     // checking permissions
@@ -278,24 +270,32 @@ struct SportsDetailView: View {
             // add/remove sports confirm
                 .confirmationDialog("Add to My Sports", isPresented: $confirming) {
                     Button("Add to My Sports") {
-                        sportsmanager.favoriteslist.append(currentsport)
-                        sportfavoritesmanager.addFavorite(sport: currentsport)
-                        favoritesManager.addFavorite(sport: currentsport)
+                        // hello
+                        var tempsport = currentsport // sets a temp sport
+                        tempsport.favoritedusers.append(userInfo.email) // adds the user to favorited sports of the temp sport
+                        sportsmanager.updateSport(data: tempsport) // updates the firebase of old sport to be new sport
+                        sportsmanager.allsportlist.removeAll {$0 == currentsport} // removes the old sport from allsportslist
+                        sportsmanager.allsportlist.append(tempsport) // append new updated sport to allsportslist
                         isFavorited = true
                     }
                 }
             
                 .confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
                     Button("Remove from My Sports", role: .destructive) {
+                        
+                        var tempsport = currentsport
+                        tempsport.favoritedusers.removeAll {$0 == userInfo.email}
+                        sportsmanager.allsportlist.removeAll {$0 == currentsport}
+                        sportsmanager.allsportlist.append(tempsport)
+                        sportsmanager.updateSport(data: tempsport)
+                        
                         sportsmanager.favoriteslist.removeAll {$0 == currentsport}
-                        sportfavoritesmanager.removeFavorite(sport: currentsport)
-                        favoritesManager.removeFavorite(sport: currentsport)
+                        
                         isFavorited = false
                     }
                 }
         }
     }
-    
     }
 
 struct SportsDetailView_Previews: PreviewProvider {
@@ -303,7 +303,7 @@ struct SportsDetailView_Previews: PreviewProvider {
         GeometryReader {
             let safeArea = $0.safeAreaInsets
             let size = $0.size
-            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1), safeArea: safeArea, size: size)
+            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1), safeArea: safeArea, size: size)
         }
     }
 }

@@ -22,7 +22,7 @@ struct ClubsDetailView: View {
     @State private var confirming = false
     @State private var confirming2 = false
     @State var upcomingeventlist: [clubEvent] = [] // supposed to be clubEvent
-    @StateObject var clubeventmanager = clubEventManager()
+    @StateObject var clubeventmanager = clubEventManager.shared
     
     @State var hasAppeared = false
     @State var displayedimage: UIImage?
@@ -221,24 +221,22 @@ struct ClubsDetailView: View {
                 .onAppear {
                     // getting events (only once, then it saves)
                     if clubeventmanager.eventDictionary["\(currentclub.clubname)"] == nil {
+                        print("accessing club events")
+                        print(clubeventmanager.eventDictionary)
                         clubeventmanager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
+                            print("GOT FROM FIREBASE")
                             if let events = events {
                                 self.upcomingeventlist = events
                             }
                             //saygex
                         }
                     } else {
+                        print("What")
                         self.upcomingeventlist = clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? []
                     }
                     // checking if club is a favorite
-                    if clubsmanager.favoriteslist.contains(currentclub) {
-                        self.isFavorited = true
-                    }
-                    for sport in clubsmanager.favoriteslist {
-                        let currentsportid = "\(currentclub.clubname)"
-                        if currentsportid == "\(sport.clubname)" {
-                            self.isFavorited = true
-                        }
+                    if currentclub.favoritedusers.contains(userInfo.email) {
+                        isFavorited = true
                     }
                     
                     // checking permissions
@@ -285,15 +283,26 @@ struct ClubsDetailView: View {
             // add/remove sports confirm
                 .confirmationDialog("Add to My Clubs", isPresented: $confirming) {
                     Button("Add to My Clubs") {
-                        clubsmanager.favoriteslist.append(currentclub)
-                        clubfavoritesmanager.addFavorite(club: currentclub)
-                        favoritesManager.addFavorite(club: currentclub)
+                        
+                        var tempclub = currentclub
+                        tempclub.favoritedusers.append(userInfo.email)
+                        clubsmanager.updateClub(data: tempclub)
+                        clubsmanager.allclublist.removeAll {$0 == currentclub}
+                        clubsmanager.allclublist.append(tempclub)
+                        
                         isFavorited = true
                     }
                 }
             
                 .confirmationDialog("Remove from My Clubs", isPresented: $confirming2) {
                     Button("Remove from My Clubs", role: .destructive) {
+                        
+                        var tempclub = currentclub
+                        tempclub.favoritedusers.removeAll {$0 == userInfo.email}
+                        clubsmanager.updateClub(data: tempclub)
+                        clubsmanager.allclublist.removeAll {$0 == currentclub}
+                        clubsmanager.allclublist.append(tempclub)
+                        
                         clubsmanager.favoriteslist.removeAll {$0 == currentclub}
                         clubfavoritesmanager.removeFavorite(club: currentclub)
                         favoritesManager.removeFavorite(club: currentclub)
@@ -310,6 +319,6 @@ struct ClubsDetailView: View {
 
 struct ClubsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubsMainView(selectedclub: club(clubname: "Chess Club", clubcaptain: ["Andrea Botez"], clubadvisor: ["Hiakru Nikamura"], clubmeetingroom: "2013", clubdescription: "For seasoned pros, or newbeginners, chess is a game that everyone can learn and improve at.", clubimage: "chess", clubmembercount: "1", clubmembers: ["John Johnson", "Bob Bobson", "Anders Anderson", "Millie Millson"], adminemails: ["augustelholm@gmail.com"], imagedata: UIImage(), documentID: "documentID", id: 1)).environmentObject(ClubsHibabi.ClubViewModel())
+        ClubsMainView(selectedclub: club(clubname: "Chess Club", clubcaptain: ["Andrea Botez"], clubadvisor: ["Hiakru Nikamura"], clubmeetingroom: "2013", clubdescription: "For seasoned pros, or newbeginners, chess is a game that everyone can learn and improve at.", clubimage: "chess", clubmembercount: "1", clubmembers: ["John Johnson", "Bob Bobson", "Anders Anderson", "Millie Millson"], adminemails: ["augustelholm@gmail.com"], favoritedusers: [], imagedata: UIImage(), documentID: "documentID", id: 1)).environmentObject(ClubsHibabi.ClubViewModel())
     }
 }

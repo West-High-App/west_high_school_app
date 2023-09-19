@@ -19,6 +19,7 @@ struct sport: Identifiable, Equatable {
     var sportscaptains:[String] // array of captains in sports
     var tags: [Int] // [gender tag, season tag, team tag] all ints
     var info: String
+    var favoritedusers: [String] // list of email of users who have it as favorite
     var imagedata: UIImage? // NOT USED IN FIREBASE
     var documentID: String // NOT USED IN FIREBASE
     var sportid: String // NOT USED IN FIREBASE
@@ -27,16 +28,12 @@ struct sport: Identifiable, Equatable {
     
 class sportsManager: ObservableObject {
     @Published var allsportlist: [sport] = []
-    var favoritesports = FavoriteSports()
     @Published var favoriteslist: [sport] = []
     
     static let shared = sportsManager()
 
     init() {
         getSports() { sports in }
-        getFavorites { favorites in
-            self.favoriteslist = favorites
-        }
     }
     
     func getSports(completion: @escaping ([sport]) -> Void) {
@@ -63,11 +60,12 @@ class sportsManager: ObservableObject {
                     let sportscaptains = data["sportscaptains"] as? [String] ?? []
                     let tags = data["tags"] as? [Int] ?? [1, 1, 1]
                     let info = data["info"] as? String ?? ""
+                    let favoritedusers = data["favoritedusers"] as? [String] ?? []
                     let documentID = document.documentID
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
                     
-                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
+                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
                     tempID = tempID + 1
                     returnvalue.append(sport)
                 }
@@ -90,6 +88,7 @@ class sportsManager: ObservableObject {
             "sportsteam": sport.sportsteam,
             "sportsroster": sport.sportsroster,
             "sportscaptains": sport.sportscaptains,
+            "favoritedusers": sport.favoritedusers,
             "tags": sport.tags,
             "info": sport.info,
         ]) { error in
@@ -123,38 +122,11 @@ class sportsManager: ObservableObject {
             "sportsteam": data.sportsteam,
             "sportsroster": data.sportsroster,
             "sportscaptains": data.sportscaptains,
+            "favoritedusers": data.favoritedusers,
             "tags": data.tags,
             "info": data.info,
         ])
     }
-    
-    func getFavorites(completion: @escaping ([sport]) -> Void) {
-        var templist: [sport] = []
-        var templist2: [String] = []
-        var returnlist: [sport] = []
-        
-        returnlist = self.allsportlist
-        
-        favoritesports.getFavorites { [self] favorites in
-            templist2 = favorites
-            
-            self.getSports() { sports in
-                templist = sports
-                
-                for item in templist {
-                    for item2 in templist2 {
-                        if "\(item.sportname) \(item.sportsteam)" == item2 {
-                            returnlist.append(item)
-                        }
-                    }
-                }
-                
-                completion(returnlist)
-            }
-        }
-    }
-
-    
 }
 
 
@@ -169,6 +141,7 @@ struct club: Identifiable, Equatable {
     let clubmembercount:String
     let clubmembers:[String]
     let adminemails:[String]
+    var favoritedusers: [String]
     var imagedata: UIImage // NOT USED IN FIREBASE
     let documentID: String // NOT IN FIREBASE
     let id: Int // NOT IN FIREBASE
@@ -214,9 +187,10 @@ class clubManager: ObservableObject {
                     let clubmembers = data["clubmembers"] as? [String] ?? []
                     let clubmembercount = String(clubmembers.count + (clubcapation?.count ?? 0)) as? String ?? ""
                     let adminemails = data["adminemails"] as? [String] ?? []
+                    let favoritedusers = data["favoritedusers"] as? [String] ?? []
                     let documentID = document.documentID
                     
-                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, imagedata: UIImage(), documentID: documentID, id: id)
+                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, favoritedusers: favoritedusers, imagedata: UIImage(), documentID: documentID, id: id)
                     id = id + 1
                     returnvalue.append(club)
                     self.filteredlist = returnvalue.sorted { $0.clubname.lowercased() < $1.clubname.lowercased() }
@@ -243,6 +217,7 @@ class clubManager: ObservableObject {
             "clubimage": club.clubimage,
             "clubmeetingroom": club.clubmeetingroom,
             "clubmembercount": club.clubmembercount,
+            "favoritedusers": club.favoritedusers,
             "clubmembers": club.clubmembers,
             "clubname": club.clubname
         ]) { error in
@@ -275,6 +250,7 @@ class clubManager: ObservableObject {
             "clubcaptain": data.clubcaptain ?? [],
             "clubimage": data.clubimage,
             "clubmeetingroom": data.clubmeetingroom,
+            "favoritedusers": data.favoritedusers,
             "clubmembercount": data.clubmembercount,
             "clubmembers": data.clubmembers,
             "clubname": data.clubname

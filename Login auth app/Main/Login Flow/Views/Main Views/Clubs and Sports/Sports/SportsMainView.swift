@@ -9,7 +9,6 @@ import SwiftUI
 
 
 struct SportsMainView: View {
-    @EnvironmentObject var sportfavoritesmanager: FavoriteSportsManager
     @EnvironmentObject var sportsmanager: sportsManager
     @EnvironmentObject var sporteventmanager: sportEventManager
     var selectedsport:sport
@@ -20,7 +19,6 @@ struct SportsMainView: View {
             let currentsport = selectedsport
             SportsDetailView(currentsport: currentsport, safeArea: safeArea, size: size)
                 .ignoresSafeArea(.container, edges: .top)
-                .environmentObject(sportfavoritesmanager)
                 .environmentObject(sportsmanager)
                 .environmentObject(sporteventmanager)
         }

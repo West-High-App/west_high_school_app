@@ -361,6 +361,7 @@
 				2232FEEB2AA46F5E0067AAB8 /* SportEventAdminView.swift */,
 				2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */,
 				2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */,
+				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
 			);
 			path = Sports;
 			sourceTree = "<group>";
@@ -399,7 +400,6 @@
 				2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */,
 				2270B2392A68E32200823E58 /* SportsDatabase.swift */,
 				2270B23B2A68E33A00823E58 /* ClubsDatabase.swift */,
-				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
 			);
 			path = "Clubs and Sports Data";
 			sourceTree = "<group>";
