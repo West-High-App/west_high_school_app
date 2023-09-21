@@ -30,6 +30,9 @@ struct SportEventsAdminView: View {
     @State var title = ""
     @State var subtitle = ""
     @State var date = ""
+    @State var isSpecial = false
+    @State var score: [Int] = []
+    @State var isUpdated = false
     
     var body: some View {
         
@@ -135,7 +138,10 @@ struct SportEventsAdminView: View {
                             month: months[selectedMonthIndex],
                             day: "\(days[selectedDayIndex])",
                             year: years[selectedYearIndex],
-                            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)")
+                            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
+                            isSpecial: isSpecial,
+                            score: score,
+                            isUpdated: isUpdated)
                         if let eventToSave = eventToSave {
                             editingeventslist.append(eventToSave)
                             dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToSave)

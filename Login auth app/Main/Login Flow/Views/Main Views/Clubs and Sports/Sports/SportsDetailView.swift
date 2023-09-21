@@ -18,6 +18,7 @@ struct SportsDetailView: View {
     @State var isFavorited = false
     @State var favorites: [sport] = []
     @State var sportEvents: [sportEvent] = []
+    @State var pastSportEvents: [sportEvent] = []
     @EnvironmentObject var vm: SportsHibabi.ViewModel
     @State private var confirming = false
     @State private var confirming2 = false
@@ -91,7 +92,16 @@ struct SportsDetailView: View {
                 
                 Picker(selection: $selected, label: Text(""), content: {
                     Text("Upcoming").tag(1)
-                    Text("Members (\(currentsport.sportsroster.count + currentsport.sportscaptains.count))").tag(2)
+                    if !sportEvents.isEmpty { // calls it past events if it's a weird sport like cross country
+                        if sportEvents[0].isSpecial {
+                            Text("Past Events").tag(2)
+                        } else {
+                            Text("Past Games").tag(2)
+                        }
+                    } else {
+                        Text("Past Games").tag(2)
+                    }
+                    Text("Members (\(currentsport.sportsroster.count + currentsport.sportscaptains.count))").tag(3)
                 }).pickerStyle(SegmentedPickerStyle())
                     .padding(.horizontal)
                 
@@ -146,9 +156,83 @@ struct SportsDetailView: View {
                     
                 }
                 
-                // members view
+                // past games view
                 
                 if selected == 2 {
+                    if hasPermissionSport {
+                        NavigationLink {
+                            PastSportEventsAdminView(currentsport: currentsport)
+                        } label: {
+                            Text("Edit Past Events")
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        }
+                    }
+
+                    if sportEvents.isEmpty {
+                        Text("No past events.")
+                            .frame(maxHeight: .infinity)
+                    } else {
+                        List(sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? pastSportEvents, id: \.id) { event in
+                            VStack {
+                                HStack {
+                                    Spacer()
+                                    Text(event.title)
+                                        .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    Spacer()
+                                }
+                                HStack {
+                                    Spacer()
+                                    Text("\(event.month) \(event.day), \(event.year)")
+                                        .font(.system(size: 16, weight: .regular, design: .rounded))
+                                    Spacer()
+                                }
+
+                                if !event.isSpecial {
+                                    HStack {
+                                        if event.score.count > 1 {
+                                            let scoreColor: Color = event.score[0] > event.score[1] ? .green : (event.score[0] != event.score[1] ? .red : .black)
+                                            HStack {
+                                                Spacer()
+                                                Spacer()
+                                                Spacer()
+                                            }
+                                            Text(String(event.score[0]))
+                                                .font(.system(size: 36, weight: .semibold, design: .rounded))
+                                                .foregroundColor(scoreColor)
+                                            Spacer()
+                                            Text("-")
+                                                .foregroundColor(scoreColor)
+                                                .font(.system(size: 36, weight: .semibold, design: .rounded))
+                                            Spacer()
+                                            Text(String(event.score[1]))
+                                                .font(.system(size: 36, weight: .semibold, design: .rounded))
+                                                .foregroundColor(scoreColor)
+                                            HStack {
+                                                Spacer()
+                                                Spacer()
+                                                Spacer()
+                                            }
+                                        } else {
+                                            Text("No score.")
+                                                .font(.system(size: 16, weight: .regular, design: .rounded))
+                                        }
+                                    }
+                                } else {
+                                    Text(event.subtitle)
+                                        .font(.system(size: 18, weight: .regular, design: .rounded))
+                                        .padding(1)
+                                }
+                            }
+                            .listRowSeparator(.visible, edges: .all)
+                        }
+                        .frame(height: 450)
+                    }
+                }
+
+                
+                // members view
+                
+                if selected == 3 {
                     
                     if currentsport.sportcoaches.count == 0 && currentsport.sportscaptains.count == 0 && currentsport.sportsroster.count == 0 {
                         Text("No members.")
@@ -219,6 +303,16 @@ struct SportsDetailView: View {
                         }
                     } else {
                         self.sportEvents = sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
+                    }
+                    
+                    if sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
+                        sporteventmanager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+                            if let events = events {
+                                self.pastSportEvents = events
+                            }
+                        }
+                    } else {
+                        self.pastSportEvents = sporteventmanager.pastSportsEvents
                     }
                     
                     // checking if club is a favorite

@@ -23,6 +23,7 @@ struct ClubDetailAdminView: View {
     @State var clubimage = ""
     @State var clubmembercount = ""
     @State var clubmembers: [String] = [] //
+    @State var editoremails: [String] = []
     @State var adminemails: [String] = [] //
     @State var documentID = ""
     
@@ -259,7 +260,7 @@ struct ClubDetailAdminView: View {
                                 }
                             }
                             
-                            clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, favoritedusers: [], imagedata: UIImage(), documentID: editingclub.documentID, id: 0)
+                            clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: [], imagedata: UIImage(), documentID: editingclub.documentID, id: 0)
                             
                             if let clubtoedit = clubtoedit {
                                 clubmanager.updateClub(data: clubtoedit)
@@ -285,6 +286,7 @@ struct ClubDetailAdminView: View {
                 clubmembercount = editingclub.clubmembercount
                 clubmembers = editingclub.clubmembers
                 adminemails = editingclub.adminemails
+                editoremails = editingclub.editoremails
                 
                 //images
                 
@@ -300,6 +302,6 @@ struct ClubDetailAdminView: View {
 
 struct ClubDetailAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubDetailAdminView(editingclub: club(clubname: "club name", clubcaptain: ["clubcaptain"], clubadvisor: ["advisory"], clubmeetingroom: "meeting room", clubdescription: "description", clubimage: "image", clubmembercount: "member count", clubmembers: ["club guy 1", "club gyal 2"], adminemails: ["augustelholm@gmail.com"], favoritedusers: [], imagedata: UIImage(), documentID: "NAN", id: 0))
+        ClubDetailAdminView(editingclub: club(clubname: "club name", clubcaptain: ["clubcaptain"], clubadvisor: ["advisory"], clubmeetingroom: "meeting room", clubdescription: "description", clubimage: "image", clubmembercount: "member count", clubmembers: ["club guy 1", "club gyal 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], favoritedusers: [], imagedata: UIImage(), documentID: "NAN", id: 0))
     }
 }
