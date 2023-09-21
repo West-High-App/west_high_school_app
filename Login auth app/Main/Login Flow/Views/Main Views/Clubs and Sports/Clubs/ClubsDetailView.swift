@@ -216,7 +216,7 @@ struct ClubsDetailView: View {
                 }
 
                 
-            }.padding(.top, 60) // MARK: this is cheating, works only on SE and iphone 8, change this depending on waht phone you have (100 for 14 pro fx)
+            }.padding(.top, 10 + screen.screenHeight / 10)
             
                 .onAppear {
                     // getting events (only once, then it saves)

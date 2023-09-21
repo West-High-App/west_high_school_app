@@ -85,7 +85,7 @@ struct ClubsNewsDetailView: View {
                             .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                         .padding(.bottom)
                     
-                }.padding(.top, -60)
+                }.padding(.top, 0 - (screen.screenHeight / 10) + 30) // <---
             }
         }
     }

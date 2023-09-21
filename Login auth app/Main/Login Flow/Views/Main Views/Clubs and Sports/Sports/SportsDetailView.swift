@@ -24,6 +24,8 @@ struct SportsDetailView: View {
     @State private var confirming2 = false
     @State var screen = ScreenSize()
     @State var hasAppeared = false
+    @State private var navigationBarHeight: CGFloat = 0.0
+
     
     var currentsport: sport
     
@@ -31,101 +33,148 @@ struct SportsDetailView: View {
     @State var upcomingeventslist: [sportEvent] = []
     @State var topthree: [sportEvent] = []
     
-    var safeArea: EdgeInsets
-    var size: CGSize
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     //MARK: view
     var body: some View {
-        ScrollView (showsIndicators: false){
-            VStack {
-                VStack{
-                    HStack {
-                        Text(currentsport.sportname)
-                            .foregroundColor(Color.black)
-                            .font(.system(size: 35, weight: .bold, design: .rounded))
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.3)
-                            .padding(.horizontal)
-                        Spacer()
-                    }
-                    HStack {
-                        Text(currentsport.sportsteam)
-                            .foregroundColor(Color.gray)
-                            .font(.system(size: 26, weight: .semibold, design: .rounded))
-                            .lineLimit(1)
-                            .padding(.horizontal)
+        GeometryReader { geometry in
+            ScrollView (showsIndicators: false){
+                VStack {
+                    VStack{
+                        HStack {
+                            Text(currentsport.sportname)
+                                .foregroundColor(Color.black)
+                                .font(.system(size: 35, weight: .bold, design: .rounded))
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.3)
+                                .padding(.horizontal)
+                            Spacer()
+                        }
+                        HStack {
+                            Text(currentsport.sportsteam)
+                                .foregroundColor(Color.gray)
+                                .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                .lineLimit(1)
+                                .padding(.horizontal)
+                            Spacer()
+                        }
+                        
+                        if currentsport.imagedata != nil {
+                            VStack {
+                                
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(.white)
+                                    
+                                    VStack(spacing: 0) {
+                                        Image(uiImage: currentsport.imagedata ?? UIImage())
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: screen.screenWidth - 30, height: 250)
+                                            .clipped()
+                                    }
+                                }
+                                
+                            }.cornerRadius(30)
+                                .frame(width: screen.screenWidth - 30, height: 250)
+                                .shadow(color: .gray, radius: 8, x:2, y:3)
+                            
+                                .padding(.horizontal)
+                        }
                         Spacer()
                     }
                     
-                    if currentsport.imagedata != nil {
-                        VStack {
-                            
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.white)
-                                
-                                VStack(spacing: 0) {
-                                    Image(uiImage: currentsport.imagedata ?? UIImage())
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: screen.screenWidth - 30, height: 250)
-                                        .clipped()
-                                }
+                    Text(currentsport.info)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(Color.black)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                        .padding(.horizontal, 25)
+                        .padding(.vertical, 5)
+                    
+                    Picker(selection: $selected, label: Text(""), content: {
+                        Text("Upcoming").tag(1)
+                        if !sportEvents.isEmpty { // calls it past events if it's a weird sport like cross country
+                            if sportEvents[0].isSpecial {
+                                Text("Past Events").tag(2)
+                            } else {
+                                Text("Past Games").tag(2)
                             }
-                            
-                        }.cornerRadius(30)
-                            .frame(width: screen.screenWidth - 30, height: 250)
-                            .shadow(color: .gray, radius: 8, x:2, y:3)
-                        
-                            .padding(.horizontal)
-                    }
-                    Spacer()
-                }
-                
-                Text(currentsport.info)
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(Color.black)
-                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                    .padding(.horizontal, 25)
-                    .padding(.vertical, 5)
-                
-                Picker(selection: $selected, label: Text(""), content: {
-                    Text("Upcoming").tag(1)
-                    if !sportEvents.isEmpty { // calls it past events if it's a weird sport like cross country
-                        if sportEvents[0].isSpecial {
-                            Text("Past Events").tag(2)
                         } else {
                             Text("Past Games").tag(2)
                         }
-                    } else {
-                        Text("Past Games").tag(2)
-                    }
-                    Text("Members (\(currentsport.sportsroster.count + currentsport.sportscaptains.count))").tag(3)
-                }).pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal)
-                
-                
-                // upcoming events view
-                
-                if selected == 1 {
+                        Text("Members (\(currentsport.sportsroster.count + currentsport.sportscaptains.count))").tag(3)
+                    }).pickerStyle(SegmentedPickerStyle())
+                        .padding(.horizontal)
                     
-                    if hasPermissionSport {
-                        NavigationLink {
-                            SportEventsAdminView(currentsport: currentsport)
-                        } label: {
-                            Text("Edit Upcoming Events")
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    
+                    // upcoming events view
+                    
+                    if selected == 1 {
+                        
+                        if hasPermissionSport {
+                            NavigationLink {
+                                SportEventsAdminView(currentsport: currentsport)
+                            } label: {
+                                Text("Edit Upcoming Events")
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            }
+                            
+                        }
+                        if sportEvents.isEmpty {
+                            Text("No upcoming events.")
+                                .font(.system(size: 17, weight: .medium, design: .rounded))
+                                .frame(maxHeight: .infinity)
+                        } else {
+                            List {
+                                ForEach(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) {event in
+                                    HStack {
+                                        VStack {
+                                            Text(event.month)
+                                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                                .foregroundColor(.red)
+                                            Text(event.day)
+                                                .font(.system(size: 26, weight: .regular, design: .rounded))
+                                            
+                                        }
+                                        .frame(width:50,height:50)
+                                        Divider()
+                                            .padding(.vertical, 10)
+                                        VStack(alignment: .leading) {
+                                            Text(event.title)
+                                                .lineLimit(2)
+                                                .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                                            Text(event.subtitle)
+                                                .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                .lineLimit(1)
+                                        }
+                                        .padding(.leading, 5)
+                                        Spacer()
+                                        
+                                    }
+                                }
+                            }.frame(height: 450)
                         }
                         
                     }
-                    if sportEvents.isEmpty {
-                        Text("No upcoming events.")
-                            .font(.system(size: 17, weight: .medium, design: .rounded))
-                            .frame(maxHeight: .infinity)
-                    } else {
-                        List {
-                            ForEach(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) {event in
+                    
+                    // past games view
+                    
+                    if selected == 2 {
+                        if hasPermissionSport {
+                            NavigationLink {
+                                PastSportEventsAdminView(currentsport: currentsport)
+                            } label: {
+                                Text("Edit Past Events")
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            }
+                        }
+                        
+                        if pastSportEvents.isEmpty {
+                            Text("No past events.")
+                                .font(.system(size: 17, weight: .medium, design: .rounded))
+                                .frame(maxHeight: .infinity)
+                        } else {
+                            List(sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? pastSportEvents, id: \.id) { event in
                                 HStack {
                                     VStack {
                                         Text(event.month)
@@ -142,108 +191,60 @@ struct SportsDetailView: View {
                                         Text(event.title)
                                             .lineLimit(2)
                                             .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                        Text(event.subtitle)
-                                            .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                            .lineLimit(1)
+                                        if !event.isSpecial {
+                                            HStack {
+                                                if event.score.count > 1 {
+                                                    let scoreColor: Color = event.score[0] > event.score[1] ? .green : (event.score[0] != event.score[1] ? .red : .black)
+                                                    let winorloose: String = event.score[0] > event.score[1] ? "Win" : (event.score[0] != event.score[1] ? "Lost" : "Tie")
+                                                    
+                                                    Text("\(winorloose) (\(event.score[0]) - \(event.score[1]))")
+                                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                        .foregroundColor(scoreColor)
+                                                } else {
+                                                    Text("Score pending...")
+                                                        .foregroundColor(.gray)
+                                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                }
+                                            }
+                                        } else {
+                                            HStack {
+                                                Text(event.subtitle)
+                                                    .font(.system(size: 18, weight: .regular, design: .rounded))
+                                                    .padding(1)
+                                                    .padding(.top, -12)
+                                            }
+                                        }
+                                        
                                     }
                                     .padding(.leading, 5)
                                     Spacer()
                                     
                                 }
                             }
-                        }.frame(height: 450)
-                    }
-                    
-                }
-                
-                // past games view
-                
-                if selected == 2 {
-                    if hasPermissionSport {
-                        NavigationLink {
-                            PastSportEventsAdminView(currentsport: currentsport)
-                        } label: {
-                            Text("Edit Past Events")
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .frame(height: 450)
                         }
                     }
-
-                    if pastSportEvents.isEmpty {
-                        Text("No past events.")
-                            .font(.system(size: 17, weight: .medium, design: .rounded))
-                            .frame(maxHeight: .infinity)
-                    } else {
-                        List(sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? pastSportEvents, id: \.id) { event in
-                            HStack {
-                                VStack {
-                                    Text(event.month)
-                                        .font(.system(size: 16, weight: .medium, design: .rounded))
-                                        .foregroundColor(.red)
-                                    Text(event.day)
-                                        .font(.system(size: 26, weight: .regular, design: .rounded))
-                                    
-                                }
-                                .frame(width:50,height:50)
-                                Divider()
-                                    .padding(.vertical, 10)
-                                VStack(alignment: .leading) {
-                                    Text(event.title)
-                                        .lineLimit(2)
-                                        .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                    if !event.isSpecial {
-                                        HStack {
-                                            if event.score.count > 1 {
-                                                let scoreColor: Color = event.score[0] > event.score[1] ? .green : (event.score[0] != event.score[1] ? .red : .black)
-                                                let winorloose: String = event.score[0] > event.score[1] ? "Win" : (event.score[0] != event.score[1] ? "Lost" : "Tie")
-
-                                                Text("\(winorloose) (\(event.score[0]) - \(event.score[1]))")
-                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                                    .foregroundColor(scoreColor)
-                                            } else {
-                                                Text("Score pending...")
-                                                    .foregroundColor(.gray)
-                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                    
+                    
+                    // members view
+                    
+                    if selected == 3 {
+                        
+                        if currentsport.sportcoaches.count == 0 && currentsport.sportscaptains.count == 0 && currentsport.sportsroster.count == 0 {
+                            Text("No members.")
+                                .font(.system(size: 17, weight: .medium, design: .rounded))
+                                .frame(maxHeight: .infinity)
+                        } else {
+                            
+                            List{
+                                if currentsport.sportcoaches.count > 0 {
+                                    Section{
+                                        ForEach(currentsport.sportcoaches, id: \.self){coach in
+                                            HStack{
+                                                Text(coach)
                                             }
                                         }
-                                    } else {
-                                        HStack {
-                                            Text(event.subtitle)
-                                                .font(.system(size: 18, weight: .regular, design: .rounded))
-                                                .padding(1)
-                                                .padding(.top, -12)
-                                        }
                                     }
-
-                                }
-                                .padding(.leading, 5)
-                                Spacer()
-                                
-                            }
-                        }
-                        .frame(height: 450)
-                    }
-                }
-
-                
-                // members view
-                
-                if selected == 3 {
-                    
-                    if currentsport.sportcoaches.count == 0 && currentsport.sportscaptains.count == 0 && currentsport.sportsroster.count == 0 {
-                        Text("No members.")
-                            .font(.system(size: 17, weight: .medium, design: .rounded))
-                            .frame(maxHeight: .infinity)
-                    } else {
-                        
-                        List{
-                            if currentsport.sportcoaches.count > 0 {
-                                Section{
-                                    ForEach(currentsport.sportcoaches, id: \.self){coach in
-                                        HStack{
-                                            Text(coach)
-                                        }
-                                    }
-                                }
                                 header:{
                                     if currentsport.sportcoaches.count == 1 {
                                         Text("Coach")
@@ -251,43 +252,43 @@ struct SportsDetailView: View {
                                         Text("Coaches")
                                     }
                                 }
-                            }
-                            
-                            if currentsport.sportscaptains.count > 0 {
-                                Section {
-                                    ForEach(currentsport.sportscaptains, id: \.self) { captain in
-                                        HStack {
-                                            Text(captain)
+                                }
+                                
+                                if currentsport.sportscaptains.count > 0 {
+                                    Section {
+                                        ForEach(currentsport.sportscaptains, id: \.self) { captain in
+                                            HStack {
+                                                Text(captain)
+                                            }
                                         }
-                                    }
-                                } header:{
-                                    if currentsport.sportscaptains.count == 1 {
-                                        Text("Captain")
-                                    } else {
-                                        Text("Captains")
+                                    } header:{
+                                        if currentsport.sportscaptains.count == 1 {
+                                            Text("Captain")
+                                        } else {
+                                            Text("Captains")
+                                        }
                                     }
                                 }
-                            }
-                            
-                            if currentsport.sportsroster.count > 0 {
-                                Section {
-                                    ForEach(currentsport.sportsroster, id: \.self) { member in
-                                        HStack {
-                                            Text(member)
+                                
+                                if currentsport.sportsroster.count > 0 {
+                                    Section {
+                                        ForEach(currentsport.sportsroster, id: \.self) { member in
+                                            HStack {
+                                                Text(member)
+                                            }
                                         }
-                                    }
-                                } header: {
+                                    } header: {
                                         Text("Members")
+                                    }
                                 }
-                            }
-                            
-                        }.frame(height: 450)
+                                
+                            }.frame(height: 450)
+                        }
                     }
-                }
+                    
+                    
+                }.padding(.top, 10 + screen.screenHeight / 10) // padding was here
                 
-                
-            }.padding(.top, 60) // MARK: this is cheating, works only on SE and iphone 8, change this depending on waht phone you have
-            
                 .onAppear {
                     // getting events (only once, then it saves)
                     if sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
@@ -323,7 +324,7 @@ struct SportsDetailView: View {
                     // formatting stuff
                     
                 }
-            
+                
                 .navigationBarItems(trailing:
                                         Group {
                     HStack {
@@ -355,8 +356,8 @@ struct SportsDetailView: View {
                     }
                 }
                 )
-            
-            // add/remove sports confirm
+                
+                // add/remove sports confirm
                 .confirmationDialog("Add to My Sports", isPresented: $confirming) {
                     Button("Add to My Sports") {
                         // hello
@@ -368,7 +369,7 @@ struct SportsDetailView: View {
                         isFavorited = true
                     }
                 }
-            
+                
                 .confirmationDialog("Remove from My Sports", isPresented: $confirming2) {
                     Button("Remove from My Sports", role: .destructive) {
                         
@@ -383,16 +384,17 @@ struct SportsDetailView: View {
                         isFavorited = false
                     }
                 }
+            }
         }
     }
     }
 
 struct SportsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        GeometryReader {
-            let safeArea = $0.safeAreaInsets
-            let size = $0.size
-            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1), safeArea: safeArea, size: size)
-        }
+            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
     }
 }
+
+
+
+

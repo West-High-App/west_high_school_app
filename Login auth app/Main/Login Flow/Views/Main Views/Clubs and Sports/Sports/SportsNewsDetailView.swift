@@ -71,7 +71,7 @@ var currentnews: sportNews
                     .shadow(color: .gray, radius: 8, x:2, y:3)
                     .padding(.horizontal)
                 Spacer()
-            }.padding(.top, -60)
+            }.padding(.top, 0 - (screen.screenHeight / 10) + 30) // <---
             .onAppear {
             }
 

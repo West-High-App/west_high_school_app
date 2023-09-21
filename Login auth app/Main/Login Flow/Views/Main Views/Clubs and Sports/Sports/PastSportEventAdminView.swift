@@ -41,11 +41,13 @@ struct PastSportEventsAdminView: View {
         VStack {
             List {
                 ForEach(editingeventslist, id: \.id) { event in
-                    VStack(alignment: .leading) {
-                        Text(event.title)
-                            .fontWeight(.semibold)
-                        Text(event.subtitle)
-                        Text("\(event.month) \(event.day), \(event.year)")
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(event.title)
+                                .fontWeight(.semibold)
+                            Text(event.subtitle)
+                            Text("\(event.month) \(event.day), \(event.year)")
+                        }
                     }.contextMenu {
                         Button("Delete", role: .destructive) {
                             temptitle = event.title
@@ -68,7 +70,8 @@ struct PastSportEventsAdminView: View {
                             editingevent = event
                             isPresentingEditEvent = true
                         }.foregroundColor(.blue)
-                    }.onTapGesture {
+                    }
+                    .onTapGesture {
                         editingevent = event
                         isPresentingEditEvent = true
                     }

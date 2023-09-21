@@ -13,15 +13,11 @@ struct SportsMainView: View {
     @EnvironmentObject var sporteventmanager: sportEventManager
     var selectedsport:sport
     var body: some View {
-        GeometryReader {
-            let safeArea = $0.safeAreaInsets
-            let size = $0.size
             let currentsport = selectedsport
-            SportsDetailView(currentsport: currentsport, safeArea: safeArea, size: size)
+            SportsDetailView(currentsport: currentsport)
                 .ignoresSafeArea(.container, edges: .top)
                 .environmentObject(sportsmanager)
                 .environmentObject(sporteventmanager)
-        }
         //.background(.blue)
     }
 
