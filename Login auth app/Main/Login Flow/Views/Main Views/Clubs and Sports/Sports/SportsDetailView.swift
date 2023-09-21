@@ -200,14 +200,18 @@ struct SportsDetailView: View {
                                                     .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                                     .foregroundColor(scoreColor)
                                             } else {
-                                                Text("Score pending.")
+                                                Text("Score pending...")
+                                                    .foregroundColor(.gray)
                                                     .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                             }
                                         }
                                     } else {
-                                        Text(event.subtitle)
-                                            .font(.system(size: 18, weight: .regular, design: .rounded))
-                                            .padding(1)
+                                        HStack {
+                                            Text(event.subtitle)
+                                                .font(.system(size: 18, weight: .regular, design: .rounded))
+                                                .padding(1)
+                                                .padding(.top, -12)
+                                        }
                                     }
 
                                 }

@@ -99,17 +99,34 @@ struct PastSportEventsAdminView: View {
                     Spacer()
                 }
                 Form {
-                    Section(header: Text("Home Score")) {
-                        TextField("Home score", text: $homescore)
+                    HStack {
+                        VStack {
+                            Toggle(isOn: $isSpecial) {
+                                Text("Special event")
+                            }
+                            Text("If the sport type does not support scores (e.g. cross country) this should be toggled on.")
+                                .font(.system(size: 14, weight: .regular, design: .rounded))
+                        }
                     }
-                    Section(header: Text("Opponent Score")) {
-                        TextField("Opponent score", text: $otherscore)
+                    if !isSpecial {
+                        Section(header: Text("Home Score")) {
+                            TextField("Home score", text: $homescore)
+                                //.keyboardType(.numberPad)
+                        }
+                        Section(header: Text("Opponent Score")) {
+                            TextField("Opponent score", text: $otherscore)
+                                //.keyboardType(.numberPad)
+                        }
+                    } else {
+                        Section(header: Text("Event information")) {
+                                TextField("Description", text: $subtitle)
+                        }
                     }
                     Button("Publish Changes") {
                         
                         title = editingevent.title
                         subtitle = editingevent.subtitle
-                        isSpecial = false // MARK: add some code here
+                        isSpecial = isSpecial // MARK: add some code here
                         month = editingevent.month
                         day = editingevent.day
                         year = editingevent.year
@@ -120,14 +137,18 @@ struct PastSportEventsAdminView: View {
                         
                         let oldevent = editingevent
                         
-                        editingevent = sportEvent(documentID: documentID, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: true)
+                        editingevent = sportEvent(documentID: documentID, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
                         
                         print(editingevent)
                         
+                        
                         dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
                         }
+
+                        
                         isPresentingEditEvent = false
                     }
                 }
@@ -135,7 +156,7 @@ struct PastSportEventsAdminView: View {
             .navigationBarTitle("Edit Sport Events")
         }
     
-        .alert(isPresented: $isPresentingConfirmEvent) {
+        .alert(isPresented: $isPresentingConfirmEvent) { // not used
             Alert(
                 title: Text("You Are Publishing Changes"),
                 message: Text("Please double your inputs.\nThis action cannot be undone."),
@@ -143,7 +164,7 @@ struct PastSportEventsAdminView: View {
                     
                     title = editingevent.title
                     subtitle = editingevent.subtitle
-                    isSpecial = false // MARK: add some code here
+                    isSpecial = isSpecial // MARK: add some code here
                     month = editingevent.month
                     day = editingevent.day
                     year = editingevent.year
@@ -152,7 +173,7 @@ struct PastSportEventsAdminView: View {
                     let score2 = Int(otherscore) ?? 0
                     tempscore = [score1, score2]
                     
-                    eventToDelete = sportEvent(documentID: documentID, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: true)
+                    eventToDelete = sportEvent(documentID: documentID, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
                     
                     if let eventToDelete = eventToDelete {
                         dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete)

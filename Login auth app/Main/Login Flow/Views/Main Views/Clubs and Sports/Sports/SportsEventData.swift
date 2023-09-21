@@ -96,7 +96,6 @@ class sportEventManager: ObservableObject {
                 for event in returnValue{
                     if event.date < Date.yesterday{
                         
-                        event.isUpdated = true
                         returnValue.removeAll {$0 == event}
                         pastReturnValue.append(event) // if its in the past, add it to the past list
                         
@@ -180,7 +179,6 @@ class sportEventManager: ObservableObject {
                 for event in returnValue{
                     if event.date < Date.yesterday{
                         
-                        event.isUpdated = true
                         returnValue.removeAll {$0 == event}
                         pastReturnValue.append(event) // if its in the past, add it to the past list
                         
@@ -221,11 +219,12 @@ class sportEventManager: ObservableObject {
             }
             
             if let snapshot = snapshot {
+                var docID = ""
                 for doc in snapshot.documents {
                     let data = doc.data()
                     let sportID = data["sportID"] as? String ?? ""
                     let events = data["events"] as? [[String: Any]] ?? []
-                    let docID = doc.documentID
+                    docID = doc.documentID
                     
                     if sportID == forSport {
                         eventlist = events // got up to here truw
@@ -261,15 +260,18 @@ class sportEventManager: ObservableObject {
                     Bool = false
                 }
                 if Bool {
-                    var eventtoadd: [String: String] = [:]
+                    var eventtoadd: [String: Any] = [:]
                     let title = sportEvent.title
                     let subtitle = sportEvent.subtitle
                     let month = sportEvent.month
                     let day = sportEvent.day
                     let year = sportEvent.year
                     let publisheddate = "\(month) \(day), \(year)"
-                    eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate]
-                    
+                    let isSpecial = sportEvent.isSpecial
+                    let isUpdated = sportEvent.isUpdated
+                    let score = sportEvent.score
+                    eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
+
                     collection.addDocument(data: [
                         "sportID": forSport,
                         "events": [eventtoadd]
@@ -288,15 +290,19 @@ class sportEventManager: ObservableObject {
         let db = Firestore.firestore()
         let ref = db.collection("SportEvents").document(sportEvent.documentID) //sportEvent.documentID
         
-        var eventtoremove: [String: String] = [:]
+        var eventtoremove: [String: Any] = [:]
         let title = sportEvent.title
         let subtitle = sportEvent.subtitle
         let month = sportEvent.month
         let day = sportEvent.day
         let year = sportEvent.year
         let publisheddate = "\(month) \(day), \(year)"
-        eventtoremove = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate]
-        
+        let isSpecial = sportEvent.isSpecial
+        let isUpdated = sportEvent.isUpdated
+        let score = sportEvent.score
+        eventtoremove = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": false] // shoudl it be false?
+        print("try a remove:")
+        print(eventtoremove)
         ref.updateData([
             "events": FieldValue.arrayRemove([eventtoremove])
         ]) { error in
