@@ -24,6 +24,8 @@
 		2232FEF22AA798620067AAB8 /* ClubsEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF12AA798620067AAB8 /* ClubsEventData.swift */; };
 		2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */; };
 		2232FEF62AA945140067AAB8 /* ClubEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */; };
+		2263AD372ABB77EA0016AA73 /* uitestview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD362ABB77E90016AA73 /* uitestview.swift */; };
+		2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */; };
 		2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B1EB2A68D23300823E58 /* WestHighApp.swift */; };
 		2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2072A68D9FC00823E58 /* AuthView.swift */; };
 		2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20C2A68DC3F00823E58 /* MenuView.swift */; };
@@ -117,6 +119,8 @@
 		2232FEF12AA798620067AAB8 /* ClubsEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsEventData.swift; sourceTree = "<group>"; };
 		2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailAdminView.swift; sourceTree = "<group>"; };
 		2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEventAdminView.swift; sourceTree = "<group>"; };
+		2263AD362ABB77E90016AA73 /* uitestview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = uitestview.swift; sourceTree = "<group>"; };
+		2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastSportEventAdminView.swift; sourceTree = "<group>"; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
 		2270B1F92A68D5ED00823E58 /* Login_auth_app_testApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_auth_app_testApp.swift; sourceTree = "<group>"; };
 		2270B1FB2A68D5ED00823E58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -266,6 +270,7 @@
 				2270B26D2A68E8E600823E58 /* WebViewModel.swift */,
 				22830A032A86D01300AE9C08 /* Notifications.swift */,
 				228485CE2AB4B0F700D2AAD2 /* TestView.swift */,
+				2263AD362ABB77E90016AA73 /* uitestview.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -359,6 +364,7 @@
 				E8531F602A83D1D100FB64F5 /* SportsMainView.swift */,
 				2270B24A2A68E66200823E58 /* SportsHibabi.swift */,
 				2232FEEB2AA46F5E0067AAB8 /* SportEventAdminView.swift */,
+				2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */,
 				2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */,
 				2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */,
 				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
@@ -613,6 +619,7 @@
 				2270B22A2A68E0A400823E58 /* ClubSportData.swift in Sources */,
 				2270B22E2A68E1F800823E58 /* ClubSportNewsData.swift in Sources */,
 				228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */,
+				2263AD372ABB77EA0016AA73 /* uitestview.swift in Sources */,
 				221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */,
 				2270B2602A68E7C600823E58 /* ContactView.swift in Sources */,
 				228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */,
@@ -674,6 +681,7 @@
 				2270B2312A68E26900823E58 /* ClubsView.swift in Sources */,
 				2270B25A2A68E75900823E58 /* StaffData.swift in Sources */,
 				E8150E3E2A9E49C300BD6853 /* SplashScreenView.swift in Sources */,
+				2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */,
 				E8ED91712AB559B900065526 /* JobInternshipView.swift in Sources */,
 				2270B2472A68E63E00823E58 /* SportsView.swift in Sources */,
 				22778C082A9571D000547C8C /* AnnouncementsAdminView.swift in Sources */,

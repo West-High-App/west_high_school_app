@@ -363,8 +363,7 @@ struct HomeView: View {
                                       DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                            print("IS DONE LOADING?")
                                            print(loading.hasLoaded)
-                                           // THIS IS SUPER SKETCHY PROB SHOULDN"T DO IT BUT FUCK IT NO NONONONON IF THERES AN ERROR THIS IS WHERE IT IS
-                                           // MARK: this is stupid but fuck it ERROR come from here
+                                           // this is where the view loads, should have been changed with the .onChange
                                            if !hasAppeared {
                                                 
                                                 permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in

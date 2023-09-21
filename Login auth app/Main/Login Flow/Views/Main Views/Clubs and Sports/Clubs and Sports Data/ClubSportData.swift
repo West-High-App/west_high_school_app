@@ -141,6 +141,7 @@ struct club: Identifiable, Equatable {
     let clubmembercount:String
     let clubmembers:[String]
     let adminemails:[String]
+    var editoremails: [String]
     var favoritedusers: [String]
     var imagedata: UIImage // NOT USED IN FIREBASE
     let documentID: String // NOT IN FIREBASE
@@ -185,12 +186,13 @@ class clubManager: ObservableObject {
                     let clubdescription = data["clubdescription"] as? String ?? ""
                     let clubimage = data["clubimage"] as? String ?? ""
                     let clubmembers = data["clubmembers"] as? [String] ?? []
-                    let clubmembercount = String(clubmembers.count + (clubcapation?.count ?? 0)) as? String ?? ""
+                    let clubmembercount = String(clubmembers.count + (clubcapation?.count ?? 0)) ?? ""
+                    let editoremails = data["editoremails"] as? [String] ?? []
                     let adminemails = data["adminemails"] as? [String] ?? []
                     let favoritedusers = data["favoritedusers"] as? [String] ?? []
                     let documentID = document.documentID
                     
-                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, favoritedusers: favoritedusers, imagedata: UIImage(), documentID: documentID, id: id)
+                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: favoritedusers, imagedata: UIImage(), documentID: documentID, id: id)
                     id = id + 1
                     returnvalue.append(club)
                     self.filteredlist = returnvalue.sorted { $0.clubname.lowercased() < $1.clubname.lowercased() }

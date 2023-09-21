@@ -26,6 +26,7 @@ struct ClubsAdminView: View {
     @State var clubcaptain: [String]?
     @State var clubadvisor: [String] = []
     @State var adminstring = ""
+    @State var editoremails: [String] = [] // NEED TO DO THIS
     @State var adminemails: [String] = []
     @State var clubmeetingroom = ""
     @State var clubdescription = ""
@@ -100,7 +101,7 @@ struct ClubsAdminView: View {
                     Button ("Publish New Club") {
                        adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                         
-                        clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, favoritedusers: [], imagedata: UIImage(), documentID: "NAN", id: 0)
+                        clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: [], imagedata: UIImage(), documentID: "NAN", id: 0)
                         
                         if let clubToAdd = clubToAdd {
                             db.createClub(club: clubToAdd) {error in

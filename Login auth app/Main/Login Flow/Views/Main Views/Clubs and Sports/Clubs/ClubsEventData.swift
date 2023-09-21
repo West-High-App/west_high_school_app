@@ -84,8 +84,6 @@ class clubEventManager: ObservableObject {
                 }
                 for event in returnValue{
                     if event.date < Date.yesterday{
-                        self.deleteClubEvent(forClub: forClub, clubEvent: event)
-
                     }
                 }
                 self.eventDictionary[forClub] = returnValue
