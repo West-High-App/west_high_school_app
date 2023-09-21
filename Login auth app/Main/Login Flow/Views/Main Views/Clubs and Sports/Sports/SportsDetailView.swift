@@ -119,10 +119,10 @@ struct SportsDetailView: View {
                         }
                         
                     }
-                    if sportEvents.count < 1 {
+                    if sportEvents.isEmpty {
                         Text("No upcoming events.")
-                        Spacer()
-                            .frame(height: 100)
+                            .font(.system(size: 17, weight: .medium, design: .rounded))
+                            .frame(maxHeight: .infinity)
                     } else {
                         List {
                             ForEach(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) {event in
@@ -168,8 +168,9 @@ struct SportsDetailView: View {
                         }
                     }
 
-                    if sportEvents.isEmpty {
+                    if pastSportEvents.isEmpty {
                         Text("No past events.")
+                            .font(.system(size: 17, weight: .medium, design: .rounded))
                             .frame(maxHeight: .infinity)
                     } else {
                         List(sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? pastSportEvents, id: \.id) { event in
@@ -226,8 +227,8 @@ struct SportsDetailView: View {
                     
                     if currentsport.sportcoaches.count == 0 && currentsport.sportscaptains.count == 0 && currentsport.sportsroster.count == 0 {
                         Text("No members.")
-                        Spacer()
-                            .frame(height: 100)
+                            .font(.system(size: 17, weight: .medium, design: .rounded))
+                            .frame(maxHeight: .infinity)
                     } else {
                         
                         List{
