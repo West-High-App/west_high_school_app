@@ -173,57 +173,47 @@ struct SportsDetailView: View {
                             .frame(maxHeight: .infinity)
                     } else {
                         List(sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? pastSportEvents, id: \.id) { event in
-                            VStack {
-                                HStack {
-                                    Spacer()
+                            HStack {
+                                VStack {
+                                    Text(event.month)
+                                        .font(.system(size: 16, weight: .medium, design: .rounded))
+                                        .foregroundColor(.red)
+                                    Text(event.day)
+                                        .font(.system(size: 26, weight: .regular, design: .rounded))
+                                    
+                                }
+                                .frame(width:50,height:50)
+                                Divider()
+                                    .padding(.vertical, 10)
+                                VStack(alignment: .leading) {
                                     Text(event.title)
-                                        .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                    Spacer()
-                                }
-                                HStack {
-                                    Spacer()
-                                    Text("\(event.month) \(event.day), \(event.year)")
-                                        .font(.system(size: 16, weight: .regular, design: .rounded))
-                                    Spacer()
-                                }
+                                        .lineLimit(2)
+                                        .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                                    if !event.isSpecial {
+                                        HStack {
+                                            if event.score.count > 1 {
+                                                let scoreColor: Color = event.score[0] > event.score[1] ? .green : (event.score[0] != event.score[1] ? .red : .black)
+                                                let winorloose: String = event.score[0] > event.score[1] ? "Win" : (event.score[0] != event.score[1] ? "Lost" : "Tie")
 
-                                if !event.isSpecial {
-                                    HStack {
-                                        if event.score.count > 1 {
-                                            let scoreColor: Color = event.score[0] > event.score[1] ? .green : (event.score[0] != event.score[1] ? .red : .black)
-                                            HStack {
-                                                Spacer()
-                                                Spacer()
-                                                Spacer()
+                                                Text("\(winorloose) (\(event.score[0]) - \(event.score[1]))")
+                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                    .foregroundColor(scoreColor)
+                                            } else {
+                                                Text("Score pending.")
+                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                             }
-                                            Text(String(event.score[0]))
-                                                .font(.system(size: 36, weight: .semibold, design: .rounded))
-                                                .foregroundColor(scoreColor)
-                                            Spacer()
-                                            Text("-")
-                                                .foregroundColor(scoreColor)
-                                                .font(.system(size: 36, weight: .semibold, design: .rounded))
-                                            Spacer()
-                                            Text(String(event.score[1]))
-                                                .font(.system(size: 36, weight: .semibold, design: .rounded))
-                                                .foregroundColor(scoreColor)
-                                            HStack {
-                                                Spacer()
-                                                Spacer()
-                                                Spacer()
-                                            }
-                                        } else {
-                                            Text("No score.")
-                                                .font(.system(size: 16, weight: .regular, design: .rounded))
                                         }
+                                    } else {
+                                        Text(event.subtitle)
+                                            .font(.system(size: 18, weight: .regular, design: .rounded))
+                                            .padding(1)
                                     }
-                                } else {
-                                    Text(event.subtitle)
-                                        .font(.system(size: 18, weight: .regular, design: .rounded))
-                                        .padding(1)
+
                                 }
+                                .padding(.leading, 5)
+                                Spacer()
+                                
                             }
-                            .listRowSeparator(.visible, edges: .all)
                         }
                         .frame(height: 450)
                     }
