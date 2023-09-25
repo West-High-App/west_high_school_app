@@ -32,6 +32,8 @@ struct SportEventsAdminView: View {
     @State var date = ""
     @State var isSpecial = false
     @State var score: [Int] = []
+    @State var homescore = ""
+    @State var otherscore = ""
     @State var isUpdated = false
     
     var body: some View {
@@ -40,7 +42,7 @@ struct SportEventsAdminView: View {
             Button {
                 isPresetingAddEvent = true
             } label: {
-                Text("Add Sport Event")
+                Text("Add Past Sport Event")
                     .foregroundColor(.blue)
                     .padding(10)
                     .background(Rectangle()
@@ -76,7 +78,7 @@ struct SportEventsAdminView: View {
                     }
                 }
             }
-        }.navigationTitle("Edit Sport Events")
+        }.navigationTitle("Edit Past Sport Events")
         .onAppear {
             dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
                 if let error = error {
@@ -109,9 +111,32 @@ struct SportEventsAdminView: View {
                     Spacer()
                 }
                 Form {
-                    Section(header: Text("Sports Event details")) {
+                    Section(header: Text("Sports Event Details")) {
                         TextField("Title", text: $title)
-                        TextField("Subtitle", text: $subtitle)
+                        
+                        VStack {
+                            Toggle(isOn: $isSpecial) {
+                                Text("Special event")
+                            }
+                            Text("If the sport type does not support scores (e.g. cross country) this should be toggled on.")
+                                .font(.system(size: 14, weight: .regular, design: .rounded))
+                        }
+                        
+                        if !isSpecial {
+                            Section(header: Text("Home Score")) {
+                                TextField("Home score", text: $homescore)
+                                    //.keyboardType(.numberPad)
+                            }
+                            Section(header: Text("Opponent Score")) {
+                                TextField("Opponent score", text: $otherscore)
+                                    //.keyboardType(.numberPad)
+                            }
+                        } else {
+                            Section(header: Text("Event information")) {
+                                    TextField("Description", text: $subtitle)
+                            }
+                        }
+                        
                         Picker("Month", selection: $selectedMonthIndex) {
                             ForEach(0..<months.count, id: \.self) { index in
                                 Text(months[index]).tag(index)
@@ -130,7 +155,7 @@ struct SportEventsAdminView: View {
                             }
                         }
                     }
-                    Button("Publish new sport event") {
+                    Button("Publish New Sport Event") {
                         eventToSave = sportEvent(
                             documentID: "NAN",
                             title: title,
@@ -179,6 +204,6 @@ struct SportEventsAdminView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(sportEventManager())
+        SportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(sportEventManager())
     }
 }

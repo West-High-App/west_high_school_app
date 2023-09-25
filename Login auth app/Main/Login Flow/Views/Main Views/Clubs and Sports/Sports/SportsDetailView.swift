@@ -12,6 +12,7 @@ struct SportsDetailView: View {
     @EnvironmentObject var userInfo: UserInfo
     @EnvironmentObject var sportsmanager: sportsManager // <------
     @EnvironmentObject var sporteventmanager: sportEventManager
+    @EnvironmentObject var sporteventstorage: SportsEventStorage
     @State private var hasPermissionSport = false
     @State private var canEditSport = false
     @State var selected = 1
@@ -25,7 +26,8 @@ struct SportsDetailView: View {
     @State var screen = ScreenSize()
     @State var hasAppeared = false
     @State private var navigationBarHeight: CGFloat = 0.0
-
+    @State var events: [ParsedEvent] = []
+    
     
     var currentsport: sport
     
@@ -111,45 +113,38 @@ struct SportsDetailView: View {
                     
                     if selected == 1 {
                         
-                        if hasPermissionSport {
-                            NavigationLink {
-                                SportEventsAdminView(currentsport: currentsport)
-                            } label: {
-                                Text("Edit Upcoming Events")
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                            }
-                            
-                        }
-                        if sportEvents.isEmpty {
+                        //MARK: Aiden to the UI for this:
+                        /// I think you have a pretty good idea of what needs to happen or what needs to be displayed. Basically just use the elements: date, type (like game, tournament, meet, etc.), opponent, and comments. You can change the date format using .formatted property.
+
+                        if events.isEmpty {
                             Text("No upcoming events.")
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
                                 .frame(maxHeight: .infinity)
                         } else {
                             List {
-                                ForEach(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) {event in
-                                    HStack {
-                                        VStack {
-                                            Text(event.month)
-                                                .font(.system(size: 16, weight: .medium, design: .rounded))
-                                                .foregroundColor(.red)
-                                            Text(event.day)
-                                                .font(.system(size: 26, weight: .regular, design: .rounded))
-                                            
+                                ForEach(events, id: \.id) { event in
+                                    VStack {
+                                        HStack {
+                                            Text("\(event.type)")
+                                                .font(.headline)
+                                            Spacer()
                                         }
-                                        .frame(width:50,height:50)
-                                        Divider()
-                                            .padding(.vertical, 10)
-                                        VStack(alignment: .leading) {
-                                            Text(event.title)
-                                                .lineLimit(2)
-                                                .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                            Text(event.subtitle)
-                                                .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                                .lineLimit(1)
+                                        HStack {
+                                            Text("\(event.date.formatted(date: .long, time: .omitted))")
+                                            Spacer()
                                         }
-                                        .padding(.leading, 5)
-                                        Spacer()
-                                        
+                                        HStack {
+                                            Text("\(event.date.formatted(date: .omitted, time: .shortened))")
+                                            Spacer()
+                                        }
+                                        HStack {
+                                            Text(event.opponent)
+                                            Spacer()
+                                        }
+                                        HStack {
+                                            Text("Location: \(event.location)")
+                                            Spacer()
+                                        }
                                     }
                                 }
                             }.frame(height: 450)
@@ -162,19 +157,19 @@ struct SportsDetailView: View {
                     if selected == 2 {
                         if hasPermissionSport {
                             NavigationLink {
-                                PastSportEventsAdminView(currentsport: currentsport)
+                                SportEventsAdminView(currentsport: currentsport)
                             } label: {
                                 Text("Edit Past Events")
                                     .font(.system(size: 17, weight: .semibold, design: .rounded))
                             }
                         }
                         
-                        if pastSportEvents.isEmpty {
+                        if sportEvents.isEmpty {
                             Text("No past events.")
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
                                 .frame(maxHeight: .infinity)
                         } else {
-                            List(sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? pastSportEvents, id: \.id) { event in
+                            List(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) { event in
                                 HStack {
                                     VStack {
                                         Text(event.month)
@@ -290,6 +285,31 @@ struct SportsDetailView: View {
                 }.padding(.top, 10 + screen.screenHeight / 10) // padding was here
                 
                 .onAppear {
+                    
+                    /*HTMLParser.parseEvents(from: currentsport.eventslink) { events, error in
+                        if let events = events {
+                            self.events = events
+                        } else if let error = error {
+                            print("Error: \(error.localizedDescription)")
+                        }
+                    }*/
+                    
+                    //if sportsev MARK: working
+                    if sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
+                        
+                        HTMLParser.parseEvents(from: currentsport.eventslink) { events, error in
+                            if let events = events {
+                                self.events = events
+                                sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] = events
+                            } else if let error = error {
+                                print("Error: \(error.localizedDescription)")
+                            }
+                        }
+                        
+                    } else {
+                        self.events = sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
+                    }
+                                        
                     // getting events (only once, then it saves)
                     if sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
                         sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
@@ -391,7 +411,7 @@ struct SportsDetailView: View {
 
 struct SportsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
+            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
     }
 }
 

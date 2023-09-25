@@ -4,7 +4,7 @@
 //
 //  Created by August Andersen on 30/08/2023.
 //
-
+//MARK: this bitch is old we ain't gonna be using it
 import Foundation
 import SwiftUI
 import Firebase
@@ -330,3 +330,5 @@ class sportEventManager: ObservableObject {
 //        return ""
 //    }
 }
+
+// MARK: all files for all the sports

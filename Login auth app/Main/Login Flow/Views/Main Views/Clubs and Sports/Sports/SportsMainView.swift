@@ -11,6 +11,7 @@ import SwiftUI
 struct SportsMainView: View {
     @EnvironmentObject var sportsmanager: sportsManager
     @EnvironmentObject var sporteventmanager: sportEventManager
+    @EnvironmentObject var sporteventstorage: SportsEventStorage
     var selectedsport:sport
     var body: some View {
             let currentsport = selectedsport
@@ -18,6 +19,7 @@ struct SportsMainView: View {
                 .ignoresSafeArea(.container, edges: .top)
                 .environmentObject(sportsmanager)
                 .environmentObject(sporteventmanager)
+                .environmentObject(sporteventstorage)
         //.background(.blue)
     }
 

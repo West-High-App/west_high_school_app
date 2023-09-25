@@ -20,6 +20,7 @@ struct sport: Identifiable, Equatable {
     var tags: [Int] // [gender tag, season tag, team tag] all ints
     var info: String
     var favoritedusers: [String] // list of email of users who have it as favorite
+    var eventslink: String // link to site with all events
     var imagedata: UIImage? // NOT USED IN FIREBASE
     var documentID: String // NOT USED IN FIREBASE
     var sportid: String // NOT USED IN FIREBASE
@@ -59,13 +60,14 @@ class sportsManager: ObservableObject {
                     let sportsroster = data["sportsroster"] as? [String] ?? []
                     let sportscaptains = data["sportscaptains"] as? [String] ?? []
                     let tags = data["tags"] as? [Int] ?? [1, 1, 1]
+                    let eventslink = data["eventslink"] as? String ?? ""
                     let info = data["info"] as? String ?? ""
                     let favoritedusers = data["favoritedusers"] as? [String] ?? []
                     let documentID = document.documentID
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
                     
-                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
+                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
                     tempID = tempID + 1
                     returnvalue.append(sport)
                 }
