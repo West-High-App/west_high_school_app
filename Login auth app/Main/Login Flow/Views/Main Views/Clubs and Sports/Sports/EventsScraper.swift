@@ -71,6 +71,7 @@ class HTMLParser: ObservableObject {
         dateFormatter.dateFormat = "EEEE, MMM d, yyyy hh:mm a"
         dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
         guard let finalDate = dateFormatter.date(from: "\(date) \(time)") else { return nil }
+        print(finalDate)
         
         let event = ParsedEvent(date: finalDate, type: type, opponent: opponent, location: location, comments: comments)
         

@@ -27,6 +27,8 @@ struct SportsDetailView: View {
     @State var hasAppeared = false
     @State private var navigationBarHeight: CGFloat = 0.0
     @State var events: [ParsedEvent] = []
+    @State var pastevents: [ParsedEvent] = []
+    @State var newpastevents: [sportEvent] = []
     
     
     var currentsport: sport
@@ -157,7 +159,7 @@ struct SportsDetailView: View {
                     if selected == 2 {
                         if hasPermissionSport {
                             NavigationLink {
-                                SportEventsAdminView(currentsport: currentsport)
+                                PastSportEventsAdminView(currentsport: currentsport)
                             } label: {
                                 Text("Edit Past Events")
                                     .font(.system(size: 17, weight: .semibold, design: .rounded))
@@ -169,57 +171,55 @@ struct SportsDetailView: View {
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
                                 .frame(maxHeight: .infinity)
                         } else {
-                            List(sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? sportEvents, id: \.id) { event in
-                                HStack {
-                                    VStack {
-                                        Text(event.month)
-                                            .font(.system(size: 16, weight: .medium, design: .rounded))
-                                            .foregroundColor(.red)
-                                        Text(event.day)
-                                            .font(.system(size: 26, weight: .regular, design: .rounded))
-                                        
-                                    }
-                                    .frame(width:50,height:50)
-                                    Divider()
-                                        .padding(.vertical, 10)
-                                    VStack(alignment: .leading) {
-                                        Text(event.title)
-                                            .lineLimit(2)
-                                            .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                        if !event.isSpecial {
-                                            HStack {
-                                                if event.score.count > 1 {
-                                                    let scoreColor: Color = event.score[0] > event.score[1] ? .green : (event.score[0] != event.score[1] ? .red : .black)
-                                                    let winorloose: String = event.score[0] > event.score[1] ? "Win" : (event.score[0] != event.score[1] ? "Lost" : "Tie")
-                                                    
-                                                    Text("\(winorloose) (\(event.score[0]) - \(event.score[1]))")
-                                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                                        .foregroundColor(scoreColor)
-                                                } else {
-                                                    Text("Score pending...")
-                                                        .foregroundColor(.gray)
-                                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                                }
-                                            }
+                            List(newpastevents, id: \.id) { event in
+                                VStack {
+                                    Text(event.title)
+                                        .font(.headline)
+                                    Text(event.subtitle)
+                                    if event.score.count > 1 {
+                                        if event.score[0] == 0 && event.score[1] == 0 {
+                                            Text("Pending score...")
                                         } else {
+                                            Text("Has score!")
+                                        }
+                                    } else {
+                                        Text("Pending score...")
+                                    }
+                                }
+                                /*VStack {
+                                    HStack {
+                                        Text("\(event.title)")
+                                            .font(.headline)
+                                        Spacer()
+                                    }
+                                    HStack {
+                                        Text("\(event.subtitle)")
+                                        Spacer()
+                                    }
+                                    HStack {
+                                        Text("\(event.month) \(event.day), \(event.year)")
+                                        Spacer()
+                                    }
+                                    if event.score.isEmpty {
+                                        Text("Pending score...")
+                                    } else {
+                                        if event.score.count == 2 {
                                             HStack {
-                                                Text(event.subtitle)
-                                                    .font(.system(size: 18, weight: .regular, design: .rounded))
-                                                    .padding(1)
-                                                    .padding(.top, -12)
+                                                Spacer()
+                                                Text(event.score[0])
+                                                Spacer()
+                                                Text("-")
+                                                Spacer()
+                                                Text(event.score[1])
+                                                Spacer()
                                             }
                                         }
-                                        
                                     }
-                                    .padding(.leading, 5)
-                                    Spacer()
-                                    
-                                }
+                                } */
                             }
                             .frame(height: 450)
                         }
                     }
-                    
                     
                     // members view
                     
@@ -286,21 +286,76 @@ struct SportsDetailView: View {
                 
                 .onAppear {
                     
-                    /*HTMLParser.parseEvents(from: currentsport.eventslink) { events, error in
-                        if let events = events {
-                            self.events = events
-                        } else if let error = error {
-                            print("Error: \(error.localizedDescription)")
-                        }
-                    }*/
-                    
-                    //if sportsev MARK: working
+                    //if sportsev MARK: run the dict functino before view appear
                     if sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
                         
-                        HTMLParser.parseEvents(from: currentsport.eventslink) { events, error in
-                            if let events = events {
-                                self.events = events
-                                sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] = events
+                        HTMLParser.parseEvents(from: currentsport.eventslink) { parsedevents, error in
+                            if let parsedevents = parsedevents {
+                                let currentDate = Date()
+                                print(parsedevents)
+                                let futureEvents = parsedevents.filter { event in
+                                    return event.date > currentDate
+                                }
+
+                                let pastEvents = parsedevents.filter { event in
+                                    return event.date <= currentDate
+                                }
+
+                                let sortedFutureEvents = futureEvents.sorted { (event1, event2) -> Bool in
+                                    return event1.date < event2.date
+                                }
+
+                                let sortedPastEvents = pastEvents.sorted { (event1, event2) -> Bool in
+                                    return event1.date > event2.date
+                                }
+                                print("normal past, sorted past")
+                                print(pastEvents)
+                                print(sortedPastEvents)
+
+                                self.events = sortedFutureEvents
+                                
+                                sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] = sortedFutureEvents
+                                
+                                print(sortedPastEvents)
+                                print("past events")
+                                self.pastevents = sortedPastEvents
+                                
+                                sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+                                    
+                                }
+                                
+                                // right here
+                                
+                                sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+                                    
+                                    for existingevent in self.pastevents {
+                                        print("EVENT EXISTS")
+                                        print(existingevent)
+                                        if let matchingEvent = events?.first(where: { newEvent in
+                                            
+                                            let dateFormatter = DateFormatter()
+                                            dateFormatter.dateFormat = "MMM d, yyyy"
+                                            
+                                            let existingeventformatteddate = dateFormatter.string(from: existingevent.date)
+                                            let neweventformatteddate = dateFormatter.string(from: newEvent.date)
+                                            
+                                            return existingevent.type == newEvent.title && existingevent.opponent == newEvent.subtitle && existingeventformatteddate == neweventformatteddate
+                                            
+                                        }) {} else {
+                                            print("adding new bitch")
+                                            sporteventmanager.createParsedSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: existingevent)
+                                        }
+                                    }
+                                    sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { newevents, error in
+                                        if let newevents = newevents {
+                                            newpastevents = newevents
+                                            print(newpastevents)
+                                            print("NEW PAST EVENTS")
+                                        }
+                                    }
+                                }
+                                
+                                
                             } else if let error = error {
                                 print("Error: \(error.localizedDescription)")
                             }

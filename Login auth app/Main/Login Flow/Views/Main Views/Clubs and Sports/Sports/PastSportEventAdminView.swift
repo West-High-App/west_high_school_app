@@ -49,23 +49,6 @@ struct PastSportEventsAdminView: View {
                             Text("\(event.month) \(event.day), \(event.year)")
                         }
                     }.contextMenu {
-                        Button("Delete", role: .destructive) {
-                            temptitle = event.title
-                            // isConfirmingDeleteEvent = true
-                            eventToDelete = event
-                            if let eventToDelete = eventToDelete {
-                                editingeventslist.removeAll {$0 == eventToDelete}
-                                dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete)
-                            }
-                            dataManager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                                if let error = error {
-                                    print("Error updating events: \(error.localizedDescription)")
-                                }
-                                if let events = events {
-                                    eventlist = events
-                                }
-                            }
-                        }
                         Button("Edit") {
                             editingevent = event
                             isPresentingEditEvent = true
@@ -79,7 +62,7 @@ struct PastSportEventsAdminView: View {
             }
         }.navigationTitle("Edit Past Events")
         .onAppear {
-            dataManager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+            dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
                 if let error = error {
                     print(error.localizedDescription)
                 }

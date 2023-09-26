@@ -168,9 +168,10 @@ struct SportEventsAdminView: View {
                             score: score,
                             isUpdated: isUpdated)
                         if let eventToSave = eventToSave {
-                            editingeventslist.append(eventToSave)
+                            /*editingeventslist.append(eventToSave)
                             dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToSave)
-                            isPresetingAddEvent = false
+                            isPresetingAddEvent = false*/
+                            print("REMOVED ADDING CLUBS FUNCTION -- PLEASE DO THROUGH FIREBASE")
                             
                         }
                         dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in

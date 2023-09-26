@@ -96,7 +96,7 @@ class sportEventManager: ObservableObject {
                 for event in returnValue{
                     if event.date < Date.yesterday{
                         
-                        returnValue.removeAll {$0 == event}
+                        // returnValue.removeAll {$0 == event}
                         pastReturnValue.append(event) // if its in the past, add it to the past list
                         
                     }
@@ -205,6 +205,102 @@ class sportEventManager: ObservableObject {
             }
         }
     }
+    
+    func createParsedSportEvent(forSport: String, sportEvent: ParsedEvent) {
+        var eventlist: [[String: Any]] = []
+        var eventdocumentID = ""
+        let db = Firestore.firestore()
+        let collection = db.collection("SportEvents")
+        
+        collection.getDocuments { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let snapshot = snapshot {
+                var docID = ""
+                for doc in snapshot.documents {
+                    let data = doc.data()
+                    let sportID = data["sportID"] as? String ?? ""
+                    let events = data["events"] as? [[String: Any]] ?? []
+                    docID = doc.documentID
+                    
+                    if sportID == forSport {
+                        eventlist = events // got up to here truw
+                        eventdocumentID = docID
+                        
+                        let monthformat = DateFormatter()
+                        monthformat.dateFormat = "MMM"
+                        let month = monthformat.string(from: sportEvent.date)
+                        let dayformat = DateFormatter()
+                        dayformat.dateFormat = "d"
+                        let day = dayformat.string(from: sportEvent.date)
+                        let yearformat = DateFormatter()
+                        yearformat.dateFormat = "yyyy"
+                        let year = yearformat.string(from: sportEvent.date)
+                        
+                        // update that bitch
+                        var eventtoadd: [String: Any] = [:]
+                        let title = sportEvent.type
+                        let subtitle = sportEvent.opponent
+                        let publisheddate = "\(month) \(day), \(year)"
+                        let isSpecial = false
+                        let isUpdated = true
+                        let score = [0, 0]
+                        eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
+                        eventlist.append(eventtoadd) // here you fat fuck
+                        
+                        collection.document(eventdocumentID).updateData([
+                            "events": eventlist
+                        ]) { error in
+                            if let error = error {
+                                print("Error updating document: \(error)")
+                            } else {
+                                print("Document successfully updated")
+                            }
+                        }
+                    }
+                }
+                var Bool = true
+                for _ in eventlist {
+                    Bool = false
+                }
+                if Bool {
+                    var eventtoadd: [String: Any] = [:]
+                    
+                    let monthformat = DateFormatter()
+                    monthformat.dateFormat = "MMM"
+                    let month = monthformat.string(from: sportEvent.date)
+                    let dayformat = DateFormatter()
+                    dayformat.dateFormat = "d"
+                    let day = dayformat.string(from: sportEvent.date)
+                    let yearformat = DateFormatter()
+                    yearformat.dateFormat = "yyyy"
+                    let year = yearformat.string(from: sportEvent.date)
+                    
+                    // update that bitch
+                    let title = sportEvent.type
+                    let subtitle = sportEvent.opponent
+                    let publisheddate = "\(month) \(day), \(year)"
+                    let isSpecial = false
+                    let isUpdated = true
+                    let score = [0, 0]
+                    eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
+
+                    collection.addDocument(data: [
+                        "sportID": forSport,
+                        "events": [eventtoadd]
+                    ]) { error in
+                        if let error = error {
+                            print("Error: \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 
     func createSportEvent(forSport: String, sportEvent: sportEvent) {
         var eventlist: [[String: Any]] = []
