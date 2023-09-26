@@ -612,8 +612,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				228362E02A2AB3D80061BFAE /* Preview Assets.xcassets in Resources */,
 				E82562DB2A867858000AF117 /* GoogleService-Info.plist in Resources */,
+				228362E02A2AB3D80061BFAE /* Preview Assets.xcassets in Resources */,
 				228362DD2A2AB3D80061BFAE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -836,7 +836,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = B2YZ849D42;
+				DEVELOPMENT_TEAM = N2R26K3XYA;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -855,7 +855,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApp;
+				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

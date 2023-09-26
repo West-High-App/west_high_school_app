@@ -7,15 +7,20 @@
 //
 
 import SwiftUI
+extension UIScreen{
+   static let screenWidth = UIScreen.main.bounds.size.width
+   static let screenHeight = UIScreen.main.bounds.size.height
+   static let screenSize = UIScreen.main.bounds.size
+}
 
 enum MenuItem: String, CaseIterable {
-    
+
     case home
     case announcments
     case activities
     case calendar
     case profile
-    
+
     var description: String {
         switch self {
         case .home:
@@ -68,7 +73,7 @@ struct MenuView : View {
         if !isShutDown {
         VStack(spacing: 0){
             TabView(selection: $selected){
-                
+
                 HomeMainView()
                     .environmentObject(userInfo)
                     .tag(tabItems[0])
@@ -136,18 +141,18 @@ struct CustomTabbarView: View {
     @State var centerX : CGFloat = 2
     @Environment(\.verticalSizeClass) var size
     @Binding var selected: MenuItem
-    
+
     init(tabItems: [MenuItem], selected: Binding<MenuItem>) {
         UITabBar.appearance().isHidden = true
         self.tabItems = tabItems
         self._selected = selected
     }
-    
+
     var body: some View {
         HStack(spacing: 0){
-            
+
             ForEach(tabItems,id: \.self){value in
-                
+
                 GeometryReader{ proxy in
                     BarButton(selected: $selected, centerX: $centerX, rect: proxy.frame(in: .global), value: value)
                         .onAppear(perform: {
@@ -161,7 +166,7 @@ struct CustomTabbarView: View {
                             }
                         }
                 }
-                .frame(width: 67, height: 50)
+                .frame(width: UIScreen.screenWidth/5.8, height: 50)
                 if value != tabItems.last{Spacer(minLength: 0)}
             }
         }
@@ -177,10 +182,10 @@ struct CustomTabbarView: View {
 struct BarButton : View {
     @Binding var selected : MenuItem
     @Binding var centerX : CGFloat
-    
+
     var rect : CGRect
     var value: MenuItem
-    
+
     var body: some View{
         Button(action: {
             withAnimation(.spring()){
@@ -194,7 +199,7 @@ struct BarButton : View {
                     .renderingMode(.template)
                     .frame(width: 26, height: 26)
                     .foregroundColor(selected == value ? .blue : .gray)
-                
+
                 Text(value.description)
                     .font(.subheadline)
                     .foregroundColor(.gray)
@@ -212,7 +217,7 @@ struct CustomShape: Shape {
         get{return centerX}
         set{centerX = newValue}
     }
-    
+
     func path(in rect: CGRect) -> Path {
         return Path{path in
             path.move(to: CGPoint(x: 0, y: 15))
