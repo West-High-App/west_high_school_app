@@ -10,7 +10,7 @@ import SwiftUI
 struct SportsDetailAdminView: View {
     var editingsport: sport
     @State var sporttoedit: sport?
-    @StateObject var sportManager = sportsManager()
+    @EnvironmentObject var sportsmanager: sportsManager
     
     @State var isConfirmingChanges = false
     
@@ -25,6 +25,8 @@ struct SportsDetailAdminView: View {
     @State var tags: [Int] = [] //
     @State var info = ""
     @State var documentID: String = ""
+    @State var favoritedusers: [String] = []
+    @State var eventslink: String = ""
     
     @State private var isAddingAdmin = false
     @State private var newAdminEmail = ""
@@ -306,11 +308,11 @@ struct SportsDetailAdminView: View {
                     temptags.append(selectedTeam)
                     tags = temptags
                     
-                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: [], eventslink: "", imagedata: nil, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
+                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: nil, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
                     
                     
                     if let sporttoedit = sporttoedit {
-                        sportManager.updateSport(data: sporttoedit)
+                        sportsmanager.updateSport(data: sporttoedit)
                     }
                 },
                 secondaryButton: .cancel()
@@ -334,6 +336,8 @@ struct SportsDetailAdminView: View {
                 selectedSeason = tags[1]
                 selectedTeam = tags[2]
                 documentID = editingsport.documentID
+                favoritedusers = editingsport.favoritedusers
+                eventslink = editingsport.eventslink
                 
                 
                 originalImage = editingsport.sportsimage

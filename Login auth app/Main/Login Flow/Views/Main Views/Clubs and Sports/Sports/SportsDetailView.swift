@@ -351,6 +351,7 @@ struct SportsDetailView: View {
                         if hasPermissionSport {
                             NavigationLink {
                                 SportsDetailAdminView(editingsport: currentsport)
+                                    .environmentObject(sportsmanager)
                             } label: {
                                 Text("Edit")
                                     .font(.system(size: 17, weight: .semibold, design: .rounded))

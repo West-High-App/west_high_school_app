@@ -125,6 +125,7 @@ class sportsManager: ObservableObject {
             "sportsroster": data.sportsroster,
             "sportscaptains": data.sportscaptains,
             "favoritedusers": data.favoritedusers,
+            "eventslink": data.eventslink,
             "tags": data.tags,
             "info": data.info,
         ])
