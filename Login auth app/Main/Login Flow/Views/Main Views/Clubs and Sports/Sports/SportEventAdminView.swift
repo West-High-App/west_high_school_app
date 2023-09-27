@@ -64,6 +64,8 @@ struct SportEventsAdminView: View {
                             eventToDelete = event
                             if let eventToDelete = eventToDelete {
                                 editingeventslist.removeAll {$0 == eventToDelete}
+                                print("EVENT TO DELETE") // MARK: delete isn't working, the add new event is but it's not deleting check to see what doesn't match with firebase
+                                print(eventToDelete)
                                 dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete)
                             }
                             dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in

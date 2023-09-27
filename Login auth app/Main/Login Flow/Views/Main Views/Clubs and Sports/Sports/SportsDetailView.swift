@@ -172,9 +172,10 @@ struct SportsDetailView: View {
                                 .frame(maxHeight: .infinity)
                         } else {
                             List(newpastevents, id: \.id) { event in
-                                VStack {
+                                VStack (alignment: .leading){
                                     Text(event.title)
                                         .font(.headline)
+                                    Text(event.month + " " + event.day + ", " + event.year)
                                     Text(event.subtitle)
                                     if event.score.count > 1 {
                                         if event.score[0] == 0 && event.score[1] == 0 {
