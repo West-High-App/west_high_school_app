@@ -30,7 +30,6 @@ struct SportsDetailView: View {
     @State var pastevents: [ParsedEvent] = []
     @State var newpastevents: [sportEvent] = []
     
-    
     var currentsport: sport
     
     @State var currentsportID = ""
@@ -157,7 +156,7 @@ struct SportsDetailView: View {
                     // past games view
                     
                     if selected == 2 {
-                        if hasPermissionSport {
+                        if currentsport.editoremails.contains(userInfo.email) {
                             NavigationLink {
                                 PastSportEventsAdminView(currentsport: currentsport)
                             } label: {
@@ -468,7 +467,7 @@ struct SportsDetailView: View {
 
 struct SportsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
+            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
     }
 }
 

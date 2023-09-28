@@ -12,8 +12,8 @@ struct PastSportEventsAdminView: View {
     @State var isPresentingConfirmEvent = false
     @State var eventToDelete: sportEvent?
     @State var eventToSave: sportEvent?
-
     
+    @State var userInfo = UserInfo()
     
     @State private var eventyear = ""
     let calendar = Calendar.current
@@ -85,23 +85,29 @@ struct PastSportEventsAdminView: View {
                     Spacer()
                 }
                 Form {
-                    HStack {
-                        VStack {
-                            Toggle(isOn: $isSpecial) {
-                                Text("Special event")
+                    if currentsport.editoremails.contains(userInfo.email) {
+                        HStack {
+                            VStack {
+                                Toggle(isOn: $isSpecial) {
+                                    Text("Special event")
+                                }
+                                Text("If the sport type does not support scores (e.g. cross country) this should be toggled on.")
+                                    .font(.system(size: 14, weight: .regular, design: .rounded))
                             }
-                            Text("If the sport type does not support scores (e.g. cross country) this should be toggled on.")
-                                .font(.system(size: 14, weight: .regular, design: .rounded))
                         }
                     }
                     if !isSpecial {
                         Section(header: Text("Home Score")) {
-                            TextField("Home score", text: $homescore)
+                            //TextField("Home score", text: $homescore)
                                 //.keyboardType(.numberPad)
+                            
+                            NumericTextField(text: $homescore, displaytext: "Home score")
                         }
                         Section(header: Text("Opponent Score")) {
-                            TextField("Opponent score", text: $otherscore)
+                            //TextField("Opponent score", text: $otherscore)
                                 //.keyboardType(.numberPad)
+                            
+                            NumericTextField(text: $otherscore, displaytext: "Opponent score")
                         }
                     } else {
                         Section(header: Text("Event information")) {
@@ -176,6 +182,6 @@ struct PastSportEventsAdminView: View {
 
 struct PastContentView_Previews: PreviewProvider {
     static var previews: some View {
-        PastSportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(sportEventManager())
+        PastSportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(sportEventManager())
     }
 }

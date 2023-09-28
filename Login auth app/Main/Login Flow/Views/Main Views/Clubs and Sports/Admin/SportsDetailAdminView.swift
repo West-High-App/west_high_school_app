@@ -18,6 +18,7 @@ struct SportsDetailAdminView: View {
     @State var sportcoaches: [String] = [] //
     @State var adminsstring = ""
     @State var adminemails: [String] = [] //
+    @State var editoremails: [String] = []
     @State var sportsimage = ""
     @State var sportsteam = "" //
     @State var sportsroster: [String] = [] //
@@ -40,6 +41,9 @@ struct SportsDetailAdminView: View {
 
     @State private var isAddingPlayer = false
     @State private var newPlayerName = ""
+    
+    @State private var isAddingEditor = false
+    @State private var newEditorEmail = ""
     
     @State var selectedGender = 1
     @State var selectedSeason = 1
@@ -94,6 +98,42 @@ struct SportsDetailAdminView: View {
                                         Button("Add Admin") {
                                             isAddingAdmin = false
                                             adminemails.append(newAdminEmail)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    DisclosureGroup("Editors") {
+                        ForEach($editoremails, id: \.self) { $editoremail in
+                            HStack {
+                                Text(editoremail)
+                                    .contextMenu {
+                                        Button(role: .destructive) {
+                                            editoremails.removeAll { $0 == editoremail }
+                                        } label: {
+                                            Text("Delete")
+                                        }
+                                    }
+                            }
+                        }
+                        Button("Add Editor") {
+                            isAddingEditor = true
+                        }.sheet(isPresented: $isAddingEditor) {
+                            VStack {
+                                HStack {
+                                    Button("Cancel") {
+                                        isAddingEditor = false
+                                    }.padding()
+                                    Spacer()
+                                }
+                                Form {
+                                    Section("New Editor Email:") {
+                                        TextField("Email", text: $newEditorEmail)
+                                        Button("Add Editor") {
+                                            isAddingEditor = false
+                                            editoremails.append(newEditorEmail)
                                         }
                                     }
                                 }
@@ -308,7 +348,7 @@ struct SportsDetailAdminView: View {
                     temptags.append(selectedTeam)
                     tags = temptags
                     
-                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: nil, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
+                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: nil, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
                     
                     
                     if let sporttoedit = sporttoedit {
@@ -326,6 +366,7 @@ struct SportsDetailAdminView: View {
                 sportname = editingsport.sportname
                 sportcoaches = editingsport.sportcoaches
                 adminemails = editingsport.adminemails
+                editoremails = editingsport.editoremails
                 sportsimage = editingsport.sportsimage
                 sportsteam = editingsport.sportsteam
                 sportsroster = editingsport.sportsroster
@@ -350,6 +391,6 @@ struct SportsDetailAdminView: View {
 
 struct SportsDetailAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: 1))
+        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: 1))
     }
 }

@@ -16,6 +16,7 @@ struct studentachievement: Identifiable, Equatable{
     let articleauthor:String
     let publisheddate:String
     let images:[String]
+    var isApproved: Bool
     var imagedata: [UIImage] // , imagedata: []
  }
 class studentachievementlist: ObservableObject{
@@ -72,9 +73,10 @@ class studentachievementlist: ObservableObject{
                     let articleauthor = data["articleauthor"] as? String ?? ""
                     let publisheddate = data["publisheddate"] as? String ?? ""
                     let images = data["images"] as? [String] ?? []
+                    let isApproved = data["isApproved"] as? Bool ?? false
                     let documentID = document.documentID
                     
-                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, imagedata: [])
+                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: [])
                     templist.append(achievement)
                 }
                 
@@ -95,7 +97,8 @@ class studentachievementlist: ObservableObject{
             "achievementdescription": achievement.achievementdescription,
             "articleauthor": achievement.articleauthor,
             "images": achievement.images,
-            "publisheddate": achievement.publisheddate
+            "publisheddate": achievement.publisheddate,
+            "isApproved": achievement.isApproved
         ]) { error in
             completion(error)
             if error == nil {
@@ -147,6 +150,7 @@ class studentachievementlist: ObservableObject{
                     articleauthor: article.articleauthor,
                     publisheddate: article.publisheddate,
                     images: article.images,
+                    isApproved: article.isApproved,
                     imagedata: tempimages
                 )
                 returnlist.append(updatedArticle)

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct StudentSpotlight: View {
     @State private var hasPermissionSpotlight = false
+    @State private var isAdmin = false
+    @State private var isWriter = false
     var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
     var spotlightManager = studentachievementlist()
@@ -54,13 +56,15 @@ struct StudentSpotlight: View {
                         }
                         ForEach(spotlightarticles, id: \.id)
                         {news in
+                            if news.isApproved { // checking if article is approved
                             NavigationLink {
                                 SpotlightArticles(currentstudentdub: news)
                             } label: {
                                 achievementcell(feat: news)
-                                   // .background( NavigationLink("", destination: SpotlightArticles(currentstudentdub: news)).opacity(0) )
-                                   // .listRowSeparator(.hidden)
+                                // .background( NavigationLink("", destination: SpotlightArticles(currentstudentdub: news)).opacity(0) )
+                                // .listRowSeparator(.hidden)
                             }.buttonStyle(PlainButtonStyle())
+                        }
                         }
                             .padding(.horizontal)
                     }
@@ -69,6 +73,12 @@ struct StudentSpotlight: View {
                     if !hasAppeared {
                         permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
                             self.hasPermissionSpotlight = result
+                        }
+                        permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
+                            self.isAdmin = result
+                        }
+                        permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
+                            self.isWriter = result
                         }
                         hasAppeared = true
                     }
@@ -94,7 +104,7 @@ struct StudentSpotlight: View {
                             }
                             
                             dispatchGroup.notify(queue: .main) { // This block will be executed after all async calls are done
-                                returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
+                                returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
                                 
                                 spotlightarticles = returnlist
                                 

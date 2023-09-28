@@ -15,9 +15,9 @@ struct HomeView: View {
 //        let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
 //        setContentOffset(desiredOffset, animated: true)
 //    }
-    @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
-    @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
-    @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], imagedata: [])
+     @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
+    @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
+    @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
     @State var screen = ScreenSize()
     @State var clubmanager = clubManager()
      @StateObject var newsDataManager = Newslist.shared
@@ -270,26 +270,12 @@ struct HomeView: View {
                                            }
                                            
                                            VStack { // MARK: student spotlight
-                                                if spotlightarticles.count > 0 {
-                                                     NavigationLink {
-                                                          SpotlightArticles(currentstudentdub: firstcurrentevent)
-                                                     } label: {
-                                                          MostRecentAchievementCell(feat: firstcurrentevent)
-                                                     }
-                                                }
-                                                if spotlightarticles.count > 1 {
-                                                     NavigationLink {
-                                                          SpotlightArticles(currentstudentdub: secondcurrentevent)
-                                                     } label: {
-                                                          MostRecentAchievementCell(feat: secondcurrentevent)
-                                                     }
-                                                }
-                                                if spotlightarticles.count > 2 {
-                                                     NavigationLink {
-                                                          SpotlightArticles(currentstudentdub: thirdcurrentevent)
-                                                     } label: {
-                                                          MostRecentAchievementCell(feat: thirdcurrentevent)
-                                                     }
+                                                ForEach(spotlightarticles.filter { $0.isApproved == true }.prefix(3), id: \.id) { article in
+                                                    NavigationLink {
+                                                        SpotlightArticles(currentstudentdub: article)
+                                                    } label: {
+                                                        MostRecentAchievementCell(feat: article)
+                                                    }
                                                 }
                                                 
                                                 
@@ -369,6 +355,12 @@ struct HomeView: View {
                                                 permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
                                                      self.hasPermissionSpotlight = result
                                                 }
+                                                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
+                                                     self.hasPermissionSpotlight = result
+                                                }
+                                                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
+                                                     self.hasPermissionSpotlight = result
+                                                }
                                                 permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
                                                      self.hasPermissionUpcomingEvents = result
                                                 }
@@ -406,7 +398,7 @@ struct HomeView: View {
                                                      }
                                                      
                                                      dispatchGroup.notify(queue: .main) {
-                                                          returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, imagedata: tempimages))
+                                                          returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
                                                           
                                                           spotlightarticles = returnlist
                                                           self.spotlightarticles = self.spotlightarticles.sorted { first, second in

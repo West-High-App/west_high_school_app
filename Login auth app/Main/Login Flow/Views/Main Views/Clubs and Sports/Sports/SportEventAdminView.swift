@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct SportEventsAdminView: View {
     var currentsport: sport
@@ -127,7 +128,7 @@ struct SportEventsAdminView: View {
                         if !isSpecial {
                             Section(header: Text("Home Score")) {
                                 TextField("Home score", text: $homescore)
-                                    //.keyboardType(.numberPad)
+                                    .keyboardType(.numberPad)
                             }
                             Section(header: Text("Opponent Score")) {
                                 TextField("Opponent score", text: $otherscore)
@@ -207,6 +208,24 @@ struct SportEventsAdminView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(sportEventManager())
+        SportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1)).environmentObject(sportEventManager())
+    }
+}
+
+
+
+struct NumericTextField: View {
+    @Binding var text: String
+    var displaytext: String
+    
+    var body: some View {
+        TextField("Enter a number", text: $text)
+            .keyboardType(.numberPad)
+            .onReceive(Just(text)) { newValue in
+                let filtered = newValue.filter { "0123456789".contains($0) }
+                if filtered != newValue {
+                    self.text = filtered
+                }
+            }
     }
 }

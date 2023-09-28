@@ -13,6 +13,7 @@ struct sport: Identifiable, Equatable {
     var sportname:String // name of sport
     var sportcoaches: [String] // coach
     var adminemails: [String]
+    var editoremails: [String]
     var sportsimage:String // image name
     var sportsteam: String // varsity, jv, etc.
     var sportsroster:[String] // array of students in sport
@@ -55,6 +56,7 @@ class sportsManager: ObservableObject {
                     let sportname = data["sportname"] as? String ?? ""
                     let sportcoaches = data["sportscoaches"] as? [String] ?? []
                     let adminemails = data["adminemails"] as? [String] ?? []
+                    let editoremails = data["editoremails"] as? [String] ?? []
                     let sportsimage = data["sportsimage"] as? String ?? ""
                     let sportsteam = data["sportsteam"] as? String ?? ""
                     let sportsroster = data["sportsroster"] as? [String] ?? []
@@ -67,7 +69,7 @@ class sportsManager: ObservableObject {
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
                     
-                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
+                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
                     tempID = tempID + 1
                     returnvalue.append(sport)
                 }
@@ -86,6 +88,7 @@ class sportsManager: ObservableObject {
             "sportname": sport.sportname,
             "sportcoaches": sport.sportcoaches,
             "adminemails": sport.adminemails,
+            "editoremails": sport.editoremails,
             "sportsimage": sport.sportsimage,
             "sportsteam": sport.sportsteam,
             "sportsroster": sport.sportsroster,
@@ -120,6 +123,7 @@ class sportsManager: ObservableObject {
             "sportname": data.sportname,
             "sportscoaches": data.sportcoaches,
             "adminemails": data.adminemails,
+            "editoremails": data.editoremails,
             "sportsimage": data.sportsimage,
             "sportsteam": data.sportsteam,
             "sportsroster": data.sportsroster,

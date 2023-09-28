@@ -23,6 +23,7 @@ struct SportsAdminView: View {
     @State var sportcoaches: [String] = []
     @State var adminsstring = ""
     @State var adminemails: [String] = []
+    @State var editoremails: [String] = []
     @State var sportsimage = ""
     @State var sportsteam = ""
     @State var sportsroster: [String] = []
@@ -99,7 +100,7 @@ struct SportsAdminView: View {
                         
                             adminemails = adminsstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                             
-                            sportToAdd = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: [], eventslink: "NO LINK", imagedata: nil, documentID: "NAN", sportid: "\(sportname) \(sportsteam)", id: 0)
+                            sportToAdd = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: [], eventslink: "NO LINK", imagedata: nil, documentID: "NAN", sportid: "\(sportname) \(sportsteam)", id: 0)
                             if let sportToAdd = sportToAdd {
                                 db.createSport(sport: sportToAdd) { error in
                                     if let error = error {
