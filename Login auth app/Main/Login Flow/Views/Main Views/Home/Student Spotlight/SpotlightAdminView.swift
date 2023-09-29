@@ -170,7 +170,7 @@ struct SpotlightAdminView: View {
                                         }
                                     }
                                 }
-                                
+                                    
                             }
                             .alert(isPresented: $isConfirmingApproveAchievement) {
                                 Alert(
@@ -234,14 +234,17 @@ struct SpotlightAdminView: View {
                 }
                 else if let list = list {
                     achievementlist = list
+                    if !achievementlist.isEmpty {
+                        selectedArticle = achievementlist[0]
+                    }
                 }
             }
-            permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                self.isAdmin = result
-            }
-            permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                self.isWriter = result
-            }
+                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
+                    self.isAdmin = result
+                }
+                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
+                    self.isWriter = result
+                }
         }
         .sheet(isPresented: $isPresentingAddAchievement) {
             AchievementDetailView(dataManager: dataManager, editingAchievement: nil, displayimages: [])
