@@ -8,6 +8,7 @@ import SwiftUI
 
 struct ClubsEventsAdminView: View {
     var currentclub: club
+    var admin: Bool
     @State var eventlist: [clubEvent] = []
     @StateObject var dataManager = clubEventManager()
     @State var temptitle = ""
@@ -18,6 +19,17 @@ struct ClubsEventsAdminView: View {
     @State var eventToSave: clubEvent?
     @State var editingeventslist: [clubEvent] = []
     
+    @State var selectedevent = 0
+    @State var selectedtime = 0
+    
+    var typelist = ["Meeting", "Mandatory Meeting", "Competition", "Special Event"]
+    
+    @State private var selectedTime = Date()
+    var formattedTime: String {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "h:mm a"
+            return dateFormatter.string(from: selectedTime)
+        }
     
     @State private var eventyear = ""
     let calendar = Calendar.current
@@ -50,29 +62,31 @@ struct ClubsEventsAdminView: View {
                         .cornerRadius(10)
                         .shadow(radius: 2, x: 1, y: 1))
             }
-            List {
-                ForEach(editingeventslist, id: \.id) { event in
-                    VStack(alignment: .leading) {
-                        Text(event.title)
-                            .fontWeight(.semibold)
-                        Text(event.subtitle)
-                        Text("\(event.month) \(event.day), \(event.year)")
-                    }.contextMenu {
-                        Button("Delete", role: .destructive) {
-                            temptitle = event.title
-                            // isConfirmingDeleteEvent = true
-                            eventToDelete = event
-                            if let eventToDelete = eventToDelete {
-                                editingeventslist.removeAll {$0 == eventToDelete}
-                                print("Removed \(eventToDelete)")
-                                dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
-                            }
-                            dataManager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
-                                if let error = error {
-                                    print("Error updating events: \(error.localizedDescription)")
+            if admin {
+                List {
+                    ForEach(editingeventslist, id: \.id) { event in
+                        VStack(alignment: .leading) {
+                            Text(event.title)
+                                .fontWeight(.semibold)
+                            Text(event.subtitle)
+                            Text("\(event.month) \(event.day), \(event.year)")
+                        }.contextMenu {
+                            Button("Delete", role: .destructive) {
+                                temptitle = event.title
+                                // isConfirmingDeleteEvent = true
+                                eventToDelete = event
+                                if let eventToDelete = eventToDelete {
+                                    editingeventslist.removeAll {$0 == eventToDelete}
+                                    print("Removed \(eventToDelete)")
+                                    dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
                                 }
-                                if let events = events {
-                                    eventlist = events
+                                dataManager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
+                                    if let error = error {
+                                        print("Error updating events: \(error.localizedDescription)")
+                                    }
+                                    if let events = events {
+                                        eventlist = events
+                                    }
                                 }
                             }
                         }
@@ -114,8 +128,24 @@ struct ClubsEventsAdminView: View {
                 }
                 Form {
                     Section(header: Text("Clubs Event details")) {
-                        TextField("Title", text: $title)
-                        TextField("Subtitle", text: $subtitle)
+                        if admin {
+                            TextField("Title", text: $title)
+                            TextField("Subtitle", text: $subtitle)
+                        } else {
+                                Picker("Event Type", selection: $selectedevent) {
+                                    Text("Meeting")
+                                        .tag(0)
+                                    Text("Mandatory Meeting")
+                                        .tag(1)
+                                    Text("Competition")
+                                        .tag(2)
+                                    Text("Special Event")
+                                        .tag(3)
+                                }
+                            DatePicker("Pick a time", selection: $selectedTime, displayedComponents: .hourAndMinute)
+                                            .labelsHidden()
+                                            .datePickerStyle(WheelDatePickerStyle())
+                        }
                         
                         Picker("Month", selection: $selectedMonthIndex) {
                             ForEach(0..<months.count, id: \.self) { index in
@@ -136,14 +166,25 @@ struct ClubsEventsAdminView: View {
                         }
                     }
                     Button("Publish new club event") {
-                        eventToSave = clubEvent(
-                            documentID: "NAN",
-                            title: title,
-                            subtitle: subtitle,
-                            month: months[selectedMonthIndex],
-                            day: "\(days[selectedDayIndex])",
-                            year: years[selectedYearIndex],
-                            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)")
+                        if admin {
+                            eventToSave = clubEvent(
+                                documentID: "NAN",
+                                title: title,
+                                subtitle: subtitle,
+                                month: months[selectedMonthIndex],
+                                day: "\(days[selectedDayIndex])",
+                                year: years[selectedYearIndex],
+                                publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)")
+                        } else {
+                            eventToSave = clubEvent(
+                                documentID: "NAN",
+                                title: typelist[selectedevent],
+                                subtitle: formattedTime,
+                                month: months[selectedMonthIndex],
+                                day: "\(days[selectedDayIndex])",
+                                year: years[selectedYearIndex],
+                                publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)")
+                        }
                         if let eventToSave = eventToSave {
                             print("Event to save")
                             print(eventToSave)

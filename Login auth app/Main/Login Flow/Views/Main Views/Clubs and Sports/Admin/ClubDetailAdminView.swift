@@ -39,6 +39,9 @@ struct ClubDetailAdminView: View {
     @State private var isAddingMember = false
     @State private var newMemberName = ""
     
+    @State private var isAddingEditor = false
+    @State private var newEditorEmail = ""
+    
     // images
     @StateObject var imagemanager = imageManager()
     @State var originalImage = ""
@@ -59,7 +62,7 @@ struct ClubDetailAdminView: View {
                     TextField("Meeting room", text: $clubmeetingroom)
                 }
                                 
-                Section("Club Members") {
+                Section("Permissions") {
                     
                     DisclosureGroup("Admins") {
                         ForEach($adminemails, id: \.self) { $adminEmail in
@@ -91,6 +94,48 @@ struct ClubDetailAdminView: View {
                                             isAddingAdmin = false
                                             adminemails.append(newAdminEmail)
                                             newAdminEmail = ""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                 
+                Section("Members") {
+                
+                    DisclosureGroup("Editors") {
+                        ForEach($editoremails, id: \.self) { $editoremail in
+                            
+                            HStack {
+                                Text(editoremail)
+                                    .contextMenu {
+                                        Button(role: .destructive) {
+                                            editoremails.removeAll { $0 == editoremail }
+                                        } label: {
+                                            Text("Delete")
+                                        }
+                                    }
+                            }
+                        }
+                        Button("Add Editor") {
+                            isAddingEditor = true
+                        }.sheet(isPresented: $isAddingEditor) {
+                            VStack {
+                                HStack {
+                                    Button("Cancel") {
+                                        isAddingEditor = false
+                                    }.padding()
+                                    Spacer()
+                                }
+                                Form {
+                                    
+                                    Section("New Editor Email:") {
+                                        TextField("Email", text: $newEditorEmail)
+                                        Button("Add Editor") {
+                                            isAddingEditor = false
+                                            editoremails.append(newEditorEmail)
+                                            newEditorEmail = ""
                                         }
                                     }
                                 }

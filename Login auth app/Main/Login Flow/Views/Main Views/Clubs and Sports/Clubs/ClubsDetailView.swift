@@ -12,7 +12,8 @@ struct ClubsDetailView: View {
     var permissionsManager = permissionsDataManager()
 
     @EnvironmentObject var userInfo: UserInfo
-    @State private var hasPermissionClub = false
+    @State private var isAdmin = false
+    @State private var isEditor = false
     @State private var canEditClub = false
     @State var isFavorited = false
     @State var favoritesManager = FavoriteClubs()
@@ -108,14 +109,20 @@ struct ClubsDetailView: View {
                 
                 if selected == 1 {
                     
-                    if hasPermissionClub {
+                    if isAdmin {
                         NavigationLink {
-                            ClubsEventsAdminView(currentclub: currentclub)
+                            ClubsEventsAdminView(currentclub: currentclub, admin: true)
                         } label: {
                             Text("Edit Upcoming Events")
                                 .font(.system(size: 17, weight: .semibold, design: .rounded))
                         }
-                        
+                    } else if isEditor {
+                        NavigationLink {
+                            ClubsEventsAdminView(currentclub: currentclub, admin: false)
+                        } label: {
+                            Text("Edit Upcoming Events")
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        }
                     }
                     if upcomingeventlist.count < 1 {
                         Text("No upcoming events.")
@@ -241,8 +248,13 @@ struct ClubsDetailView: View {
                     
                     // checking permissions
                     if userInfo.isClubsAdmin || userInfo.isAdmin || currentclub.adminemails.contains(userInfo.email) {
-                        hasPermissionClub = true
+                        isAdmin = true
                     }
+                    
+                    if currentclub.editoremails.contains(userInfo.email) {
+                        isEditor = true
+                    }
+                    
                     
                     // formatting stuff
                     
@@ -251,7 +263,7 @@ struct ClubsDetailView: View {
                 .navigationBarItems(trailing:
                                         Group {
                     HStack {
-                        if hasPermissionClub {
+                        if isAdmin {
                             NavigationLink {
                                 ClubDetailAdminView(editingclub: currentclub)
                             } label: {
