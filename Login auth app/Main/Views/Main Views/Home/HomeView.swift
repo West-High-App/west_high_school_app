@@ -787,7 +787,8 @@ struct MostRecentAchievementCell: View{
         
         .onAppear {
             if !hasAppeared {
-                imagemanager.getImage(fileName: feat.images.first!) { uiimage in
+                 guard let image = feat.images.first else { return }
+                imagemanager.getImage(fileName: image) { uiimage in
                     if let uiimage = uiimage {
                         imagedata = uiimage
                     }
