@@ -27,6 +27,17 @@ struct ClubsHibabi: View {
     @State var clubshowingAllNews = 1
     @State private var clubcount = 0
     @State var favoriteclublist: [club] = []
+    
+    var hasFavorites: Bool {
+        var returnvalue = false
+        for item in clubsmanager.allclublist {
+            if item.favoritedusers.contains(userInfo.email) {
+                returnvalue = true
+            }
+        }
+        return returnvalue
+        
+    }
 
     @State private var isLoading = false
     
@@ -119,7 +130,7 @@ struct ClubsHibabi: View {
                         
                         if clubselected == 1 || clubselected == 2 {
                             
-                            if clubselected == 1 && favoriteclublist.count == 0 {
+                            if !hasFavorites {
                                 VStack {
                                     Spacer()
                                     Text("Add a club to get started!")
