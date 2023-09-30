@@ -149,7 +149,7 @@ struct sportNewsRowlView: View {
                     Image(uiImage: displayimage ?? UIImage())
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 200, height: 200)
+                        .frame(width: 200, height: 150)
                         .cornerRadius(10)
                     Button("Upload New Image") {
                         isDisplayingAddImage = true

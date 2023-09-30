@@ -259,7 +259,7 @@ struct ClubsHibabi: View {
                             for club in clubsmanager.favoriteslist {
                                 dispatchGroup.enter()
                                 
-                                imagemanager.getImageFromStorage(fileName: club.clubimage) { image in
+                                imagemanager.getImage(fileName: club.clubimage) { image in
                                     var tempclub2 = club
                                     if let image = image {
                                         tempclub2.imagedata = image
@@ -281,7 +281,7 @@ struct ClubsHibabi: View {
                             for club in clubsmanager.allclublist {
                                 dispatchGroup.enter()
                                 
-                                imagemanager.getImageFromStorage(fileName: club.clubimage) { image in
+                                imagemanager.getImage(fileName: club.clubimage) { image in
                                     
                                     var tempclub = club
                                     if let image = image {
@@ -301,7 +301,7 @@ struct ClubsHibabi: View {
                             for news in clubNewsManager.allclubsnewslist {
                                 dispatchGroup.enter()
                                 
-                                imagesManager.getImageFromStorage(fileName: news.newsimage[0]) { uiimage in
+                                imagesManager.getImage(fileName: news.newsimage[0]) { uiimage in
                                     var tempnews = news
                                     if let uiimage = uiimage {
                                         

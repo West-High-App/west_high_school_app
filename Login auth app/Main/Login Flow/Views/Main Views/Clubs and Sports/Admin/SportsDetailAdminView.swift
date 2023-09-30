@@ -382,7 +382,7 @@ struct SportsDetailAdminView: View {
                 
                 
                 originalImage = editingsport.sportsimage
-                imagemanager.getImageFromStorage(fileName: sportsimage) { image in
+                imagemanager.getImage(fileName: sportsimage) { image in
                     displayimage = image
                 }
             }

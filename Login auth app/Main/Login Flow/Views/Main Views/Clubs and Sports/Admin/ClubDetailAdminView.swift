@@ -336,7 +336,7 @@ struct ClubDetailAdminView: View {
                 //images
                 
                 originalImage = editingclub.clubimage
-                imagemanager.getImageFromStorage(fileName: clubimage) { image in
+                imagemanager.getImage(fileName: clubimage) { image in
                     displayimage = image
                 }
             }

@@ -13,9 +13,6 @@ struct UpcomingEventsAdminView: View {
     @State private var isConfirmingDeleteEvent = false
     @State private var isConfirmingDeleteEventFinal = false
     @State private var eventToDelete: event?
-    init() {
-        dataManager.getUpcomingEvents()
-    }
     var body: some View {
             VStack {
                 HStack {

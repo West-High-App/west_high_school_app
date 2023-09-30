@@ -127,5 +127,53 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EBD366A6-27F6-468A-AA69-C6B04C504380"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Clubs and Sports/Sports/SportsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "SportsHibabi"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "EBD366A6-27F6-468A-AA69-C6B04C504380 - 997f70a85400b271"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of West_High.SportsHibabi.hasPermissionSports : Swift.Bool"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Clubs%20and%20Sports/Sports/SportsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  uuid = "EBD366A6-27F6-468A-AA69-C6B04C504380 - b85bebac9ea5b3de"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "West_High.SportsHibabi.init() -&gt; West_High.SportsHibabi"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Clubs%20and%20Sports/Sports/SportsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "18"
+                  endingLineNumber = "18"
+                  offsetFromSymbolStart = "568">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

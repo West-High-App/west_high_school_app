@@ -138,7 +138,7 @@ struct PastSportEventsAdminView: View {
 
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
-                        }
+                        } // MARK: change this to be update, not delete and create new event
 
                         
                         isPresentingEditEvent = false

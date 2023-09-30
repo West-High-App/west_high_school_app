@@ -323,7 +323,7 @@ struct SportsHibabi: View {
                         for sport in sportsmanager.favoriteslist {
                             dispatchGroup.enter()
                             
-                            imagesManager.getImageFromStorage(fileName: sport.sportsimage) { image in
+                            imagesManager.getImage(fileName: sport.sportsimage) { image in
                                 
                                 var tempsport2 = sport
                                 if let image = image {
@@ -345,7 +345,7 @@ struct SportsHibabi: View {
                         for sport in sportsmanager.allsportlist {
                             dispatchGroup.enter()
                             
-                            imagesManager.getImageFromStorage(fileName: sport.sportsimage) { image in
+                            imagesManager.getImage(fileName: sport.sportsimage) { image in
                                 
                                 var tempsport = sport
                                 if let image = image {
@@ -366,7 +366,7 @@ struct SportsHibabi: View {
                         for news in sportsNewsManager.allsportsnewslist {
                             dispatchGroup.enter()
                             
-                            imagesManager.getImageFromStorage(fileName: news.newsimage[0]) { uiimage in
+                            imagesManager.getImage(fileName: news.newsimage[0]) { uiimage in
                                 
                                 var tempnews = news
                                 if let uiimage = uiimage {

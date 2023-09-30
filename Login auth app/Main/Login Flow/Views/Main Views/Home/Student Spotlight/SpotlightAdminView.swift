@@ -16,19 +16,33 @@ struct SpotlightAdminView: View {
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var isConfirmingApproveAchievement = false
     @State private var achievementToDelete: studentachievement?
-
+    
+    @State var selectedIndex = 0
+    @State var usableType: studentachievement?
+    
     @State private var isAdmin = false
     @State private var isWriter = false
     
-    @State var presentingArticleSheet = false
-    @State var selectedArticle: studentachievement?
+    @State private var presentingArticleSheet = false
+    @State var selectedArticle = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [], isApproved: false, imagedata: [])
     
     @State var selected = 1
-
     
+    var pendingCount: Int {
+            return achievementlist.filter { !$0.isApproved }.count
+        }
+    var pendingString: String {
+        if pendingCount == 0 {
+            return ""
+        } else {
+            return " (\(pendingCount))"
+        }
+    }
+
     @StateObject var imagemanager = imageManager()
     @State var displayimages: [UIImage] = []
     @State var currentimage: UIImage?
+    @State private var isCropping: Bool = false
     @State var isDisplayingAddImage = false
     
     var body: some View {
@@ -59,7 +73,7 @@ struct SpotlightAdminView: View {
                 Picker("Selected", selection: $selected) {
                     Text("Edit")
                         .tag(1)
-                    Text("Pending")
+                    Text("Pending\(pendingString)")
                         .tag(2)
                 }.pickerStyle(.segmented)
                     .padding(.horizontal)
@@ -101,10 +115,13 @@ struct SpotlightAdminView: View {
                             }
                             .contextMenu {
                                 Button("Edit") {
-                                    selectedArticle = achievement
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
-                                        presentingArticleSheet = true
-                                    })
+                                    print(selectedArticle)
+                                    self.selectedArticle = achievement
+                                    if let index = achievementlist.firstIndex(of: achievement) {
+                                        selectedIndex = index
+                                    }
+                                    presentingArticleSheet = true
+                                    self.selectedArticle = achievement
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
@@ -122,53 +139,58 @@ struct SpotlightAdminView: View {
                             }*/
                             .sheet(isPresented: $presentingArticleSheet) {
                                 VStack {
-                                    HStack {
-                                        Button("Cancel") {
-                                            presentingArticleSheet = false
-                                        }.padding()
-                                        Spacer()
-                                    }
-                                    if let selectedArticle = selectedArticle {
-                                        ScrollView {
-                                            VStack {
-                                                Text(selectedArticle.achievementtitle)
-                                                    .fontWeight(.semibold)
-                                                    .padding(10)
-                                                Text(selectedArticle.articleauthor)
-                                                    .fontWeight(.medium)
-                                                    .padding(10)
-                                                Text(selectedArticle.publisheddate)
-                                                    .fontWeight(.medium)
-                                                    .padding(10)
-                                                Text(selectedArticle.achievementdescription)
-                                                    .padding()
-                                                Spacer()
-                                            }
-                                            
+                                    if let usableType = usableType {
+                                        VStack {
                                             HStack {
-                                                Spacer()
-                                                Button("Delete", role: .destructive) {
+                                                Button("Cancel") {
                                                     presentingArticleSheet = false
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                        tempAchievementTitle = selectedArticle.achievementtitle
-                                                        isConfirmingDeleteAchievement = true
-                                                        achievementToDelete = selectedArticle
-                                                    }
-                                                }
-                                                Spacer()
-                                                Button("Approve") {
-                                                    presentingArticleSheet = false
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                        tempAchievementTitle = selectedArticle.achievementtitle
-                                                        isConfirmingApproveAchievement = true
-                                                        achievementToDelete = selectedArticle
-                                                    }
-                                                }
+                                                }.padding()
                                                 Spacer()
                                             }
-                                            
+                                            ScrollView {
+                                                VStack (alignment: .leading){
+                                                    Text(usableType.achievementtitle)
+                                                        .fontWeight(.semibold)
+                                                        .padding(.leading)
+                                                    Text(usableType.articleauthor)
+                                                        .fontWeight(.medium)
+                                                        .padding(.leading)
+                                                    Text(usableType.publisheddate)
+                                                        .fontWeight(.medium)
+                                                        .padding(.leading)
+                                                    Text(usableType.achievementdescription)
+                                                        .padding()
+                                                    Spacer()
+                                                }
+                                                
+                                                HStack {
+                                                    Spacer()
+                                                    Button("Delete", role: .destructive) {
+                                                        presentingArticleSheet = false
+                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                            tempAchievementTitle = selectedArticle.achievementtitle
+                                                            isConfirmingDeleteAchievement = true
+                                                            achievementToDelete = usableType
+                                                        }
+                                                    }
+                                                    Spacer()
+                                                    Button("Approve") {
+                                                        presentingArticleSheet = false
+                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                            tempAchievementTitle = selectedArticle.achievementtitle
+                                                            isConfirmingApproveAchievement = true
+                                                            achievementToDelete = usableType
+                                                        }
+                                                    }
+                                                    Spacer()
+                                                }
+                                                
+                                            }
                                         }
                                     }
+                                }.onAppear {
+                                    print(selectedArticle)
+                                    usableType = achievementlist[selectedIndex]
                                 }
                                     
                             }
@@ -235,7 +257,8 @@ struct SpotlightAdminView: View {
                 else if let list = list {
                     achievementlist = list
                     if !achievementlist.isEmpty {
-                        selectedArticle = achievementlist[0]
+                        selectedArticle = achievementlist.first {$0.isApproved == false}!
+                        selectedArticle = achievementlist.last {$0.isApproved == false}!
                     }
                 }
             }
@@ -329,6 +352,7 @@ struct AchievementDetailView: View {
     @State var displayimages: [String] = []// make string
     @State var displayimagesdata: [UIImage] = [] // init to get this from displayimages
     @State var currentimage: UIImage?
+    @State private var isCropping: Bool = false
     @State var isDisplayingAddImage = false
     
     // Define arrays for month and day options
@@ -354,7 +378,7 @@ struct AchievementDetailView: View {
                             Image(uiImage: image)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: 200, height: 200)
+                                .frame(width: 200, height: 150)
                                 .cornerRadius(10)
                         }
                     }
@@ -437,7 +461,7 @@ struct AchievementDetailView: View {
                
                 for image in displayimages {
                     
-                    imagemanager.getImageFromStorage(fileName: image) { uiimage in
+                    imagemanager.getImage(fileName: image) { uiimage in
                         if let uiimage = uiimage {
                             displayimagesdata.append(uiimage)
                         }

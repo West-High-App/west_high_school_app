@@ -95,7 +95,7 @@ struct StudentSpotlight: View {
                             
                             for imagepath in article.images {
                                 dispatchGroup.enter() // Enter the Dispatch Group before each async call
-                                imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
+                                imagemanager.getImage(fileName: imagepath) { uiimage in
                                     if let uiimage = uiimage {
                                         tempimages.append(uiimage)
                                     }

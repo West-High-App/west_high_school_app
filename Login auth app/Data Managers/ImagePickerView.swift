@@ -162,27 +162,51 @@ struct ImagePickerView: View {
 
 class imageManager: ObservableObject {
     
-    @State var selectedImage: UIImage?
-    @State var imagetoshow: UIImage?
-    @State var imagename: String = ""
-    @State var bandwidth = 0
-    
-    func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
-            let storageRef = Storage.storage().reference()
-            let fileRef = storageRef.child(fileName)
-            fileRef.getData(maxSize: 1024 * 1024) { data, error in
-                if error == nil, let imageData = data {
-                    if let image = UIImage(data: imageData) {
+    @Published var selectedImage: UIImage?
+        @Published var imageName: String = ""
+        @Published var bandwidth = 0
+        
+        let userDefaults = UserDefaults.standard
+        
+        func getImage(fileName: String, completion: @escaping (UIImage?) -> Void) {
+            // Check if the image exists in UserDefaults
+            if let imageData = userDefaults.data(forKey: fileName), let image = UIImage(data: imageData) {
+                completion(image)
+                print("GOT FROM DEFAULTS")
+            } else {
+                // If not, fetch it from Firebase
+                print("GOT FROM FIREBASE")
+                getImageFromStorage(fileName: fileName) { [weak self] image in
+                    if let image = image {
+                        // Cache the fetched image in UserDefaults
+                        self?.cacheImageInUserDefaults(image: image, fileName: fileName)
+                        print("CACHED")
+                        print(self?.userDefaults.data(forKey: fileName) ?? "")
                         completion(image)
                     } else {
                         completion(nil)
-                        print("Completion 1")
+                        print("Error fetching image from Firebase")
                     }
+                }
+            }
+        }
+        
+        func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
+            let storageRef = Storage.storage().reference()
+            let fileRef = storageRef.child(fileName)
+            fileRef.getData(maxSize: 1024 * 1024) { data, error in
+                if error == nil, let imageData = data, let image = UIImage(data: imageData) {
+                    completion(image)
                 } else {
-                    print("ERROR")
-                    print(error!.localizedDescription)
+                    print("Error fetching image from Firebase: \(error?.localizedDescription ?? "Unknown error")")
                     completion(nil)
                 }
+            }
+        }
+        
+        func cacheImageInUserDefaults(image: UIImage, fileName: String) {
+            if let imageData = image.jpegData(compressionQuality: 1.0) {
+                userDefaults.set(imageData, forKey: fileName)
             }
         }
     
@@ -190,7 +214,7 @@ class imageManager: ObservableObject {
         let storageRef = Storage.storage().reference()
         
         let maxsize = 1024 * 300 // 150kb
-        let imageData = file.jpegData(compressionQuality: 0.1)
+        let imageData = file.jpegData(compressionQuality: 0.3)
         
         guard imageData != nil else {
             return ""

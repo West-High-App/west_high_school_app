@@ -27,6 +27,7 @@
 		2232FEF22AA798620067AAB8 /* ClubsEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF12AA798620067AAB8 /* ClubsEventData.swift */; };
 		2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */; };
 		2232FEF62AA945140067AAB8 /* ClubEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */; };
+		224B2EE42AC8472A00BCF08B /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224B2EE32AC8472A00BCF08B /* ImageCropView.swift */; };
 		2263AD372ABB77EA0016AA73 /* uitestview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD362ABB77E90016AA73 /* uitestview.swift */; };
 		2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */; };
 		2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B1EB2A68D23300823E58 /* WestHighApp.swift */; };
@@ -124,6 +125,7 @@
 		2232FEF12AA798620067AAB8 /* ClubsEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsEventData.swift; sourceTree = "<group>"; };
 		2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailAdminView.swift; sourceTree = "<group>"; };
 		2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEventAdminView.swift; sourceTree = "<group>"; };
+		224B2EE32AC8472A00BCF08B /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
 		2263AD362ABB77E90016AA73 /* uitestview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = uitestview.swift; sourceTree = "<group>"; };
 		2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastSportEventAdminView.swift; sourceTree = "<group>"; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				222086EE2A62458900EF1ECA /* Utilities.swift */,
 				228362F32A2C1BBB0061BFAE /* DataManager.swift */,
 				22DECD692AAB656300061E60 /* ImagePickerData.swift */,
+				224B2EE32AC8472A00BCF08B /* ImageCropView.swift */,
 				22DECD672AAB655000061E60 /* ImagePickerView.swift */,
 			);
 			path = "Data Managers";
@@ -693,6 +696,7 @@
 				2270B2312A68E26900823E58 /* ClubsView.swift in Sources */,
 				2270B25A2A68E75900823E58 /* StaffData.swift in Sources */,
 				E8150E3E2A9E49C300BD6853 /* SplashScreenView.swift in Sources */,
+				224B2EE42AC8472A00BCF08B /* ImageCropView.swift in Sources */,
 				2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */,
 				E8ED91712AB559B900065526 /* JobInternshipView.swift in Sources */,
 				2270B2472A68E63E00823E58 /* SportsView.swift in Sources */,

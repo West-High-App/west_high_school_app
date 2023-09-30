@@ -8,10 +8,6 @@ struct AnnouncementsView: View {
     @State private var hasPermission = false
     @State var hasAppeared = false
 
-    init() {
-        newsDataManager.getAnnouncements()
-    }
-
     var body: some View {
         NavigationView {
             VStack {

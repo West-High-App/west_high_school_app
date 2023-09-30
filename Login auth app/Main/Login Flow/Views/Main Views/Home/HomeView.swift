@@ -47,8 +47,6 @@ struct HomeView: View {
         self.safeArea = safeArea
         self.size = size
         upcomingeventsdataManager.getUpcomingEvents()
-        newsDataManager.getAnnouncements()
-         spotlightManager.getAchievements{_, _ in}
         dataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
             let dateFormatter = DateFormatter()
@@ -387,7 +385,7 @@ struct HomeView: View {
                                                      
                                                      for imagepath in article.images {
                                                           dispatchGroup.enter()
-                                                          imagemanager.getImageFromStorage(fileName: imagepath) { uiimage in
+                                                          imagemanager.getImage(fileName: imagepath) { uiimage in
                                                                print("getting from firebase")
 
                                                                if let uiimage = uiimage {
@@ -396,7 +394,7 @@ struct HomeView: View {
                                                                dispatchGroup.leave()
                                                           }
                                                      }
-                                                     
+                                                     // MARK: change get image from storgae to get image
                                                      dispatchGroup.notify(queue: .main) {
                                                           returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
                                                           
@@ -789,7 +787,7 @@ struct MostRecentAchievementCell: View{
         
         .onAppear {
             if !hasAppeared {
-                imagemanager.getImageFromStorage(fileName: feat.images.first!) { uiimage in
+                imagemanager.getImage(fileName: feat.images.first!) { uiimage in
                     if let uiimage = uiimage {
                         imagedata = uiimage
                     }
