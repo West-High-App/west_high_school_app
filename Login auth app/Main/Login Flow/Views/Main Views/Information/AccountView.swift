@@ -78,15 +78,17 @@ struct AccountView: View {
             }.navigationTitle("User Info")
                 .confirmationDialog("Log Out", isPresented: $isPresentingLogoutConfirmation) {
                     Button("Sign Out", role: .destructive) {
-                        do {
-                            print("trying to sign out.")
-                            try Auth.auth().signOut()
-                            DispatchQueue.main.async {
-                                userInfo.loginStatus = "none"
+                        DispatchQueue.main.async { // should fix the issue
+                            do {
+                                print("trying to sign out.")
+                                try Auth.auth().signOut()
+                                DispatchQueue.main.async {
+                                    userInfo.loginStatus = "none"
+                                }
+                            } catch let signOutError {
+                                print("tried to sign out failed")
+                                print(signOutError.localizedDescription)
                             }
-                        } catch let signOutError {
-                            print("tried to sign out failed")
-                            print(signOutError.localizedDescription)
                         }
                     }
                 }
