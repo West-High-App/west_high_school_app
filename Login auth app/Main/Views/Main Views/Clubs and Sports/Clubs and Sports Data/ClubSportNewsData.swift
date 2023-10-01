@@ -2,7 +2,7 @@
 //  SportsNewsData.swift
 //  West App
 //
-//  Created by August Andersen on 7/6/23.
+//  Created by August Andersen on 7/6/23. boom
 //
 
 import Foundation
