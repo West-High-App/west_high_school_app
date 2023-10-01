@@ -13,7 +13,7 @@ struct StudentSpotlight: View {
     @State private var isWriter = false
     var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
-    var spotlightManager = studentachievementlist()
+    @ObservedObject var spotlightManager = studentachievementlist.shared
     @StateObject var imagemanager = imageManager()
     @State var spotlightarticles: [studentachievement]
     @State var hasAppeared = false

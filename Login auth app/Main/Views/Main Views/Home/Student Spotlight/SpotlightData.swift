@@ -38,7 +38,6 @@ class studentachievementlist: ObservableObject{
                 print("Error: \(error.localizedDescription)")
             }
             if let list = list {
-                self.allstudentachievementlist = list
                 self.newstitlearray = self.allstudentachievementlist.sorted { first, second in
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "MMM dd, yyyy"
@@ -54,11 +53,10 @@ class studentachievementlist: ObservableObject{
     }
     
     func getAchievements(completion: @escaping ([studentachievement]?, Error?) -> Void) {
-        var templist: [studentachievement] = []
         let db = Firestore.firestore()
         let collection = db.collection("StudentAchievements")
         
-        collection.getDocuments { snapshot, error in
+        collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 completion(nil, error)
@@ -66,6 +64,16 @@ class studentachievementlist: ObservableObject{
             }
             
             if let snapshot = snapshot {
+                var templist: [studentachievement] = [] {
+                    didSet {
+                        if templist.count == snapshot.count {
+                            DispatchQueue.main.async {
+                                self.allstudentachievementlist = templist
+                                completion(templist, nil)
+                            }
+                        }
+                    }
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let achievementtitle = data["achievementtitle"] as? String ?? ""
@@ -78,11 +86,6 @@ class studentachievementlist: ObservableObject{
                     
                     let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: [])
                     templist.append(achievement)
-                }
-                
-                DispatchQueue.main.async {
-                    self.allstudentachievementlist = templist
-                    completion(templist, nil)
                 }
             }
         }
@@ -101,9 +104,6 @@ class studentachievementlist: ObservableObject{
             "isApproved": achievement.isApproved
         ]) { error in
             completion(error)
-            if error == nil {
-                self.getAchievements {_, _ in}
-            }
         }
         print("Article creating with ID: \(achievement.documentID)")
         
@@ -115,9 +115,6 @@ class studentachievementlist: ObservableObject{
         let ref = db.collection("StudentAchievements").document(achievement.documentID)
         ref.delete { error in
             completion(error)
-            if error == nil {
-                self.getAchievements{_, _ in}
-            }
         }
         print("Achievement deleted")
     }

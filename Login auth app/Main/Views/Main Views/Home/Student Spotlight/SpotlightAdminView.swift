@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SpotlightAdminView: View {
-    @StateObject var dataManager = studentachievementlist()
+    @ObservedObject var dataManager = studentachievementlist.shared
     @StateObject var userInfo = UserInfo()
     @StateObject var permissionsManager = permissionsDataManager()
 
@@ -10,7 +10,6 @@ struct SpotlightAdminView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var tempAchievementTitle = ""
-    @State var achievementlist: [studentachievement] = []
 
     @State private var isConfirmingDeleteAchievement = false
     @State private var isConfirmingDeleteAchievementFinal = false
@@ -29,7 +28,7 @@ struct SpotlightAdminView: View {
     @State var selected = 1
     
     var pendingCount: Int {
-            return achievementlist.filter { !$0.isApproved }.count
+            return dataManager.allstudentachievementlist.filter { !$0.isApproved }.count
         }
     var pendingString: String {
         if pendingCount == 0 {
@@ -79,7 +78,7 @@ struct SpotlightAdminView: View {
                     .padding(.horizontal)
                 
                 if selected == 1 {
-                    List(achievementlist, id: \.id) { achievement in
+                    List(dataManager.allstudentachievementlist, id: \.id) { achievement in
                         if achievement.isApproved {
                             VStack(alignment: .leading) {
                                 Text(achievement.achievementtitle)
@@ -102,7 +101,7 @@ struct SpotlightAdminView: View {
                     }
                 }
                 if selected == 2 {
-                    List(achievementlist, id: \.id) { achievement in
+                    List(dataManager.allstudentachievementlist, id: \.id) { achievement in
                         if !achievement.isApproved {
                             VStack(alignment: .leading) {
                                 Text(achievement.achievementtitle)
@@ -117,7 +116,7 @@ struct SpotlightAdminView: View {
                                 Button("Edit") {
                                     print(selectedArticle)
                                     self.selectedArticle = achievement
-                                    if let index = achievementlist.firstIndex(of: achievement) {
+                                    if let index = dataManager.allstudentachievementlist.firstIndex(of: achievement) {
                                         selectedIndex = index
                                     }
                                     presentingArticleSheet = true
@@ -190,7 +189,7 @@ struct SpotlightAdminView: View {
                                     }
                                 }.onAppear {
                                     print(selectedArticle)
-                                    usableType = achievementlist[selectedIndex]
+                                    usableType = dataManager.allstudentachievementlist[selectedIndex]
                                 }
                                     
                             }
@@ -205,7 +204,7 @@ struct SpotlightAdminView: View {
                                                     print("Error deleting achievement: \(error.localizedDescription)")
                                                 } else {
                                                     dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
-                                                    achievementlist.removeAll {$0 == achievementToDelete}
+                                                    dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
                                                 }
                                             }
                                             var tempachievement = achievementToDelete
@@ -215,7 +214,7 @@ struct SpotlightAdminView: View {
                                                     print("Error deleting achievement: \(error.localizedDescription)")
                                                 } else {
                                                     dataManager.allstudentachievementlist.append(tempachievement)
-                                                    achievementlist.append(tempachievement)
+                                                    dataManager.allstudentachievementlist.append(tempachievement)
                                                 }
                                             }
                                         }
@@ -231,7 +230,7 @@ struct SpotlightAdminView: View {
                 Text("Current pending articles")
                     .padding(10)
                 
-                List(achievementlist, id: \.id) { achievement in
+                List(dataManager.allstudentachievementlist, id: \.id) { achievement in
                     if !achievement.isApproved {
                         VStack(alignment: .leading) {
                             Text(achievement.achievementtitle)
@@ -250,17 +249,9 @@ struct SpotlightAdminView: View {
             
         }
         .onAppear {
-            dataManager.getAchievements { list, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                else if let list = list {
-                    achievementlist = list
-                    if !achievementlist.isEmpty {
-                        selectedArticle = achievementlist.first {$0.isApproved == false}!
-                        selectedArticle = achievementlist.last {$0.isApproved == false}!
-                    }
-                }
+            if !dataManager.allstudentachievementlist.isEmpty {
+                selectedArticle = dataManager.allstudentachievementlist.first {$0.isApproved == false}!
+                selectedArticle = dataManager.allstudentachievementlist.last {$0.isApproved == false}!
             }
                 permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
                     self.isAdmin = result
@@ -286,7 +277,7 @@ struct SpotlightAdminView: View {
                                 print("Error deleting achievement: \(error.localizedDescription)")
                             } else {
                                 dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
-                                achievementlist.removeAll {$0 == achievementToDelete}
+                                dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
                             }
                         }
                     }

@@ -60,7 +60,6 @@ struct HomeView: View {
     @State var hasAppeared = false
     
     @StateObject var imagemanager = imageManager()
-    @State var spotlightarticles: [studentachievement] = []
     
     @EnvironmentObject var userInfo: UserInfo
     @State var date = Date()
@@ -223,7 +222,7 @@ struct HomeView: View {
                                                 Spacer()
                                                 
                                                 NavigationLink {
-                                                     StudentSpotlight(spotlightarticles: spotlightarticles)
+                                                     StudentSpotlight(spotlightarticles: spotlightManager.allstudentachievementlist)
                                                 } label: {
                                                      HStack{
                                                           Text("See more")
@@ -268,7 +267,7 @@ struct HomeView: View {
                                            }
                                            
                                            VStack { // MARK: student spotlight
-                                                ForEach(spotlightarticles.filter { $0.isApproved == true }.prefix(3), id: \.id) { article in
+                                                ForEach(spotlightManager.allstudentachievementlist.filter { $0.isApproved == true }.prefix(3), id: \.id) { article in
                                                     NavigationLink {
                                                         SpotlightArticles(currentstudentdub: article)
                                                     } label: {
@@ -375,12 +374,12 @@ struct HomeView: View {
                                                      self.hasPermissionsUpcomingEvents = result
                                                 }
                                                 
-                                                spotlightarticles = spotlightManager.allstudentachievementlist
+                                                spotlightManager.allstudentachievementlist = spotlightManager.allstudentachievementlist
                                                 var returnlist: [studentachievement] = []
                                                 
                                                 let dispatchGroup = DispatchGroup()
                                                 
-                                                for article in spotlightarticles {
+                                                for article in spotlightManager.allstudentachievementlist {
                                                      var tempimages: [UIImage] = []
                                                      
                                                      for imagepath in article.images {
@@ -398,22 +397,22 @@ struct HomeView: View {
                                                      dispatchGroup.notify(queue: .main) {
                                                           returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
                                                           
-                                                          spotlightarticles = returnlist
-                                                          self.spotlightarticles = self.spotlightarticles.sorted { first, second in
+                                                          spotlightManager.allstudentachievementlist = returnlist
+                                                          self.spotlightManager.allstudentachievementlist = self.spotlightManager.allstudentachievementlist.sorted { first, second in
                                                                let dateFormatter = DateFormatter()
                                                                dateFormatter.dateFormat = "MMM dd, yyyy"
                                                                let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
                                                                let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
                                                                return firstDate < secondDate
                                                           }.reversed()
-                                                          if self.spotlightarticles.count > 0{
-                                                               self.firstcurrentevent = self.spotlightarticles[0]
+                                                          if self.spotlightManager.allstudentachievementlist.count > 0{
+                                                               self.firstcurrentevent = self.spotlightManager.allstudentachievementlist[0]
                                                           }
-                                                          if self.spotlightarticles.count > 1 {
-                                                               self.secondcurrentevent =   self.spotlightarticles[1]
+                                                          if self.spotlightManager.allstudentachievementlist.count > 1 {
+                                                               self.secondcurrentevent =   self.spotlightManager.allstudentachievementlist[1]
                                                           }
-                                                          if self.spotlightarticles.count > 2 {
-                                                               self.thirdcurrentevent = self.spotlightarticles[2]
+                                                          if self.spotlightManager.allstudentachievementlist.count > 2 {
+                                                               self.thirdcurrentevent = self.spotlightManager.allstudentachievementlist[2]
                                                           }
                                                           print("DONE LOADING HOMEVIEW")
                                                      }
