@@ -34,6 +34,34 @@ struct SportsDetailView: View {
     
     var currentsport: sport
     
+    func dateDate(date: Date) -> String {
+        return date.formatted(date: .long, time: .omitted)
+    }
+    
+    func dateTime(date: Date) -> String {
+        return date.formatted(date: .omitted, time: .shortened)
+    }
+    
+    func firstThree(input: String) -> String {
+        if input.count > 2 {
+            return String(input.prefix(3))
+        }
+        return ""
+    }
+    let calendar = Calendar.current
+    
+    func getFirstThreeCharactersOfMonth(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.dateFormat = "MMM"
+
+        let dateString = dateFormatter.string(from: date)
+
+        let firstThreeCharacters = String(dateString.prefix(3))
+
+        return firstThreeCharacters
+    }
+    
     @State var currentsportID = ""
     @State var upcomingeventslist: [sportEvent] = []
     @State var topthree: [sportEvent] = []
@@ -126,32 +154,73 @@ struct SportsDetailView: View {
                         } else {
                             List {
                                 ForEach(events, id: \.id) { event in
-                                    VStack {
-                                        HStack {
-                                            Text("\(event.type)")
-                                                .font(.headline)
-                                            Spacer()
+                                    HStack {
+                                        VStack {
+                                            Text(getFirstThreeCharactersOfMonth(from: event.date))
+                                            
+                                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                            Text(String(calendar.component(.day, from: event.date)))
+                                                .font(.system(size: 32, weight: .regular, design: .rounded))
+
+                                                .foregroundColor(.black)
                                         }
-                                        HStack {
-                                            Text("\(event.date.formatted(date: .long, time: .omitted))")
-                                            Spacer()
-                                        }
-                                        HStack {
-                                            Text("\(event.date.formatted(date: .omitted, time: .shortened))")
-                                            Spacer()
-                                        }
-                                        HStack {
-                                            Text(event.opponent)
-                                            Spacer()
-                                        }
-                                        HStack {
-                                            Text("Location: \(event.location)")
-                                            Spacer()
+                                        .foregroundColor(.red)
+                                        .frame(width:50,height:50)
+                                        Divider()
+                                            .padding(.vertical, 10)
+
+                                        VStack {
+                                            HStack {
+                                                Text("\(event.type)")
+                                                    .lineLimit(2)
+                                                    .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+
+                                                Spacer()
+                                            }
+                                            HStack {
+                                                Text("\(event.opponent)")
+                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                    .lineLimit(2)
+
+                                                
+                                                Spacer()
+                                            }
+                                            
+                                            DisclosureGroup("See More") {
+                                                HStack {
+                                                    Image(systemName: "clock")
+                                                        .resizable()
+                                                        .frame(width: 15, height: 15)
+                                                    Text("\(event.date.formatted(date: .omitted, time: .shortened))")
+                                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                        .foregroundColor(.black)
+                                                        .lineLimit(1)
+
+                                                    Spacer()
+                                                }.foregroundColor(.black)
+                                                HStack {
+                                                    Image(systemName: "location")
+                                                        .resizable()
+                                                        .frame(width: 15, height: 15)
+                                                    Text("\(event.location)")
+                                                    Spacer()
+                                                }.foregroundColor(.black)
+                                                
+                                                if !event.comments.isEmpty {
+                                                    HStack {
+                                                        Text("Comments: \(event.comments)")
+                                                        Spacer()
+                                                    }.foregroundColor(.black)
+                                                }
+
+                                            }.padding(.top, -10)
+                                                .accentColor(.gray)
+                                                .foregroundColor(.gray)
+                                            
                                         }
                                     }
                                 }
-                            }.frame(height: 450)
-                        }
+                            }.frame(height: 450)                        }
                         } else {
                             ProgressView("Loading...")
                                 .progressViewStyle(CircularProgressViewStyle())
