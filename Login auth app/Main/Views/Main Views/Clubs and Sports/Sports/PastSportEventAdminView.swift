@@ -85,7 +85,7 @@ struct PastSportEventsAdminView: View {
                     Spacer()
                 }
                 Form {
-                    if currentsport.editoremails.contains(userInfo.email) {
+                    if currentsport.adminemails.contains(userInfo.email) || userInfo.isAdmin || userInfo.isSportsAdmin{
                         HStack {
                             VStack {
                                 Toggle(isOn: $isSpecial) {
