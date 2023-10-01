@@ -16,7 +16,7 @@ struct ClubsHibabi: View {
     @StateObject var clubsmanager = clubManager.shared 
     @StateObject var clubfavoritesmanager = FavoriteClubsManager()
 
-    @ObservedObject var clubNewsManager = clubsNewslist.shared // MARK: think it has to do with this bitch (don't use singleton, or make it consistent, just follow sports framework)
+    @ObservedObject var clubNewsManager = clubsNewslist.shared
     @State var newstitlearray:[clubNews] = []
     @StateObject var vmm = ClubViewModel()
     @State var clubsearchText = "" // text for search field
