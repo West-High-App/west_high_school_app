@@ -16,9 +16,9 @@ struct SportsHibabi: View {
     @StateObject var sporteventstorage = SportsEventStorage.shared
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
-    @State var sportsNewsManager = sportsNewslist.shared
+    @ObservedObject var sportsNewsManager = sportsNewslist.shared
     @State var favorites: [sport] = []
-    @StateObject var sportsmanager = sportsManager.shared // <---------
+    @ObservedObject var sportsmanager = sportsManager.shared // <---------
     @State var displaylist: [sport] = []
     @State var newstitlearray:[sportNews] = []
     @State var vm = ViewModel()
