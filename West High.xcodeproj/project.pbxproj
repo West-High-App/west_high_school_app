@@ -242,6 +242,7 @@
 			children = (
 				2270B1EB2A68D23300823E58 /* WestHighApp.swift */,
 				E8150E3D2A9E49C300BD6853 /* SplashScreenView.swift */,
+				2270B20A2A68DB0100823E58 /* Views */,
 				2270B1F02A68D2BE00823E58 /* Login Flow */,
 			);
 			path = Main;
@@ -267,7 +268,6 @@
 				222086922A60AE8E00EF1ECA /* LoginData.swift */,
 				228362DA2A2AB3D70061BFAE /* ContentView.swift */,
 				228362EF2A2C17600061BFAE /* LoggedInView.swift */,
-				2270B20A2A68DB0100823E58 /* Views */,
 			);
 			path = "Login Flow";
 			sourceTree = "<group>";
