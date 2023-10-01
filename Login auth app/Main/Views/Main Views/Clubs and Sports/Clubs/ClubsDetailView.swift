@@ -32,6 +32,22 @@ struct ClubsDetailView: View {
     
     @EnvironmentObject var clubfavoritesmanager: FavoriteClubsManager
     
+    func dateDate(date: Date) -> String {
+        return date.formatted(date: .long, time: .omitted)
+    }
+    
+    func dateTime(date: Date) -> String {
+        return date.formatted(date: .omitted, time: .shortened)
+    }
+    
+    func firstThree(input: String) -> String {
+        if input.count > 2 {
+            return String(input.prefix(3))
+        }
+        return ""
+    }
+    let calendar = Calendar.current
+    
     var currentclub: club
     @State var screen = ScreenSize()
     var safeArea: EdgeInsets

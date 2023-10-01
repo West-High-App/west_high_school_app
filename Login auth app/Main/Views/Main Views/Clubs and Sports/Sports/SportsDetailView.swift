@@ -30,7 +30,37 @@ struct SportsDetailView: View {
     @State var pastevents: [ParsedEvent] = []
     @State var newpastevents: [sportEvent] = []
     
+    @State var isLoading = false
+    
     var currentsport: sport
+    
+    func dateDate(date: Date) -> String {
+        return date.formatted(date: .long, time: .omitted)
+    }
+    
+    func dateTime(date: Date) -> String {
+        return date.formatted(date: .omitted, time: .shortened)
+    }
+    
+    func firstThree(input: String) -> String {
+        if input.count > 2 {
+            return String(input.prefix(3))
+        }
+        return ""
+    }
+    let calendar = Calendar.current
+    
+    func getFirstThreeCharactersOfMonth(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.dateFormat = "MMM"
+
+        let dateString = dateFormatter.string(from: date)
+
+        let firstThreeCharacters = String(dateString.prefix(3))
+
+        return firstThreeCharacters
+    }
     
     @State var currentsportID = ""
     @State var upcomingeventslist: [sportEvent] = []
@@ -113,10 +143,10 @@ struct SportsDetailView: View {
                     // upcoming events view
                     
                     if selected == 1 {
-                        
+                        if !isLoading {
                         //MARK: Aiden to the UI for this:
                         /// I think you have a pretty good idea of what needs to happen or what needs to be displayed. Basically just use the elements: date, type (like game, tournament, meet, etc.), opponent, and comments. You can change the date format using .formatted property.
-
+                        
                         if events.isEmpty {
                             Text("No upcoming events.")
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
@@ -124,33 +154,77 @@ struct SportsDetailView: View {
                         } else {
                             List {
                                 ForEach(events, id: \.id) { event in
-                                    VStack {
-                                        HStack {
-                                            Text("\(event.type)")
-                                                .font(.headline)
-                                            Spacer()
+                                    HStack {
+                                        VStack {
+                                            Text(getFirstThreeCharactersOfMonth(from: event.date))
+                                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                            Text(String(calendar.component(.day, from: event.date)))
+                                                .font(.system(size: 32, weight: .regular, design: .rounded))
+                                                .foregroundColor(.black)
                                         }
-                                        HStack {
-                                            Text("\(event.date.formatted(date: .long, time: .omitted))")
-                                            Spacer()
-                                        }
-                                        HStack {
-                                            Text("\(event.date.formatted(date: .omitted, time: .shortened))")
-                                            Spacer()
-                                        }
-                                        HStack {
-                                            Text(event.opponent)
-                                            Spacer()
-                                        }
-                                        HStack {
-                                            Text("Location: \(event.location)")
-                                            Spacer()
+                                        .foregroundColor(.red)
+                                        .frame(width:50,height:50)
+                                        Divider()
+                                            .padding(.vertical, 10)
+
+                                        VStack {
+                                            HStack {
+                                                Text("\(event.type)")
+                                                    .minimumScaleFactor(0.8)
+                                                    .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+
+                                                Spacer()
+                                            }
+                                            HStack {
+                                                Text("\(event.opponent)")
+                                                    .minimumScaleFactor(0.8)
+
+                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+
+                                                
+                                                Spacer()
+                                            }
+                                            
+                                            DisclosureGroup("See More") {
+                                                HStack {
+                                                    Image(systemName: "clock")
+                                                        .resizable()
+                                                        .frame(width: 15, height: 15)
+                                                    Text("\(event.date.formatted(date: .omitted, time: .shortened))")
+                                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                        .foregroundColor(.black)
+                                                        .lineLimit(1)
+
+                                                    Spacer()
+                                                }.foregroundColor(.black)
+                                                HStack {
+                                                    Image(systemName: "location")
+                                                        .resizable()
+                                                        .frame(width: 15, height: 15)
+                                                    Text("\(event.location)")
+                                                    Spacer()
+                                                }.foregroundColor(.black)
+                                                
+                                                if !event.comments.isEmpty {
+                                                    HStack {
+                                                        Text("Comments: \(event.comments)")
+                                                        Spacer()
+                                                    }.foregroundColor(.black)
+                                                }
+
+                                            }.padding(.top, -10)
+                                                .accentColor(.gray)
+                                                .foregroundColor(.gray)
+                                            
                                         }
                                     }
                                 }
-                            }.frame(height: 450)
+                            }.frame(height: 450)                        }
+                        } else {
+                            ProgressView("Loading...")
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
                         }
-                        
                     }
                     
                     // past games view
@@ -171,51 +245,57 @@ struct SportsDetailView: View {
                                 .frame(maxHeight: .infinity)
                         } else {
                             List(newpastevents, id: \.id) { event in
-                                VStack (alignment: .leading){
-                                    Text(event.title)
-                                        .font(.headline)
-                                    Text(event.month + " " + event.day + ", " + event.year)
-                                    Text(event.subtitle)
-                                    if event.score.count > 1 {
-                                        if event.score[0] == 0 && event.score[1] == 0 {
-                                            Text("Pending score...")
+                                HStack {
+                                    VStack {
+                                        Text(event.month)
+                                            .font(.system(size: 16, weight: .medium, design: .rounded))
+                                        Text(event.day)
+                                            .font(.system(size: 32, weight: .regular, design: .rounded))
+                                            .foregroundColor(.black)
+
+                                    }
+                                    .foregroundColor(.red)
+                                    .frame(width:50,height:50)
+                                    Divider()
+                                        .padding(.vertical, 10)
+                                    VStack (alignment: .leading){
+                                        Text(event.title)
+                                            .font(.headline)
+                                        if !event.isSpecial {
+                                            Text(event.subtitle)
+                                            HStack {
+                                                if event.score.count > 1 {
+                                                    if event.score[0] == 0 && event.score[1] == 0 {
+                                                        Text("Pending score...")
+                                                    } else {
+                                                        if event.score[0] > event.score[1] {
+                                                            Text(String(event.score[0]))
+                                                            Text("-")
+                                                            Text(String(event.score[1]))
+                                                            Text("(Win)")
+                                                                .foregroundColor(.green)
+                                                        } else                                 if event.score[0] < event.score[1] {
+                                                            Text(String(event.score[0]))
+                                                            Text("-")
+                                                            Text(String(event.score[1]))
+                                                            Text("(Loss)")
+                                                                .foregroundColor(.red)
+                                                        } else {
+                                                            Text(String(event.score[0]))
+                                                            Text("-")
+                                                            Text(String(event.score[1]))
+                                                            Text("(Tie)")
+                                                        }
+                                                    }
+                                                } else {
+                                                    Text("Pending score...")
+                                                }
+                                            }
                                         } else {
-                                            Text("Has score!")
+                                            Text(event.subtitle)
                                         }
-                                    } else {
-                                        Text("Pending score...")
                                     }
                                 }
-                                /*VStack {
-                                    HStack {
-                                        Text("\(event.title)")
-                                            .font(.headline)
-                                        Spacer()
-                                    }
-                                    HStack {
-                                        Text("\(event.subtitle)")
-                                        Spacer()
-                                    }
-                                    HStack {
-                                        Text("\(event.month) \(event.day), \(event.year)")
-                                        Spacer()
-                                    }
-                                    if event.score.isEmpty {
-                                        Text("Pending score...")
-                                    } else {
-                                        if event.score.count == 2 {
-                                            HStack {
-                                                Spacer()
-                                                Text(event.score[0])
-                                                Spacer()
-                                                Text("-")
-                                                Spacer()
-                                                Text(event.score[1])
-                                                Spacer()
-                                            }
-                                        }
-                                    }
-                                } */
                             }
                             .frame(height: 450)
                         }
@@ -288,7 +368,7 @@ struct SportsDetailView: View {
                     
                     //if sportsev MARK: run the dict functino before view appear
                     if sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
-                        
+                        isLoading = true
                         HTMLParser.parseEvents(from: currentsport.eventslink) { parsedevents, error in
                             if let parsedevents = parsedevents {
                                 let currentDate = Date()
@@ -319,7 +399,8 @@ struct SportsDetailView: View {
                                 print(sortedPastEvents)
                                 print("past events")
                                 self.pastevents = sortedPastEvents
-                                
+                                print("DONE LOADING")
+                                self.isLoading = false
                                 sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
                                     
                                 }
