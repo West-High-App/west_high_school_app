@@ -22,14 +22,13 @@ class dailymessagelist: ObservableObject {
     var edittingdailymessage: dailymessage?
 
     init() {
-        getdailymessage() // initialising the updated data to get at beginning
+        getdailymessage() // initialising the subscribe to data
     }
 
     func getdailymessage() {
-        alldailymessagelist.removeAll() // clear the list
         let db = Firestore.firestore()
         let ref = db.collection("DailyMessage") // finding collection
-        ref.getDocuments { snapshot, error in
+        ref.addSnapshotListener { snapshot, error in
             guard error == nil else {
                 print("Error: \(error!.localizedDescription)") // if this happens everything is fucked
                 return
@@ -37,6 +36,15 @@ class dailymessagelist: ObservableObject {
 
             if let snapshot = snapshot {
                 print("Scanning documents...")
+                
+                var alldailymessagelist: [dailymessage] = [] {
+                    didSet {
+                        if alldailymessagelist.count == snapshot.documents.count {
+                            self.alldailymessagelist = alldailymessagelist
+                        }
+                    }
+                }
+                
                 for document in snapshot.documents {
                     let data = document.data()
                     let writer = data["writer"] as? String ?? ""
@@ -44,7 +52,7 @@ class dailymessagelist: ObservableObject {
                     let documentID = document.documentID
                     
                     let dailymessage = dailymessage(documentID: documentID, messagecontent: messagecontent, writer: writer)
-                    self.alldailymessagelist.append(dailymessage) // adding event with info from firebase
+                    alldailymessagelist.append(dailymessage) // adding event with info from firebase
                 }
             }
         }
@@ -58,9 +66,6 @@ class dailymessagelist: ObservableObject {
             "writer": event.writer,
         ]) { error in
             completion(error)
-            if error == nil {
-                self.getdailymessage()
-            }
         }
         print("Event created with documentID: \(event.documentID)")
     }
@@ -72,9 +77,6 @@ class dailymessagelist: ObservableObject {
         
         eventRef.delete { error in
             completion(error)
-            if error == nil {
-                self.getdailymessage()
-            }
         }
         print("Event deleted")
     }
