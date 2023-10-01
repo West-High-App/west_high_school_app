@@ -3,8 +3,15 @@ import SwiftUI
 struct AnnouncementsDetailView: View {
     var currentnews: Newstab
     var body: some View {
-        NavigationView {
             ScrollView {
+                HStack {
+                    Text(currentnews.title)
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(2)
+                        .padding(.leading)
+                    Spacer()
+                }
                 HStack {
                     Text(currentnews.publisheddate)
                         .foregroundColor(Color.gray)
@@ -26,7 +33,6 @@ struct AnnouncementsDetailView: View {
                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                     .padding(.bottom)
             }
-        }.navigationTitle(currentnews.title)
     }
 }
 
