@@ -20,6 +20,8 @@ struct sportNews: Identifiable {
 }
 
 class sportsNewslist: ObservableObject {
+    static let shared = sportsNewslist()
+    
     @Published var allsportsnewslist : [sportNews] = [sportNews(
         newstitle: "Varsity Football Team Wins Regional Championship",
         newsimage: ["football"],
@@ -31,16 +33,31 @@ class sportsNewslist: ObservableObject {
     }
     
     func getSportsNews() {
-        var templist: [sportNews] = []
         let db = Firestore.firestore()
         let collection = db.collection("SportsNews")
         
-        collection.getDocuments { snapshot, error in
+        collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
             
             if let snapshot = snapshot {
+                var templist: [sportNews] = [] {
+                    didSet {
+                        if templist.count == snapshot.count {
+                            DispatchQueue.main.async {
+                                self.allsportsnewslist = Array(templist[0...])
+                                self.allsportsnewslist = self.allsportsnewslist.sorted { first, second in
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.dateFormat = "MMM dd, yyyy"
+                                    let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
+                                    let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
+                                    return firstDate < secondDate
+                                }.reversed()
+                            }
+                        }
+                    }
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let newstitle = data["newstitle"] as? String ?? ""
@@ -52,18 +69,6 @@ class sportsNewslist: ObservableObject {
                     
                     let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, imagedata: [], documentID: documentID)
                     templist.append(sportnews)
-                }
-                
-                DispatchQueue.main.async {
-                    self.allsportsnewslist = Array(templist[0...])
-                    self.allsportsnewslist = self.allsportsnewslist.sorted { first, second in
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "MMM dd, yyyy"
-                        let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
-                        let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
-                        return firstDate < secondDate
-                    }.reversed()
-
                 }
             }
         }
@@ -80,9 +85,6 @@ class sportsNewslist: ObservableObject {
             "author": sportNews.author
         ]) { error in
             completion(error)
-            if error == nil {
-                self.getSportsNews()
-            }
         }
         print("Sport news created with ID: \(sportNews.documentID)")
     }
@@ -93,9 +95,6 @@ class sportsNewslist: ObservableObject {
         let ref = db.collection("SportsNews").document(sportNews.documentID)
         ref.delete { error in
             completion(error)
-            if error == nil {
-                self.getSportsNews()
-            }
         }
         print("Article deleted")
     }
@@ -128,16 +127,31 @@ class clubsNewslist: ObservableObject{
     }
     
     func getClubNews() {
-        var templist: [clubNews] = []
         let db = Firestore.firestore()
         let collection = db.collection("ClubNews")
         
-        collection.getDocuments { snapshot, error in
+        collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
             
             if let snapshot = snapshot {
+                var templist: [clubNews] = [] {
+                    didSet {
+                        if templist.count == snapshot.count {
+                            DispatchQueue.main.async {
+                                self.allclubsnewslist = Array(templist[0...])
+                                self.allclubsnewslist = self.allclubsnewslist.sorted { first, second in
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.dateFormat = "MMM dd, yyyy"
+                                    let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
+                                    let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
+                                    return firstDate < secondDate
+                                }.reversed()
+                            }
+                        }
+                    }
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let newstitle = data["newstitle"] as? String ?? ""
@@ -148,17 +162,6 @@ class clubsNewslist: ObservableObject{
                     let documentID = document.documentID
                     let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID, imagedata: [])
                     templist.append(clubnews)
-                }
-                
-                DispatchQueue.main.async {
-                    self.allclubsnewslist = Array(templist[0...])
-                    self.allclubsnewslist = self.allclubsnewslist.sorted { first, second in
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "MMM dd, yyyy"
-                        let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
-                        let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
-                        return firstDate < secondDate
-                    }.reversed()
                 }
             }
         }
@@ -175,9 +178,6 @@ class clubsNewslist: ObservableObject{
             "author": clubNews.author
         ]) { error in
             completion(error)
-            if error == nil {
-                self.getClubNews()
-            }
         }
         print("Club news created with ID: \(clubNews.documentID)")
     }
@@ -188,9 +188,6 @@ class clubsNewslist: ObservableObject{
         let ref = db.collection("ClubNews").document(clubNews.documentID)
         ref.delete { error in
             completion(error)
-            if error == nil {
-                self.getClubNews()
-            }
         }
         print("Article deleted :)")
     }

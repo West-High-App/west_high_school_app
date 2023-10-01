@@ -25,7 +25,7 @@ struct HomeView: View {
      @StateObject var loading = Loading()
 
     // permissions
-    @ObservedObject var sportsnewsmanager = sportsNewslist()
+     @ObservedObject var sportsnewsmanager = sportsNewslist.shared
     var permissionsManager = permissionsDataManager()
     @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermissionSpotlight = false
