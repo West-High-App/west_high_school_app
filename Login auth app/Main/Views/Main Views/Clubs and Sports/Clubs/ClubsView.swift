@@ -97,63 +97,64 @@ struct ClubsHibabi: View {
     
         // MARK: view
     var body: some View {
-        ZStack {
-            NavigationView{
-                ZStack {
-                    VStack {
-                        
-                        Picker(selection: $clubselected, label: Text(""), content: { // picker at top
-                            Text("My Clubs").tag(1)
-                            Text("Browse").tag(2)
-                            Text("News").tag(3)
+        if userInfo.loginStatus == "google" {
+            ZStack {
+                NavigationView{
+                    ZStack {
+                        VStack {
                             
-                            
-                        }).pickerStyle(SegmentedPickerStyle())
-                            .padding(.horizontal,30)
-                            .onAppear() {
-                                if clubcount == 0 {
-                                    vmm.clubsortFavs()
-                                    clubcount = 1
-                                }
-                            }
-                            .onChange(of: clubselected) { newValue in
-                                print("CHANGE THIS SHIT")
-                                if (clubselected == 1 && clubtempSelection == 2) {
-                                    vmm.clubsortFavs()
-                                    clubtempSelection = clubselected
-                                }
-                                else if (clubselected == 2 && clubtempSelection == 1) {
-                                    vmm.clubsortFavs()
-                                    clubtempSelection = clubselected
-                                }
-                            }
-                        
-                        if clubselected == 1 || clubselected == 2 {
-                            
-                            if !hasFavorites {
-                                VStack {
-                                    Spacer()
-                                    Text("Add a club to get started!")
-                                    Button {
-                                        clubselected = 2
-                                    } label: {
-                                        Text("Browse Clubs")
-                                            .foregroundColor(.white)
-                                            .fontWeight(.semibold)
-                                            .padding(.all, 15.0)
-                                            .background(.primary)
-                                            .cornerRadius(15.0)
-                                    }.searchable(text: $clubsearchText)
-                                    Spacer()
-                                    
-                                }
-                            }
-                            else {
-                                VStack {
-                                    if isLoading {
-                                        Text("Loading")
+                            Picker(selection: $clubselected, label: Text(""), content: { // picker at top
+                                Text("My Clubs").tag(1)
+                                Text("Browse").tag(2)
+                                Text("News").tag(3)
+                                
+                                
+                            }).pickerStyle(SegmentedPickerStyle())
+                                .padding(.horizontal,30)
+                                .onAppear() {
+                                    if clubcount == 0 {
+                                        vmm.clubsortFavs()
+                                        clubcount = 1
                                     }
-                                    // HERE WE GO
+                                }
+                                .onChange(of: clubselected) { newValue in
+                                    print("CHANGE THIS SHIT")
+                                    if (clubselected == 1 && clubtempSelection == 2) {
+                                        vmm.clubsortFavs()
+                                        clubtempSelection = clubselected
+                                    }
+                                    else if (clubselected == 2 && clubtempSelection == 1) {
+                                        vmm.clubsortFavs()
+                                        clubtempSelection = clubselected
+                                    }
+                                }
+                            
+                            if clubselected == 1 || clubselected == 2 {
+                                
+                                if !hasFavorites {
+                                    VStack {
+                                        Spacer()
+                                        Text("Add a club to get started!")
+                                        Button {
+                                            clubselected = 2
+                                        } label: {
+                                            Text("Browse Clubs")
+                                                .foregroundColor(.white)
+                                                .fontWeight(.semibold)
+                                                .padding(.all, 15.0)
+                                                .background(.primary)
+                                                .cornerRadius(15.0)
+                                        }.searchable(text: $clubsearchText)
+                                        Spacer()
+                                        
+                                    }
+                                }
+                                else {
+                                    VStack {
+                                        if isLoading {
+                                            Text("Loading")
+                                        }
+                                        // HERE WE GO
                                         if userInfo.loginStatus != "google" {
                                             Text("Log in to save favorites!")
                                         }
@@ -201,10 +202,10 @@ struct ClubsHibabi: View {
                                                 }
                                             }
                                         }
-                                    
-                                }.searchable(text: $clubsearchText)
-                                    .navigationBarItems(trailing:
-                                        Group {
+                                        
+                                    }.searchable(text: $clubsearchText)
+                                        .navigationBarItems(trailing:
+                                                                Group {
                                             if hasPermissionClubs {
                                                 NavigationLink {
                                                     ClubsAdminView(clubslist: clubsmanager.allclublist)
@@ -214,19 +215,19 @@ struct ClubsHibabi: View {
                                                 }
                                             }
                                         }
-                                    )
+                                        )
+                                }
+                                
                             }
-                            
-                        }
-                        else if clubselected == 3 {
-                            //mark
-                            List(clubNewsManager.allclubsnewslist, id: \.id) { news in  // filteredClubNews
-                                clubnewscell(feat: news)
-                                    .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
-                            }
-                            .searchable(text: $searchText)
-                            .navigationBarItems(trailing:
-                                Group {
+                            else if clubselected == 3 {
+                                //mark
+                                List(clubNewsManager.allclubsnewslist, id: \.id) { news in  // filteredClubNews
+                                    clubnewscell(feat: news)
+                                        .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                }
+                                .searchable(text: $searchText)
+                                .navigationBarItems(trailing:
+                                                        Group {
                                     if hasPermissionClubNews {
                                         NavigationLink {
                                             ClubNewsAdminView()
@@ -236,138 +237,145 @@ struct ClubsHibabi: View {
                                         }
                                     }
                                 }
-                            )
+                                )
+                            }
+                            
                         }
                         
-                    }
-                    
-                    .onAppear { // MARK: on appear
-                        
-                        favoriteclublist = clubfavoritesmanager.favoriteClubs
-                        
-                        if !hasAppeared {
-                            isLoading = true
-                            print("LOADING...")
-
-                            if userInfo.isAdmin {
-                                self.hasPermissionClubNews = true
-                                self.hasPermissionClubs
-                            }
-                            permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
-                                self.hasPermissionClubNews = result
-                            }
-                            permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
-                                self.hasPermissionClubs = result
-                                if result == true {
-                                    userInfo.isClubsAdmin = true
-                                    print("became club admin")
-                                }
-                            }
+                        .onAppear { // MARK: on appear
                             
-                            let dispatchGroup = DispatchGroup()
+                            favoriteclublist = clubfavoritesmanager.favoriteClubs
                             
-                            var tempylist2: [club] = []
-                            for club in clubsmanager.favoriteslist {
-                                dispatchGroup.enter()
+                            if !hasAppeared {
+                                isLoading = true
+                                print("LOADING...")
                                 
-                                imagemanager.getImage(fileName: club.clubimage) { image in
-                                    var tempclub2 = club
-                                    if let image = image {
-                                        tempclub2.imagedata = image
+                                if userInfo.isAdmin {
+                                    self.hasPermissionClubNews = true
+                                    self.hasPermissionClubs
+                                }
+                                permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
+                                    self.hasPermissionClubNews = result
+                                }
+                                permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
+                                    self.hasPermissionClubs = result
+                                    if result == true {
+                                        userInfo.isClubsAdmin = true
+                                        print("became club admin")
                                     }
-                                    
-                                    tempylist2.append(tempclub2)
-                                    dispatchGroup.leave()
-                                    
                                 }
-                            }
-                            
-                            dispatchGroup.notify(queue: .main) { [self] in
-                                self.clubsmanager.favoriteslist = tempylist2
-                                self.favoriteclublist = tempylist2
-                                self.clubfavoritesmanager.favoriteClubs = tempylist2
-                            }
-                            var tempylist: [club] = []
-                            
-                            for club in clubsmanager.allclublist {
-                                dispatchGroup.enter()
                                 
-                                imagemanager.getImage(fileName: club.clubimage) { image in
+                                let dispatchGroup = DispatchGroup()
+                                
+                                var tempylist2: [club] = []
+                                for club in clubsmanager.favoriteslist {
+                                    dispatchGroup.enter()
                                     
-                                    var tempclub = club
-                                    if let image = image {
-                                        tempclub.imagedata = image
-                                    }
-                                    tempylist.append(tempclub) //
-                                    dispatchGroup.leave()
-                                }
-                            }
-                            
-                            dispatchGroup.notify(queue: .main) { [self] in
-                                self.clubsmanager.allclublist = tempylist
-                            }
-                            
-                            
-                            var templist: [clubNews] = []
-                            for news in clubNewsManager.allclubsnewslist {
-                                dispatchGroup.enter()
-                                
-                                imagesManager.getImage(fileName: news.newsimage[0]) { uiimage in
-                                    var tempnews = news
-                                    if let uiimage = uiimage {
+                                    imagemanager.getImage(fileName: club.clubimage) { image in
+                                        var tempclub2 = club
+                                        if let image = image {
+                                            tempclub2.imagedata = image
+                                        }
                                         
-                                        tempnews.imagedata.removeAll()
-                                        tempnews.imagedata.append(uiimage)
+                                        tempylist2.append(tempclub2)
+                                        dispatchGroup.leave()
+                                        
                                     }
-                                    templist.append(tempnews)
-                                    print("NEW ITEM BRO")
-                                    dispatchGroup.leave()
                                 }
+                                
+                                dispatchGroup.notify(queue: .main) { [self] in
+                                    self.clubsmanager.favoriteslist = tempylist2
+                                    self.favoriteclublist = tempylist2
+                                    self.clubfavoritesmanager.favoriteClubs = tempylist2
+                                }
+                                var tempylist: [club] = []
+                                
+                                for club in clubsmanager.allclublist {
+                                    dispatchGroup.enter()
+                                    
+                                    imagemanager.getImage(fileName: club.clubimage) { image in
+                                        
+                                        var tempclub = club
+                                        if let image = image {
+                                            tempclub.imagedata = image
+                                        }
+                                        tempylist.append(tempclub) //
+                                        dispatchGroup.leave()
+                                    }
+                                }
+                                
+                                dispatchGroup.notify(queue: .main) { [self] in
+                                    self.clubsmanager.allclublist = tempylist
+                                }
+                                
+                                
+                                var templist: [clubNews] = []
+                                for news in clubNewsManager.allclubsnewslist {
+                                    dispatchGroup.enter()
+                                    
+                                    imagesManager.getImage(fileName: news.newsimage[0]) { uiimage in
+                                        var tempnews = news
+                                        if let uiimage = uiimage {
+                                            
+                                            tempnews.imagedata.removeAll()
+                                            tempnews.imagedata.append(uiimage)
+                                        }
+                                        templist.append(tempnews)
+                                        print("NEW ITEM BRO")
+                                        dispatchGroup.leave()
+                                    }
+                                }
+                                
+                                dispatchGroup.notify(queue: .main) { [self] in
+                                    self.clubNewsManager.allclubsnewslist = templist
+                                    self.clubNewsManager.allclubsnewslist = self.clubNewsManager.allclubsnewslist.sorted { first, second in
+                                        let dateFormatter = DateFormatter()
+                                        dateFormatter.dateFormat = "MMM dd, yyyy"
+                                        let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
+                                        let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
+                                        return firstDate < secondDate
+                                    }.reversed()
+                                    print("DONE LOADING")
+                                    isLoading = false
+                                }
+                                
+                                
+                                hasAppeared = true
+                                
                             }
-                            
-                            dispatchGroup.notify(queue: .main) { [self] in
-                                self.clubNewsManager.allclubsnewslist = templist
-                                self.clubNewsManager.allclubsnewslist = self.clubNewsManager.allclubsnewslist.sorted { first, second in
-                                    let dateFormatter = DateFormatter()
-                                    dateFormatter.dateFormat = "MMM dd, yyyy"
-                                    let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
-                                    let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
-                                    return firstDate < secondDate
-                                }.reversed()
-                                print("DONE LOADING")
-                                isLoading = false
-                            }
-                            
-                            
-                            hasAppeared = true
                             
                         }
                         
-                    }
-                    
-                    .navigationTitle("Clubs")
-                    
-                    if isLoading {
-                        ZStack {
-                            Color.white
-                                .edgesIgnoringSafeArea(.all)
-                            
-                            VStack {
-                                ProgressView("Loading...")
-                                    .progressViewStyle(CircularProgressViewStyle())
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .navigationTitle("Clubs")
+                        
+                        if isLoading {
+                            ZStack {
+                                Color.white
+                                    .edgesIgnoringSafeArea(.all)
+                                
+                                VStack {
+                                    ProgressView("Loading...")
+                                        .progressViewStyle(CircularProgressViewStyle())
+                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                }
                             }
                         }
+                        
                     }
+                }.onAppear {
+                    
+                    print("VIEW APPEARED")
                     
                 }
-            }.onAppear {
                 
-                print("VIEW APPEARED")
                 
             }
-
-            
+        }
+        else {
+            Text("Log in to view clubs!")
+                .lineLimit(2)
+                .font(.system(size: 32, weight: .semibold, design: .rounded))
+                .padding(.leading, 5)
         }
 
     }
