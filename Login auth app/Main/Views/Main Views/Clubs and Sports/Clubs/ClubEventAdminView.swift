@@ -129,8 +129,12 @@ struct ClubsEventsAdminView: View {
                 Form {
                     Section(header: Text("Clubs Event details")) {
                         if admin {
+                            //bob
                             TextField("Title", text: $title)
-                            TextField("Subtitle", text: $subtitle)
+                            DatePicker("Pick a time", selection: $selectedTime, displayedComponents: .hourAndMinute)
+                                            .labelsHidden()
+                                            .datePickerStyle(WheelDatePickerStyle())
+                            
                         } else {
                                 Picker("Event Type", selection: $selectedevent) {
                                     Text("Meeting")
@@ -170,7 +174,7 @@ struct ClubsEventsAdminView: View {
                             eventToSave = clubEvent(
                                 documentID: "NAN",
                                 title: title,
-                                subtitle: subtitle,
+                                subtitle: formattedTime,
                                 month: months[selectedMonthIndex],
                                 day: "\(days[selectedDayIndex])",
                                 year: years[selectedYearIndex],
