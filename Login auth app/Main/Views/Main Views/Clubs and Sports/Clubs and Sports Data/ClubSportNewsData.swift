@@ -65,9 +65,19 @@ class sportsNewslist: ObservableObject {
                     let newsdate = data["newsdate"] as? String ?? ""
                     let author = data["author"] as? String ?? ""
                     let documentID = document.documentID
-                    
-                    let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, imagedata: [], documentID: documentID)
-                    templist.append(sportnews)
+                    var imagedata: [UIImage] = []
+                    for file in newsimage {
+                        imageManager().getImage(fileName: file) { image in
+                            if let image = image {
+                                imagedata = [image]
+                                print("SPORT NEWS IMAGE FOUND")
+                                print(imagedata)
+                                print("1^")
+                            }
+                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, imagedata: imagedata, documentID: documentID)
+                            templist.append(sportnews)
+                        }
+                    }
                 }
             }
         }
@@ -164,11 +174,11 @@ class clubsNewslist: ObservableObject{
                             if let image = image {
                                 imagedata.append(image)
                             }
+                            let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID, imagedata: imagedata)
+                            templist.append(clubnews)
                         }
                     }
                     
-                    let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID, imagedata: imagedata)
-                    templist.append(clubnews)
                 }
             }
         }
