@@ -108,20 +108,33 @@ struct ClubsDetailView: View {
                 // upcoming events view
                 
                 if selected == 1 {
-                    
                     if isAdmin {
                         NavigationLink {
                             ClubsEventsAdminView(currentclub: currentclub, admin: true)
                         } label: {
                             Text("Edit Upcoming Events")
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                 .foregroundColor(.blue)
+                                 .padding(10)
+                                 .frame(width: screen.screenWidth-30)
+                                 .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                 .background(Rectangle()
+                                   .foregroundColor(.white)
+                                   .cornerRadius(10)
+                                   .shadow(radius: 2, x: 1, y: 1))
                         }
                     } else if isEditor {
                         NavigationLink {
                             ClubsEventsAdminView(currentclub: currentclub, admin: false)
                         } label: {
                             Text("Edit Upcoming Events")
+                                .foregroundColor(.blue)
+                                .padding(10)
+                                .frame(width: screen.screenWidth-30)
                                 .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                .background(Rectangle()
+                                  .foregroundColor(.white)
+                                  .cornerRadius(10)
+                                  .shadow(radius: 2, x: 1, y: 1))
                         }
                     }
                     if upcomingeventlist.count < 1 {

@@ -66,7 +66,7 @@ struct MentalHealthView: View {
                                     fixedSize: 45)
                                 .weight(.bold)
                             )
-                            .padding(.trailing, 25)
+//                            .padding(.trailing, 25)
                     }
                     Image("stones")
                         .resizable()

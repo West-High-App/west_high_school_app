@@ -260,7 +260,9 @@ struct HomeView: View {
                                                           .background(Rectangle()
                                                             .foregroundColor(.white)
                                                             .cornerRadius(10)
-                                                            .shadow(radius: 2, x: 1, y: 1))                        }
+                                                            .shadow(radius: 2, x: 1, y: 1))
+                                                     
+                                                }
                                                 
                                            }
                                            
