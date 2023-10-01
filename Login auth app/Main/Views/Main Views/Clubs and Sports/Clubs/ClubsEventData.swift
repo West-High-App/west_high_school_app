@@ -49,6 +49,8 @@ class clubEventManager: ObservableObject {
         print(self.clubsEvents)
     }
     
+    
+    // TODO: Rewrite flow to allow for snapshot listener
     func getClubsEvent(forClub: String, completion: @escaping ([clubEvent]?, Error?) -> Void) {
         var returnValue: [clubEvent] = []
         
