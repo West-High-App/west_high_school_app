@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UpcomingEventsView: View {
-    @StateObject var upcomingeventsdataManager = upcomingEventsDataManager()
+    @StateObject var upcomingeventsdataManager = upcomingEventsDataManager.shared
     var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
     @State private var hasPermissionUpcomingEvents = false
@@ -75,7 +75,6 @@ struct UpcomingEventsView: View {
 }
 
 struct UpcomingEventsView_Previews: PreviewProvider {
-    @State var upcomingeventsdataManager = upcomingEventsDataManager()
     static var previews: some View {
         UpcomingEventsView(upcomingeventslist: [], permission: true)
     }

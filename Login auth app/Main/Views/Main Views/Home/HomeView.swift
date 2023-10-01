@@ -21,7 +21,7 @@ struct HomeView: View {
     @State var screen = ScreenSize()
     @State var clubmanager = clubManager()
      @StateObject var newsDataManager = Newslist.shared
-    @ObservedObject var dataManager = upcomingEventsDataManager()
+     @ObservedObject var upcomingeventsdataManager = upcomingEventsDataManager.shared
      @StateObject var loading = Loading()
 
     // permissions
@@ -33,7 +33,6 @@ struct HomeView: View {
 
      @StateObject var spotlightManager = studentachievementlist.shared
     @State var newstitlearray: [studentachievement] = []
-    @State var upcomingeventsdataManager = upcomingEventsDataManager()
      
      @State private var isLoading = false
     
@@ -47,7 +46,6 @@ struct HomeView: View {
         self.safeArea = safeArea
         self.size = size
         upcomingeventsdataManager.getUpcomingEvents()
-        dataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d, yyyy"
@@ -187,15 +185,15 @@ struct HomeView: View {
                                            }
                                            
                                            VStack {
-                                                UpcomingEventCell(event: dataManager.firstcurrentevent)
+                                                UpcomingEventCell(event: upcomingeventsdataManager.firstcurrentevent)
                                                 Divider()
                                                      .padding(.horizontal)
                                                      .padding(.vertical, 5)
-                                                UpcomingEventCell(event: dataManager.secondcurrentEvent)
+                                                UpcomingEventCell(event: upcomingeventsdataManager.secondcurrentEvent)
                                                 Divider()
                                                      .padding(.horizontal)
                                                      .padding(.vertical, 5)
-                                                UpcomingEventCell(event: dataManager.thirdcurrentEvent)
+                                                UpcomingEventCell(event: upcomingeventsdataManager.thirdcurrentEvent)
                                            }
                                            .foregroundStyle(.black)
                                            .padding(.all) //EDIT

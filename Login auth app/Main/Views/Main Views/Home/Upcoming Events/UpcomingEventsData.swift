@@ -51,6 +51,8 @@ extension Date {
 }
 
 class upcomingEventsDataManager: ObservableObject {
+    static let shared = upcomingEventsDataManager()
+    
     @Published var allupcomingeventslist: [event] = []
     @Published var alleventslist: [event] = []
     @Published var firstcurrentevent = event(documentID: "", eventname: "", time: "", month: "", day: "", year: "", publisheddate: "")
@@ -65,16 +67,45 @@ class upcomingEventsDataManager: ObservableObject {
     }
 
     func getUpcomingEvents() {
-        alleventslist.removeAll() // clear the list
-        var templist: [event] = []
         let db = Firestore.firestore()
         let ref = db.collection("UpcomingEvents") // finding collection
-        ref.getDocuments { snapshot, error in
+        ref.addSnapshotListener { snapshot, error in
             guard error == nil else {
                 print("Error: \(error!.localizedDescription)") // if this happens everything is
                 return
             }
             if let snapshot = snapshot {
+                var templist: [event] = [] {
+                    didSet {
+                        if templist.count == snapshot.count {
+                            for event in self.allupcomingeventslist{
+                                if event.date < Date.yesterday{
+                                    self.deleteEvent(event: event) { error in
+                                        if let error = error {
+                                            print("Error deleting event: \(error.localizedDescription)")
+                                        }
+                                    }
+
+                                }
+                            }
+                            
+                            self.allupcomingeventslist = templist
+                            self.allupcomingeventslist = self.allupcomingeventslist.sorted(by: {
+                                $0.date.compare($1.date) == .orderedDescending
+                            })
+                            self.allupcomingeventslist = self.allupcomingeventslist.reversed()
+                            if let firstEvent = self.allupcomingeventslist.first {
+                              self.firstcurrentevent = firstEvent
+                            }
+                            if self.allupcomingeventslist.count > 1 {
+                              self.secondcurrentEvent = self.allupcomingeventslist[1]
+                            }
+                            if self.allupcomingeventslist.count > 2 {
+                              self.thirdcurrentEvent = self.allupcomingeventslist[2]
+                            }
+                        }
+                    }
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let eventname = data["eventname"] as? String ?? ""
@@ -86,31 +117,6 @@ class upcomingEventsDataManager: ObservableObject {
                     let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
                     
                     templist.append(event) // adding event with info from firebase
-                }
-
-                for event in self.allupcomingeventslist{
-                    if event.date < Date.yesterday{
-                        self.deleteEvent(event: event) { error in
-                            if let error = error {
-                                print("Error deleting event: \(error.localizedDescription)")
-                            }
-                        }
-
-                    }
-                }
-                self.allupcomingeventslist = templist
-                self.allupcomingeventslist = self.allupcomingeventslist.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                self.allupcomingeventslist = self.allupcomingeventslist.reversed()
-                if let firstEvent = self.allupcomingeventslist.first {
-                  self.firstcurrentevent = firstEvent
-                }
-                if self.allupcomingeventslist.count > 1 {
-                  self.secondcurrentEvent = self.allupcomingeventslist[1]
-                }
-                if self.allupcomingeventslist.count > 2 {
-                  self.thirdcurrentEvent = self.allupcomingeventslist[2]
                 }
 
             }
@@ -129,9 +135,6 @@ class upcomingEventsDataManager: ObservableObject {
 
         ]) { error in
             completion(error)
-            if error == nil {
-                self.getUpcomingEvents()
-            }
         }
     }
 
@@ -141,9 +144,6 @@ class upcomingEventsDataManager: ObservableObject {
         
         eventRef.delete { error in
             completion(error)
-            if error == nil {
-                self.getUpcomingEvents()
-            }
         }
     }
     
