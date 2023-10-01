@@ -89,7 +89,7 @@ struct SportsHibabi: View {
         }
         return templist
     }
-    
+    @State var refreshView = false
     
     // MARK: functions
         
@@ -134,7 +134,7 @@ struct SportsHibabi: View {
     var body: some View {
         // MARK: body
         if userInfo.loginStatus == "google" {
-            NavigationView{
+            NavigationStack(path: $sportsmanager.sportsPath) {
                 ZStack {
                     VStack {
                         
@@ -207,12 +207,15 @@ struct SportsHibabi: View {
                                             
                                             if (item.favoritedusers.contains(userInfo.email) && selected == 1) || selected == 2 {
                                                 
+//                                                NavigationLink(value: item) {
                                                 NavigationLink {
-                                                    SportsMainView(selectedsport: item)
-                                                        .environmentObject(vm)
-                                                        .environmentObject(sportsmanager)
-                                                        .environmentObject(sporteventmanager)
-                                                        .environmentObject(sporteventstorage)
+                                                    if !refreshView {
+                                                        SportsMainView(selectedsport: item)
+                                                            .environmentObject(vm)
+                                                            .environmentObject(sportsmanager)
+                                                            .environmentObject(sporteventmanager)
+                                                            .environmentObject(sporteventstorage)
+                                                    }
                                                 } label: {
                                                     HStack {
                                                         if item.imagedata != nil {
@@ -254,6 +257,15 @@ struct SportsHibabi: View {
                                     }
                                 }
                                 .searchable(text: $searchText)
+                                .navigationDestination(for: sport.self) { item in
+                                    if let index = filteredList(fromList: sportsmanager.allsportlist).firstIndex(where: { $0.documentID == item.documentID }) {
+                                        SportsMainView(selectedsport: filteredList(fromList: sportsmanager.allsportlist)[index])
+                                            .environmentObject(vm)
+                                            .environmentObject(sportsmanager)
+                                            .environmentObject(sporteventmanager)
+                                            .environmentObject(sporteventstorage)
+                                    }
+                                }
                             }
                         }
                         

@@ -10,6 +10,7 @@ import SwiftUI
 struct SportsDetailAdminView: View {
     var editingsport: sport
     @State var sporttoedit: sport?
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var sportsmanager: sportsManager
     
     @State var isConfirmingChanges = false
@@ -51,7 +52,6 @@ struct SportsDetailAdminView: View {
     
     // images
     @StateObject var imagemanager = imageManager()
-    @State var originalImage = ""
     @State var displayimage: UIImage?
     @State var isDisplayingAddImage = false
     
@@ -292,11 +292,19 @@ struct SportsDetailAdminView: View {
                 }
                 
                 Section("Image") {
-                    Image(uiImage: displayimage ?? editingsport.imagedata ?? UIImage())
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 250, height: 200)
-                        .cornerRadius(10)
+                    if let displayimage {
+                        Image(uiImage: displayimage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 250, height: 200)
+                            .cornerRadius(10)
+                    } else {
+                        Image(uiImage: editingsport.imagedata ?? UIImage())
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 250, height: 200)
+                            .cornerRadius(10)
+                    }
                     Button("Upload New Image") {
                         isDisplayingAddImage = true
                     }
@@ -328,32 +336,34 @@ struct SportsDetailAdminView: View {
                 message: Text("Make sure you double check your edits.\nThis action annot be undone."),
                 primaryButton: .destructive(Text("Publish")) {
                     
-                    //images
-                    
-                    if let displayimage = displayimage {
+//                    // images
+//
+                    if let displayimage {
                         sportsimage = imagemanager.uploadPhoto(file: displayimage)
-                    }
-                    
-                    imagemanager.deleteImage(imageFileName: originalImage) { error in
-                        if let error = error {
-                            print(error.localizedDescription)
+                        
+                        imagemanager.deleteImage(imageFileName: editingsport.sportsimage) { error in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            }
                         }
                     }
-                    
+//                    
                     // creating data
+//                    
+                    let tags: [Int] = [
+                        selectedGender,
+                        selectedSeason,
+                        selectedTeam
+                    ]
                     
-                    var temptags: [Int] = []
-                    temptags.append(selectedGender)
-                    temptags.append(selectedSeason)
-                    temptags.append(selectedTeam)
-                    tags = temptags
-                    
-                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: nil, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
+                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: displayimage, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
                     
                     
                     if let sporttoedit = sporttoedit {
                         sportsmanager.updateSport(data: sporttoedit)
                     }
+                    
+                    dismiss()
                 },
                 secondaryButton: .cancel()
             )
@@ -379,12 +389,6 @@ struct SportsDetailAdminView: View {
                 documentID = editingsport.documentID
                 favoritedusers = editingsport.favoritedusers
                 eventslink = editingsport.eventslink
-                
-                
-                originalImage = editingsport.sportsimage
-                imagemanager.getImage(fileName: sportsimage) { image in
-                    displayimage = image
-                }
             }
     }
 }

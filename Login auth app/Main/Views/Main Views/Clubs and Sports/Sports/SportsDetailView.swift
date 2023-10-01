@@ -32,7 +32,7 @@ struct SportsDetailView: View {
     
     @State var isLoading = false
     
-    var currentsport: sport
+    let currentsport: sport
     
     func dateDate(date: Date) -> String {
         return date.formatted(date: .long, time: .omitted)
@@ -65,6 +65,7 @@ struct SportsDetailView: View {
     @State var currentsportID = ""
     @State var upcomingeventslist: [sportEvent] = []
     @State var topthree: [sportEvent] = []
+    @State var isEditing = false
     
     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
@@ -479,14 +480,17 @@ struct SportsDetailView: View {
                     // formatting stuff
                     
                 }
+                .navigationDestination(isPresented: $isEditing, destination: {
+                    SportsDetailAdminView(editingsport: currentsport)
+                        .environmentObject(sportsmanager)
+                })
                 
                 .navigationBarItems(trailing:
                                         Group {
                     HStack {
                         if hasPermissionSport {
-                            NavigationLink {
-                                SportsDetailAdminView(editingsport: currentsport)
-                                    .environmentObject(sportsmanager)
+                            Button {
+                                self.isEditing.toggle()
                             } label: {
                                 Text("Edit")
                                     .font(.system(size: 17, weight: .semibold, design: .rounded))
