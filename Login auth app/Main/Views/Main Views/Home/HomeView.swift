@@ -57,7 +57,7 @@ struct HomeView: View {
 
          formatteddate = dateFormatter.string(from: currentDate)
          print("\n\nDate Stuff")
-         print(dateFormatter.string(from: currentDate))
+         print(dateFormatter.string(from: currentDate)) // MARK: CRASH PART
         upcomingeventsdataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
             let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()

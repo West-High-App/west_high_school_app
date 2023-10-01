@@ -30,6 +30,8 @@ struct SportsDetailView: View {
     @State var pastevents: [ParsedEvent] = []
     @State var newpastevents: [sportEvent] = []
     
+    @State var isLoading = false
+    
     var currentsport: sport
     
     @State var currentsportID = ""
@@ -113,10 +115,10 @@ struct SportsDetailView: View {
                     // upcoming events view
                     
                     if selected == 1 {
-                        
+                        if !isLoading {
                         //MARK: Aiden to the UI for this:
                         /// I think you have a pretty good idea of what needs to happen or what needs to be displayed. Basically just use the elements: date, type (like game, tournament, meet, etc.), opponent, and comments. You can change the date format using .formatted property.
-
+                        
                         if events.isEmpty {
                             Text("No upcoming events.")
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
@@ -150,7 +152,11 @@ struct SportsDetailView: View {
                                 }
                             }.frame(height: 450)
                         }
-                        
+                        } else {
+                            ProgressView("Loading...")
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        }
                     }
                     
                     // past games view
@@ -288,7 +294,7 @@ struct SportsDetailView: View {
                     
                     //if sportsev MARK: run the dict functino before view appear
                     if sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
-                        
+                        isLoading = true
                         HTMLParser.parseEvents(from: currentsport.eventslink) { parsedevents, error in
                             if let parsedevents = parsedevents {
                                 let currentDate = Date()
@@ -319,7 +325,8 @@ struct SportsDetailView: View {
                                 print(sortedPastEvents)
                                 print("past events")
                                 self.pastevents = sortedPastEvents
-                                
+                                print("DONE LOADING")
+                                self.isLoading = false
                                 sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
                                     
                                 }
