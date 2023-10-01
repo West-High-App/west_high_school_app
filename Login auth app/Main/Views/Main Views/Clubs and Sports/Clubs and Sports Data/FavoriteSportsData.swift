@@ -10,7 +10,7 @@ struct sportFavorite: Identifiable {
 
 class FavoriteSports: ObservableObject {
     @Published var favoritedsports: [sport] = []
-    var userInfo = UserInfo()
+    var userInfo = UserInfo.shared
     
     func getFavorites(completion: @escaping ([String]) -> Void) {
         let email = userInfo.email

@@ -13,7 +13,7 @@ struct PastSportEventsAdminView: View {
     @State var eventToDelete: sportEvent?
     @State var eventToSave: sportEvent?
     
-    @State var userInfo = UserInfo()
+    @ObservedObject var userInfo = UserInfo.shared
     
     @State private var eventyear = ""
     let calendar = Calendar.current

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SpotlightAdminView: View {
     @ObservedObject var dataManager = studentachievementlist.shared
-    @StateObject var userInfo = UserInfo()
+    @StateObject var userInfo = UserInfo.shared
     @StateObject var permissionsManager = permissionsDataManager()
 
     @State private var isPresentingAddAchievement = false
@@ -326,7 +326,7 @@ struct AchievementDetailView: View {
     @State var isApproved = false
     
     @StateObject var permissionsManager = permissionsDataManager()
-    @State var userInfo = UserInfo()
+    @ObservedObject var userInfo = UserInfo.shared
     @State private var isAdmin = false
     @State private var isWriter = false
     

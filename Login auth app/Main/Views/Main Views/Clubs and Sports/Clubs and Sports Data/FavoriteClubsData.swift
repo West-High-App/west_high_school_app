@@ -10,7 +10,7 @@ struct clubFavorite: Identifiable {
 
 class FavoriteClubs: ObservableObject {
     @Published var favoritedclubs: [club] = []
-    var userInfo = UserInfo()
+    var userInfo = UserInfo.shared
     
     func getFavorites(completion: @escaping ([String]) -> Void) {
         if userInfo.loginStatus == "google" {

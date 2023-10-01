@@ -13,7 +13,7 @@ struct ClubDetailAdminView: View {
     @State var clubtoedit: club?
     @StateObject var clubmanager = clubManager.shared
     
-    @State var userInfo = UserInfo()
+    @ObservedObject var userInfo = UserInfo.shared
     
     @State var isConfirmingChanges = false
     
