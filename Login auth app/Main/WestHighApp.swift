@@ -4,7 +4,7 @@
 //  Created by August Andersen on 6/2/23.
 // github repo test
 
-// CURRENT PROJECT HELLO
+// CURRENT PROJECT HELLO HI
 
 import SwiftUI
 import Firebase
