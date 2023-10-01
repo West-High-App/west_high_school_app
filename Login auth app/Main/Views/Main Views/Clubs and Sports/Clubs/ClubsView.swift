@@ -129,6 +129,8 @@ struct ClubsHibabi: View {
                                     }
                                 }
                             
+                            // TODO: Build clubs UI
+                            
                             if clubselected == 1 || clubselected == 2 {
                                 
                                 if !hasFavorites {
