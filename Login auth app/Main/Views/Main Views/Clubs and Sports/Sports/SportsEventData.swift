@@ -382,10 +382,10 @@ class sportEventManager: ObservableObject {
         }
     }
     
-    func deleteSportEventNews(forSport: String, sportEvent: sportEvent) {
+    func deleteSportEventNews(forSport: String, sportEvent: sportEvent, completion: @escaping (Error?) -> Void) {
         print("deleting event...")
         let db = Firestore.firestore()
-        let ref = db.collection("SportEvents").document(sportEvent.documentID) //sportEvent.documentID
+        let ref = db.collection("SportEvents").document(sportEvent.documentID)
         
         var eventtoremove: [String: Any] = [:]
         let title = sportEvent.title
@@ -397,18 +397,57 @@ class sportEventManager: ObservableObject {
         let isSpecial = sportEvent.isSpecial
         let isUpdated = sportEvent.isUpdated
         let score = sportEvent.score
-        eventtoremove = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": true] // shoudl it be false?
+        eventtoremove = ["title": title, "subtitle": subtitle, "month": month, "day": day, "year": year, "publisheddate": publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": true]
+        
         print("try a remove:")
         print(eventtoremove)
+        
         ref.updateData([
             "events": FieldValue.arrayRemove([eventtoremove])
         ]) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
+                completion(error)
             } else {
                 print("deleted that shit")
+                completion(nil)
             }
         }
+    }
+
+    
+    func updateSportEventScore(forSport: String, sportEvent: sportEvent) {
+        
+        let db = Firestore.firestore()
+        let ref = db.collection("SportEvents").document(sportEvent.documentID)
+        
+        var eventtoremove: [String: Any] = [:]
+        let title = sportEvent.title
+        let subtitle = sportEvent.subtitle
+        let month = sportEvent.month
+        let day = sportEvent.day
+        let year = sportEvent.year
+        let publisheddate = "\(month) \(day), \(year)"
+        let isSpecial = sportEvent.isSpecial
+        let isUpdated = sportEvent.isUpdated
+        let score = sportEvent.score
+        eventtoremove = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": false]
+        
+        ref.updateData([
+            "events": FieldValue.arrayRemove([eventtoremove])
+        ]) { error in
+            if let error = error {
+                print("ERROR DELETING EVENT: \(error.localizedDescription)")
+            }
+        }
+        ref.updateData([
+            "events": FieldValue.arrayUnion([sportEvent])
+        ]) { error in
+            if let error = error {
+                print("ERROR ADDING EVENT: \(error.localizedDescription)")
+            }
+        }
+        
     }
     
 //    func getDatePart(event: sportEvent, part: String) -> String {

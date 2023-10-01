@@ -67,7 +67,11 @@ struct SportEventsAdminView: View {
                                 editingeventslist.removeAll {$0 == eventToDelete}
                                 print("EVENT TO DELETE") // MARK: delete isn't working, the add new event is but it's not deleting check to see what doesn't match with firebase
                                 print(eventToDelete)
-                                dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete)
+                                dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete) { error in
+                                    if let error = error {
+                                        print("Error: \(error.localizedDescription)")
+                                    }
+                                }
                             }
                             dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
                                 if let error = error {
@@ -99,7 +103,11 @@ struct SportEventsAdminView: View {
                 message: Text("Are you sure you want to delete the event '\(temptitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
                     if let eventToDelete = eventToDelete {
-                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete)
+                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete) { error in
+                            if let error = error {
+                                print("Error: \(error.localizedDescription)")
+                            }
+                        }
                     }
                 },
                 secondaryButton: .cancel(Text("Cancel"))

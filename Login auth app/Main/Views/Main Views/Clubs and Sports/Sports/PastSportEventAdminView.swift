@@ -133,12 +133,22 @@ struct PastSportEventsAdminView: View {
                         
                         print(editingevent)
                         
+                        // dataManager.updateSportEventScore(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent) <-- could use this but WHAAAt
                         
-                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent)
+                        // HERE IS THE ISSUE
+                        
+                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent) { error in
+                            if error == nil {
+                                dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
+                            }
+                        }
+                        
+                        
+                        /*dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent)
 
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
-                        } // MARK: this is messed up, it should update the document instead of deleting it and creating a new one
+                        }*/
 
                         
                         isPresentingEditEvent = false
@@ -169,7 +179,11 @@ struct PastSportEventsAdminView: View {
                     
                     if let eventToDelete = eventToDelete {
                         dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete)
-                        dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
+                        { error in
+                            if error == nil {
+                                dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
+                            }
+                        }
                     }
                 
                 },
