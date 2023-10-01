@@ -8,23 +8,36 @@
 import SwiftUI
 import Firebase
 
-struct Newstab: Identifiable {
+struct Newstab: Identifiable, Equatable {
     let id = UUID()
     let documentID: String // if ur basing it off my data you need to add documentID
-    let title:String
-    let publisheddate:String // format: Jun 15, 2023, Feb 28, 1998, etc.
-    let description: String
+    var title:String
+    var publisheddate:String // format: Jun 15, 2023, Feb 28, 1998, etc.
+    var description: String
+}
+
+extension Array<Newstab> {
+    func sortedByDate() -> Self {
+        self.sorted { first, second in
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM dd, yyyy"
+            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+            return firstDate > secondDate
+        }
+    }
 }
 
 class Newslist: ObservableObject {
-    @Published var topfive: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...")]
-    @Published var newstitlearray: [Newstab] = []
+    @Published private var topfiveUnsorted: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...")]
+    var topfive: [Newstab] {
+        topfiveUnsorted.sortedByDate()
+    }
     
     static let shared = Newslist()
     
     init() {
         getAnnouncements()
-        newstitlearray = filterByDate()
     }
     
     
@@ -41,14 +54,22 @@ class Newslist: ObservableObject {
                     didSet {
                         if templist.count == snapshot.count {
                             DispatchQueue.main.async {
-                                self.topfive = Array(templist[0...])
-                                self.topfive = self.topfive.sorted { first, second in
-                                    let dateFormatter = DateFormatter()
-                                    dateFormatter.dateFormat = "MMM dd, yyyy"
-                                    let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-                                    let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-                                    return firstDate < secondDate
-                                }.reversed()
+                                for temp in templist {
+                                    if let index = self.topfiveUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                                        self.topfiveUnsorted[index].publisheddate = temp.publisheddate
+                                        self.topfiveUnsorted[index].title = temp.title
+                                        self.topfiveUnsorted[index].description = temp.description
+                                    } else {
+                                        self.topfiveUnsorted.append(temp)
+                                    }
+                                    if temp == templist.last {
+                                        for element in self.topfiveUnsorted {
+                                            if !templist.contains(where: { $0.documentID == element.documentID }) {
+                                                self.topfiveUnsorted.removeAll(where: { $0.documentID == element.documentID }) // Remove if not on server
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -78,8 +99,6 @@ class Newslist: ObservableObject {
             completion(error)
         }
         print("Announcement created with documentID: \(announcement.documentID)")
-        self.topfive.append(announcement)
-        self.filterByDate()
     }
 
     func deleteAnnouncement(announcement: Newstab, completion: @escaping (Error?) -> Void) { //
@@ -92,15 +111,4 @@ class Newslist: ObservableObject {
         }
         print("Announcement deleted")
     }
-    
-    func filterByDate() -> [Newstab]{
-        self.newstitlearray = self.topfive.sorted { first, second in
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM, d yyyy"
-            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-            return firstDate < secondDate
-        }.reversed()
-        return(newstitlearray)
-    }
-    }
+}
