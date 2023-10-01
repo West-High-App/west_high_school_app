@@ -150,8 +150,7 @@ struct ClubsHibabi: View {
                                         Spacer()
                                         
                                     }
-                                }
-                                else {
+                                } else {
                                     VStack {
                                         if isLoading {
                                             Text("Loading")
@@ -223,7 +222,7 @@ struct ClubsHibabi: View {
                             }
                             else if clubselected == 3 {
                                 //mark
-                                List(clubNewsManager.allclubsnewslist, id: \.id) { news in  // filteredClubNews
+                                List(clubNewsManager.allclubsnewslist) { news in  // filteredClubNews
                                     clubnewscell(feat: news)
                                         .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
                                 }
@@ -249,7 +248,7 @@ struct ClubsHibabi: View {
                             favoriteclublist = clubfavoritesmanager.favoriteClubs
                             
                             if !hasAppeared {
-                                isLoading = true
+//                                isLoading = true
                                 print("LOADING...")
                                 
                                 if userInfo.isAdmin {
@@ -267,79 +266,79 @@ struct ClubsHibabi: View {
                                     }
                                 }
                                 
-                                let dispatchGroup = DispatchGroup()
-                                
-                                var tempylist2: [club] = []
-                                for club in clubsmanager.favoriteslist {
-                                    dispatchGroup.enter()
-                                    
-                                    imagemanager.getImage(fileName: club.clubimage) { image in
-                                        var tempclub2 = club
-                                        if let image = image {
-                                            tempclub2.imagedata = image
-                                        }
-                                        
-                                        tempylist2.append(tempclub2)
-                                        dispatchGroup.leave()
-                                        
-                                    }
-                                }
-                                
-                                dispatchGroup.notify(queue: .main) { [self] in
-                                    self.clubsmanager.favoriteslist = tempylist2
-                                    self.favoriteclublist = tempylist2
-                                    self.clubfavoritesmanager.favoriteClubs = tempylist2
-                                }
-                                var tempylist: [club] = []
-                                
-                                for club in clubsmanager.allclublist {
-                                    dispatchGroup.enter()
-                                    
-                                    imagemanager.getImage(fileName: club.clubimage) { image in
-                                        
-                                        var tempclub = club
-                                        if let image = image {
-                                            tempclub.imagedata = image
-                                        }
-                                        tempylist.append(tempclub) //
-                                        dispatchGroup.leave()
-                                    }
-                                }
-                                
-                                dispatchGroup.notify(queue: .main) { [self] in
-                                    self.clubsmanager.allclublist = tempylist
-                                }
-                                
-                                
-                                var templist: [clubNews] = []
-                                for news in clubNewsManager.allclubsnewslist {
-                                    dispatchGroup.enter()
-                                    
-                                    imagesManager.getImage(fileName: news.newsimage[0]) { uiimage in
-                                        var tempnews = news
-                                        if let uiimage = uiimage {
-                                            
-                                            tempnews.imagedata.removeAll()
-                                            tempnews.imagedata.append(uiimage)
-                                        }
-                                        templist.append(tempnews)
-                                        print("NEW ITEM BRO")
-                                        dispatchGroup.leave()
-                                    }
-                                }
-                                
-                                dispatchGroup.notify(queue: .main) { [self] in
-                                    self.clubNewsManager.allclubsnewslist = templist
-                                    self.clubNewsManager.allclubsnewslist = self.clubNewsManager.allclubsnewslist.sorted { first, second in
-                                        let dateFormatter = DateFormatter()
-                                        dateFormatter.dateFormat = "MMM dd, yyyy"
-                                        let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
-                                        let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
-                                        return firstDate < secondDate
-                                    }.reversed()
-                                    print("DONE LOADING")
+//                                let dispatchGroup = DispatchGroup()
+//                                
+//                                var tempylist2: [club] = []
+//                                for club in clubsmanager.favoriteslist {
+//                                    dispatchGroup.enter()
+//                                    
+//                                    imagemanager.getImage(fileName: club.clubimage) { image in
+//                                        var tempclub2 = club
+//                                        if let image = image {
+//                                            tempclub2.imagedata = image
+//                                        }
+//                                        
+//                                        tempylist2.append(tempclub2)
+//                                        dispatchGroup.leave()
+//                                        
+//                                    }
+//                                }
+//                                
+//                                dispatchGroup.notify(queue: .main) { [self] in
+//                                    self.clubsmanager.favoriteslist = tempylist2
+//                                    self.favoriteclublist = tempylist2
+//                                    self.clubfavoritesmanager.favoriteClubs = tempylist2
+//                                }
+//                                var tempylist: [club] = []
+//                                
+//                                for club in clubsmanager.allclublist {
+//                                    dispatchGroup.enter()
+//                                    
+//                                    imagemanager.getImage(fileName: club.clubimage) { image in
+//                                        
+//                                        var tempclub = club
+//                                        if let image = image {
+//                                            tempclub.imagedata = image
+//                                        }
+//                                        tempylist.append(tempclub) //
+//                                        dispatchGroup.leave()
+//                                    }
+//                                }
+//                                
+//                                dispatchGroup.notify(queue: .main) { [self] in
+//                                    self.clubsmanager.allclublist = tempylist
+//                                }
+//                                
+//                                
+//                                var templist: [clubNews] = []
+//                                for news in clubNewsManager.allclubsnewslist {
+//                                    dispatchGroup.enter()
+//                                    
+//                                    imagesManager.getImage(fileName: news.newsimage[0]) { uiimage in
+//                                        var tempnews = news
+//                                        if let uiimage = uiimage {
+//                                            
+//                                            tempnews.imagedata.removeAll()
+//                                            tempnews.imagedata.append(uiimage)
+//                                        }
+//                                        templist.append(tempnews)
+//                                        print("NEW ITEM BRO")
+//                                        dispatchGroup.leave()
+//                                    }
+//                                }
+//                                
+//                                dispatchGroup.notify(queue: .main) { [self] in
+//                                    self.clubNewsManager.allclubsnewslist = templist
+//                                    self.clubNewsManager.allclubsnewslist = self.clubNewsManager.allclubsnewslist.sorted { first, second in
+//                                        let dateFormatter = DateFormatter()
+//                                        dateFormatter.dateFormat = "MMM dd, yyyy"
+//                                        let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
+//                                        let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
+//                                        return firstDate < secondDate
+//                                    }.reversed()
+//                                    print("DONE LOADING")
                                     isLoading = false
-                                }
+//                                }
                                 
                                 
                                 hasAppeared = true

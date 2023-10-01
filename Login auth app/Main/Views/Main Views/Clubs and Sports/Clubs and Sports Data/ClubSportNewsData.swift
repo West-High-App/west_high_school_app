@@ -140,14 +140,13 @@ class clubsNewslist: ObservableObject{
                     didSet {
                         if templist.count == snapshot.count {
                             DispatchQueue.main.async {
-                                self.allclubsnewslist = Array(templist[0...])
-                                self.allclubsnewslist = self.allclubsnewslist.sorted { first, second in
+                                self.allclubsnewslist = templist.sorted { first, second in
                                     let dateFormatter = DateFormatter()
                                     dateFormatter.dateFormat = "MMM dd, yyyy"
                                     let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
                                     let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
-                                    return firstDate < secondDate
-                                }.reversed()
+                                    return firstDate > secondDate
+                                }
                             }
                         }
                     }

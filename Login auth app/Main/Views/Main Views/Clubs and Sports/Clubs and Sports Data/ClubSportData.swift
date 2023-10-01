@@ -209,8 +209,7 @@ class clubManager: ObservableObject {
                     let adminemails = data["adminemails"] as? [String] ?? []
                     let favoritedusers = data["favoritedusers"] as? [String] ?? []
                     let documentID = document.documentID
-                    var imagedata = UIImage()
-                
+                    
                     
                     self.imagemanager.getImage(fileName: clubimage) { image in
                         let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: favoritedusers, imagedata: image ?? UIImage(), documentID: documentID, id: id)
