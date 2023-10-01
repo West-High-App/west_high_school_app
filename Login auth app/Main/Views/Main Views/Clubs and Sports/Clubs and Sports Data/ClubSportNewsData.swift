@@ -160,7 +160,16 @@ class clubsNewslist: ObservableObject{
                     let newsdate = data["newsdate"] as? String ?? ""
                     let author = data["author"] as? String ?? ""
                     let documentID = document.documentID
-                    let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID, imagedata: [])
+                    var imagedata: [UIImage] = []
+                    for file in newsimage {
+                        imageManager().getImage(fileName: file) { image in
+                            if let image = image {
+                                imagedata.append(image)
+                            }
+                        }
+                    }
+                    
+                    let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID, imagedata: imagedata)
                     templist.append(clubnews)
                 }
             }

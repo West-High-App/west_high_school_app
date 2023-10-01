@@ -84,7 +84,16 @@ class studentachievementlist: ObservableObject{
                     let isApproved = data["isApproved"] as? Bool ?? false
                     let documentID = document.documentID
                     
-                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: [])
+                    var imagedata: [UIImage] = []
+                    for file in images {
+                        let _ = imageManager().getImage(fileName: file) { image in
+                            if let image = image {
+                                imagedata.append(image)
+                            }
+                        }
+                    }
+                    
+                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: imagedata)
                     templist.append(achievement)
                 }
             }

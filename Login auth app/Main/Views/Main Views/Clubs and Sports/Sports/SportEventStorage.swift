@@ -6,6 +6,7 @@ import SwiftUI
 class SportsEventStorage: ObservableObject {
     
     @Published var sportsevents: [String: [ParsedEvent]] = [:]
+    @Published var pastevents: [String: [ParsedEvent]] = [:]
     
     static let shared = SportsEventStorage()
 

@@ -7,129 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Home/HomeView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "HomeView"
-            landmarkType = "14">
-            <Locations>
-               <Location
-                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - 6d933d010f96991e"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "property wrapper backing initializer of West_High.HomeView.hasPermissionsUpcomingEvents : Swift.Bool"
-                  moduleName = "West High"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "32">
-               </Location>
-               <Location
-                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - 804880ff7ce2bf15"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "West_High.HomeView.hasPermissionsUpcomingEvents.getter : Swift.Bool"
-                  moduleName = "West High"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "180">
-               </Location>
-               <Location
-                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - 5ee293fbf35e1781"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "West_High.HomeView.hasPermissionsUpcomingEvents.setter : Swift.Bool"
-                  moduleName = "West High"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "168">
-               </Location>
-               <Location
-                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - f85017aa90030108"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "West_High.HomeView.hasPermissionsUpcomingEvents.modify : Swift.Bool"
-                  moduleName = "West High"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "260">
-               </Location>
-               <Location
-                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - ec7c96e9d28a1cc4"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "West_High.HomeView.hasPermissionsUpcomingEvents.modify : Swift.Bool with unmangled suffix &quot;.resume.0&quot;"
-                  moduleName = "West High"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "40">
-               </Location>
-               <Location
-                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - 33f170be88f70b39"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "West_High.HomeView.$hasPermissionsUpcomingEvents.getter : SwiftUI.Binding&lt;Swift.Bool&gt;"
-                  moduleName = "West High"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "196">
-               </Location>
-               <Location
-                  uuid = "DB837ED4-BA26-43DF-A767-D3CE16B09384 - a2418159fc5d1e5"
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "West_High.HomeView.init(safeArea: SwiftUI.EdgeInsets, size: __C.CGSize) -&gt; West_High.HomeView"
-                  moduleName = "West High"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/augustelholm/Documents/west_high_final/west_high_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Home/HomeView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "3520">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "EBD366A6-27F6-468A-AA69-C6B04C504380"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -159,7 +36,7 @@
                </Location>
                <Location
                   uuid = "EBD366A6-27F6-468A-AA69-C6B04C504380 - b85bebac9ea5b3de"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "West_High.SportsHibabi.init() -&gt; West_High.SportsHibabi"
@@ -171,6 +48,197 @@
                   startingLineNumber = "18"
                   endingLineNumber = "18"
                   offsetFromSymbolStart = "568">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A929F9D9-4A3B-46DE-8488-ECDAB7687A01"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Login Flow/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "parseEvents(from:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A929F9D9-4A3B-46DE-8488-ECDAB7687A01 - 6778f9d6b4da06fb"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.parseEvents(from: Swift.String, completion: (Swift.Optional&lt;Swift.Array&lt;West_High.ParsedEvent&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "168">
+               </Location>
+               <Location
+                  uuid = "A929F9D9-4A3B-46DE-8488-ECDAB7687A01 - 91582f189fe49df5"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Swift.String, Swift.Error&gt;) -&gt; () in static West_High.HTMLParser.parseEvents(from: Swift.String, completion: (Swift.Optional&lt;Swift.Array&lt;West_High.ParsedEvent&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Login%20Flow/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "160">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8CD55939-CAAD-4BBD-A227-81A4CB11B2C3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Clubs/ClubsDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "8CD55939-CAAD-4BBD-A227-81A4CB11B2C3 - ab4750cb7cbdd9c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Clubs/ClubsDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "315"
+                  endingLineNumber = "315"
+                  offsetFromSymbolStart = "1288">
+               </Location>
+               <Location
+                  uuid = "8CD55939-CAAD-4BBD-A227-81A4CB11B2C3 - 2d792e61b8a01411"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (West_High.club) -&gt; Swift.Bool in closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Clubs/ClubsDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "315"
+                  endingLineNumber = "315"
+                  offsetFromSymbolStart = "84">
+               </Location>
+               <Location
+                  uuid = "8CD55939-CAAD-4BBD-A227-81A4CB11B2C3 - ab4750cb7cbdd9c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Clubs/ClubsDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "315"
+                  endingLineNumber = "315"
+                  offsetFromSymbolStart = "1304">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1F74DEAC-5DEF-4579-9D79-3BD689A26C39"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Clubs/ClubsDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "317"
+            endingLineNumber = "317"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BA664CE3-1930-4B1D-A372-552B2EA06939"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Clubs/ClubsDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "320"
+            endingLineNumber = "320"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D248A856-0531-47DD-A6ED-5DEF143EB115"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Clubs/ClubsDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "D248A856-0531-47DD-A6ED-5DEF143EB115 - 7cf85c46c20fe5bb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Clubs/ClubsDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "322"
+                  endingLineNumber = "322"
+                  offsetFromSymbolStart = "432">
+               </Location>
+               <Location
+                  uuid = "D248A856-0531-47DD-A6ED-5DEF143EB115 - ab4750cb7cbdd77"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Clubs/ClubsDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "322"
+                  endingLineNumber = "322"
+                  offsetFromSymbolStart = "3056">
                </Location>
             </Locations>
          </BreakpointContent>

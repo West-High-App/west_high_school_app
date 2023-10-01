@@ -156,7 +156,7 @@ struct SportsDetailView: View {
                     // past games view
                     
                     if selected == 2 {
-                        if currentsport.editoremails.contains(userInfo.email) {
+                        if currentsport.editoremails.contains(userInfo.email) || currentsport.adminemails.contains(userInfo.email) || userInfo.isAdmin || userInfo.isSportsAdmin {
                             NavigationLink {
                                 PastSportEventsAdminView(currentsport: currentsport)
                             } label: {
@@ -324,37 +324,6 @@ struct SportsDetailView: View {
                                     
                                 }
                                 
-                                // right here
-                                
-                                sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                                    
-                                    for existingevent in self.pastevents {
-                                        print("EVENT EXISTS")
-                                        print(existingevent)
-                                        if let matchingEvent = events?.first(where: { newEvent in
-                                            
-                                            let dateFormatter = DateFormatter()
-                                            dateFormatter.dateFormat = "MMM d, yyyy"
-                                            
-                                            let existingeventformatteddate = dateFormatter.string(from: existingevent.date)
-                                            let neweventformatteddate = dateFormatter.string(from: newEvent.date)
-                                            
-                                            return existingevent.type == newEvent.title && existingevent.opponent == newEvent.subtitle && existingeventformatteddate == neweventformatteddate
-                                            
-                                        }) {} else {
-                                            print("adding new bitch")
-                                            sporteventmanager.createParsedSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: existingevent)
-                                        }
-                                    }
-                                    sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { newevents, error in
-                                        if let newevents = newevents {
-                                            newpastevents = newevents
-                                            print(newpastevents)
-                                            print("NEW PAST EVENTS")
-                                        }
-                                    }
-                                }
-                                
                                 
                             } else if let error = error {
                                 print("Error: \(error.localizedDescription)")
@@ -363,6 +332,36 @@ struct SportsDetailView: View {
                         
                     } else {
                         self.events = sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
+                    }
+                    
+                    // moved
+                    sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+                        
+                        for existingevent in self.pastevents {
+                            print("EVENT EXISTS")
+                            print(existingevent)
+                            if let matchingEvent = events?.first(where: { newEvent in
+                                
+                                let dateFormatter = DateFormatter()
+                                dateFormatter.dateFormat = "MMM d, yyyy"
+                                
+                                let existingeventformatteddate = dateFormatter.string(from: existingevent.date)
+                                let neweventformatteddate = dateFormatter.string(from: newEvent.date)
+                                
+                                return existingevent.type == newEvent.title && existingevent.opponent == newEvent.subtitle && existingeventformatteddate == neweventformatteddate
+                                
+                            }) {} else {
+                                print("adding new bitch")
+                                sporteventmanager.createParsedSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: existingevent)
+                            }
+                        }
+                        sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { newevents, error in
+                            if let newevents = newevents {
+                                newpastevents = newevents.reversed()
+                                print(newpastevents)
+                                print("NEW PAST EVENTS")
+                            }
+                        }
                     }
                                         
                     // getting events (only once, then it saves)

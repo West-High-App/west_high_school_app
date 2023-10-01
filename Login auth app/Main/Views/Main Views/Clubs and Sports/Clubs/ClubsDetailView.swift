@@ -311,10 +311,14 @@ struct ClubsDetailView: View {
                         
                         var tempclub = currentclub
                         tempclub.favoritedusers.append(userInfo.email)
-                        clubsmanager.updateClub(data: tempclub)
-                        clubsmanager.allclublist.removeAll {$0 == currentclub}
-                        clubsmanager.allclublist.append(tempclub)
-                        
+                        print("1")
+                        clubsmanager.allclublist.removeAll {$0 == currentclub} //
+                        print("2")
+                        clubsmanager.allclublist.append(tempclub) //
+                        print("3")
+                        print(tempclub)
+                        clubsmanager.updateClub(data: tempclub) // this is the error
+
                         isFavorited = true
                     }
                 }

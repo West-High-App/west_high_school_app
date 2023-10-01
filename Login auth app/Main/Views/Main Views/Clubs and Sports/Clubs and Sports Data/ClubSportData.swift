@@ -76,8 +76,14 @@ class sportsManager: ObservableObject {
                     let documentID = document.documentID
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
+                    var imagedata = UIImage()
+                    let _ = imageManager().getImage(fileName: sportsimage) { image in
+                        if let image = image {
+                            imagedata = image
+                        }
+                    }
                     
-                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: UIImage(), documentID: documentID, sportid: sportid, id: id))
+                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: imagedata, documentID: documentID, sportid: sportid, id: id))
                     tempID = tempID + 1
                     returnvalue.append(sport)
                 }
@@ -198,13 +204,20 @@ class clubManager: ObservableObject {
                     let clubdescription = data["clubdescription"] as? String ?? ""
                     let clubimage = data["clubimage"] as? String ?? ""
                     let clubmembers = data["clubmembers"] as? [String] ?? []
-                    let clubmembercount = String(clubmembers.count + (clubcapation?.count ?? 0)) ?? ""
+                    let clubmembercount = String(clubmembers.count + (clubcapation?.count ?? 0))
                     let editoremails = data["editoremails"] as? [String] ?? []
                     let adminemails = data["adminemails"] as? [String] ?? []
                     let favoritedusers = data["favoritedusers"] as? [String] ?? []
                     let documentID = document.documentID
+                    var imagedata = UIImage()
+                
+                    let _ = imageManager().getImage(fileName: clubimage) { image in
+                        if let image = image {
+                            imagedata = image
+                        }
+                    }
                     
-                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: favoritedusers, imagedata: UIImage(), documentID: documentID, id: id)
+                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: favoritedusers, imagedata: imagedata, documentID: documentID, id: id)
                     id = id + 1
                     returnvalue.append(club)
                     self.filteredlist = returnvalue.sorted { $0.clubname.lowercased() < $1.clubname.lowercased() }
