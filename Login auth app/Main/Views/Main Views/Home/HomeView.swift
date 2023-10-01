@@ -41,14 +41,25 @@ struct HomeView: View {
     //var safeArea: EdgeInsets
     //var size: CGSize
     // delete init under if being stupid
+     @State var formatteddate: String = ""
+     @State var date = Date()
 
+     let viewdateFormatter = DateFormatter()
+     let dateFormatter = DateFormatter()
+     
     init(safeArea: EdgeInsets, size: CGSize) {
         self.safeArea = safeArea
         self.size = size
+         
+         viewdateFormatter.dateFormat = "MMMM d, yyyy"
+         dateFormatter.dateFormat = "MMM d, yyyy"
+         let currentDate = Date()
+
+         formatteddate = dateFormatter.string(from: currentDate)
+         print("\n\nDate Stuff")
+         print(dateFormatter.string(from: currentDate))
         upcomingeventsdataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM d, yyyy"
             let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
             let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
             return firstDate < secondDate
@@ -60,7 +71,6 @@ struct HomeView: View {
     @StateObject var imagemanager = imageManager()
     
     @EnvironmentObject var userInfo: UserInfo
-    @State var date = Date()
     let yellow = Color(red: 0.976, green: 0.87, blue: 0.01)
     let blue = Color(red: 0.159, green: 0.207, blue: 0.525)
     
@@ -502,7 +512,7 @@ struct HomeView: View {
                                 ], startPoint: .top, endPoint: .bottom)
                             )
                         VStack(spacing: 0) {
-                            Text(date, style: .date)
+                            Text(viewdateFormatter.string(from: date)) // Text(date, style: .date)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.2)
                                 .font(.system(size: 50, weight: .semibold, design: .rounded))

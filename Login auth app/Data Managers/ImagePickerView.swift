@@ -176,15 +176,12 @@ class imageManager: ObservableObject {
             // Check if the image exists in UserDefaults
             if let imageData = userDefaults.data(forKey: fileName), let image = UIImage(data: imageData) {
                 completion(image)
-                print("GOT FROM DEFAULTS")
             } else {
                 // If not, fetch it from Firebase
-                print("GOT FROM FIREBASE")
                 getImageFromStorage(fileName: fileName) { [weak self] image in
                     if let image = image {
                         // Cache the fetched image in UserDefaults
                         self?.cacheImageInUserDefaults(image: image, fileName: fileName)
-                        print("CACHED")
                         print(self?.userDefaults.data(forKey: fileName) ?? "")
                         completion(image)
                     } else {

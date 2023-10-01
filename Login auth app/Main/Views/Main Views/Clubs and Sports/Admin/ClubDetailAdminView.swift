@@ -13,6 +13,8 @@ struct ClubDetailAdminView: View {
     @State var clubtoedit: club?
     @StateObject var clubmanager = clubManager.shared
     
+    @State var userInfo = UserInfo()
+    
     @State var isConfirmingChanges = false
     
     @State var clubname = "" //
@@ -64,36 +66,38 @@ struct ClubDetailAdminView: View {
                                 
                 Section("Permissions") {
                     
-                    DisclosureGroup("Admins") {
-                        ForEach($adminemails, id: \.self) { $adminEmail in
-                            HStack {
-                                Text(adminEmail)
-                                    .contextMenu {
-                                        Button(role: .destructive) {
-                                            adminemails.removeAll { $0 == adminEmail }
-                                        } label: {
-                                            Text("Delete")
-                                        }
-                                    }
-                            }
-                        }
-                        Button("Add Admin") {
-                            isAddingAdmin = true
-                        }.sheet(isPresented: $isAddingAdmin) {
-                            VStack {
+                    if userInfo.isClubsAdmin {
+                        DisclosureGroup("Admins") {
+                            ForEach($adminemails, id: \.self) { $adminEmail in
                                 HStack {
-                                    Button("Cancel") {
-                                        isAddingAdmin = false
-                                    }.padding()
-                                    Spacer()
+                                    Text(adminEmail)
+                                        .contextMenu {
+                                            Button(role: .destructive) {
+                                                adminemails.removeAll { $0 == adminEmail }
+                                            } label: {
+                                                Text("Delete")
+                                            }
+                                        }
                                 }
-                                Form {
-                                    Section("New Admin Email:") {
-                                        TextField("Email", text: $newAdminEmail)
-                                        Button("Add Admin") {
+                            }
+                            Button("Add Admin") {
+                                isAddingAdmin = true
+                            }.sheet(isPresented: $isAddingAdmin) {
+                                VStack {
+                                    HStack {
+                                        Button("Cancel") {
                                             isAddingAdmin = false
-                                            adminemails.append(newAdminEmail)
-                                            newAdminEmail = ""
+                                        }.padding()
+                                        Spacer()
+                                    }
+                                    Form {
+                                        Section("New Admin Email:") {
+                                            TextField("Email", text: $newAdminEmail)
+                                            Button("Add Admin") {
+                                                isAddingAdmin = false
+                                                adminemails.append(newAdminEmail)
+                                                newAdminEmail = ""
+                                            }
                                         }
                                     }
                                 }
