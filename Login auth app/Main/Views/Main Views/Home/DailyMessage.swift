@@ -9,11 +9,11 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 
-struct dailymessage: Identifiable {
+struct dailymessage: Identifiable, Equatable {
     let id = UUID()
     let documentID: String // add this bitch
-    let messagecontent: String
-    let writer: String
+    var messagecontent: String
+    var writer: String
 }
 
 
@@ -40,7 +40,21 @@ class dailymessagelist: ObservableObject {
                 var alldailymessagelist: [dailymessage] = [] {
                     didSet {
                         if alldailymessagelist.count == snapshot.documents.count {
-                            self.alldailymessagelist = alldailymessagelist
+                            for dailymessage in alldailymessagelist {
+                                if let index = self.alldailymessagelist.firstIndex(where: { $0.documentID == dailymessage.documentID }) {
+                                    self.alldailymessagelist[index].messagecontent = dailymessage.messagecontent
+                                    self.alldailymessagelist[index].writer = dailymessage.writer
+                                } else {
+                                    self.alldailymessagelist.append(dailymessage)
+                                }
+                                if dailymessage == alldailymessagelist.last {
+                                    for selfDailyMessage in self.alldailymessagelist {
+                                        if !alldailymessagelist.contains(where: { $0.documentID == selfDailyMessage.documentID }) {
+                                            self.alldailymessagelist.removeAll(where: { $0.documentID == selfDailyMessage.documentID }) // Remove if not on server
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
