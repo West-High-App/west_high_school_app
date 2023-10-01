@@ -8,6 +8,8 @@ struct permission: Identifiable {
     var documentID: String
 }
 
+// TODO: Redo structure to use snapshot listener?
+
 class permissionsDataManager: ObservableObject {
     @Published var permissions: [String: [String]] = [:]
     

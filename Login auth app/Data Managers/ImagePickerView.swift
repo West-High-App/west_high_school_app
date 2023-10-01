@@ -131,7 +131,7 @@ struct ImagePickerView: View {
     func retrievePhotos() {
         
         let db = Firestore.firestore()
-        db.collection("Images").getDocuments { snapshot, error in
+        db.collection("Images").addSnapshotListener { snapshot, error in
             if error == nil && snapshot != nil {
                 var paths = [String]()
                 
@@ -149,7 +149,11 @@ struct ImagePickerView: View {
                         if error == nil && data != nil{
                             if let image = UIImage(data: data!) {
                                 DispatchQueue.main.async {
-                                    self.retrievedImages.append(image)
+                                    if let index = self.retrievedImages.firstIndex(of: image) {
+                                        self.retrievedImages[index] = image
+                                    } else {
+                                        self.retrievedImages.append(image)
+                                    }
                                 }
                             }
                         }
