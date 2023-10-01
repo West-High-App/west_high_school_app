@@ -38,12 +38,13 @@ struct InformationView: View {
                                         image
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
+                                            .frame(width: 30, height: 30)
                                             .cornerRadius(100)
                                     default:
                                         EmptyView()
                                     }
                                 }
+                                .padding(.trailing, 10)
                                 Text(userInfo.displayName) // if google login, do image + full name, otherwise do person.circle + guest
                             }.foregroundColor(.primary)
                         } else {
