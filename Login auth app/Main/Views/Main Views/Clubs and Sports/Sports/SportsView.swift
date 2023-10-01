@@ -141,7 +141,7 @@ struct SportsHibabi: View {
                         Picker(selection: $selected, label: Text(""), content: { // picker at top
                             Text("My Sports").tag(1)
                             Text("Browse").tag(2)
-                            Text("Sports News").tag(3)
+                            Text("News").tag(3)
                             
                         }).pickerStyle(SegmentedPickerStyle())
                             .padding(.horizontal,30)
