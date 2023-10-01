@@ -5,11 +5,11 @@ import FirebaseFirestore
 class event: NSObject, Identifiable {
     let id = UUID()
     let documentID: String
-    let eventname: String
-    let time: String
-    let month: String
-    let day: String
-    let year: String
+    var eventname: String
+    var time: String
+    var month: String
+    var day: String
+    var year: String
     var date: Date = Date()
 
     required init(documentID: String, eventname: String, time: String, month: String, day: String, year: String, publisheddate: String) {
@@ -50,14 +50,43 @@ extension Date {
     }
 }
 
+extension Array<event> {
+    func sortedByDate() -> Self {
+        self.sorted(by: {
+            $0.date.compare($1.date) == .orderedAscending
+        })
+    }
+}
+
 class upcomingEventsDataManager: ObservableObject {
     static let shared = upcomingEventsDataManager()
     
-    @Published var allupcomingeventslist: [event] = []
+    @Published private var allupcomingeventslistUnsorted: [event] = []
+    var allupcomingeventslist: [event] {
+        allupcomingeventslistUnsorted.sortedByDate()
+    }
     @Published var alleventslist: [event] = []
-    @Published var firstcurrentevent = event(documentID: "", eventname: "", time: "", month: "", day: "", year: "", publisheddate: "")
-    @Published var secondcurrentEvent = event(documentID: "", eventname: "", time: "", month: "", day: "", year: "", publisheddate: "")
-    @Published var thirdcurrentEvent = event(documentID: "", eventname: "", time: "", month: "", day: "", year: "", publisheddate: "")
+    var firstcurrentevent: event? {
+        if let firstEvent = self.allupcomingeventslist.first {
+            return firstEvent
+        } else {
+            return nil
+        }
+    }
+    var secondcurrentEvent: event? {
+        if self.allupcomingeventslist.count > 1 {
+          return self.allupcomingeventslist[1]
+        } else {
+            return nil
+        }
+    }
+    var thirdcurrentEvent: event? {
+        if self.allupcomingeventslist.count > 2 {
+          return self.allupcomingeventslist[2]
+        } else {
+            return nil
+        }
+    }
 
 
     var editingEvent: event?
@@ -78,30 +107,31 @@ class upcomingEventsDataManager: ObservableObject {
                 var templist: [event] = [] {
                     didSet {
                         if templist.count == snapshot.count {
-                            for event in self.allupcomingeventslist{
-                                if event.date < Date.yesterday{
-                                    self.deleteEvent(event: event) { error in
-                                        if let error = error {
-                                            print("Error deleting event: \(error.localizedDescription)")
+                            for temp in templist {
+                                if let index = self.allupcomingeventslistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                                    self.allupcomingeventslistUnsorted[index].eventname = temp.eventname
+                                    self.allupcomingeventslistUnsorted[index].date = temp.date
+                                    self.allupcomingeventslistUnsorted[index].day = temp.day
+                                    self.allupcomingeventslistUnsorted[index].month = temp.month
+                                    self.allupcomingeventslistUnsorted[index].year = temp.year
+                                    self.allupcomingeventslistUnsorted[index].time = temp.time
+                                } else {
+                                    self.allupcomingeventslistUnsorted.append(temp)
+                                }
+                                if temp == templist.last {
+                                    for event in self.allupcomingeventslistUnsorted {
+                                        if !templist.contains(where: { $0.documentID == event.documentID }) {
+                                            self.allupcomingeventslistUnsorted.removeAll(where: { $0.documentID == event.documentID }) // Remove if not on server
+                                        }
+                                        if event.date < Date.yesterday {
+                                            self.deleteEvent(event: event) { error in // Remove if in the past
+                                                if let error = error {
+                                                    print("Error deleting event: \(error.localizedDescription)")
+                                                }
+                                            }
                                         }
                                     }
-
                                 }
-                            }
-                            
-                            self.allupcomingeventslist = templist
-                            self.allupcomingeventslist = self.allupcomingeventslist.sorted(by: {
-                                $0.date.compare($1.date) == .orderedDescending
-                            })
-                            self.allupcomingeventslist = self.allupcomingeventslist.reversed()
-                            if let firstEvent = self.allupcomingeventslist.first {
-                              self.firstcurrentevent = firstEvent
-                            }
-                            if self.allupcomingeventslist.count > 1 {
-                              self.secondcurrentEvent = self.allupcomingeventslist[1]
-                            }
-                            if self.allupcomingeventslist.count > 2 {
-                              self.thirdcurrentEvent = self.allupcomingeventslist[2]
                             }
                         }
                     }

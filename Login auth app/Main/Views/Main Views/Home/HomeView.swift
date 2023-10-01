@@ -18,7 +18,7 @@ struct HomeView: View {
      @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
     @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
     @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
-    @State var screen = ScreenSize()
+    var screen = ScreenSize()
      @ObservedObject var clubmanager = clubManager.shared
      @StateObject var newsDataManager = Newslist.shared
      @ObservedObject var upcomingeventsdataManager = upcomingEventsDataManager.shared
@@ -193,26 +193,42 @@ struct HomeView: View {
                                                             .cornerRadius(10)
                                                             .shadow(radius: 2, x: 1, y: 1))                        }
                                            }
-                                           
-                                           VStack {
-                                                UpcomingEventCell(event: upcomingeventsdataManager.firstcurrentevent)
-                                                Divider()
-                                                     .padding(.horizontal)
-                                                     .padding(.vertical, 5)
-                                                UpcomingEventCell(event: upcomingeventsdataManager.secondcurrentEvent)
-                                                Divider()
-                                                     .padding(.horizontal)
-                                                     .padding(.vertical, 5)
-                                                UpcomingEventCell(event: upcomingeventsdataManager.thirdcurrentEvent)
+                                           if let firstcurrentevent = upcomingeventsdataManager.firstcurrentevent {
+                                                VStack {
+                                                     UpcomingEventCell(event: firstcurrentevent)
+                                                     if let secondcurrentEvent = upcomingeventsdataManager.secondcurrentEvent {
+                                                          Divider()
+                                                               .padding(.horizontal)
+                                                               .padding(.vertical, 5)
+                                                          UpcomingEventCell(event: secondcurrentEvent)
+                                                     }
+                                                     if let thirdcurrentEvent = upcomingeventsdataManager.thirdcurrentEvent {
+                                                          Divider()
+                                                               .padding(.horizontal)
+                                                               .padding(.vertical, 5)
+                                                          UpcomingEventCell(event: thirdcurrentEvent)
+                                                     }
+                                                }
+                                                .foregroundStyle(.black)
+                                                .padding(.all) //EDIT
+                                                .background(Rectangle()
+                                                  .cornerRadius(9.0)
+                                                  .padding(.horizontal)
+                                                  .shadow(radius: 5, x: 2, y: 2)
+                                                            
+                                                  .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                           } else {
+                                                Text("No Upcoming Events")
+                                                     .foregroundStyle(.black)
+                                                     .padding(.all) //EDIT
+                                                     .background(Rectangle()
+                                                       .cornerRadius(9.0)
+                                                       .padding(.horizontal)
+                                                       .shadow(radius: 5, x: 2, y: 2)
+                                                                 
+                                                       .frame(width: screen.screenWidth)
+                                                       .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                                            }
-                                           .foregroundStyle(.black)
-                                           .padding(.all) //EDIT
-                                           .background(Rectangle()
-                                             .cornerRadius(9.0)
-                                             .padding(.horizontal)
-                                             .shadow(radius: 5, x: 2, y: 2)
-                                                       
-                                             .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                                       }
                                       
                                       //MARK: student spotlight
@@ -668,7 +684,7 @@ struct MostRecentAnnouncementCell: View{
 
 
 struct UpcomingEventCell: View{
-    var event: event
+    let event: event
     @State var hasAppeared = false
     var body:some View{
         HStack {
