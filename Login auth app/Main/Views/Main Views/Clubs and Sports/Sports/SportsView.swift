@@ -213,7 +213,7 @@ struct SportsHibabi: View {
                                                         .environmentObject(sportsmanager)
                                                         .environmentObject(sporteventmanager)
                                                         .environmentObject(sporteventstorage)
-                                                }label: {
+                                                } label: {
                                                     HStack {
                                                         if item.imagedata != nil {
                                                             Image(uiImage: item.imagedata!)

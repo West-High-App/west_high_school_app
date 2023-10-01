@@ -31,6 +31,7 @@ struct sport: Identifiable, Equatable {
 class sportsManager: ObservableObject {
     @Published var allsportlist: [sport] = []
     @Published var favoriteslist: [sport] = []
+    private var imagemanager = imageManager()
     
     static let shared = sportsManager()
 
@@ -77,15 +78,13 @@ class sportsManager: ObservableObject {
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
                     var imagedata = UIImage()
-                    let _ = imageManager().getImage(fileName: sportsimage) { image in
-                        if let image = image {
-                            imagedata = image
-                        }
-                    }
                     
-                    let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: imagedata, documentID: documentID, sportid: sportid, id: id))
-                    tempID = tempID + 1
-                    returnvalue.append(sport)
+                    self.imagemanager.getImage(fileName: sportsimage) { image in
+                        
+                        let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: image, documentID: documentID, sportid: sportid, id: id))
+                        tempID = tempID + 1
+                        returnvalue.append(sport)
+                    }
                 }
                 
             }
@@ -163,6 +162,7 @@ class clubManager: ObservableObject {
     var filteredlist: [club] = []
     @Published var allclublist: [club] = []
     var favoriteclubs = FavoriteClubs() // make favorite clubs
+    private var imagemanager = imageManager()
     @Published var favoriteslist: [club] = []
     
     static let shared = clubManager()
@@ -211,16 +211,13 @@ class clubManager: ObservableObject {
                     let documentID = document.documentID
                     var imagedata = UIImage()
                 
-                    let _ = imageManager().getImage(fileName: clubimage) { image in
-                        if let image = image {
-                            imagedata = image
-                        }
-                    }
                     
-                    let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: favoritedusers, imagedata: imagedata, documentID: documentID, id: id)
-                    id = id + 1
-                    returnvalue.append(club)
-                    self.filteredlist = returnvalue.sorted { $0.clubname.lowercased() < $1.clubname.lowercased() }
+                    self.imagemanager.getImage(fileName: clubimage) { image in
+                        let club = club(clubname: clubname, clubcaptain: clubcapation, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: favoritedusers, imagedata: image ?? UIImage(), documentID: documentID, id: id)
+                        id = id + 1
+                        returnvalue.append(club)
+                        self.filteredlist = returnvalue.sorted { $0.clubname.lowercased() < $1.clubname.lowercased() }
+                    }
 
                  }
                 
