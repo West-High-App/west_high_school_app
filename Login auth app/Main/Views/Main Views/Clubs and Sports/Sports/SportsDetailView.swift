@@ -157,11 +157,9 @@ struct SportsDetailView: View {
                                     HStack {
                                         VStack {
                                             Text(getFirstThreeCharactersOfMonth(from: event.date))
-                                            
                                                 .font(.system(size: 16, weight: .medium, design: .rounded))
                                             Text(String(calendar.component(.day, from: event.date)))
                                                 .font(.system(size: 32, weight: .regular, design: .rounded))
-
                                                 .foregroundColor(.black)
                                         }
                                         .foregroundColor(.red)
@@ -172,15 +170,16 @@ struct SportsDetailView: View {
                                         VStack {
                                             HStack {
                                                 Text("\(event.type)")
-                                                    .lineLimit(2)
+                                                    .minimumScaleFactor(0.8)
                                                     .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
 
                                                 Spacer()
                                             }
                                             HStack {
                                                 Text("\(event.opponent)")
+                                                    .minimumScaleFactor(0.8)
+
                                                     .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                                    .lineLimit(2)
 
                                                 
                                                 Spacer()
@@ -246,51 +245,57 @@ struct SportsDetailView: View {
                                 .frame(maxHeight: .infinity)
                         } else {
                             List(newpastevents, id: \.id) { event in
-                                VStack (alignment: .leading){
-                                    Text(event.title)
-                                        .font(.headline)
-                                    Text(event.month + " " + event.day + ", " + event.year)
-                                    Text(event.subtitle)
-                                    if event.score.count > 1 {
-                                        if event.score[0] == 0 && event.score[1] == 0 {
-                                            Text("Pending score...")
+                                HStack {
+                                    VStack {
+                                        Text(event.month)
+                                            .font(.system(size: 16, weight: .medium, design: .rounded))
+                                        Text(event.day)
+                                            .font(.system(size: 32, weight: .regular, design: .rounded))
+                                            .foregroundColor(.black)
+
+                                    }
+                                    .foregroundColor(.red)
+                                    .frame(width:50,height:50)
+                                    Divider()
+                                        .padding(.vertical, 10)
+                                    VStack (alignment: .leading){
+                                        Text(event.title)
+                                            .font(.headline)
+                                        if !event.isSpecial {
+                                            Text(event.subtitle)
+                                            HStack {
+                                                if event.score.count > 1 {
+                                                    if event.score[0] == 0 && event.score[1] == 0 {
+                                                        Text("Pending score...")
+                                                    } else {
+                                                        if event.score[0] > event.score[1] {
+                                                            Text(String(event.score[0]))
+                                                            Text("-")
+                                                            Text(String(event.score[1]))
+                                                            Text("(Win)")
+                                                                .foregroundColor(.green)
+                                                        } else                                 if event.score[0] < event.score[1] {
+                                                            Text(String(event.score[0]))
+                                                            Text("-")
+                                                            Text(String(event.score[1]))
+                                                            Text("(Loss)")
+                                                                .foregroundColor(.red)
+                                                        } else {
+                                                            Text(String(event.score[0]))
+                                                            Text("-")
+                                                            Text(String(event.score[1]))
+                                                            Text("(Tie)")
+                                                        }
+                                                    }
+                                                } else {
+                                                    Text("Pending score...")
+                                                }
+                                            }
                                         } else {
-                                            Text("Has score!")
+                                            Text(event.subtitle)
                                         }
-                                    } else {
-                                        Text("Pending score...")
                                     }
                                 }
-                                /*VStack {
-                                    HStack {
-                                        Text("\(event.title)")
-                                            .font(.headline)
-                                        Spacer()
-                                    }
-                                    HStack {
-                                        Text("\(event.subtitle)")
-                                        Spacer()
-                                    }
-                                    HStack {
-                                        Text("\(event.month) \(event.day), \(event.year)")
-                                        Spacer()
-                                    }
-                                    if event.score.isEmpty {
-                                        Text("Pending score...")
-                                    } else {
-                                        if event.score.count == 2 {
-                                            HStack {
-                                                Spacer()
-                                                Text(event.score[0])
-                                                Spacer()
-                                                Text("-")
-                                                Spacer()
-                                                Text(event.score[1])
-                                                Spacer()
-                                            }
-                                        }
-                                    }
-                                } */
                             }
                             .frame(height: 450)
                         }
