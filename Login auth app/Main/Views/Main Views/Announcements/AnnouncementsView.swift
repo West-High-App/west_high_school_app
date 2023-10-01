@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AnnouncementsView: View {
-    @StateObject var newsDataManager = Newslist()
+    @StateObject var newsDataManager = Newslist.shared
     var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
 

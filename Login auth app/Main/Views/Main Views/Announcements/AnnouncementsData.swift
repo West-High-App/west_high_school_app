@@ -29,15 +29,30 @@ class Newslist: ObservableObject {
     
     
     func getAnnouncements() {
-        var templist: [Newstab] = []
         let db = Firestore.firestore()
         let collection = db.collection("Announcements")
-        collection.getDocuments { snapshot, error in
+        collection.addSnapshotListener { snapshot, error in
             guard error == nil else {
                 print("Error: \(error!.localizedDescription)")
                 return
             }
             if let snapshot = snapshot {
+                var templist: [Newstab] = [] {
+                    didSet {
+                        if templist.count == snapshot.count {
+                            DispatchQueue.main.async {
+                                self.topfive = Array(templist[0...])
+                                self.topfive = self.topfive.sorted { first, second in
+                                    let dateFormatter = DateFormatter()
+                                    dateFormatter.dateFormat = "MMM dd, yyyy"
+                                    let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+                                    let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+                                    return firstDate < secondDate
+                                }.reversed()
+                            }
+                        }
+                    }
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let title = data["title"] as? String ?? ""
@@ -47,16 +62,6 @@ class Newslist: ObservableObject {
                     let documentID = document.documentID
                     let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description)
                     templist.append(newstab)  // Add the newstab to the temporary array
-                }
-                DispatchQueue.main.async {
-                    self.topfive = Array(templist[0...])
-                    self.topfive = self.topfive.sorted { first, second in
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "MMM dd, yyyy"
-                        let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-                        let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-                        return firstDate < secondDate
-                    }.reversed()
                 }
             }
         }
@@ -71,9 +76,6 @@ class Newslist: ObservableObject {
             "publisheddate": announcement.publisheddate,
         ]) { error in
             completion(error)
-            if error == nil {
-                self.getAnnouncements()
-            }
         }
         print("Announcement created with documentID: \(announcement.documentID)")
         self.topfive.append(announcement)
@@ -87,15 +89,11 @@ class Newslist: ObservableObject {
         
         eventRef.delete { error in
             completion(error)
-            if error == nil {
-                self.getAnnouncements()
-            }
         }
         print("Announcement deleted")
     }
     
     func filterByDate() -> [Newstab]{
-        self.getAnnouncements()
         self.newstitlearray = self.topfive.sorted { first, second in
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM, d yyyy"

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AnnouncementsAdminView: View {
-   @StateObject var dataManager = Newslist()
+    @StateObject var dataManager = Newslist.shared
    
    @State private var isEditing = false
    @State private var selectedAnnouncement: Newstab?
