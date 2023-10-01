@@ -15,16 +15,16 @@ class FavoriteClubs: ObservableObject {
     func getFavorites(completion: @escaping ([String]) -> Void) {
         if userInfo.loginStatus == "google" {
             let email = userInfo.email
-            var returnvalue: [String] = []
             let db = Firestore.firestore()
             let collection = db.collection("FavoritedClubs")
             
-            collection.getDocuments { snapshot, error in
+            collection.addSnapshotListener { snapshot, error in
                 if let error = error {
                     print(error.localizedDescription)
                     completion([])
                 }
                 if let snapshot = snapshot {
+                    var returnvalue: [String] = []
                     for document in snapshot.documents {
                         let data = document.data()
                         let user = data["user"] as? String ?? ""
@@ -33,8 +33,8 @@ class FavoriteClubs: ObservableObject {
                             returnvalue = favoritedClubs
                         }
                     }
+                    completion(returnvalue)
                 }
-                completion(returnvalue)
             }
         } else {
             completion([])
