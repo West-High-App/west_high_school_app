@@ -162,25 +162,32 @@ class clubManager: ObservableObject {
     static let shared = clubManager()
     
     init() {
-        getClubs() { clubs in
-        }
+        getClubs()
         getFavorites { favorites in
             self.favoriteslist = favorites
         }
     }
     
-    func getClubs(completion: @escaping ([club]) -> Void) {
+    func getClubs() {
         
-        var returnvalue: [club] = []
         let db = Firestore.firestore()
         let collection = db.collection("Clubs")
         
-        collection.getDocuments { snapshot, error in
+        collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print(error.localizedDescription)
-                completion([])
+                return
             }
             if let snapshot = snapshot {
+                var returnvalue: [club] = [] {
+                    didSet {
+                        if returnvalue.count == snapshot.count {
+                            DispatchQueue.main.async {
+                                self.allclublist = self.filteredlist
+                            }
+                        }
+                    }
+                }
                 var id = 0
                 for document in snapshot.documents {
                     let data = document.data()
@@ -204,12 +211,7 @@ class clubManager: ObservableObject {
 
                  }
                 
-                DispatchQueue.main.async {
-                    self.allclublist = self.filteredlist
-                }
-                
             }
-            completion(returnvalue)
         }
         
     }
@@ -229,9 +231,6 @@ class clubManager: ObservableObject {
             "clubname": club.clubname
         ]) { error in
             completion(error)
-            if error == nil {
-                self.getClubs { clubs in }
-            }
         }
     }
     
@@ -241,9 +240,6 @@ class clubManager: ObservableObject {
         
         ref.delete { error in
             completion(error)
-            if error == nil {
-                self.getClubs() { clubs in}
-            }
         }
     }
     
@@ -274,8 +270,7 @@ class clubManager: ObservableObject {
         favoriteclubs.getFavorites { [self] favorites in
             
             templist2 = favorites
-            self.getClubs { clubs in
-                templist = clubs
+            templist = self.allclublist
                 
                 for item in templist {
                     for item2 in templist2 {
@@ -285,7 +280,6 @@ class clubManager: ObservableObject {
                     }
                 }
               completion(returnlist)
-            }
             
         }
     }

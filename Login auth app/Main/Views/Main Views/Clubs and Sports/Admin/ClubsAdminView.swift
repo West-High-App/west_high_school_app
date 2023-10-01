@@ -10,7 +10,7 @@ import SwiftUI
 struct ClubsAdminView: View {
      
     //MARK: initializer
-    @StateObject var db = clubManager()
+    @StateObject var db = clubManager.shared
     
     @State var clubslist: [club]
     
@@ -68,7 +68,6 @@ struct ClubsAdminView: View {
                         temptitle = club.clubname
                         clubToDelete = club
                         isPresentingDeleteClub = true
-                        db.getClubs { clubs in }
                     }
                 }
                 
@@ -111,7 +110,6 @@ struct ClubsAdminView: View {
                             }
                         }
                         isPresentingAddClub = false
-                        db.getClubs() {clubs in}
                     }.font(.system(size: 17, weight: .semibold, design: .rounded))
                         .foregroundColor(.red)
                 }

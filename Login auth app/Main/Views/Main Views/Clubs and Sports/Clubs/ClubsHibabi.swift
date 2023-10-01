@@ -27,7 +27,7 @@ extension ClubsHibabi {
 
         init() {
             self.clubsavedItems = db.load()
-            self.clubitems = clubManager().allclublist
+            self.clubitems = clubManager.shared.allclublist
         }
 
         func clubsortFavs() {

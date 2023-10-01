@@ -19,7 +19,7 @@ struct HomeView: View {
     @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
     @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
     @State var screen = ScreenSize()
-    @State var clubmanager = clubManager()
+     @ObservedObject var clubmanager = clubManager.shared
      @StateObject var newsDataManager = Newslist.shared
      @ObservedObject var upcomingeventsdataManager = upcomingEventsDataManager.shared
      @StateObject var loading = Loading()
