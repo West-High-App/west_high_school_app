@@ -27,7 +27,7 @@ struct SportsMainView: View {
 
 struct SportsMainView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsMainView(selectedsport: sportsManager().allsportlist.first!).environmentObject(SportsHibabi.ViewModel()).environmentObject(UserInfo())
+        SportsMainView(selectedsport: sportsManager.shared.allsportlist.first!).environmentObject(SportsHibabi.ViewModel()).environmentObject(UserInfo())
         
     }
 }

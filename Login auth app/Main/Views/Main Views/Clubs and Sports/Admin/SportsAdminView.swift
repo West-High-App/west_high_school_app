@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SportsAdminView: View {
     // MARK: initializers
-    @StateObject var db = sportsManager()
+    @StateObject var db = sportsManager.shared
     
     @State var isPresentingAddSport = false
     @State var isPresetingDeleteSport = false
@@ -64,7 +64,6 @@ struct SportsAdminView: View {
                         temptitle = sport.sportid
                         sportToDelete = sport
                         isPresetingDeleteSport = true
-                        db.getSports() { sports in }
                     }
                 }
                 
@@ -111,7 +110,6 @@ struct SportsAdminView: View {
                                 print("No sport to add (whaaat?)")
                             }
                         isPresentingAddSport = false
-                        db.getSports() { sports in }
                         
                     }.font(.system(size: 17, weight: .semibold, design: .rounded))
                         .foregroundColor(.red)

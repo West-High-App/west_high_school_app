@@ -35,22 +35,30 @@ class sportsManager: ObservableObject {
     static let shared = sportsManager()
 
     init() {
-        getSports() { sports in }
+        getSports()
     }
     
-    func getSports(completion: @escaping ([sport]) -> Void) {
-        var returnvalue: [sport] = []
+    func getSports() {
         var tempID = 0
         let db = Firestore.firestore()
         let collection = db.collection("Sport")
         
         
-        collection.getDocuments { snapshot, error in
+        collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
-                completion([])
+                return
             }
             if let snapshot = snapshot {
+                var returnvalue: [sport] = [] {
+                    didSet {
+                        if returnvalue.count == snapshot.count {
+                            DispatchQueue.main.async {
+                                self.allsportlist = returnvalue
+                            }
+                        }
+                    }
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let sportname = data["sportname"] as? String ?? ""
@@ -74,11 +82,7 @@ class sportsManager: ObservableObject {
                     returnvalue.append(sport)
                 }
                 
-                DispatchQueue.main.async {
-                    self.allsportlist = returnvalue
-                }
             }
-            completion(returnvalue)
         }
     }
     
@@ -98,9 +102,6 @@ class sportsManager: ObservableObject {
             "info": sport.info,
         ]) { error in
             completion(error)
-            if error == nil {
-                self.getSports() { sports in }
-            }
         }
     }
     
@@ -110,9 +111,6 @@ class sportsManager: ObservableObject {
         
         ref.delete { error in
             completion(error)
-            if error == nil {
-                self.getSports() { sports in }
-            }
         }
     }
     

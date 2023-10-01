@@ -13,7 +13,7 @@ extension SportsHibabi {
         @State var items = [sport]()
         @Published var showingFavs = false
         @Published var savedItems: Set<Int> = []
-        var sportmanager = sportsManager()
+        var sportmanager = sportsManager.shared
 
         // Filter saved items
         var filteredItems: [sport]  {
@@ -27,12 +27,7 @@ extension SportsHibabi {
 
         init() {
             self.savedItems = db.load()
-            sportmanager.getSports() { sports in }
             self.items = self.sportmanager.allsportlist
-        }
-        
-        func getSports() {
-            sportmanager.getSports() { sports in }
         }
 
         func sortFavs() {
