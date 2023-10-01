@@ -202,9 +202,6 @@ struct SpotlightAdminView: View {
                                             dataManager.deleteAchievment(achievement: achievementToDelete) { error in
                                                 if let error = error {
                                                     print("Error deleting achievement: \(error.localizedDescription)")
-                                                } else {
-                                                    dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
-                                                    dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
                                                 }
                                             }
                                             var tempachievement = achievementToDelete
@@ -212,9 +209,6 @@ struct SpotlightAdminView: View {
                                             dataManager.createAchievement(achievement: tempachievement) { error in
                                                 if let error = error {
                                                     print("Error deleting achievement: \(error.localizedDescription)")
-                                                } else {
-                                                    dataManager.allstudentachievementlist.append(tempachievement)
-                                                    dataManager.allstudentachievementlist.append(tempachievement)
                                                 }
                                             }
                                         }
@@ -275,9 +269,6 @@ struct SpotlightAdminView: View {
                         dataManager.deleteAchievment(achievement: achievementToDelete) { error in
                             if let error = error {
                                 print("Error deleting achievement: \(error.localizedDescription)")
-                            } else {
-                                dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
-                                dataManager.allstudentachievementlist.removeAll {$0 == achievementToDelete}
                             }
                         }
                     }
@@ -420,7 +411,6 @@ struct AchievementDetailView: View {
                             publisheddate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)",
                             images: images, isApproved: check, imagedata: []
                         )
-                        dataManager.allstudentachievementlist.append(achievementToSave)
                         dataManager.createAchievement(achievement: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating achievement: \(error.localizedDescription)")

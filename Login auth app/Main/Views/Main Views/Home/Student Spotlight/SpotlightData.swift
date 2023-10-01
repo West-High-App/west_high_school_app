@@ -11,55 +11,53 @@ import Firebase
 struct studentachievement: Identifiable, Equatable{
     let id = UUID()
     let documentID: String
-    let achievementtitle:String
-    let achievementdescription:String // localizedstringkey??
-    let articleauthor:String
-    let publisheddate:String
-    let images:[String]
+    var achievementtitle:String
+    var achievementdescription:String // localizedstringkey??
+    var articleauthor:String
+    var publisheddate:String
+    var images:[String]
     var isApproved: Bool
     var imagedata: [UIImage] // , imagedata: []
  }
+
+extension Array<studentachievement> {
+    func sortedByDate() -> Self {
+        return self.sorted { first, second in
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM dd, yyyy"
+            let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
+            let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
+            return firstDate > secondDate
+        }
+    }
+}
+
 class studentachievementlist: ObservableObject{
     
     static let shared = studentachievementlist()
     
-    @Published var allstudentachievementlist: [studentachievement] = []
+    @Published private var allstudentachievementlistUnsorted: [studentachievement] = []
+    var allstudentachievementlist: [studentachievement] {
+        allstudentachievementlistUnsorted.sortedByDate()
+    }
     @Published var newstitlearray: [studentachievement] = []
     @Published var hasLoaded = false
 
     @StateObject var imagemanager = imageManager()
     @ObservedObject var loading = Loading()
-
     
     init() {
-        getAchievements { list, error in
-            print("LOADING ACHIEVMENTS LIST")
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-            if let list = list {
-                self.newstitlearray = self.allstudentachievementlist.sorted { first, second in
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "MMM dd, yyyy"
-                    let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-                    let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-                    return firstDate < secondDate
-                }.reversed()
-            }
-            self.loading.hasLoaded = true
-            print(self.allstudentachievementlist.count)
-            self.hasLoaded = true
-        }
+        getAchievements()
     }
     
-    func getAchievements(completion: @escaping ([studentachievement]?, Error?) -> Void) {
+    func getAchievements() {
+        print("LOADING ACHIEVMENTS LIST")
         let db = Firestore.firestore()
         let collection = db.collection("StudentAchievements")
         
         collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
-                completion(nil, error)
                 return
             }
             
@@ -68,8 +66,29 @@ class studentachievementlist: ObservableObject{
                     didSet {
                         if templist.count == snapshot.count {
                             DispatchQueue.main.async {
-                                self.allstudentachievementlist = templist
-                                completion(templist, nil)
+                                for temp in templist {
+                                    if let index = self.allstudentachievementlistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                                        self.allstudentachievementlistUnsorted[index].achievementdescription = temp.achievementdescription
+                                        self.allstudentachievementlistUnsorted[index].achievementtitle = temp.achievementtitle
+                                        self.allstudentachievementlistUnsorted[index].articleauthor = temp.articleauthor
+                                        self.allstudentachievementlistUnsorted[index].images = temp.images
+                                        self.allstudentachievementlistUnsorted[index].publisheddate = temp.publisheddate
+                                        self.allstudentachievementlistUnsorted[index].isApproved = temp.isApproved
+                                        self.allstudentachievementlistUnsorted[index].imagedata = temp.imagedata
+                                    } else {
+                                        self.allstudentachievementlistUnsorted.append(temp)
+                                    }
+                                    if temp == templist.last {
+                                        for studentachievement in self.allstudentachievementlistUnsorted {
+                                            if !templist.contains(where: { $0.documentID == studentachievement.documentID }) {
+                                                self.allstudentachievementlistUnsorted.removeAll(where: { $0.documentID == studentachievement.documentID }) // Remove if not on server
+                                            }
+                                        }
+                                    }
+                                }
+                                self.loading.hasLoaded = true
+                                print(self.allstudentachievementlistUnsorted.count)
+                                self.hasLoaded = true
                             }
                         }
                     }

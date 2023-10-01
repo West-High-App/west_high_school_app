@@ -384,53 +384,9 @@ struct HomeView: View {
                                                      self.hasPermissionsUpcomingEvents = result
                                                 }
                                                 
-                                                spotlightManager.allstudentachievementlist = spotlightManager.allstudentachievementlist
-                                                var returnlist: [studentachievement] = []
-                                                
-                                                let dispatchGroup = DispatchGroup()
-                                                
-                                                for article in spotlightManager.allstudentachievementlist {
-                                                     var tempimages: [UIImage] = []
-                                                     
-                                                     for imagepath in article.images {
-                                                          dispatchGroup.enter()
-                                                          imagemanager.getImage(fileName: imagepath) { uiimage in
-                                                               print("getting from firebase")
-
-                                                               if let uiimage = uiimage {
-                                                                    tempimages.append(uiimage)
-                                                               }
-                                                               dispatchGroup.leave()
-                                                          }
-                                                     }
-                                                     // MARK: change get image from storgae to get image
-                                                     dispatchGroup.notify(queue: .main) {
-                                                          returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
-                                                          
-                                                          spotlightManager.allstudentachievementlist = returnlist
-                                                          self.spotlightManager.allstudentachievementlist = self.spotlightManager.allstudentachievementlist.sorted { first, second in
-                                                               let dateFormatter = DateFormatter()
-                                                               dateFormatter.dateFormat = "MMM dd, yyyy"
-                                                               let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-                                                               let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-                                                               return firstDate < secondDate
-                                                          }.reversed()
-                                                          if self.spotlightManager.allstudentachievementlist.count > 0{
-                                                               self.firstcurrentevent = self.spotlightManager.allstudentachievementlist[0]
-                                                          }
-                                                          if self.spotlightManager.allstudentachievementlist.count > 1 {
-                                                               self.secondcurrentevent =   self.spotlightManager.allstudentachievementlist[1]
-                                                          }
-                                                          if self.spotlightManager.allstudentachievementlist.count > 2 {
-                                                               self.thirdcurrentevent = self.spotlightManager.allstudentachievementlist[2]
-                                                          }
-                                                          print("DONE LOADING HOMEVIEW")
-                                                     }
-                                                     
-                                                }
-                                                
-                                                hasAppeared = true
                                            }
+                                           
+                                           hasAppeared = true
                                       }
                                       
                                  }
