@@ -133,7 +133,7 @@ struct ClubsHibabi: View {
                             
                             if clubselected == 1 || clubselected == 2 {
                                 
-                                if !hasFavorites {
+                                if (!hasFavorites && clubselected == 1) {
                                     VStack {
                                         Spacer()
                                         Text("Add a club to get started!")
