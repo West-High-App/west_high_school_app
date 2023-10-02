@@ -173,11 +173,18 @@ struct SportsHibabi: View {
                             if selected == 1 && allfavoriteslist.count == 0 {
                                 VStack {
                                     Spacer()
-                                    Text("Add a sport to get started!")
+                                    HStack{
+                                        Spacer()
+                                        Text("Save your favorite sports by pressing the heart!")
+                                            .multilineTextAlignment(.center)
+                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                        Spacer()
+                                    }
+
                                     Button {
                                         selected = 2
                                     } label: {
-                                        Text("Browse Sports")
+                                        Text("Browse all Sports")
                                             .foregroundColor(.white)
                                             .fontWeight(.semibold)
                                             .padding(.all, 15.0)

@@ -16,7 +16,8 @@ struct ClubDetailAdminView: View {
     @ObservedObject var userInfo = UserInfo.shared
     
     @State var isConfirmingChanges = false
-    
+    @State var screen = ScreenSize()
+
     @State var clubname = "" //
     @State var clubcaptain: [String] = [] //
     @State var clubadvisor: [String] = [] //
@@ -291,12 +292,16 @@ struct ClubDetailAdminView: View {
                     isConfirmingChanges.toggle()
                 } label: {
                     Text("Publish Changes")
-                        .foregroundColor(.blue)
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
                         .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
                         .background(Rectangle()
-                            .foregroundColor(.white)
+                            .foregroundColor(.blue)
                             .cornerRadius(10)
-                            .shadow(radius: 2, x:1, y:1))
+                        )
                 }
                 
                 .alert(isPresented: $isConfirmingChanges) {

@@ -151,7 +151,7 @@ struct SportsDetailView: View {
                         if events.isEmpty {
                             Text("No upcoming events.")
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
-                                .frame(maxHeight: .infinity)
+                                .padding(.bottom, 100)
                         } else {
                             List {
                                 ForEach(events, id: \.id) { event in
@@ -236,7 +236,17 @@ struct SportsDetailView: View {
                                 PastSportEventsAdminView(currentsport: currentsport)
                             } label: {
                                 Text("Edit Past Events")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.semibold)
+                                    .padding(10)
+                                    .cornerRadius(15.0)
+                                    .frame(width: screen.screenWidth-30)
                                     .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                    .background(Rectangle()
+                                        .foregroundColor(.blue)
+                                        .cornerRadius(10)
+                                    )
+
                             }
                         }
                         

@@ -18,7 +18,8 @@ struct ClubsEventsAdminView: View {
     @State var eventToDelete: clubEvent?
     @State var eventToSave: clubEvent?
     @State var editingeventslist: [clubEvent] = []
-    
+    @State var screen = ScreenSize()
+
     @State var selectedevent = 0
     @State var selectedtime = 0
     
@@ -55,12 +56,16 @@ struct ClubsEventsAdminView: View {
                 isPresetingAddEvent = true
             } label: {
                 Text("Add Club Event")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
                     .padding(10)
+                    .cornerRadius(15.0)
+                    .frame(width: screen.screenWidth-30)
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
                     .background(Rectangle()
-                        .foregroundColor(.white)
+                        .foregroundColor(.blue)
                         .cornerRadius(10)
-                        .shadow(radius: 2, x: 1, y: 1))
+                    )
             }
             if admin {
                 List {
