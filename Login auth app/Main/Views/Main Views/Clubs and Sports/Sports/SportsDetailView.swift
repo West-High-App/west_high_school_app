@@ -151,7 +151,7 @@ struct SportsDetailView: View {
                         if events.isEmpty {
                             Text("No upcoming events.")
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
-                                .frame(maxHeight: .infinity)
+                                .padding(.bottom, 100)
                         } else {
                             List {
                                 ForEach(events, id: \.id) { event in
