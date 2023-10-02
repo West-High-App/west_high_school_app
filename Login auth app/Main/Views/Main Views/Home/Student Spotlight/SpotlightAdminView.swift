@@ -14,6 +14,7 @@ struct SpotlightAdminView: View {
     @State private var isConfirmingDeleteAchievement = false
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var isConfirmingApproveAchievement = false
+    
     @State private var achievementToDelete: studentachievement?
     
     @State var selectedIndex = 0
@@ -157,6 +158,13 @@ struct SpotlightAdminView: View {
                                                     Text(usableType.publisheddate)
                                                         .fontWeight(.medium)
                                                         .padding(.leading)
+                                                    ForEach(usableType.imagedata, id: \.self) { image in
+                                                        Image(uiImage: image)
+                                                            .resizable()
+                                                            .cornerRadius(10)
+                                                            .padding()
+                                                            .frame(width: 300, height: 250)
+                                                    }
                                                     Text(usableType.achievementdescription)
                                                         .padding()
                                                     Spacer()
@@ -208,7 +216,7 @@ struct SpotlightAdminView: View {
                                             tempachievement.isApproved = true
                                             dataManager.createAchievement(achievement: tempachievement) { error in
                                                 if let error = error {
-                                                    print("Error deleting achievement: \(error.localizedDescription)")
+                                                    print("Error approving achievement: \(error.localizedDescription)")
                                                 }
                                             }
                                         }

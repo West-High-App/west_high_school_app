@@ -144,6 +144,7 @@ struct clubNews: Identifiable, Equatable {
     var newsdescription: String
     var newsdate: String
     var author: String
+    var isApproved: Bool
     var id = UUID()
     let documentID: String
     var imagedata: [UIImage] // , imagedata: []
@@ -167,6 +168,7 @@ class clubsNewslist: ObservableObject{
         newsimage: ["roboticsclub"],
         newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app", newsdate: "Apr 1, 2023",
         author: "aiden jamae lee lmfao remember",
+        isApproved: false,
         documentID: "NAN", imagedata: [])]
     
     var allclubsnewslist: [clubNews] {
@@ -201,6 +203,7 @@ class clubsNewslist: ObservableObject{
                                         self.allclubsnewslistUnsorted[index].newstitle = temp.newstitle
                                         self.allclubsnewslistUnsorted[index].author = temp.author
                                         self.allclubsnewslistUnsorted[index].newsimage = temp.newsimage
+                                        self.allclubsnewslistUnsorted[index].isApproved = temp.isApproved
                                     } else {
                                         self.allclubsnewslistUnsorted.append(temp)
                                     }
@@ -223,6 +226,7 @@ class clubsNewslist: ObservableObject{
                     let newsdescription = data["newsdescription"] as? String ?? ""
                     let newsdate = data["newsdate"] as? String ?? ""
                     let author = data["author"] as? String ?? ""
+                    let isApproved = data["isApproved"] as? Bool ?? false
                     let documentID = document.documentID
                     var imagedata: [UIImage] = []
                     for file in newsimage {
@@ -230,7 +234,7 @@ class clubsNewslist: ObservableObject{
                             if let image = image {
                                 imagedata.append(image)
                             }
-                            let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, documentID: documentID, imagedata: imagedata)
+                            let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, isApproved: isApproved, documentID: documentID, imagedata: imagedata)
                             templist.append(clubnews)
                         }
                     }
@@ -248,6 +252,7 @@ class clubsNewslist: ObservableObject{
             "newsimage": clubNews.newsimage,
             "newsdescription": clubNews.newsdescription,
             "newsdate": clubNews.newsdate,
+            "isApproved": clubNews.isApproved,
             "author": clubNews.author
         ]) { error in
             completion(error)

@@ -229,8 +229,10 @@ struct ClubsHibabi: View {
                             else if clubselected == 3 {
                                 //mark
                                 List(clubNewsManager.allclubsnewslist) { news in  // filteredClubNews
-                                    clubnewscell(feat: news)
-                                        .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                    if news.isApproved {
+                                        clubnewscell(feat: news)
+                                            .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                    }
                                 }
                                 .searchable(text: $searchText)
                                 .navigationBarItems(trailing:
@@ -263,6 +265,16 @@ struct ClubsHibabi: View {
                                 }
                                 permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
                                     self.hasPermissionClubNews = result
+                                }
+                                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
+                                    if self.hasPermissionClubNews == false {
+                                        self.hasPermissionClubNews = result
+                                    }
+                                }
+                                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
+                                    if self.hasPermissionClubNews == false {
+                                        self.hasPermissionClubNews = result
+                                    }
                                 }
                                 permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
                                     self.hasPermissionClubs = result

@@ -99,7 +99,7 @@ struct ClubsNewsDetailView_Previews: PreviewProvider {
             newsimage: ["roboticsclub"],
             newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app",
             newsdate: "Apr 1, 2023",
-            author: "Aiden Jamae Lee (not funny)",
+            author: "Aiden Jamae Lee (not funny)", isApproved: false,
             documentID: "NAN", imagedata: []))
     }
 }
