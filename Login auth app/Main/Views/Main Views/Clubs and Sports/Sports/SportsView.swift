@@ -278,9 +278,10 @@ struct SportsHibabi: View {
                         else if selected == 3 {
                             
                             List(filteredSportsNews, id: \.id) { news in
-                                
-                                sportnewscell(feat: news)
-                                    .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                                if news.isApproved {
+                                    sportnewscell(feat: news)
+                                        .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                                }
                                 
                             }.searchable(text: $searchText)
                         }
@@ -325,6 +326,16 @@ struct SportsHibabi: View {
                             }
                             permissionsManager.checkPermissions(dataType: "SportsNews", user: userInfo.email) { result in
                                 self.hasPermissionSportsNews = result
+                            }
+                            permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
+                                if self.hasPermissionSportsNews == false {
+                                    self.hasPermissionSportsNews = result
+                                }
+                            }
+                            permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
+                                if self.hasPermissionSportsNews == false {
+                                    self.hasPermissionSportsNews = result
+                                }
                             }
                             permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
                                 self.hasPermissionSports = result

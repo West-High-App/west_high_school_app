@@ -9,15 +9,42 @@ struct SportsNewsAdminView: View {
     @State private var alertMessage = ""
     @State private var tempAchievementTitle = ""
     
+    @State var isAdmin = false
+    @State var isWriter = false
+    @State var userInfo = UserInfo.shared
+    @StateObject var permissionsManager = permissionsDataManager()
+    
+    @State var hasAppeared = false
+    
+    @State var selected = 1
+    
+    @State var usableType: sportNews?
+    
     @State private var isConfirmingDeleteAchievement = false
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var achievementToDelete: sportNews?
+    @State var isConfirmingApproveAchievement = false
+    
+    @State var selectedArticle = sportNews(newstitle: "", newsimage: [], newsdescription: "", newsdate: "", author: "", isApproved: false, imagedata: [], documentID: "")
+    @State var selectedIndex = 0
+    @State var presentingArticleSheet = false
     
     //images
     @StateObject var imagemanager = imageManager()
     @State var originalImage = ""
     @State var displayimage: UIImage?
     @State var isDisplayingAddImage = false
+    
+    var pendingCount: Int {
+            return dataManager.allsportsnewslist.filter { !$0.isApproved }.count
+        }
+    var pendingString: String {
+        if pendingCount == 0 {
+            return ""
+        } else {
+            return " (\(pendingCount))"
+        }
+    }
     
     var body: some View {
         VStack {
@@ -36,34 +63,220 @@ struct SportsNewsAdminView: View {
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
             
-            List(dataManager.allsportsnewslist, id: \.id) { news in
+            if isAdmin {
                 
-                VStack (alignment: .leading){
-                    Text(news.newstitle)
-                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                    Text(news.newsdate)
-                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                    Text(news.newsdescription)
-                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                        .lineLimit(2)
-                }
-        
-                    .buttonStyle(PlainButtonStyle())
-                    .contextMenu {
-                        Button("Delete", role: .destructive) {
-                            tempAchievementTitle = news.newstitle
-                            isConfirmingDeleteAchievement = true
-                            achievementToDelete = news
+                Picker("Selected", selection: $selected) {
+                    Text("Edit")
+                        .tag(1)
+                    Text("Pending\(pendingString)")
+                        .tag(2)
+                }.pickerStyle(.segmented)
+                    .padding(.horizontal)
+                
+                if selected == 1 {
+                    List(dataManager.allsportsnewslist, id: \.id) { news in
+                        if news.isApproved {
+                            VStack (alignment: .leading){
+                                Text(news.newstitle)
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                Text(news.newsdate)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                Text(news.newsdescription)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                    .lineLimit(2)
+                            }
+                            
+                            .buttonStyle(PlainButtonStyle())
+                            .contextMenu {
+                                Button("Delete", role: .destructive) {
+                                    tempAchievementTitle = news.newstitle
+                                    isConfirmingDeleteAchievement = true
+                                    achievementToDelete = news
+                                }
+                                
+                                
+                            }
+                            .padding(.trailing)
+                            .padding(.vertical,8)
+                            
                         }
+                    }
+                }
+                
+                if selected == 2 {
+                    
+                    List(dataManager.allsportsnewslist, id: \.id) { news in
+                        if !news.isApproved {
+                            VStack (alignment: .leading){
+                                Text(news.newstitle)
+                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                Text(news.newsdate)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                Text(news.newsdescription)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                    .lineLimit(2)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .contextMenu {
+                                Button("Edit") {
+                                    self.selectedArticle = news
+                                    if let index = dataManager.allsportsnewslist.firstIndex(of: news) {
+                                        selectedIndex = index
+                                    }
+                                    presentingArticleSheet = true
+                                    self.selectedArticle = news
+                                }
+                            }
+                            
+                            .sheet(isPresented: $presentingArticleSheet) {
+                                
+                                
+                                VStack {
+                                    
+                                    if let usableType = usableType {
+                                        
+                                        VStack {
+                                            HStack {
+                                                Button("Cancel") {
+                                                    presentingArticleSheet = false
+                                                }.padding()
+                                                Spacer()
+                                            }
+                                            
+                                            ScrollView {
+                                                
+                                                VStack (alignment: .leading){
+                                                    
+                                                    Text(usableType.newstitle)
+                                                        .padding(.leading)
+                                                        .fontWeight(.semibold)
+                                                    Text(usableType.author)
+                                                        .padding(.leading)
+                                                        .fontWeight(.medium)
+                                                    Text(usableType.newsdate)
+                                                        .padding(.leading)
+                                                        .fontWeight(.medium)
+                                                    
+                                                    ForEach(usableType.imagedata, id: \.self) { image in
+                                                        Image(uiImage: image)
+                                                            .resizable()
+                                                            .cornerRadius(10)
+                                                            .padding()
+                                                            .frame(width: 300,  height: 250)
+                                                    }
+                                                    
+                                                    Text(usableType.newsdescription)
+                                                        .padding()
+                                                    Spacer()
+                                                    
+                                                }
+                                                
+                                                HStack {
+                                                    Spacer()
+                                                    Button("Delete", role: .destructive) {
+                                                        presentingArticleSheet = false
+                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                            tempAchievementTitle = selectedArticle.newstitle
+                                                            isConfirmingDeleteAchievement = true
+                                                            achievementToDelete = usableType
+                                                        }
+                                                    }
+                                                    Spacer()
+                                                    Button("Approve") {
+                                                        tempAchievementTitle = selectedArticle.newstitle
+                                                        achievementToDelete = usableType
 
+                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+
+                                                            isConfirmingApproveAchievement = true
+
+                                                        }
+
+                                                        /*DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                            isConfirmingApproveAchievement = true
+                                                        }*/
+                                                    }
+                                                    Spacer()
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                                .onAppear {
+                                    usableType = dataManager.allsportsnewslist[selectedIndex]
+                                }
+                                .alert(isPresented: $isConfirmingApproveAchievement) {
+                                    Alert(
+                                    
+                                        title: Text("You Are Editing Public Data"),
+                                        message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
+                                        primaryButton: .destructive(Text("Publish")) {
+                                            if let achievementToDelete = achievementToDelete {
+                                                dataManager.deleteSportNews(sportNews: achievementToDelete) { error in
+                                                    if let error = error {
+                                                        print("Error deleting sport news: \(error.localizedDescription)")
+                                                    }
+                                                }
+                                                var tempachievement = achievementToDelete
+                                                tempachievement.isApproved = true
+                                                dataManager.createSportNews(sportNews: tempachievement) { error in
+                                                    if let error = error {
+                                                        print("Error approving sport news: \(error.localizedDescription)")
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        secondaryButton: .cancel()
+                                    )
+                                }
+                                
+                                
+                            }
+                            
+                            .padding(.trailing)
+                            .padding(.vertical,8)
+                        }
+                    }
+                    
+                }
+                
+            } else {
+                Text("Current pending articles:")
+                List(dataManager.allsportsnewslist, id: \.id) { news in
+                    if !news.isApproved {
+                        VStack (alignment: .leading){
+                            Text(news.newstitle)
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            Text(news.newsdate)
+                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                            Text(news.newsdescription)
+                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                .lineLimit(2)
+                        }
+                        .padding(.trailing)
+                        .padding(.vertical,8)
                         
                     }
-                    .padding(.trailing)
-                    .padding(.vertical,8)
-                
+                }
             }
-            .navigationBarTitle(Text("Edit Sport News"))
+        }                .navigationBarTitle(Text("Edit Sport News"))
+        
+        .onAppear {
+            if !hasAppeared {
+                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
+                    self.isAdmin = result
+                }
+                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
+                    self.isWriter = result
+                }
+                hasAppeared = true
+            }
         }
+        
         .sheet(isPresented: $isPresentingAddAchievement) {
             sportNewsRowlView(dataManager: dataManager)
         }
@@ -118,6 +331,7 @@ struct sportNewsRowlView: View {
     @State var newsdescription = ""
     @State var newsdate = ""
     @State var author = ""
+    @State var isApproved = false
     let calendar = Calendar.current
     @State private var selectedMonthIndex = Calendar.current.component(.month, from: Date()) - 1
     @State private var selectedDayIndex = Calendar.current.component(.day, from: Date()) - 1
@@ -132,6 +346,13 @@ struct sportNewsRowlView: View {
     @State var isDisplayingAddImage = false
     
     var editingAchievement: sportNews?
+    
+    @State var isAdmin = false
+    @State var isWriter = false
+    @State var userInfo = UserInfo.shared
+    @StateObject var permissionsManager = permissionsDataManager()
+    
+    @State var hasAppeared = false
     
     @State private var isConfirmingAddAchievement = false
     @State private var isConfirmingDeleteAchievement = false
@@ -163,6 +384,19 @@ struct sportNewsRowlView: View {
                 }.font(.system(size: 17, weight: .semibold, design: .rounded))
 
             }
+            
+            .onAppear {
+                if !hasAppeared {
+                    permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
+                        self.isAdmin = result
+                    }
+                    permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
+                        self.isWriter = result
+                    }
+                    hasAppeared = true
+                }
+            }
+            
             .navigationBarTitle(editingAchievement == nil ? "Add Sport News" : "Edit Sport News")
             .navigationBarItems(trailing: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
@@ -188,9 +422,13 @@ struct sportNewsRowlView: View {
                                 print(error.localizedDescription)
                             }
                         }
-                         // MARK: ain't working around here
+                         
+                        var check = false
+                        if isAdmin {
+                            check = true
+                        }
                         
-                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", author: author, imagedata: imagedata, documentID: "NAN")
+                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", author: author, isApproved: check, imagedata: imagedata, documentID: "NAN")
                         dataManager.createSportNews(sportNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating sport news: \(error.localizedDescription)")
