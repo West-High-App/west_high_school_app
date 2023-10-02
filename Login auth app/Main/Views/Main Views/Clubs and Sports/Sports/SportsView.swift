@@ -345,68 +345,68 @@ struct SportsHibabi: View {
                             }
                             
 //                            let dispatchGroup = DispatchGroup()
-//                            
+//
 //                            var templist2: [sport] = []
-//                            
+//
 //                            for sport in sportsmanager.favoriteslist {
 //                                dispatchGroup.enter()
-//                                
+//
 //                                imagesManager.getImage(fileName: sport.sportsimage) { image in
-//                                    
+//
 //                                    var tempsport2 = sport
 //                                    if let image = image {
 //                                        tempsport2.imagedata = image
 //                                    }
-//                                    
+//
 //                                    templist2.append(tempsport2)
 //                                    dispatchGroup.leave()
-//                                    
+//
 //                                }
 //                            }
-//                            
+//
 //                            dispatchGroup.notify(queue: .main) { [self] in
 //                                self.sportsmanager.favoriteslist = templist2
 //                            }
-//                            
+//
 //                            var templist: [sport] = []
-//                            
+//
 //                            for sport in sportsmanager.allsportlist {
 //                                dispatchGroup.enter()
-//                                
+//
 //                                imagesManager.getImage(fileName: sport.sportsimage) { image in
-//                                    
+//
 //                                    var tempsport = sport
 //                                    if let image = image {
 //                                        tempsport.imagedata = image
 //                                    }
-//                                    
+//
 //                                    templist.append(tempsport)
 //                                    dispatchGroup.leave()
 //                                }
 //                            }
-//                            
+//
 //                            dispatchGroup.notify(queue: .main) { [self] in
 //                                self.sportsmanager.allsportlist = templist
 //                            }
-//                            
+//
 //                            var templist3: [sportNews] = []
-//                            
+//
 //                            for news in sportsNewsManager.allsportsnewslist {
 //                                dispatchGroup.enter()
-//                                
+//
 //                                imagesManager.getImage(fileName: news.newsimage[0]) { uiimage in
-//                                    
+//
 //                                    var tempnews = news
 //                                    if let uiimage = uiimage {
 //                                        tempnews.imagedata.removeAll()
 //                                        tempnews.imagedata.append(uiimage)
 //                                    }
-//                                    
+//
 //                                    templist3.append(tempnews)
 //                                    dispatchGroup.leave()
 //                                }
 //                            }
-//                            
+//
 //                            dispatchGroup.notify(queue: .main) { [self] in
 //                                self.sportsNewsManager.allsportsnewslist = templist3
                                 isLoading = false

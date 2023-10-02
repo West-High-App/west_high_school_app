@@ -10,7 +10,7 @@ struct ClubsEventsAdminView: View {
     var currentclub: club
     var admin: Bool
     @State var eventlist: [clubEvent] = []
-    @StateObject var dataManager = clubEventManager()
+    @StateObject var dataManager = clubEventManager.shared
     @State var temptitle = ""
     @State var isConfirmingDeleteEvent = false
     @State var isPresetingAddEvent = false
@@ -69,7 +69,7 @@ struct ClubsEventsAdminView: View {
             }
             if admin {
                 List {
-                    ForEach(editingeventslist, id: \.id) { event in
+                    ForEach(dataManager.clubsEvents, id: \.id) { event in
                         HStack {
                             VStack {
                                 Text(event.month)
@@ -104,37 +104,12 @@ struct ClubsEventsAdminView: View {
                                     print("Removed \(eventToDelete)")
                                     dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
                                 }
-                                dataManager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
-                                    if let error = error {
-                                        print("Error updating events: \(error.localizedDescription)")
-                                    }
-                                    if let events = events {
-                                        eventlist = events
-                                    }
-                                }
                             }
                         }
                     }
                 }
             }
         }.navigationTitle("Edit Club Events")
-        .onAppear {
-            
-            dataManager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                if let events = events {
-                    eventlist = events
-                    editingeventslist = dataManager.eventDictionary["\(currentclub.clubname)"] ?? eventlist
-                }
-                self.editingeventslist = self.editingeventslist.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                self.editingeventslist = self.editingeventslist.reversed()
-
-            }
-        }
         .alert(isPresented: $isConfirmingDeleteEvent) {
             Alert(
                 title: Text("You Are Deleting Public Data"),
@@ -227,14 +202,6 @@ struct ClubsEventsAdminView: View {
                             dataManager.createClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToSave)
                             isPresetingAddEvent = false
                             
-                        }
-                        dataManager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
-                            if let error = error {
-                                print("Error updating events: \(error.localizedDescription)")
-                            }
-                            if let events = events {
-                                eventlist = events
-                            }
                         }
                     }
                 }

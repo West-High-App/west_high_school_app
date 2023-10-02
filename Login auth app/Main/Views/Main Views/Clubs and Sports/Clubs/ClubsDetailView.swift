@@ -22,8 +22,10 @@ struct ClubsDetailView: View {
     @EnvironmentObject var vmm: ClubsHibabi.ClubViewModel
     @State private var confirming = false
     @State private var confirming2 = false
-    @State var upcomingeventlist: [clubEvent] = [] // supposed to be clubEvent
-    @StateObject var clubeventmanager = clubEventManager.shared
+    var upcomingeventlist: [clubEvent] {
+        self.clubeventmanager.clubsEvents
+    }
+    @ObservedObject var clubeventmanager = clubEventManager.shared
     
     @State var hasAppeared = false
     @State var displayedimage: UIImage?
@@ -260,20 +262,8 @@ struct ClubsDetailView: View {
             
                 .onAppear {
                     // getting events (only once, then it saves)
-                    if clubeventmanager.eventDictionary["\(currentclub.clubname)"] == nil {
-                        print("accessing club events")
-                        print(clubeventmanager.eventDictionary)
-                        clubeventmanager.getClubsEvent(forClub: "\(currentclub.clubname)") { events, error in
-                            print("GOT FROM FIREBASE")
-                            if let events = events {
-                                self.upcomingeventlist = events
-                            }
-                            //saygex
-                        }
-                    } else {
-                        print("What")
-                        self.upcomingeventlist = clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? []
-                    }
+                    
+                    clubeventmanager.getClubsEvent(forClub: "\(currentclub.clubname)")
                     // checking if club is a favorite
                     if currentclub.favoritedusers.contains(userInfo.email) {
                         isFavorited = true
