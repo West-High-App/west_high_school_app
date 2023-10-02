@@ -7,7 +7,7 @@ struct AnnouncementsDetailView: View {
             ScrollView {
                 HStack {
                     Text(currentnews.title)
-                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
                         .minimumScaleFactor(0.5)
                         .lineLimit(2)
                         .padding(.leading)
@@ -34,19 +34,24 @@ struct AnnouncementsDetailView: View {
                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                     .padding(.bottom)
             }
+
         }
+        .navigationBarTitle(Text(""), displayMode: .inline)
+
+
     }
 }
 
 struct HomeAnnouncementsDetailView: View {
     var currentnews: Newstab
     var body: some View {
+        
         NavigationView {
             ScrollView {
                 HStack {
                     Text(currentnews.title)
                         .foregroundColor(Color.black)
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
                         .lineLimit(2)
                         .padding(.leading)
                     Spacer()
@@ -73,7 +78,9 @@ struct HomeAnnouncementsDetailView: View {
                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                     .padding(.bottom)
             }
+
         }
+        .navigationBarTitle(Text(""), displayMode: .inline)
     }
 }
 
