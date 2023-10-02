@@ -42,6 +42,8 @@ class clubEventManager: ObservableObject {
     @Published var topthree: [clubEvent] = []
     @Published var hasInitialized: Bool = false
     @Published var eventDictionary: [String: [clubEvent]] = [:]
+    private var eventSnapshotListener: ListenerRegistration?
+    private var documentId = ""
 
     static let shared = clubEventManager()
     
@@ -51,15 +53,18 @@ class clubEventManager: ObservableObject {
     
     
     // TODO: Rewrite flow to allow for snapshot listener
-    func getClubsEvent(forClub: String, completion: @escaping ([clubEvent]?, Error?) -> Void) {
-        var returnValue: [clubEvent] = []
+    func getClubsEvent(forClub: String) {
+        if eventSnapshotListener != nil {
+            self.eventSnapshotListener?.remove()
+            self.eventSnapshotListener = nil
+        }
+        self.clubsEvents.removeAll()
         
         let db = Firestore.firestore()
         let collection = db.collection("ClubEvents")
-        collection.getDocuments { snapshot, error in
+        self.eventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
-                completion(nil, error)
                 return
             }
             
@@ -71,8 +76,7 @@ class clubEventManager: ObservableObject {
                     let documentID = document.documentID
                     
                     if clubID == forClub {
-                        
-                        for event in events {
+                        let returnValue = events.compactMap { event in
                             let eventname = event["title"] ?? ""
                             let time = event["subtitle"] ?? ""
                             let month = event["month"] ?? ""
@@ -81,25 +85,21 @@ class clubEventManager: ObservableObject {
 
                             let newEvent = clubEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
                             if newEvent.date >= Date.yesterday {
-                                returnValue.append(newEvent)
-                            }
-                            else{
-                                self.deleteClubEvent(forClub: forClub, clubEvent: newEvent)
+                                return newEvent
+                            } else {
+                                return nil
                             }
                         }
+                        
+                            self.eventDictionary[forClub] = returnValue.sorted(by: {
+                                $0.date.compare($1.date) == .orderedAscending
+                            })
+                            self.clubsEvents = returnValue.sorted(by: {
+                                $0.date.compare($1.date) == .orderedAscending
+                            })
+                            print("got sports events")
                     }
                 }
-                self.eventDictionary[forClub] = returnValue
-                self.eventDictionary[forClub] = self.eventDictionary[forClub]?.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                self.eventDictionary[forClub] = self.eventDictionary[forClub]?.reversed()
-                self.clubsEvents = self.clubsEvents.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                self.clubsEvents = self.clubsEvents.reversed()
-                print("got sports events")
-                completion(returnValue, nil)
             }
             
         }
