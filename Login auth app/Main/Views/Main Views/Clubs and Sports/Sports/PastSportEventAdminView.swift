@@ -42,11 +42,54 @@ struct PastSportEventsAdminView: View {
             List {
                 ForEach(editingeventslist, id: \.id) { event in
                     HStack {
-                        VStack(alignment: .leading) {
+                        VStack {
+                            Text(event.month)
+                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                            Text(event.day)
+                                .font(.system(size: 32, weight: .regular, design: .rounded))
+                                .foregroundColor(.black)
+
+                        }
+                        .foregroundColor(.red)
+                        .frame(width:50,height:50)
+                        Divider()
+                            .padding(.vertical, 10)
+                        VStack (alignment: .leading){
                             Text(event.title)
-                                .fontWeight(.semibold)
-                            Text(event.subtitle)
-                            Text("\(event.month) \(event.day), \(event.year)")
+                                .font(.headline)
+                            if !event.isSpecial {
+                                Text(event.subtitle)
+                                HStack {
+                                    if event.score.count > 1 {
+                                        if event.score[0] == 0 && event.score[1] == 0 {
+                                            Text("Pending score...")
+                                        } else {
+                                            if event.score[0] > event.score[1] {
+                                                Text(String(event.score[0]))
+                                                Text("-")
+                                                Text(String(event.score[1]))
+                                                Text("(Win)")
+                                                    .foregroundColor(.green)
+                                            } else                                 if event.score[0] < event.score[1] {
+                                                Text(String(event.score[0]))
+                                                Text("-")
+                                                Text(String(event.score[1]))
+                                                Text("(Loss)")
+                                                    .foregroundColor(.red)
+                                            } else {
+                                                Text(String(event.score[0]))
+                                                Text("-")
+                                                Text(String(event.score[1]))
+                                                Text("(Tie)")
+                                            }
+                                        }
+                                    } else {
+                                        Text("Pending score...")
+                                    }
+                                }
+                            } else {
+                                Text(event.subtitle)
+                            }
                         }
                     }.contextMenu {
                         Button("Edit") {
@@ -69,6 +112,7 @@ struct PastSportEventsAdminView: View {
                 if let events = events {
                     eventlist = events
                     editingeventslist = dataManager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? eventlist
+                    self.editingeventslist = self.editingeventslist.reversed()
                 }
             }
             

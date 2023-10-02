@@ -373,7 +373,6 @@ struct SportsDetailView: View {
                         HTMLParser.parseEvents(from: currentsport.eventslink) { parsedevents, error in
                             if let parsedevents = parsedevents {
                                 let currentDate = Date()
-                                print(parsedevents)
                                 let futureEvents = parsedevents.filter { event in
                                     return event.date > currentDate
                                 }
@@ -389,18 +388,22 @@ struct SportsDetailView: View {
                                 let sortedPastEvents = pastEvents.sorted { (event1, event2) -> Bool in
                                     return event1.date > event2.date
                                 }
-                                print("normal past, sorted past")
-                                print(pastEvents)
-                                print(sortedPastEvents)
+
 
                                 self.events = sortedFutureEvents
+                                self.events = self.events.sorted(by: {
+                                    $0.date.compare($1.date) == .orderedDescending
+                                })
+                                self.events = self.events.reversed()
                                 
                                 sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] = sortedFutureEvents
                                 
-                                print(sortedPastEvents)
-                                print("past events")
+
                                 self.pastevents = sortedPastEvents
-                                print("DONE LOADING")
+                                self.pastevents = self.pastevents.sorted(by: {
+                                    $0.date.compare($1.date) == .orderedDescending
+                                })
+                                self.pastevents = self.pastevents.reversed()
                                 self.isLoading = false
                                 sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
                                     
@@ -433,15 +436,16 @@ struct SportsDetailView: View {
                                 return existingevent.type == newEvent.title && existingevent.opponent == newEvent.subtitle && existingeventformatteddate == neweventformatteddate
                                 
                             }) {} else {
-                                print("adding new bitch")
                                 sporteventmanager.createParsedSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: existingevent)
                             }
                         }
                         sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { newevents, error in
                             if let newevents = newevents {
                                 newpastevents = newevents.reversed()
-                                print(newpastevents)
-                                print("NEW PAST EVENTS")
+                                self.newpastevents = self.newpastevents.sorted(by: {
+                                    $0.date.compare($1.date) == .orderedDescending
+                                })
+
                             }
                         }
                     }
