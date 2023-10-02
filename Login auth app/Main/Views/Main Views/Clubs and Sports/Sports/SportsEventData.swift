@@ -11,6 +11,7 @@ import Firebase
 
 class sportEvent: NSObject, Identifiable {
     let id = UUID()
+    let arrayId: String
     let documentID: String
     let title: String
     let subtitle: String
@@ -22,8 +23,9 @@ class sportEvent: NSObject, Identifiable {
     var score: [Int] = [0, 0] // score of game (if applicable), home team first
     var isUpdated: Bool // should it show on past games
     
-    required init(documentID: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String, isSpecial: Bool, score: [Int], isUpdated: Bool) {
+    required init(documentID: String, arrayId: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String, isSpecial: Bool, score: [Int], isUpdated: Bool) {
         self.documentID = documentID
+        self.arrayId = arrayId
         self.title = title
         self.subtitle = subtitle
         self.month = month
@@ -52,17 +54,22 @@ class sportEventManager: ObservableObject {
     @Published var hasInitialized: Bool = false
     @Published var eventDictionary: [String: [sportEvent]] = [:]
     @Published var pastEventDictionary: [String: [sportEvent]] = [:]
+    private var eventSnapshotListener: ListenerRegistration?
+    private var pastEventSnapshotListener: ListenerRegistration?
+    private var documentId = ""
     
     static let shared = sportEventManager() // singleton, i love you Per
      
     func getSportsEvent(forSport: String, completion: @escaping ([sportEvent]?, Error?) -> Void) {
-        var returnValue: [sportEvent] = []
-        var pastReturnValue: [sportEvent] = []
+        if eventSnapshotListener != nil {
+            eventSnapshotListener?.remove()
+            self.eventSnapshotListener = nil
+        }
         
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents")
         
-        collection.getDocuments { snapshot, error in
+        self.eventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 completion(nil, error)
@@ -70,6 +77,51 @@ class sportEventManager: ObservableObject {
             }
             
             if let snapshot = snapshot {
+                var pastReturnValue: [sportEvent] = []
+                var returnValue: [sportEvent] = [] {
+                    didSet {
+                        if returnValue.count == snapshot.count {
+                            for event in returnValue{
+                                if event.date < Date.yesterday{
+                                    
+                                    // returnValue.removeAll {$0 == event}
+                                    pastReturnValue.append(event) // if its in the past, add it to the past list
+                                    
+                                }
+                            }
+                            
+                            // past lists
+                            
+                            self.pastEventDictionary[forSport] = pastReturnValue
+                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.sorted(by: {
+                                $0.date.compare($1.date) == .orderedDescending
+                            })
+                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
+                            self.pastSportsEvents = pastReturnValue
+                            self.pastSportsEvents = self.pastSportsEvents.sorted(by: {
+                                $0.date.compare($1.date) == .orderedDescending
+                            })
+                            print("got past sports events")
+                            print(self.pastSportsEvents)
+                            
+                            // upcoming lists
+
+                            self.eventDictionary[forSport] = returnValue
+                            self.eventDictionary[forSport] = self.eventDictionary[forSport]?.sorted(by: {
+                                $0.date.compare($1.date) == .orderedDescending
+                            })
+                            self.eventDictionary[forSport] = self.eventDictionary[forSport]?.reversed()
+                            self.sportsEvents = returnValue
+                            self.sportsEvents = self.sportsEvents.sorted(by: {
+                                $0.date.compare($1.date) == .orderedDescending
+                            })
+                            self.sportsEvents = self.sportsEvents.reversed()
+                            print("got upcoming sports events")
+                            print()
+                            completion(returnValue, nil)
+                        }
+                    }
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let sportID = data["sportID"] as? String ?? ""
@@ -78,7 +130,9 @@ class sportEventManager: ObservableObject {
                     
                     if sportID == forSport {
                         // making in into a sportEvent
+                        self.documentId = document.documentID
                         for event in events {
+                            let id = event["id"] as? String ?? UUID().uuidString
                             let eventname = event["title"] as? String ?? ""
                             let time = event["subtitle"] as? String ?? ""
                             let month = event["month"] as? String ?? ""
@@ -88,64 +142,27 @@ class sportEventManager: ObservableObject {
                             let score = event["score"] as? [Int] ?? []
                             let isUpdated = event["isUpdated"] as? Bool ?? false
 
-                            let newEvent = sportEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
+                            let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
                             returnValue.append(newEvent)
                         }
                         
                         
                     }
                 }
-                for event in returnValue{
-                    if event.date < Date.yesterday{
-                        
-                        // returnValue.removeAll {$0 == event}
-                        pastReturnValue.append(event) // if its in the past, add it to the past list
-                        
-                    }
-                }
-                
-                // past lists
-                
-                self.pastEventDictionary[forSport] = pastReturnValue
-                self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
-                self.pastSportsEvents = pastReturnValue
-                self.pastSportsEvents = self.pastSportsEvents.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                print("got past sports events")
-                print(self.pastSportsEvents)
-                
-                
-                // upcoming lists
-
-                self.eventDictionary[forSport] = returnValue
-                self.eventDictionary[forSport] = self.eventDictionary[forSport]?.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                self.eventDictionary[forSport] = self.eventDictionary[forSport]?.reversed()
-                self.sportsEvents = returnValue
-                self.sportsEvents = self.sportsEvents.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                self.sportsEvents = self.sportsEvents.reversed()
-                print("got upcoming sports events")
-                print()
-                completion(returnValue, nil)
             }
         }
     }
     
     func getPastSportsEvents(forSport: String, completion: @escaping ([sportEvent]?, Error?) -> Void) {
-        var returnValue: [sportEvent] = []
-        var pastReturnValue: [sportEvent] = []
+        if pastEventSnapshotListener != nil {
+            pastEventSnapshotListener?.remove()
+            self.pastEventSnapshotListener = nil
+        }
         
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents")
         
-        collection.getDocuments { snapshot, error in
+        self.pastEventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 completion(nil, error)
@@ -153,6 +170,38 @@ class sportEventManager: ObservableObject {
             }
             
             if let snapshot = snapshot {
+                var pastReturnValue: [sportEvent] = []
+                var returnValue: [sportEvent] = [] {
+                    didSet {
+                        if returnValue.count == snapshot.count {
+                            for event in returnValue{
+                                if event.date < Date.yesterday{
+                                    
+                                    returnValue.removeAll {$0 == event}
+                                    pastReturnValue.append(event) // if its in the past, add it to the past list
+                                    
+                                }
+                            }
+                            
+                            // past lists
+                            
+                            self.pastEventDictionary[forSport] = pastReturnValue
+                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.sorted(by: {
+                                $0.date.compare($1.date) == .orderedDescending
+                            })
+                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
+                            self.pastSportsEvents = pastReturnValue
+                            self.pastSportsEvents = self.pastSportsEvents.sorted(by: {
+                                $0.date.compare($1.date) == .orderedDescending
+                            })
+                            print("got past sports events")
+                            print(self.pastSportsEvents)
+                            let completionValue = self.pastSportsEvents
+                            
+                            completion(completionValue, nil)
+                        }
+                    }
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let sportID = data["sportID"] as? String ?? ""
@@ -161,7 +210,9 @@ class sportEventManager: ObservableObject {
                     
                     if sportID == forSport {
                         // making in into a sportEvent
+                        self.documentId = document.documentID
                         for event in events {
+                            let id = event["id"] as? String ?? ""
                             let eventname = event["title"] as? String ?? ""
                             let time = event["subtitle"] as? String ?? ""
                             let month = event["month"] as? String ?? ""
@@ -171,38 +222,13 @@ class sportEventManager: ObservableObject {
                             let score = event["score"] as? [Int] ?? []
                             let isUpdated = event["isUpdated"] as? Bool ?? false
 
-                            let newEvent = sportEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
+                            let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
                             returnValue.append(newEvent)
                         }
                         
                         
                     }
                 }
-                for event in returnValue{
-                    if event.date < Date.yesterday{
-                        
-                        returnValue.removeAll {$0 == event}
-                        pastReturnValue.append(event) // if its in the past, add it to the past list
-                        
-                    }
-                }
-                
-                // past lists
-                
-                self.pastEventDictionary[forSport] = pastReturnValue
-                self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
-                self.pastSportsEvents = pastReturnValue
-                self.pastSportsEvents = self.pastSportsEvents.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
-                })
-                print("got past sports events")
-                print(self.pastSportsEvents)
-                let completionValue = self.pastSportsEvents
-                
-                completion(completionValue, nil)
 
             }
         }
@@ -359,6 +385,7 @@ class sportEventManager: ObservableObject {
                 }
                 if Bool {
                     var eventtoadd: [String: Any] = [:]
+                    let id = UUID().uuidString
                     let title = sportEvent.title
                     let subtitle = sportEvent.subtitle
                     let month = sportEvent.month
@@ -368,7 +395,7 @@ class sportEventManager: ObservableObject {
                     let isSpecial = sportEvent.isSpecial
                     let isUpdated = sportEvent.isUpdated
                     let score = sportEvent.score
-                    eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
+                    eventtoadd = ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
 
                     collection.addDocument(data: [
                         "sportID": forSport,
@@ -389,6 +416,7 @@ class sportEventManager: ObservableObject {
         let ref = db.collection("SportEvents").document(sportEvent.documentID)
         
         var eventtoremove: [String: Any] = [:]
+        let id = sportEvent.arrayId
         let title = sportEvent.title
         let subtitle = sportEvent.subtitle
         let month = sportEvent.month
@@ -398,7 +426,7 @@ class sportEventManager: ObservableObject {
         let isSpecial = sportEvent.isSpecial
         let isUpdated = sportEvent.isUpdated
         let score = sportEvent.score
-        eventtoremove = ["title": title, "subtitle": subtitle, "month": month, "day": day, "year": year, "publisheddate": publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": true]
+        eventtoremove = ["id": id, "title": title, "subtitle": subtitle, "month": month, "day": day, "year": year, "publisheddate": publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": true]
         
         print("try a remove:")
         print(eventtoremove)
@@ -420,29 +448,32 @@ class sportEventManager: ObservableObject {
     func updateSportEventScore(forSport: String, sportEvent: sportEvent) {
         
         let db = Firestore.firestore()
-        let ref = db.collection("SportEvents").document(sportEvent.documentID)
+        let ref = db.collection("SportEvents").document(self.documentId)
         
-        var eventtoremove: [String: Any] = [:]
-        let title = sportEvent.title
-        let subtitle = sportEvent.subtitle
-        let month = sportEvent.month
-        let day = sportEvent.day
-        let year = sportEvent.year
-        let publisheddate = "\(month) \(day), \(year)"
-        let isSpecial = sportEvent.isSpecial
-        let isUpdated = sportEvent.isUpdated
-        let score = sportEvent.score
-        eventtoremove = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": false]
-        
-        ref.updateData([
-            "events": FieldValue.arrayRemove([eventtoremove])
-        ]) { error in
-            if let error = error {
-                print("ERROR DELETING EVENT: \(error.localizedDescription)")
-            }
+        if let pastSportsEventsIndex = self.pastSportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) {
+            self.pastSportsEvents[pastSportsEventsIndex] = sportEvent
         }
+        if let sportsEventsIndex = self.sportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) {
+            self.sportsEvents[sportsEventsIndex] = sportEvent
+        }
+        
+        let sportsEvents = self.sportsEvents.map { event in
+            
+            let id = event.arrayId
+            let title = event.title
+            let subtitle = event.subtitle
+            let month = event.month
+            let day = event.day
+            let year = event.year
+            let publisheddate = "\(month) \(day), \(year)"
+            let isSpecial = event.isSpecial
+            let isUpdated = event.isUpdated
+            let score = event.score
+            return ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
+        }
+        
         ref.updateData([
-            "events": FieldValue.arrayUnion([sportEvent])
+            "events": sportsEvents
         ]) { error in
             if let error = error {
                 print("ERROR ADDING EVENT: \(error.localizedDescription)")

@@ -169,7 +169,8 @@ struct SportEventsAdminView: View {
                     }
                     Button("Publish New Sport Event") {
                         eventToSave = sportEvent(
-                            documentID: "NAN",
+                            documentID: "NAN", 
+                            arrayId: UUID().uuidString,
                             title: title,
                             subtitle: subtitle,
                             month: months[selectedMonthIndex],
