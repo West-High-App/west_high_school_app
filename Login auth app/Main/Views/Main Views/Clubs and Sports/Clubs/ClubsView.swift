@@ -136,11 +136,17 @@ struct ClubsHibabi: View {
                                 if (!hasFavorites && clubselected == 1) {
                                     VStack {
                                         Spacer()
-                                        Text("Add a club to get started!")
+                                        HStack{
+                                            Spacer()
+                                            Text("Save your favorite clubs by pressing the heart!")
+                                                .multilineTextAlignment(.center)
+                                                .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                            Spacer()
+                                        }
                                         Button {
                                             clubselected = 2
                                         } label: {
-                                            Text("Browse Clubs")
+                                            Text("Browse all Clubs")
                                                 .foregroundColor(.white)
                                                 .fontWeight(.semibold)
                                                 .padding(.all, 15.0)

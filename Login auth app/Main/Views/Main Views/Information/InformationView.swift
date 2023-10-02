@@ -81,7 +81,9 @@ struct InformationView: View {
                     NavigationLink {
                         LunchMenuView()
                     } label: {
-                        Image(systemName: "fork.knife")
+                        Image(systemName: "fork.knife.circle")
+                            .scaleEffect(1.1)
+
                         Text("Lunch Menu")
                     }
                     .padding(.vertical,10)
@@ -109,7 +111,7 @@ struct InformationView: View {
                         SchoolPolicyGuideView()
                     } label: {
                         HStack{
-                            Image(systemName: "list.bullet")
+                            Image(systemName: "list.bullet.clipboard")
                                 .padding(.leading,3)
                             Text("School Policy Guide")
                                 .padding(.leading,3)

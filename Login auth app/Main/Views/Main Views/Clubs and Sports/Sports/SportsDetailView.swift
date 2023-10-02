@@ -236,7 +236,17 @@ struct SportsDetailView: View {
                                 PastSportEventsAdminView(currentsport: currentsport)
                             } label: {
                                 Text("Edit Past Events")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.semibold)
+                                    .padding(10)
+                                    .cornerRadius(15.0)
+                                    .frame(width: screen.screenWidth-30)
                                     .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                    .background(Rectangle()
+                                        .foregroundColor(.blue)
+                                        .cornerRadius(10)
+                                    )
+
                             }
                         }
                         

@@ -129,28 +129,32 @@ struct ClubsDetailView: View {
                             ClubsEventsAdminView(currentclub: currentclub, admin: true)
                         } label: {
                             Text("Edit Upcoming Events")
-                                 .foregroundColor(.blue)
-                                 .padding(10)
-                                 .frame(width: screen.screenWidth-30)
-                                 .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                 .background(Rectangle()
-                                   .foregroundColor(.white)
-                                   .cornerRadius(10)
-                                   .shadow(radius: 2, x: 1, y: 1))
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
+                                .padding(10)
+                                .cornerRadius(15.0)
+                                .frame(width: screen.screenWidth-30)
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                .background(Rectangle()
+                                    .foregroundColor(.blue)
+                                    .cornerRadius(10)
+                                )
                         }
                     } else if isEditor {
                         NavigationLink {
                             ClubsEventsAdminView(currentclub: currentclub, admin: false)
                         } label: {
                             Text("Edit Upcoming Events")
-                                .foregroundColor(.blue)
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
                                 .padding(10)
+                                .cornerRadius(15.0)
                                 .frame(width: screen.screenWidth-30)
                                 .font(.system(size: 17, weight: .semibold, design: .rounded))
                                 .background(Rectangle()
-                                  .foregroundColor(.white)
-                                  .cornerRadius(10)
-                                  .shadow(radius: 2, x: 1, y: 1))
+                                    .foregroundColor(.blue)
+                                    .cornerRadius(10)
+                                )
                         }
                     }
                     if upcomingeventlist.count < 1 {
