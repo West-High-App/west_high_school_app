@@ -210,6 +210,7 @@ class imageManager: ObservableObject {
         func cacheImageInUserDefaults(image: UIImage, fileName: String) {
             if let imageData = image.jpegData(compressionQuality: 1.0) {
                 userDefaults.set(imageData, forKey: fileName)
+                print("SET IMAGE")
             }
         }
     
