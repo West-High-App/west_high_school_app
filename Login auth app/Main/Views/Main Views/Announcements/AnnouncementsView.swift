@@ -11,21 +11,38 @@ struct AnnouncementsView: View {
     var body: some View {
         NavigationView {
             VStack {
-                List(newsDataManager.topfive, id: \.id) { news in
-                    NavigationLink {
-                        AnnouncementsDetailView(currentnews: news)
-                    } label: {
-                        NewsCell(news: news)
+                List {
+                    ForEach(newsDataManager.topfive, id: \.id) { news in
+                        NavigationLink {
+                            AnnouncementsDetailView(currentnews: news)
+                        } label: {
+                            NewsCell(news: news)
+                        }
+                        .listRowBackground(
+                            Rectangle()
+                                .cornerRadius(15)
+                                .foregroundColor(Color(red: 225/255, green: 225/255, blue: 225/255))
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 7)
+                                .shadow(radius: 2, x: 1, y: 1)
+                        )
+                        .listRowSeparator(.hidden)
                     }
-                    .listRowBackground(
-                        Rectangle()
-                            .cornerRadius(15)
-                            .foregroundColor(Color(red: 225/255, green: 225/255, blue: 225/255))
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 7)
-                            .shadow(radius: 2, x: 1, y: 1)
-                    )
-                    .listRowSeparator(.hidden)
+                    if !newsDataManager.topfive.map({ $0.documentID }).contains("TestID") && !newsDataManager.allDocsLoaded {
+                        ProgressView()
+                            .listRowBackground(
+                                Rectangle()
+                                    .cornerRadius(15)
+                                    .foregroundColor(Color(red: 225/255, green: 225/255, blue: 225/255))
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 7)
+                                    .shadow(radius: 2, x: 1, y: 1)
+                            )
+                            .listRowSeparator(.hidden)
+                            .onAppear {
+                                newsDataManager.getMoreAnnouncements()
+                            }
+                    }
                 }
                 .navigationBarTitle(
                     Text("Announcements")

@@ -33,18 +33,91 @@ class Newslist: ObservableObject {
     var topfive: [Newstab] {
         topfiveUnsorted.sortedByDate()
     }
+    private var lastDocument: DocumentSnapshot?
+    private let limit = 20
+    @Published private(set) var allDocsLoaded = false
     
     static let shared = Newslist()
     
     init() {
-        getAnnouncements()
+        connectAnnouncements()
     }
     
+    private func handleFirestoreData(_ templist: [Newstab]) {
+        DispatchQueue.main.async {
+            self.topfiveUnsorted.removeAll(where: { $0.documentID == "TestID" })
+            for temp in templist {
+                if let index = self.topfiveUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                    self.topfiveUnsorted[index].publisheddate = temp.publisheddate
+                    self.topfiveUnsorted[index].title = temp.title
+                    self.topfiveUnsorted[index].description = temp.description
+                } else {
+                    self.topfiveUnsorted.append(temp)
+                }
+                if temp == templist.last {
+                    
+                    if let docId = self.lastDocument?.documentID, let endIndex = self.topfiveUnsorted.firstIndex(where: { $0.documentID == docId }) {
+                        let startIndex = endIndex-templist.count
+                        
+                        for (index, element) in self.topfiveUnsorted.enumerated() {
+                            if startIndex <= index, index <= endIndex, !templist.contains(where: { $0.documentID == element.documentID }) {
+                                self.topfiveUnsorted.removeAll(where: { $0.documentID == element.documentID }) // Remove if not on server
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     
-    func getAnnouncements() {
+    func getMoreAnnouncements() {
+        guard let lastDocument else { return }
+        
         let db = Firestore.firestore()
         let collection = db.collection("Announcements")
-        collection.addSnapshotListener { snapshot, error in
+        collection
+            .order(by: "publisheddate", descending: true)
+            .start(atDocument: lastDocument)
+            .limit(to: self.limit)
+            .getDocuments { snapshot, error in
+                guard error == nil else {
+                    print("Error: \(error!.localizedDescription)")
+                    return
+                }
+                if let snapshot = snapshot {
+                    var templist: [Newstab] = [] {
+                        didSet {
+                            if templist.count == snapshot.count {
+                                self.handleFirestoreData(templist)
+                            }
+                        }
+                    }
+                    
+                    self.lastDocument = snapshot.documents.last
+                    for document in snapshot.documents {
+                        let data = document.data()
+                        let title = data["title"] as? String ?? ""
+                        let description = data["description"] as? String ?? ""
+                        let publisheddate = data["publisheddate"] as? String ?? ""
+                        let newsimagename = data["newsimagename"] as? String ?? ""
+                        let documentID = document.documentID
+                        let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description)
+                        templist.append(newstab)  // Add the newstab to the temporary array
+                    }
+                    if snapshot.count < self.limit {
+                        self.allDocsLoaded = true
+                    }
+                }
+            }
+    }
+    
+    func connectAnnouncements() {
+        let db = Firestore.firestore()
+        let collection = db.collection("Announcements")
+        collection
+            .order(by: "publisheddate", descending: true)
+            .limit(to: self.limit)
+            .addSnapshotListener { snapshot, error in
             guard error == nil else {
                 print("Error: \(error!.localizedDescription)")
                 return
@@ -53,27 +126,11 @@ class Newslist: ObservableObject {
                 var templist: [Newstab] = [] {
                     didSet {
                         if templist.count == snapshot.count {
-                            DispatchQueue.main.async {
-                                for temp in templist {
-                                    if let index = self.topfiveUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
-                                        self.topfiveUnsorted[index].publisheddate = temp.publisheddate
-                                        self.topfiveUnsorted[index].title = temp.title
-                                        self.topfiveUnsorted[index].description = temp.description
-                                    } else {
-                                        self.topfiveUnsorted.append(temp)
-                                    }
-                                    if temp == templist.last {
-                                        for element in self.topfiveUnsorted {
-                                            if !templist.contains(where: { $0.documentID == element.documentID }) {
-                                                self.topfiveUnsorted.removeAll(where: { $0.documentID == element.documentID }) // Remove if not on server
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            self.handleFirestoreData(templist)
                         }
                     }
                 }
+                self.lastDocument = snapshot.documents.last
                 for document in snapshot.documents {
                     let data = document.data()
                     let title = data["title"] as? String ?? ""
