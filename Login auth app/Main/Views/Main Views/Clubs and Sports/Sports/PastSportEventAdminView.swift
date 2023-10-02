@@ -3,9 +3,10 @@ import SwiftUI
 struct PastSportEventsAdminView: View {
     var currentsport: sport
     @State var eventlist: [sportEvent] = []
-    @StateObject var dataManager = sportEventManager()
-    @EnvironmentObject var sporteventmanager: sportEventManager
-    @State var editingeventslist: [sportEvent] = []
+    @StateObject var dataManager = sportEventManager.shared
+    var editingeventslist: [sportEvent] {
+        dataManager.pastSportsEvents
+    }
 
     @State var temptitle = ""
     @State var isPresentingEditEvent = false
@@ -22,12 +23,13 @@ struct PastSportEventsAdminView: View {
     @State var years: [String] = []
     @State private var selectedYearIndex = 0
     @State private var selectedDayIndex = Calendar.current.component(.day, from: Date()) - 1
-    @State var editingevent = sportEvent(documentID: "", title: "", subtitle: "", month: "", day: "", year: "", publisheddate: "", isSpecial: false, score: [], isUpdated: false)
+    @State var editingevent = sportEvent(documentID: "", arrayId: "", title: "", subtitle: "", month: "", day: "", year: "", publisheddate: "", isSpecial: false, score: [], isUpdated: false)
     
     @State var title = ""
     @State var subtitle = ""
     @State var month = ""
     @State var year = ""
+    @State var arrayId = ""
     @State var day = ""
     @State var isSpecial = false
     @State var score: [Int] = []
@@ -56,21 +58,25 @@ struct PastSportEventsAdminView: View {
                     }
                     .onTapGesture {
                         editingevent = event
+                        self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
+                        self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
+                        self.isSpecial = event.isSpecial
+                        self.subtitle = event.subtitle
                         isPresentingEditEvent = true
                     }
                 }
             }
         }.navigationTitle("Edit Past Events")
         .onAppear {
-            dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                if let events = events {
-                    eventlist = events
-                    editingeventslist = dataManager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? eventlist
-                }
-            }
+//            dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+//                if let error = error {
+//                    print(error.localizedDescription)
+//                }
+//                if let events = events {
+//                    eventlist = events
+//                    editingeventslist = dataManager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? eventlist
+//                }
+//            }
             
             documentID = currentsport.documentID
             
@@ -122,6 +128,7 @@ struct PastSportEventsAdminView: View {
                         month = editingevent.month
                         day = editingevent.day
                         year = editingevent.year
+                        arrayId = editingevent.arrayId
                         var tempscore: [Int] = []
                         let score1 = Int(homescore) ?? 0
                         let score2 = Int(otherscore) ?? 0
@@ -129,7 +136,7 @@ struct PastSportEventsAdminView: View {
                         
                         let oldevent = editingevent
                         
-                        editingevent = sportEvent(documentID: documentID, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
+                        editingevent = sportEvent(documentID: documentID, arrayId: arrayId, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
                         
                         print(editingevent)
                         
@@ -137,12 +144,13 @@ struct PastSportEventsAdminView: View {
                         
                         // HERE IS THE ISSUE
                         
-                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent) { error in
-                            if error == nil {
-                                dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
-                            }
-                        }
+//                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent) { error in
+//                            if error == nil {
+//                                dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
+//                            }
+//                        }
                         
+                        dataManager.updateSportEventScore(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
                         
                         /*dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent)
 
@@ -175,16 +183,9 @@ struct PastSportEventsAdminView: View {
                     let score2 = Int(otherscore) ?? 0
                     tempscore = [score1, score2]
                     
-                    eventToDelete = sportEvent(documentID: documentID, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
+                    eventToDelete = sportEvent(documentID: documentID, arrayId: editingevent.arrayId, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
                     
-                    if let eventToDelete = eventToDelete {
-                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToDelete)
-                        { error in
-                            if error == nil {
-                                dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
-                            }
-                        }
-                    }
+                    dataManager.updateSportEventScore(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
                 
                 },
                 secondaryButton: .cancel(Text("Cancel"))

@@ -240,12 +240,12 @@ struct SportsDetailView: View {
                             }
                         }
                         
-                        if sportEvents.isEmpty {
+                        if sporteventmanager.pastSportsEvents.isEmpty {
                             Text("No past events.")
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
                                 .frame(maxHeight: .infinity)
                         } else {
-                            List(newpastevents, id: \.id) { event in
+                            List(sporteventmanager.pastSportsEvents, id: \.id) { event in
                                 HStack {
                                     VStack {
                                         Text(event.month)
@@ -416,46 +416,45 @@ struct SportsDetailView: View {
                         self.events = sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
                     }
                     
-                    // moved
-                    sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                        
-                        for existingevent in self.pastevents {
-                            print("EVENT EXISTS")
-                            print(existingevent)
-                            if let matchingEvent = events?.first(where: { newEvent in
-                                
-                                let dateFormatter = DateFormatter()
-                                dateFormatter.dateFormat = "MMM d, yyyy"
-                                
-                                let existingeventformatteddate = dateFormatter.string(from: existingevent.date)
-                                let neweventformatteddate = dateFormatter.string(from: newEvent.date)
-                                
-                                return existingevent.type == newEvent.title && existingevent.opponent == newEvent.subtitle && existingeventformatteddate == neweventformatteddate
-                                
-                            }) {} else {
-                                print("adding new bitch")
-                                sporteventmanager.createParsedSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: existingevent)
-                            }
-                        }
+//                    // moved
+//                    sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+//                        
+//                        for existingevent in self.pastevents {
+//                            print("EVENT EXISTS")
+//                            print(existingevent)
+//                            if let matchingEvent = events?.first(where: { newEvent in
+//                                
+//                                let dateFormatter = DateFormatter()
+//                                dateFormatter.dateFormat = "MMM d, yyyy"
+//                                
+//                                let existingeventformatteddate = dateFormatter.string(from: existingevent.date)
+//                                let neweventformatteddate = dateFormatter.string(from: newEvent.date)
+//                                
+//                                return existingevent.type == newEvent.title && existingevent.opponent == newEvent.subtitle && existingeventformatteddate == neweventformatteddate
+//                                
+//                            }) {} else {
+//                                print("adding new bitch")
+//                                sporteventmanager.createParsedSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: existingevent)
+//                            }
+//                        }
                         sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { newevents, error in
                             if let newevents = newevents {
-                                newpastevents = newevents.reversed()
                                 print(newpastevents)
                                 print("NEW PAST EVENTS")
                             }
                         }
-                    }
+//                    }
                                         
-                    // getting events (only once, then it saves)
-                    if sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
-                        sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                            if let events = events {
-                                self.sportEvents = events
-                            }
-                        }
-                    } else {
-                        self.sportEvents = sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
-                    }
+//                    // getting events (only once, then it saves)
+//                    if sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
+//                        sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
+//                            if let events = events {
+//                                self.sportEvents = events
+//                            }
+//                        }
+//                    } else {
+//                        self.sportEvents = sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
+//                    }
                     
                     if sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
                         sporteventmanager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in

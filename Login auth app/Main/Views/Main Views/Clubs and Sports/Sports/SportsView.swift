@@ -209,13 +209,11 @@ struct SportsHibabi: View {
                                                 
 //                                                NavigationLink(value: item) {
                                                 NavigationLink {
-                                                    if !refreshView {
                                                         SportsMainView(selectedsport: item)
                                                             .environmentObject(vm)
                                                             .environmentObject(sportsmanager)
                                                             .environmentObject(sporteventmanager)
                                                             .environmentObject(sporteventstorage)
-                                                    }
                                                 } label: {
                                                     HStack {
                                                         if item.imagedata != nil {
