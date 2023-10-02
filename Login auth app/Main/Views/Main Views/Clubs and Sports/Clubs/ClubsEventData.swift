@@ -80,19 +80,19 @@ class clubEventManager: ObservableObject {
                             let year = event["year"] ?? ""
 
                             let newEvent = clubEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
-                            returnValue.append(newEvent)
+                            if newEvent.date >= Date.yesterday {
+                                returnValue.append(newEvent)
+                            }
+                            else{
+                                self.deleteClubEvent(forClub: forClub, clubEvent: newEvent)
+                            }
                         }
-                    }
-                }
-                for event in returnValue{
-                    if event.date < Date.yesterday{
                     }
                 }
                 self.eventDictionary[forClub] = returnValue
                 self.eventDictionary[forClub] = self.eventDictionary[forClub]?.sorted(by: {
                     $0.date.compare($1.date) == .orderedDescending
                 })
-                print("Updated list: \(self.eventDictionary[forClub]?.reversed())")
                 self.eventDictionary[forClub] = self.eventDictionary[forClub]?.reversed()
                 self.clubsEvents = self.clubsEvents.sorted(by: {
                     $0.date.compare($1.date) == .orderedDescending

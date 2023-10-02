@@ -65,12 +65,31 @@ struct ClubsEventsAdminView: View {
             if admin {
                 List {
                     ForEach(editingeventslist, id: \.id) { event in
-                        VStack(alignment: .leading) {
-                            Text(event.title)
-                                .fontWeight(.semibold)
-                            Text(event.subtitle)
-                            Text("\(event.month) \(event.day), \(event.year)")
-                        }.contextMenu {
+                        HStack {
+                            VStack {
+                                Text(event.month)
+                                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                                    .foregroundColor(.red)
+                                Text(event.day)
+                                    .font(.system(size: 26, weight: .regular, design: .rounded))
+                                
+                            }
+                            .frame(width:50,height:50)
+                            Divider()
+                                .padding(.vertical, 10)
+                            VStack(alignment: .leading) {
+                                Text(event.title)
+                                    .lineLimit(2)
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                                Text(event.subtitle)
+                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                    .lineLimit(1)
+                            }
+                            .padding(.leading, 5)
+                            Spacer()
+                            
+                        }
+.contextMenu {
                             Button("Delete", role: .destructive) {
                                 temptitle = event.title
                                 // isConfirmingDeleteEvent = true
@@ -104,6 +123,11 @@ struct ClubsEventsAdminView: View {
                     eventlist = events
                     editingeventslist = dataManager.eventDictionary["\(currentclub.clubname)"] ?? eventlist
                 }
+                self.editingeventslist = self.editingeventslist.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
+                self.editingeventslist = self.editingeventslist.reversed()
+
             }
         }
         .alert(isPresented: $isConfirmingDeleteEvent) {

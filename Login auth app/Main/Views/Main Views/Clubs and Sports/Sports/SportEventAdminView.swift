@@ -94,6 +94,7 @@ struct SportEventsAdminView: View {
                 if let events = events {
                     eventlist = events
                     editingeventslist = dataManager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? eventlist
+                    self.editingeventslist = self.editingeventslist.reversed()
                 }
             }
         }
