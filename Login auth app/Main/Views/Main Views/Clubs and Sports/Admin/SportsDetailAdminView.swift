@@ -14,7 +14,7 @@ struct SportsDetailAdminView: View {
     @EnvironmentObject var sportsmanager: sportsManager
     
     @State var isConfirmingChanges = false
-    
+    @State var screen = ScreenSize()
     @State var sportname = "" //
     @State var sportcoaches: [String] = [] //
     @State var adminsstring = ""
@@ -317,13 +317,17 @@ struct SportsDetailAdminView: View {
                 Button {
                     isConfirmingChanges.toggle()
                 } label: {
-                    Text("Publish Changes")
-                        .foregroundColor(.blue)
+                    Text("Publish Changes")//hello
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
                         .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
                         .background(Rectangle()
-                            .foregroundColor(.white)
+                            .foregroundColor(.blue)
                             .cornerRadius(10)
-                            .shadow(radius: 2, x:1, y:1))
+                        )
                 }
                 
             }
