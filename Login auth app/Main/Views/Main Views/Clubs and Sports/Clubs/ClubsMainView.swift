@@ -8,18 +8,19 @@
 import SwiftUI
 
 struct ClubsMainView: View {
-    var selectedclub:club
+    let selectedclub:club
     @EnvironmentObject var clubfavoritesmanager: FavoriteClubsManager
     @EnvironmentObject var clubsmanager: clubManager
     var body: some View {
         GeometryReader {
             let safeArea = $0.safeAreaInsets
             let size = $0.size
-            let currentclub = selectedclub
-            ClubsDetailView(currentclub: currentclub, safeArea: safeArea, size: size)
-                .ignoresSafeArea(.container, edges: .top)
-                .environmentObject(clubfavoritesmanager)
-                .environmentObject(clubsmanager)
+            if let item = clubsmanager.allclublist.first(where: { $0.documentID == selectedclub.documentID }) {
+                ClubsDetailView(currentclub: item, safeArea: safeArea, size: size)
+                    .ignoresSafeArea(.container, edges: .top)
+                    .environmentObject(clubfavoritesmanager)
+                    .environmentObject(clubsmanager)
+            }
         }
         //.background(.blue)
     }

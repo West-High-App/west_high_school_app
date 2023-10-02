@@ -174,15 +174,15 @@ class sportsManager: ObservableObject {
 
 //MARK: clubs
 struct club: Identifiable, Equatable {
-    let clubname:String
-    let clubcaptain:[String]?
-    let clubadvisor: [String]
-    let clubmeetingroom:String
-    let clubdescription:String
-    let clubimage:String
-    let clubmembercount:String
-    let clubmembers:[String]
-    let adminemails:[String]
+    var clubname:String
+    var clubcaptain:[String]?
+    var clubadvisor: [String]
+    var clubmeetingroom:String
+    var clubdescription:String
+    var clubimage:String
+    var clubmembercount:String
+    var clubmembers:[String]
+    var adminemails:[String]
     var editoremails: [String]
     var favoritedusers: [String]
     var imagedata: UIImage // NOT USED IN FIREBASE
@@ -221,7 +221,31 @@ class clubManager: ObservableObject {
                     didSet {
                         if returnvalue.count == snapshot.count {
                             DispatchQueue.main.async {
-                                self.allclublist = self.filteredlist
+                                for temp in returnvalue {
+                                    if let index = self.allclublist.firstIndex(where: { $0.documentID == temp.documentID }) {
+                                        self.allclublist[index].clubname = temp.clubname
+                                        self.allclublist[index].clubcaptain = temp.clubcaptain
+                                        self.allclublist[index].clubmembers = temp.clubmembers
+                                        self.allclublist[index].clubadvisor = temp.clubadvisor
+                                        self.allclublist[index].favoritedusers = temp.favoritedusers
+                                        self.allclublist[index].clubimage = temp.clubimage
+                                        self.allclublist[index].clubmeetingroom = temp.clubmeetingroom
+                                        self.allclublist[index].adminemails = temp.adminemails
+                                        self.allclublist[index].clubdescription = temp.clubdescription
+                                        self.allclublist[index].clubmembercount = temp.clubmembercount
+                                        self.allclublist[index].imagedata = temp.imagedata
+                                        self.allclublist[index].editoremails = temp.editoremails
+                                    } else {
+                                        self.allclublist.append(temp)
+                                    }
+                                    if temp == returnvalue.last {
+                                        for sport in self.allclublist {
+                                            if !returnvalue.contains(where: { $0.documentID == sport.documentID }) {
+                                                self.allclublist.removeAll(where: { $0.documentID == sport.documentID }) // Remove if not on server
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

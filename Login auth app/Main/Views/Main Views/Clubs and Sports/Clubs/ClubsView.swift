@@ -99,7 +99,7 @@ struct ClubsHibabi: View {
     var body: some View {
         if userInfo.loginStatus == "google" {
             ZStack {
-                NavigationView{
+                NavigationStack {
                     ZStack {
                         VStack {
                             

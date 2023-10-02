@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ClubDetailAdminView: View {
-    
+    @Environment(\.dismiss) var dismiss
     var editingclub: club
     @State var clubtoedit: club?
     @StateObject var clubmanager = clubManager.shared
@@ -46,7 +46,6 @@ struct ClubDetailAdminView: View {
     
     // images
     @StateObject var imagemanager = imageManager()
-    @State var originalImage = ""
     @State var displayimage: UIImage?
     @State var isDisplayingAddImage = false
     
@@ -265,15 +264,22 @@ struct ClubDetailAdminView: View {
                 }
                 
                 Section("Image") {
-                    Image(uiImage: displayimage ?? editingclub.imagedata)
+                    if let displayimage {
+                        Image(uiImage: displayimage)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 200, height: 200)
+                            .frame(width: 250, height: 200)
                             .cornerRadius(10)
+                    } else {
+                        Image(uiImage: editingclub.imagedata)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 250, height: 200)
+                            .cornerRadius(10)
+                    }
                     Button("Upload New Image") {
                         isDisplayingAddImage = true
                     }
-                    
                 }
                 .sheet(isPresented: $isDisplayingAddImage) {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
@@ -301,19 +307,21 @@ struct ClubDetailAdminView: View {
                             
                             if let displayimage = displayimage {
                                 clubimage = imagemanager.uploadPhoto(file: displayimage)
-                            }
-                            
-                            imagemanager.deleteImage(imageFileName: originalImage) { error in
-                                if let error = error {
-                                    print(error.localizedDescription)
+                                
+                                imagemanager.deleteImage(imageFileName: editingclub.clubimage) { error in
+                                    if let error = error {
+                                        print(error.localizedDescription)
+                                    }
                                 }
                             }
                             
-                            clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: [], imagedata: UIImage(), documentID: editingclub.documentID, id: 0)
+                            clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: [], imagedata: displayimage ?? UIImage(), documentID: editingclub.documentID, id: 0)
                             
                             if let clubtoedit = clubtoedit {
                                 clubmanager.updateClub(data: clubtoedit)
                             }
+                            
+                            dismiss()
                             
                         },
                         secondaryButton: .cancel()
@@ -336,13 +344,6 @@ struct ClubDetailAdminView: View {
                 clubmembers = editingclub.clubmembers
                 adminemails = editingclub.adminemails
                 editoremails = editingclub.editoremails
-                
-                //images
-                
-                originalImage = editingclub.clubimage
-                imagemanager.getImage(fileName: clubimage) { image in
-                    displayimage = image
-                }
             }
         
         
