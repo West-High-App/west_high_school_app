@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import UIKit
 
 struct sportNews: Identifiable, Equatable {
     var newstitle: String
@@ -14,6 +15,7 @@ struct sportNews: Identifiable, Equatable {
     var newsdescription: String
     var newsdate: String
     var author: String
+    var isApproved: Bool
     var imagedata: [UIImage] // , imagedata: []
     var id = UUID()
     let documentID: String
@@ -39,7 +41,7 @@ class sportsNewslist: ObservableObject {
         newsimage: ["football"],
         newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
         newsdate: "Nov 15, 2022",
-        author: "Emily Thompson", imagedata: [], documentID: "NAN")]
+        author: "Emily Thompson", isApproved: false, imagedata: [], documentID: "NAN")]
     
     var allsportsnewslist: [sportNews] {
         allsportsnewslistUnsorted.sortedByDate()
@@ -70,6 +72,7 @@ class sportsNewslist: ObservableObject {
                                         self.allsportsnewslistUnsorted[index].newstitle = temp.newstitle
                                         self.allsportsnewslistUnsorted[index].author = temp.author
                                         self.allsportsnewslistUnsorted[index].newsimage = temp.newsimage
+                                        self.allsportsnewslistUnsorted[index].isApproved = temp.isApproved
                                     } else {
                                         self.allsportsnewslistUnsorted.append(temp)
                                     }
@@ -92,6 +95,7 @@ class sportsNewslist: ObservableObject {
                     let newsdescription = data["newsdescription"] as? String ?? ""
                     let newsdate = data["newsdate"] as? String ?? ""
                     let author = data["author"] as? String ?? ""
+                    let isApproved = data["isApproved"] as? Bool ?? false
                     let documentID = document.documentID
                     var imagedata: [UIImage] = []
                     for file in newsimage {
@@ -102,7 +106,7 @@ class sportsNewslist: ObservableObject {
                                 print(imagedata)
                                 print("1^")
                             }
-                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, imagedata: imagedata, documentID: documentID)
+                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, isApproved: isApproved, imagedata: imagedata, documentID: documentID)
                             templist.append(sportnews)
                         }
                     }
@@ -119,7 +123,8 @@ class sportsNewslist: ObservableObject {
             "newsimage": sportNews.newsimage,
             "newsdescription": sportNews.newsdescription,
             "newsdate": sportNews.newsdate,
-            "author": sportNews.author
+            "author": sportNews.author,
+            "isApproved": sportNews.isApproved
         ]) { error in
             completion(error)
         }
