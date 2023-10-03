@@ -279,12 +279,15 @@ struct ClubNewsAdminView: View { // hello
         .navigationBarTitle(Text("Edit Club News"))
 
         
-        .onAppear() {
-            permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                self.isAdmin = result
-            }
-            permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                self.isWriter = result
+        .onAppear {
+            if !hasAppeared {
+                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
+                    self.isAdmin = result
+                }
+                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
+                    self.isWriter = result
+                }
+                hasAppeared = true
             }
         }
         

@@ -80,7 +80,7 @@ class sportEventManager: ObservableObject {
                 var pastReturnValue: [sportEvent] = []
                 var returnValue: [sportEvent] = [] {
                     didSet {
-                        if returnValue.count == snapshot.count {
+                        if returnValue.count == snapshot.documents.count {
                             for event in returnValue{
                                 if event.date < Date.yesterday{
                                     
@@ -173,7 +173,7 @@ class sportEventManager: ObservableObject {
                 var pastReturnValue: [sportEvent] = []
                 var returnValue: [sportEvent] = [] {
                     didSet {
-                        if returnValue.count == snapshot.count {
+                        if returnValue.count == snapshot.documents.count {
                             for event in returnValue{
                                 if event.date < Date.yesterday{
                                     

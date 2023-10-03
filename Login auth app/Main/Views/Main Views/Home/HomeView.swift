@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UserNotifications
+import Firebase
 
 
 
@@ -23,6 +24,9 @@ struct HomeView: View {
      @StateObject var newsDataManager = Newslist.shared
      @ObservedObject var upcomingeventsdataManager = upcomingEventsDataManager.shared
      @StateObject var loading = Loading()
+     
+     @State var homeImage: UIImage?
+     
 
     // permissions
      @ObservedObject var sportsnewsmanager = sportsNewslist.shared
@@ -372,6 +376,32 @@ struct HomeView: View {
                                            // this is where the view loads, should have been changed with the .onChange
                                            if !hasAppeared {
                                                 
+                                                // getting home image
+                                                
+                                                let db = Firestore.firestore()
+                                                let ref = db.collection("SpecialImages").document("HomeImage")
+                                                ref.getDocument { document, error in
+                                                     if let error = error {
+                                                          print("Error: \(error.localizedDescription)")
+                                                     } else {
+                                                          if let document = document, document.exists {
+                                                               if let filename = document.data()?["filename"] as? String {
+                                                                    
+                                                                    print("FILE NAME FOUND:")
+                                                                    print(filename)
+                                                                    imagemanager.getImage(fileName: filename) { image in
+                                                                         if let image = image {
+                                                                              homeImage = image
+                                                                         }
+                                                                    }
+                                                               }
+                                                          }
+                                                     }
+                                                }
+                                                
+                                                
+                                                // getting permissions
+                                                
                                                 permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
                                                      self.hasPermissionSpotlight = result
                                                 }
@@ -460,73 +490,142 @@ struct HomeView: View {
             let minY = proxy.frame(in: .named("SCROLL")).minY
             let progress = minY / (height * (minY > 0 ? 0.5 : 0.8))
             
-            Image("west")
-                .resizable()
-                .scaledToFill()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0 ))
-                .clipped()
-                .overlay(content: {
-                    ZStack(alignment: .bottom) {
-                        // MARK: - Gradient Overlay
-                        Rectangle()
-                            .fill(
-                                .linearGradient(colors: [
-                                    westblue.opacity(0 - progress),
-                                    westblue.opacity(0 - progress),
-                                    westblue.opacity(0.05 - progress),
-                                    westblue.opacity(0.1 - progress),
-                                    westblue.opacity(0.5 - progress),
-                                    westblue.opacity(1),
-                                ], startPoint: .top, endPoint: .bottom)
-                            )
-                        VStack(spacing: 0) {
-                            Text(viewdateFormatter.string(from: date)) // Text(date, style: .date)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.2)
-                                .font(.system(size: 50, weight: .semibold, design: .rounded))
-                                .foregroundColor(yellow)
-                                .padding(.horizontal)
-                                .fontWeight(.semibold)
-                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-                            
-                            //.font(.system(size: 45))
-                            //.fontWeight(.bold)
-                            //.multilineTextAlignment(.center)
-                            if userInfo.loginStatus == "google"{
-                                Text("Good \(getTime()), \(userInfo.firstName())!")
-                                    .lineLimit(2)
-                                    .minimumScaleFactor(0.2)
-                                    .multilineTextAlignment(.center)
-                                    .font(.system(size: 32, weight: .semibold, design: .rounded))
-                                    .fontWeight(.medium)
-                                    .padding(.horizontal)
-                                    .foregroundColor(westyellow)
-                                    .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+             if let homeImage = homeImage {
+                  Image(uiImage: homeImage)
+                      .resizable()
+                      .scaledToFill()
+                      .aspectRatio(contentMode: .fill)
+                      .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0 ))
+                      .clipped()
+                      .overlay(content: {
+                          ZStack(alignment: .bottom) {
+                              // MARK: - Gradient Overlay
+                              Rectangle()
+                                  .fill(
+                                      .linearGradient(colors: [
+                                          westblue.opacity(0 - progress),
+                                          westblue.opacity(0 - progress),
+                                          westblue.opacity(0.05 - progress),
+                                          westblue.opacity(0.1 - progress),
+                                          westblue.opacity(0.5 - progress),
+                                          westblue.opacity(1),
+                                      ], startPoint: .top, endPoint: .bottom)
+                                  )
+                              VStack(spacing: 0) {
+                                  Text(viewdateFormatter.string(from: date)) // Text(date, style: .date)
+                                      .lineLimit(1)
+                                      .minimumScaleFactor(0.2)
+                                      .font(.system(size: 50, weight: .semibold, design: .rounded))
+                                      .foregroundColor(yellow)
+                                      .padding(.horizontal)
+                                      .fontWeight(.semibold)
+                                      .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                                  
+                                  //.font(.system(size: 45))
+                                  //.fontWeight(.bold)
+                                  //.multilineTextAlignment(.center)
+                                  if userInfo.loginStatus == "google"{
+                                      Text("Good \(getTime()), \(userInfo.firstName())!")
+                                          .lineLimit(2)
+                                          .minimumScaleFactor(0.2)
+                                          .multilineTextAlignment(.center)
+                                          .font(.system(size: 32, weight: .semibold, design: .rounded))
+                                          .fontWeight(.medium)
+                                          .padding(.horizontal)
+                                          .foregroundColor(westyellow)
+                                          .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                                  }
+                                  else{
+                                      Text("Good \(getTime())!")
+                                          .lineLimit(2)
+                                          .minimumScaleFactor(0.2)
+                                          .multilineTextAlignment(.center)
+                                          .font(.system(size: 32, weight: .semibold, design: .rounded))
+                                          .fontWeight(.medium)
+                                          .fontWeight(.medium)
+                                          .padding(.horizontal)
+                                          .foregroundColor(westyellow)
+                                          .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                                  }
+                              }
+                              .opacity(1 + (progress > 0 ? -progress : progress))
+                              .padding(.bottom, 25)
+                              
+                              // Moving with Scroll View
+                              
+                              .offset(y: minY < 0 ? minY : 0 )
+                          }
+                      })                .offset(y: -minY)
+
+             } else {
+                  Image("west")
+                       .resizable()
+                       .scaledToFill()
+                       .aspectRatio(contentMode: .fill)
+                       .frame(width: size.width, height: size.height + (minY > 0 ? minY : 0 ))
+                       .clipped()
+                       .overlay(content: {
+                            ZStack(alignment: .bottom) {
+                                 // MARK: - Gradient Overlay
+                                 Rectangle()
+                                      .fill(
+                                        .linearGradient(colors: [
+                                             westblue.opacity(0 - progress),
+                                             westblue.opacity(0 - progress),
+                                             westblue.opacity(0.05 - progress),
+                                             westblue.opacity(0.1 - progress),
+                                             westblue.opacity(0.5 - progress),
+                                             westblue.opacity(1),
+                                        ], startPoint: .top, endPoint: .bottom)
+                                      )
+                                 VStack(spacing: 0) {
+                                      Text(viewdateFormatter.string(from: date)) // Text(date, style: .date)
+                                           .lineLimit(1)
+                                           .minimumScaleFactor(0.2)
+                                           .font(.system(size: 50, weight: .semibold, design: .rounded))
+                                           .foregroundColor(yellow)
+                                           .padding(.horizontal)
+                                           .fontWeight(.semibold)
+                                           .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                                      
+                                      //.font(.system(size: 45))
+                                      //.fontWeight(.bold)
+                                      //.multilineTextAlignment(.center)
+                                      if userInfo.loginStatus == "google"{
+                                           Text("Good \(getTime()), \(userInfo.firstName())!")
+                                                .lineLimit(2)
+                                                .minimumScaleFactor(0.2)
+                                                .multilineTextAlignment(.center)
+                                                .font(.system(size: 32, weight: .semibold, design: .rounded))
+                                                .fontWeight(.medium)
+                                                .padding(.horizontal)
+                                                .foregroundColor(westyellow)
+                                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                                      }
+                                      else{
+                                           Text("Good \(getTime())!")
+                                                .lineLimit(2)
+                                                .minimumScaleFactor(0.2)
+                                                .multilineTextAlignment(.center)
+                                                .font(.system(size: 32, weight: .semibold, design: .rounded))
+                                                .fontWeight(.medium)
+                                                .fontWeight(.medium)
+                                                .padding(.horizontal)
+                                                .foregroundColor(westyellow)
+                                                .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                                      }
+                                 }
+                                 .opacity(1 + (progress > 0 ? -progress : progress))
+                                 .padding(.bottom, 25)
+                                 
+                                 // Moving with Scroll View
+                                 
+                                 .offset(y: minY < 0 ? minY : 0 )
                             }
-                            else{
-                                Text("Good \(getTime())!")
-                                    .lineLimit(2)
-                                    .minimumScaleFactor(0.2)
-                                    .multilineTextAlignment(.center)
-                                    .font(.system(size: 32, weight: .semibold, design: .rounded))
-                                    .fontWeight(.medium)
-                                    .fontWeight(.medium)
-                                    .padding(.horizontal)
-                                    .foregroundColor(westyellow)
-                                    .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-                            }
-                        }
-                        .opacity(1 + (progress > 0 ? -progress : progress))
-                        .padding(.bottom, 25)
-                        
-                        // Moving with Scroll View
-                        
-                        .offset(y: minY < 0 ? minY : 0 )
-                    }
-                })
+                       })                .offset(y: -minY)
+
+             }
             
-                .offset(y: -minY)
             
             
              
