@@ -56,7 +56,7 @@ class sportsManager: ObservableObject {
             if let snapshot = snapshot {
                 var returnvalue: [sport] = [] {
                     didSet {
-                        if returnvalue.count == snapshot.count {
+                        if returnvalue.count == snapshot.documents.count {
                             DispatchQueue.main.async {
                                 if !self.sportsPath.isEmpty {
 //                                    self.sportsPath.removeLast(self.sportsPath.count)
@@ -219,7 +219,7 @@ class clubManager: ObservableObject {
             if let snapshot = snapshot {
                 var returnvalue: [club] = [] {
                     didSet {
-                        if returnvalue.count == snapshot.count {
+                        if returnvalue.count == snapshot.documents.count {
                             DispatchQueue.main.async {
                                 for temp in returnvalue {
                                     if let index = self.allclublist.firstIndex(where: { $0.documentID == temp.documentID }) {
