@@ -117,7 +117,7 @@
             <Locations>
                <Location
                   uuid = "8CD55939-CAAD-4BBD-A227-81A4CB11B2C3 - ab4750cb7cbdd9c"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
@@ -132,7 +132,7 @@
                </Location>
                <Location
                   uuid = "8CD55939-CAAD-4BBD-A227-81A4CB11B2C3 - 2d792e61b8a01411"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 (West_High.club) -&gt; Swift.Bool in closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
@@ -147,7 +147,7 @@
                </Location>
                <Location
                   uuid = "8CD55939-CAAD-4BBD-A227-81A4CB11B2C3 - ab4750cb7cbdd9c"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
@@ -212,7 +212,7 @@
             <Locations>
                <Location
                   uuid = "D248A856-0531-47DD-A6ED-5DEF143EB115 - 7cf85c46c20fe5bb"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
@@ -227,7 +227,7 @@
                </Location>
                <Location
                   uuid = "D248A856-0531-47DD-A6ED-5DEF143EB115 - ab4750cb7cbdd77"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 () -&gt; () in closure #4 () -&gt; SwiftUI.Button&lt;SwiftUI.Text&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.confirmationDialog&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.View&gt;(_: SwiftUI.LocalizedStringKey, isPresented: SwiftUI.Binding&lt;Swift.Bool&gt;, titleVisibility: SwiftUI.Visibility, actions: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0 in West_High.ClubsDetailView.body.getter : some"
@@ -241,6 +241,54 @@
                   offsetFromSymbolStart = "3056">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1A201507-6070-48CF-8FFF-03858107B406"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Admin/ClubNewsAdminView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6CAABDD7-CA2B-42D8-B665-75AA05BE6235"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Admin/ClubNewsAdminView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5BC67350-7350-4BE8-A461-0F4446B655AE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Admin/ClubNewsAdminView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

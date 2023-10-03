@@ -369,9 +369,9 @@
 		2270B2272A68E08900823E58 /* Sports */ = {
 			isa = PBXGroup;
 			children = (
+				2270B2462A68E63E00823E58 /* SportsView.swift */,
 				E8531F602A83D1D100FB64F5 /* SportsMainView.swift */,
 				2270B24A2A68E66200823E58 /* SportsHibabi.swift */,
-				2270B2462A68E63E00823E58 /* SportsView.swift */,
 				2232FEEB2AA46F5E0067AAB8 /* SportEventAdminView.swift */,
 				2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */,
 				2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */,
@@ -840,7 +840,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = N2R26K3XYA;
+				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -860,7 +860,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApp;
+				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -879,7 +879,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = N2R26K3XYA;
+				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
