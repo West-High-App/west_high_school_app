@@ -25,7 +25,7 @@ struct SportsNewsAdminView: View {
     @State private var achievementToDelete: sportNews?
     @State var isConfirmingApproveAchievement = false
     
-    @State var selectedArticle = sportNews(newstitle: "", newsimage: [], newsdescription: "", newsdate: "", author: "", isApproved: false, imagedata: [], documentID: "")
+    @State var selectedArticle = sportNews(newstitle: "", newsimage: [], newsdescription: "", newsdate: "", newsdateSwift: Date(), author: "", isApproved: false, imagedata: [], documentID: "")
     @State var selectedIndex = 0
     @State var presentingArticleSheet = false
     
@@ -406,6 +406,11 @@ struct sportNewsRowlView: View {
                     title: Text("You Are Publishing Changes"),
                     message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(newstitle)\nDescription: \(newsdescription)\nAuthor: \(author)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "MMMM d, yyyy"
+                        guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)") else {
+                            return
+                        }
                         
                         var imagedata: [UIImage] = []
                         
@@ -428,7 +433,7 @@ struct sportNewsRowlView: View {
                             check = true
                         }
                         
-                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", author: author, isApproved: check, imagedata: imagedata, documentID: "NAN")
+                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: check, imagedata: imagedata, documentID: "NAN")
                         dataManager.createSportNews(sportNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating sport news: \(error.localizedDescription)")

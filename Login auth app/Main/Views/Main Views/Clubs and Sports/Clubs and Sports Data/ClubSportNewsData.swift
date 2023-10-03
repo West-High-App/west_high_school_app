@@ -14,6 +14,7 @@ struct sportNews: Identifiable, Equatable {
     var newsimage: [String]
     var newsdescription: String
     var newsdate: String
+    var newsdateSwift: Date
     var author: String
     var isApproved: Bool
     var imagedata: [UIImage] // , imagedata: []
@@ -36,25 +37,64 @@ extension Array<sportNews> {
 class sportsNewslist: ObservableObject {
     static let shared = sportsNewslist()
     
-    @Published var allsportsnewslistUnsorted: [sportNews] = [sportNews(
+    @Published private var allsportsnewslistUnsorted: [sportNews] = [sportNews(
         newstitle: "Varsity Football Team Wins Regional Championship",
         newsimage: ["football"],
         newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
-        newsdate: "Nov 15, 2022",
+        newsdate: "Nov 15, 2022", newsdateSwift: Date(),
         author: "Emily Thompson", isApproved: false, imagedata: [], documentID: "NAN")]
     
     var allsportsnewslist: [sportNews] {
         allsportsnewslistUnsorted.sortedByDate()
     }
+    private let fetchLimit = 4
+    private var lastDocument: DocumentSnapshot?
+    @Published private(set) var allDocsLoaded = false
+    
     init() {
-        getSportsNews()
+        connectSportsNews()
     }
     
-    func getSportsNews() {
+    private func handleFirstore(_ templist: [sportNews]) {
+        DispatchQueue.main.async {
+            for temp in templist {
+                if let index = self.allsportsnewslistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                    self.allsportsnewslistUnsorted[index].imagedata = temp.imagedata
+                    self.allsportsnewslistUnsorted[index].newsdate = temp.newsdate
+                    self.allsportsnewslistUnsorted[index].newsdescription = temp.newsdescription
+                    self.allsportsnewslistUnsorted[index].newstitle = temp.newstitle
+                    self.allsportsnewslistUnsorted[index].author = temp.author
+                    self.allsportsnewslistUnsorted[index].newsimage = temp.newsimage
+                    self.allsportsnewslistUnsorted[index].isApproved = temp.isApproved
+                } else {
+                    self.allsportsnewslistUnsorted.append(temp)
+                }
+                if temp == templist.last {
+                    if let docId = templist.last?.documentID, let endIndex = self.allsportsnewslistUnsorted.firstIndex(where: { $0.documentID == docId }) {
+                        let startIndex = endIndex-templist.count
+                        
+                        for (index, element) in self.allsportsnewslistUnsorted.enumerated() {
+                            if startIndex < index, index <= endIndex, !templist.contains(where: { $0.documentID == element.documentID }) {
+                                self.allsportsnewslistUnsorted.removeAll(where: { $0.documentID == element.documentID }) // Remove if not on server
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getMoreSportsNews() {
+        guard let lastDocument else { return }
+        
         let db = Firestore.firestore()
         let collection = db.collection("SportsNews")
         
-        collection.addSnapshotListener { snapshot, error in
+        collection
+            .order(by: "newsdateSwift", descending: true)
+            .limit(to: self.fetchLimit)
+            .start(afterDocument: lastDocument)
+            .getDocuments { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -62,38 +102,20 @@ class sportsNewslist: ObservableObject {
             if let snapshot = snapshot {
                 var templist: [sportNews] = [] {
                     didSet {
-                        if templist.count == snapshot.count {
-                            DispatchQueue.main.async {
-                                for temp in templist {
-                                    if let index = self.allsportsnewslistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
-                                        self.allsportsnewslistUnsorted[index].imagedata = temp.imagedata
-                                        self.allsportsnewslistUnsorted[index].newsdate = temp.newsdate
-                                        self.allsportsnewslistUnsorted[index].newsdescription = temp.newsdescription
-                                        self.allsportsnewslistUnsorted[index].newstitle = temp.newstitle
-                                        self.allsportsnewslistUnsorted[index].author = temp.author
-                                        self.allsportsnewslistUnsorted[index].newsimage = temp.newsimage
-                                        self.allsportsnewslistUnsorted[index].isApproved = temp.isApproved
-                                    } else {
-                                        self.allsportsnewslistUnsorted.append(temp)
-                                    }
-                                    if temp == templist.last {
-                                        for sport in self.allsportsnewslistUnsorted {
-                                            if !templist.contains(where: { $0.documentID == sport.documentID }) {
-                                                self.allsportsnewslistUnsorted.removeAll(where: { $0.documentID == sport.documentID }) // Remove if not on server
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                        if templist.count == snapshot.documents.count {
+                            self.handleFirstore(templist)
                         }
                     }
                 }
+                
+                self.lastDocument = snapshot.documents.last
                 for document in snapshot.documents {
                     let data = document.data()
                     let newstitle = data["newstitle"] as? String ?? ""
                     let newsimage = data["newsimage"] as? [String] ?? []
                     let newsdescription = data["newsdescription"] as? String ?? ""
                     let newsdate = data["newsdate"] as? String ?? ""
+                    let newsdateSwift = (data["newsdateSwift"] as? Timestamp)?.dateValue() ?? Date()
                     let author = data["author"] as? String ?? ""
                     let isApproved = data["isApproved"] as? Bool ?? false
                     let documentID = document.documentID
@@ -106,7 +128,59 @@ class sportsNewslist: ObservableObject {
                                 print(imagedata)
                                 print("1^")
                             }
-                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, isApproved: isApproved, imagedata: imagedata, documentID: documentID)
+                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, imagedata: imagedata, documentID: documentID)
+                            templist.append(sportnews)
+                        }
+                    }
+                }
+                if snapshot.count < self.fetchLimit {
+                    self.allDocsLoaded = true
+                }
+            }
+        }
+    }
+    
+    func connectSportsNews() {
+        let db = Firestore.firestore()
+        let collection = db.collection("SportsNews")
+        
+        collection
+            .order(by: "newsdateSwift", descending: true)
+            .limit(to: self.fetchLimit)
+            .addSnapshotListener { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            }
+            
+            if let snapshot = snapshot {
+                var templist: [sportNews] = [] {
+                    didSet {
+                        if templist.count == snapshot.documents.count {
+                            self.handleFirstore(templist)
+                        }
+                    }
+                }
+                self.lastDocument = snapshot.documents.last
+                for document in snapshot.documents {
+                    let data = document.data()
+                    let newstitle = data["newstitle"] as? String ?? ""
+                    let newsimage = data["newsimage"] as? [String] ?? []
+                    let newsdescription = data["newsdescription"] as? String ?? ""
+                    let newsdate = data["newsdate"] as? String ?? ""
+                    let newsdateSwift = (data["newsdateSwift"] as? Timestamp)?.dateValue() ?? Date()
+                    let author = data["author"] as? String ?? ""
+                    let isApproved = data["isApproved"] as? Bool ?? false
+                    let documentID = document.documentID
+                    var imagedata: [UIImage] = []
+                    for file in newsimage {
+                        imageManager().getImage(fileName: file) { image in
+                            if let image = image {
+                                imagedata = [image]
+                                print("SPORT NEWS IMAGE FOUND")
+                                print(imagedata)
+                                print("1^")
+                            }
+                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, imagedata: imagedata, documentID: documentID)
                             templist.append(sportnews)
                         }
                     }
@@ -123,6 +197,7 @@ class sportsNewslist: ObservableObject {
             "newsimage": sportNews.newsimage,
             "newsdescription": sportNews.newsdescription,
             "newsdate": sportNews.newsdate,
+            "newsdateSwift": sportNews.newsdateSwift,
             "author": sportNews.author,
             "isApproved": sportNews.isApproved
         ]) { error in

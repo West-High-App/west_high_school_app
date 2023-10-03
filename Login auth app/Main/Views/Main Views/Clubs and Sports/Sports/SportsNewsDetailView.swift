@@ -99,7 +99,7 @@ struct SportsNewsDetailView_Previews: PreviewProvider {
             newstitle: "Varsity Football Team Wins Regional Championship",
             newsimage: ["football"],
             newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
-            newsdate: "Nov 15, 2022",
+            newsdate: "Nov 15, 2022", newsdateSwift: Date(),
             author: "Emily Thompson", isApproved: false, imagedata: [], documentID: "NAN"))
     }
 }
