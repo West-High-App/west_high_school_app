@@ -238,7 +238,7 @@ struct ClubsHibabi: View {
                                     if !clubNewsManager.allclubsnewslist.map({ $0.documentID }).contains("NAN") && !clubNewsManager.allDocsLoaded {
                                         ProgressView()
                                             .onAppear {
-                                                clubNewsManager.getMoreClubNews()
+                                                clubNewsManager.getMoreClubNews(getPending: false)
                                             }
                                     }
                                 }

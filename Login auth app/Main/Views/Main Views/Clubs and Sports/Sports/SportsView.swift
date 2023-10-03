@@ -286,7 +286,7 @@ struct SportsHibabi: View {
                                 if !sportsNewsManager.allsportsnewslist.map({ $0.documentID }).contains("NAN") && !sportsNewsManager.allDocsLoaded {
                                     ProgressView()
                                         .onAppear {
-                                            sportsNewsManager.getMoreSportsNews()
+                                            sportsNewsManager.getMoreSportsNews(getPending: false)
                                         }
                                 }
                             }.searchable(text: $searchText)
