@@ -434,6 +434,23 @@ class clubsNewslist: ObservableObject{
         }
     }
     
+    func updateClubNews(clubNews: clubNews, completion: @escaping (Error?) -> Void) {
+        print("Updating new clubs news...")
+        let db = Firestore.firestore()
+        db.collection("ClubNews").document(clubNews.documentID).setData([
+            "newstitle": clubNews.newstitle,
+            "newsimage": clubNews.newsimage,
+            "newsdescription": clubNews.newsdescription,
+            "newsdate": clubNews.newsdate,
+            "newsdateSwift": clubNews.newsdateSwift,
+            "isApproved": clubNews.isApproved,
+            "author": clubNews.author
+        ]) { error in
+            completion(error)
+        }
+        print("Club news created with ID: \(clubNews.documentID)")
+    }
+    
     func createClubNews(clubNews: clubNews, completion: @escaping (Error?) -> Void) {
         print("Creating new clubs news...")
         let db = Firestore.firestore()
@@ -442,6 +459,7 @@ class clubsNewslist: ObservableObject{
             "newsimage": clubNews.newsimage,
             "newsdescription": clubNews.newsdescription,
             "newsdate": clubNews.newsdate,
+            "newsdateSwift": clubNews.newsdateSwift,
             "isApproved": clubNews.isApproved,
             "author": clubNews.author
         ]) { error in
