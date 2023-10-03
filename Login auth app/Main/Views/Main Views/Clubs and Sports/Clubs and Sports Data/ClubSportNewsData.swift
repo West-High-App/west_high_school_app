@@ -47,16 +47,19 @@ class sportsNewslist: ObservableObject {
     var allsportsnewslist: [sportNews] {
         allsportsnewslistUnsorted.sortedByDate()
     }
-    private let fetchLimit = 4
+    private let fetchLimit = 30
     private var lastDocument: DocumentSnapshot?
     @Published private(set) var allDocsLoaded = false
+    @Published private(set) var allPendingDocsLoaded = false
     
     init() {
-        connectSportsNews()
+        connectSportsNews(getPending: true) // connect pending
+        connectSportsNews(getPending: false) // connect approved
     }
     
     private func handleFirstore(_ templist: [sportNews]) {
         DispatchQueue.main.async {
+            self.allsportsnewslistUnsorted.removeAll(where: { $0.documentID == "NAN" })
             for temp in templist {
                 if let index = self.allsportsnewslistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
                     self.allsportsnewslistUnsorted[index].imagedata = temp.imagedata
@@ -84,7 +87,7 @@ class sportsNewslist: ObservableObject {
         }
     }
     
-    func getMoreSportsNews() {
+    func getMoreSportsNews(getPending: Bool) {
         guard let lastDocument else { return }
         
         let db = Firestore.firestore()
@@ -92,6 +95,7 @@ class sportsNewslist: ObservableObject {
         
         collection
             .order(by: "newsdateSwift", descending: true)
+            .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
             .limit(to: self.fetchLimit)
             .start(afterDocument: lastDocument)
             .getDocuments { snapshot, error in
@@ -133,19 +137,24 @@ class sportsNewslist: ObservableObject {
                         }
                     }
                 }
-                if snapshot.count < self.fetchLimit {
-                    self.allDocsLoaded = true
+                if snapshot.documents.count < self.fetchLimit {
+                    if getPending {
+                        self.allPendingDocsLoaded = true
+                    } else {
+                        self.allDocsLoaded = true
+                    }
                 }
             }
         }
     }
     
-    func connectSportsNews() {
+    func connectSportsNews(getPending: Bool) {
         let db = Firestore.firestore()
         let collection = db.collection("SportsNews")
         
         collection
             .order(by: "newsdateSwift", descending: true)
+            .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
             .limit(to: self.fetchLimit)
             .addSnapshotListener { snapshot, error in
             if let error = error {
@@ -160,7 +169,9 @@ class sportsNewslist: ObservableObject {
                         }
                     }
                 }
-                self.lastDocument = snapshot.documents.last
+                if self.lastDocument == nil {
+                    self.lastDocument = snapshot.documents.last
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let newstitle = data["newstitle"] as? String ?? ""
@@ -187,6 +198,23 @@ class sportsNewslist: ObservableObject {
                 }
             }
         }
+    }
+    
+    func updateSportNews(sportNews: sportNews, completion: @escaping (Error?) -> Void) {
+        print("Creating new sports news...")
+        let db = Firestore.firestore()
+        db.collection("SportsNews").document(sportNews.documentID).setData([
+            "newstitle": sportNews.newstitle,
+            "newsimage": sportNews.newsimage,
+            "newsdescription": sportNews.newsdescription,
+            "newsdate": sportNews.newsdate,
+            "newsdateSwift": sportNews.newsdateSwift,
+            "author": sportNews.author,
+            "isApproved": sportNews.isApproved
+        ]) { error in
+            completion(error)
+        }
+        print("Sport news created with ID: \(sportNews.documentID)")
     }
     
     func createSportNews(sportNews: sportNews, completion: @escaping (Error?) -> Void) {
@@ -258,11 +286,13 @@ class clubsNewslist: ObservableObject{
     private let fetchLimit = 30
     private var lastDocument: DocumentSnapshot?
     @Published private(set) var allDocsLoaded = false
+    @Published private(set) var allPendingDocsLoaded = false
     
     static let shared = clubsNewslist()
     
     init() {
-        connectClubNews()
+        connectClubNews(getPending: false)
+        connectClubNews(getPending: true)
     }
     
     private func handleFirestore(_ templist: [clubNews]) {
@@ -295,7 +325,7 @@ class clubsNewslist: ObservableObject{
         }
     }
     
-    func getMoreClubNews() {
+    func getMoreClubNews(getPending: Bool) {
         guard let lastDocument else { return }
         
         let db = Firestore.firestore()
@@ -303,6 +333,7 @@ class clubsNewslist: ObservableObject{
         
         collection
             .order(by: "newsdateSwift", descending: true)
+            .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
             .limit(to: self.fetchLimit)
             .start(afterDocument: lastDocument)
             .getDocuments { snapshot, error in
@@ -341,19 +372,24 @@ class clubsNewslist: ObservableObject{
                         }
                     }
                 }
-                if snapshot.count < self.fetchLimit {
-                    self.allDocsLoaded = true
+                if snapshot.documents.count < self.fetchLimit {
+                    if getPending {
+                        self.allPendingDocsLoaded = true
+                    } else {
+                        self.allDocsLoaded = true
+                    }
                 }
             }
         }
     }
     
-    func connectClubNews() {
+    func connectClubNews(getPending: Bool) {
         let db = Firestore.firestore()
         let collection = db.collection("ClubNews")
         
         collection
             .order(by: "newsdateSwift", descending: true)
+            .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
             .limit(to: self.fetchLimit)
             .addSnapshotListener { snapshot, error in
             if let error = error {
@@ -369,7 +405,10 @@ class clubsNewslist: ObservableObject{
                     }
                 }
                 
-                self.lastDocument = snapshot.documents.last
+                
+                if self.lastDocument == nil {
+                    self.lastDocument = snapshot.documents.last
+                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let newstitle = data["newstitle"] as? String ?? ""

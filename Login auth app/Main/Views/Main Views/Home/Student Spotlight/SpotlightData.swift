@@ -148,7 +148,10 @@ class studentachievementlist: ObservableObject{
             }
             
             if let snapshot = snapshot {
-                self.lastDocument = snapshot.documents.last
+                
+                if self.lastDocument == nil {
+                    self.lastDocument = snapshot.documents.last
+                }
                 let templist: [studentachievement] = snapshot.documents.map { document in
                     let data = document.data()
                     let achievementtitle = data["achievementtitle"] as? String ?? ""
