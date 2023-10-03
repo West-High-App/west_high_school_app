@@ -247,13 +247,16 @@ struct SpotlightAdminView: View {
                 }
                 
             }
-            
+            Spacer()
             
         }
         .onAppear {
             if !dataManager.allstudentachievementlist.isEmpty {
-                selectedArticle = dataManager.allstudentachievementlist.first {$0.isApproved == false}!
-                selectedArticle = dataManager.allstudentachievementlist.last {$0.isApproved == false}!
+                guard let selectedArticle = dataManager.allstudentachievementlist.first(where: { $0.isApproved == false })
+                else {
+                    return
+                }
+                self.selectedArticle = selectedArticle
             }
                 permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
                     self.isAdmin = result
