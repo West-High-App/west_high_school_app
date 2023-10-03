@@ -10,9 +10,10 @@ class event: NSObject, Identifiable {
     var month: String
     var day: String
     var year: String
-    var date: Date = Date()
+    var publishedDate: Date = Date()
+    var date: Date
 
-    required init(documentID: String, eventname: String, time: String, month: String, day: String, year: String, publisheddate: String) {
+    required init(documentID: String, eventname: String, time: String, month: String, day: String, year: String, publisheddate: String, date: Date) {
         self.documentID = documentID
         self.eventname = eventname
         self.time = time
@@ -24,8 +25,9 @@ class event: NSObject, Identifiable {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM d, yyyy"
         if let date = dateFormatter.date(from: publisheddate) {
-            self.date = date
+            self.publishedDate = date
         }
+        self.date = date
     }
 
 }
@@ -53,7 +55,7 @@ extension Date {
 extension Array<event> {
     func sortedByDate() -> Self {
         self.sorted(by: {
-            $0.date.compare($1.date) == .orderedAscending
+            $0.publishedDate.compare($1.publishedDate) == .orderedAscending
         })
     }
 }
@@ -66,6 +68,10 @@ class upcomingEventsDataManager: ObservableObject {
         allupcomingeventslistUnsorted.sortedByDate()
     }
     @Published var alleventslist: [event] = []
+    private let fetchLimit = 20
+    private var lastDocument: DocumentSnapshot?
+    @Published private(set) var allDocsLoaded = false
+    
     var firstcurrentevent: event? {
         if let firstEvent = self.allupcomingeventslist.first {
             return firstEvent
@@ -92,62 +98,107 @@ class upcomingEventsDataManager: ObservableObject {
     var editingEvent: event?
 
     init() {
-        getUpcomingEvents() // initialising the updated data to get at beginning
+        connectUpcomingEvents() // initialising the updated data to get at beginning
     }
-
-    func getUpcomingEvents() {
+    
+    private func handleFirestore(_ templist: [event]) {
+        for temp in templist {
+            if let index = self.allupcomingeventslistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                self.allupcomingeventslistUnsorted[index].eventname = temp.eventname
+                self.allupcomingeventslistUnsorted[index].publishedDate = temp.publishedDate
+                self.allupcomingeventslistUnsorted[index].day = temp.day
+                self.allupcomingeventslistUnsorted[index].month = temp.month
+                self.allupcomingeventslistUnsorted[index].year = temp.year
+                self.allupcomingeventslistUnsorted[index].time = temp.time
+            } else {
+                self.allupcomingeventslistUnsorted.append(temp)
+            }
+            if temp == templist.last {
+                for (index, event) in self.allupcomingeventslistUnsorted.enumerated() {
+                    if let docId = self.lastDocument?.documentID, let endIndex = self.allupcomingeventslistUnsorted.firstIndex(where: { $0.documentID == docId }) {
+                        let startIndex = endIndex-templist.count
+                        if startIndex < index, index <= endIndex, !templist.contains(where: { $0.documentID == event.documentID }) {
+                            self.allupcomingeventslistUnsorted.removeAll(where: { $0.documentID == event.documentID }) // Remove if not on server
+                        }
+                    }
+                    if event.publishedDate < Date.yesterday {
+                        self.deleteEvent(event: event) { error in // Remove if in the past
+                            if let error = error {
+                                print("Error deleting event: \(error.localizedDescription)")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    func getMoreUpcomingEvents() {
+        guard let lastDocument else { return }
+        
         let db = Firestore.firestore()
         let ref = db.collection("UpcomingEvents") // finding collection
-        ref.addSnapshotListener { snapshot, error in
+        ref
+            .order(by: "date")
+            .start(afterDocument: lastDocument)
+            .limit(to: self.fetchLimit)
+            .getDocuments { snapshot, error in
             guard error == nil else {
                 print("Error: \(error!.localizedDescription)") // if this happens everything is
                 return
             }
             if let snapshot = snapshot {
-                var templist: [event] = [] {
-                    didSet {
-                        if templist.count == snapshot.count {
-                            for temp in templist {
-                                if let index = self.allupcomingeventslistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
-                                    self.allupcomingeventslistUnsorted[index].eventname = temp.eventname
-                                    self.allupcomingeventslistUnsorted[index].date = temp.date
-                                    self.allupcomingeventslistUnsorted[index].day = temp.day
-                                    self.allupcomingeventslistUnsorted[index].month = temp.month
-                                    self.allupcomingeventslistUnsorted[index].year = temp.year
-                                    self.allupcomingeventslistUnsorted[index].time = temp.time
-                                } else {
-                                    self.allupcomingeventslistUnsorted.append(temp)
-                                }
-                                if temp == templist.last {
-                                    for event in self.allupcomingeventslistUnsorted {
-                                        if !templist.contains(where: { $0.documentID == event.documentID }) {
-                                            self.allupcomingeventslistUnsorted.removeAll(where: { $0.documentID == event.documentID }) // Remove if not on server
-                                        }
-                                        if event.date < Date.yesterday {
-                                            self.deleteEvent(event: event) { error in // Remove if in the past
-                                                if let error = error {
-                                                    print("Error deleting event: \(error.localizedDescription)")
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                for document in snapshot.documents {
+                self.lastDocument = snapshot.documents.last
+                let templist = snapshot.documents.map { document in
                     let data = document.data()
                     let eventname = data["eventname"] as? String ?? ""
                     let time = data["time"] as? String ?? ""
                     let month = data["month"] as? String ?? ""
                     let day = data["day"] as? String ?? ""
                     let year = data["year"] as? String ?? ""
+                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let documentID = document.documentID
-                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
+                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", date: date)
                     
-                    templist.append(event) // adding event with info from firebase
+                   return event // adding event with info from firebase
                 }
+                self.handleFirestore(templist)
+                if snapshot.count < self.fetchLimit {
+                    self.allDocsLoaded = true
+                }
+
+            }
+        }
+    }
+
+    func connectUpcomingEvents() {
+        let db = Firestore.firestore()
+        let ref = db.collection("UpcomingEvents") // finding collection
+        ref
+            .order(by: "date", descending: false)
+            .limit(to: self.fetchLimit)
+            .addSnapshotListener { snapshot, error in
+            guard error == nil else {
+                print("Error: \(error!.localizedDescription)") // if this happens everything is
+                return
+            }
+            if let snapshot = snapshot {
+                
+                self.lastDocument = snapshot.documents.last
+                
+                let templist = snapshot.documents.map { document in
+                    let data = document.data()
+                    let eventname = data["eventname"] as? String ?? ""
+                    let time = data["time"] as? String ?? ""
+                    let month = data["month"] as? String ?? ""
+                    let day = data["day"] as? String ?? ""
+                    let year = data["year"] as? String ?? ""
+                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
+                    let documentID = document.documentID
+                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", date: date)
+                    
+                   return event // adding event with info from firebase
+                }
+                self.handleFirestore(templist)
 
             }
         }
@@ -161,8 +212,8 @@ class upcomingEventsDataManager: ObservableObject {
             "month": event.month,
             "day": event.day,
             "year": event.year,
-            "publisheddate": event.date
-
+            "publisheddate": event.publishedDate,
+            "date": event.date
         ]) { error in
             completion(error)
         }

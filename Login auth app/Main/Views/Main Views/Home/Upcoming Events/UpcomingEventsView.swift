@@ -19,7 +19,7 @@ struct UpcomingEventsView: View {
     
     var body: some View {
         ScrollView {
-            VStack {
+            LazyVStack {
                 HStack {
                     Text("Upcoming Events")
                         .foregroundColor(Color.black)
@@ -36,7 +36,7 @@ struct UpcomingEventsView: View {
                         .padding(.leading)
                     Spacer()
                 }
-                ForEach(upcomingeventslist, id: \.id){event in
+                ForEach(upcomingeventslist, id: \.id) {event in
                     HStack {
                         VStack {
                             Text(event.month)
@@ -44,7 +44,7 @@ struct UpcomingEventsView: View {
                                 .foregroundColor(.red)
                             Text(event.day)
                                 .font(.system(size: 26, weight: .regular, design: .rounded))
-
+                            
                         }
                         .frame(width:50,height:50)
                         Divider()
@@ -67,8 +67,23 @@ struct UpcomingEventsView: View {
                         .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)
                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                     
-                }.padding(.horizontal)
-                    .padding(.vertical, 5)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+                
+                if !upcomingeventsdataManager.allupcomingeventslist.isEmpty && !upcomingeventsdataManager.allDocsLoaded {
+                    ProgressView()
+                        .padding()
+                        .background(Rectangle()
+                            .cornerRadius(9.0)
+                            .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)
+                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                        .padding(.horizontal)
+                        .padding(.vertical, 5)
+                        .onAppear {
+                            upcomingeventsdataManager.getMoreUpcomingEvents()
+                        }
+                }
             }
         }
     }

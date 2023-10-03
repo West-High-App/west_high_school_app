@@ -45,55 +45,65 @@ class studentachievementlist: ObservableObject{
 
     @StateObject var imagemanager = imageManager()
     @ObservedObject var loading = Loading()
+    private let fetchLimit = 4
+    private var lastDocument: DocumentSnapshot?
+    @Published private(set) var allDocsLoaded = false
     
     init() {
-        getAchievements()
+        connectAchievements()
     }
     
-    func getAchievements() {
+    private func handleFirestore(_ templist: [studentachievement]) {
+        DispatchQueue.main.async {
+            for temp in templist {
+                if let index = self.allstudentachievementlistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                    self.allstudentachievementlistUnsorted[index].achievementdescription = temp.achievementdescription
+                    self.allstudentachievementlistUnsorted[index].achievementtitle = temp.achievementtitle
+                    self.allstudentachievementlistUnsorted[index].articleauthor = temp.articleauthor
+                    self.allstudentachievementlistUnsorted[index].images = temp.images
+                    self.allstudentachievementlistUnsorted[index].publisheddate = temp.publisheddate
+                    self.allstudentachievementlistUnsorted[index].isApproved = temp.isApproved
+                    self.allstudentachievementlistUnsorted[index].imagedata = temp.imagedata
+                } else {
+                    self.allstudentachievementlistUnsorted.append(temp)
+                }
+                if temp == templist.last {
+                    for (index, studentachievement) in self.allstudentachievementlistUnsorted.enumerated() {
+                        if let docId = self.lastDocument?.documentID, let endIndex = self.allstudentachievementlistUnsorted.firstIndex(where: { $0.documentID == docId }) {
+                            let startIndex = endIndex-templist.count
+                            if startIndex <= index, index <= endIndex, !templist.contains(where: { $0.documentID == studentachievement.documentID }) {
+                                self.allstudentachievementlistUnsorted.removeAll(where: { $0.documentID == studentachievement.documentID }) // Remove if not on server
+                            }
+                        }
+                    }
+                }
+            }
+            self.loading.hasLoaded = true
+            print(self.allstudentachievementlistUnsorted.count)
+            self.hasLoaded = true
+        }
+    }
+    
+    func getMoreAchievements() {
+        guard let lastDocument else { return }
+        
         print("LOADING ACHIEVMENTS LIST")
         let db = Firestore.firestore()
         let collection = db.collection("StudentAchievements")
         
-        collection.addSnapshotListener { snapshot, error in
+        collection
+            .order(by: "publisheddate", descending: true)
+            .limit(to: fetchLimit)
+            .start(afterDocument: lastDocument)
+            .getDocuments { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 return
             }
             
             if let snapshot = snapshot {
-                var templist: [studentachievement] = [] {
-                    didSet {
-                        if templist.count == snapshot.count {
-                            DispatchQueue.main.async {
-                                for temp in templist {
-                                    if let index = self.allstudentachievementlistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
-                                        self.allstudentachievementlistUnsorted[index].achievementdescription = temp.achievementdescription
-                                        self.allstudentachievementlistUnsorted[index].achievementtitle = temp.achievementtitle
-                                        self.allstudentachievementlistUnsorted[index].articleauthor = temp.articleauthor
-                                        self.allstudentachievementlistUnsorted[index].images = temp.images
-                                        self.allstudentachievementlistUnsorted[index].publisheddate = temp.publisheddate
-                                        self.allstudentachievementlistUnsorted[index].isApproved = temp.isApproved
-                                        self.allstudentachievementlistUnsorted[index].imagedata = temp.imagedata
-                                    } else {
-                                        self.allstudentachievementlistUnsorted.append(temp)
-                                    }
-                                    if temp == templist.last {
-                                        for studentachievement in self.allstudentachievementlistUnsorted {
-                                            if !templist.contains(where: { $0.documentID == studentachievement.documentID }) {
-                                                self.allstudentachievementlistUnsorted.removeAll(where: { $0.documentID == studentachievement.documentID }) // Remove if not on server
-                                            }
-                                        }
-                                    }
-                                }
-                                self.loading.hasLoaded = true
-                                print(self.allstudentachievementlistUnsorted.count)
-                                self.hasLoaded = true
-                            }
-                        }
-                    }
-                }
-                for document in snapshot.documents {
+                self.lastDocument = snapshot.documents.last
+                let templist: [studentachievement] = snapshot.documents.map { document in
                     let data = document.data()
                     let achievementtitle = data["achievementtitle"] as? String ?? ""
                     let achievementdescription = data["achievementdescription"] as? String ?? ""
@@ -113,8 +123,55 @@ class studentachievementlist: ObservableObject{
                     }
                     
                     let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: imagedata)
-                    templist.append(achievement)
+                    return achievement
                 }
+                self.handleFirestore(templist)
+                if snapshot.count < self.fetchLimit {
+                    self.allDocsLoaded = true
+                }
+            }
+        }
+    }
+    
+    func connectAchievements() {
+        print("LOADING ACHIEVMENTS LIST")
+        let db = Firestore.firestore()
+        let collection = db.collection("StudentAchievements")
+        
+        collection
+            .order(by: "publisheddate", descending: true)
+            .limit(to: fetchLimit)
+            .addSnapshotListener { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let snapshot = snapshot {
+                self.lastDocument = snapshot.documents.last
+                let templist: [studentachievement] = snapshot.documents.map { document in
+                    let data = document.data()
+                    let achievementtitle = data["achievementtitle"] as? String ?? ""
+                    let achievementdescription = data["achievementdescription"] as? String ?? ""
+                    let articleauthor = data["articleauthor"] as? String ?? ""
+                    let publisheddate = data["publisheddate"] as? String ?? ""
+                    let images = data["images"] as? [String] ?? []
+                    let isApproved = data["isApproved"] as? Bool ?? false
+                    let documentID = document.documentID
+                    
+                    var imagedata: [UIImage] = []
+                    for file in images {
+                        let _ = imageManager().getImage(fileName: file) { image in
+                            if let image = image {
+                                imagedata.append(image)
+                            }
+                        }
+                    }
+                    
+                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: imagedata)
+                    return achievement
+                }
+                self.handleFirestore(templist)
             }
         }
     }

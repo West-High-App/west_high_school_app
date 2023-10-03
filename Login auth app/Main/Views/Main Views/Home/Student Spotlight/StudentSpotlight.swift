@@ -15,7 +15,9 @@ struct StudentSpotlight: View {
     @EnvironmentObject var userInfo: UserInfo
     @ObservedObject var spotlightManager = studentachievementlist.shared
     @StateObject var imagemanager = imageManager()
-    @State var spotlightarticles: [studentachievement]
+    var spotlightarticles: [studentachievement] {
+        spotlightManager.allstudentachievementlist
+    }
     @State var hasAppeared = false
     @State var newstitlearray: [studentachievement] = []
     @State var isLoading = false
@@ -37,7 +39,7 @@ struct StudentSpotlight: View {
 
             ZStack {
                 ScrollView {
-                    VStack {
+                    LazyVStack {
                         HStack {
                             Text("Student Spotlight")
                                 .foregroundColor(Color.black)
@@ -67,6 +69,13 @@ struct StudentSpotlight: View {
                         }
                         }
                             .padding(.horizontal)
+                        if !spotlightManager.allstudentachievementlist.isEmpty && !spotlightManager.allDocsLoaded {
+                            ProgressView()
+                                .padding()
+                                .onAppear {
+                                    spotlightManager.getMoreAchievements()
+                                }
+                        }
                     }
                 }
                 .onAppear {
@@ -85,7 +94,6 @@ struct StudentSpotlight: View {
                     if  false { // !hasAppeared
                         print("LOADING....")
                         
-                        spotlightarticles = spotlightManager.allstudentachievementlist
                         var returnlist: [studentachievement] = []
                         
                         let dispatchGroup = DispatchGroup() // Create a Dispatch Group
@@ -105,8 +113,6 @@ struct StudentSpotlight: View {
                             
                             dispatchGroup.notify(queue: .main) { // This block will be executed after all async calls are done
                                 returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
-                                
-                                spotlightarticles = returnlist
                                 
                                 isLoading = false
                                 print("DONE LOADING")
@@ -206,6 +212,6 @@ class ScreenSize {
 
 struct StudentSpotlight_Previews: PreviewProvider {
     static var previews: some View {
-        StudentSpotlight(spotlightarticles: [])
+        StudentSpotlight()
     }
 }

@@ -276,13 +276,19 @@ struct SportsHibabi: View {
                         
                         // MARK: sports news
                         else if selected == 3 {
-                            
-                            List(filteredSportsNews, id: \.id) { news in
-                                if news.isApproved {
-                                    sportnewscell(feat: news)
-                                        .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                            List {
+                                ForEach(filteredSportsNews, id: \.id) { news in
+                                    if news.isApproved {
+                                        sportnewscell(feat: news)
+                                            .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                                    }
                                 }
-                                
+                                if !sportsNewsManager.allsportsnewslist.map({ $0.documentID }).contains("NAN") && !sportsNewsManager.allDocsLoaded {
+                                    ProgressView()
+                                        .onAppear {
+                                            sportsNewsManager.getMoreSportsNews()
+                                        }
+                                }
                             }.searchable(text: $searchText)
                         }
                     }
