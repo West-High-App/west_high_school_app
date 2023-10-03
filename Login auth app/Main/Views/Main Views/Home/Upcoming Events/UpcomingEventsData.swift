@@ -202,6 +202,9 @@ class upcomingEventsDataManager: ObservableObject {
                    return event // adding event with info from firebase
                 }
                 self.handleFirestore(templist)
+                if snapshot.documents.count < self.fetchLimit {
+                    self.allDocsLoaded = true
+                }
 
             }
         }

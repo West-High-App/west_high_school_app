@@ -132,6 +132,9 @@ class Newslist: ObservableObject {
                     return newstab  // Add the newstab to the temporary array
                 }
                 self.handleFirestoreData(templist)
+                if snapshot.documents.count < self.limit {
+                    self.allDocsLoaded = true
+                }
             }
         }
     }
