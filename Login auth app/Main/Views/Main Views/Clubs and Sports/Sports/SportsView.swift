@@ -570,15 +570,18 @@ struct SportsHibabi: View {
 // MARK: sportnewscell
 struct sportnewscell: View{
     var feat: sportNews
-    
+    @State var screen = ScreenSize()
+
     var body:some View{
         VStack{
             if feat.imagedata.count > 0 {
                 Image(uiImage: feat.imagedata[0])
                     .resizable()
-                    .cornerRadius(10)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.vertical, 2)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .frame(maxWidth: screen.screenWidth - 60)
+                    .clipped()
+                    .cornerRadius(9)
             } else {
                 Image(uiImage: UIImage())
                     .resizable()

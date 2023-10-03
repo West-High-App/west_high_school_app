@@ -184,12 +184,11 @@ struct HomeView: View {
                                                 } label: {
                                                      Text("Edit Upcoming Events")
                                                           .foregroundColor(.blue)
-                                                          .padding(10)
+                                                          .padding(.vertical, 5)
                                                           .frame(width: screen.screenWidth-30)
                                                           .font(.system(size: 17, weight: .semibold, design: .rounded))
                                                           .background(Rectangle()
-                                                            .foregroundColor(.white)
-                                                            .cornerRadius(10)
+                                                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))                                                            .cornerRadius(10)
                                                             .shadow(radius: 2, x: 1, y: 1))                        }
                                            }
                                            if let firstcurrentevent = upcomingeventsdataManager.firstcurrentevent {
@@ -279,12 +278,11 @@ struct HomeView: View {
                                                 } label: {
                                                      Text("Edit Spotlight Articles")
                                                           .foregroundColor(.blue)
-                                                          .padding(10)
+                                                          .padding(.vertical, 5)
                                                           .frame(width: screen.screenWidth-30)
                                                           .font(.system(size: 17, weight: .semibold, design: .rounded))
                                                           .background(Rectangle()
-                                                            .foregroundColor(.white)
-                                                            .cornerRadius(10)
+                                                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))                                                            .cornerRadius(10)
                                                             .shadow(radius: 2, x: 1, y: 1))
                                                      
                                                 }

@@ -268,7 +268,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "79"
             endingLineNumber = "79"
-            landmarkName = "getClubsEvent(forClub:completion:)"
+            landmarkName = "getClubsEvent(forClub:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -284,7 +284,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "80"
             endingLineNumber = "80"
-            landmarkName = "getClubsEvent(forClub:completion:)"
+            landmarkName = "getClubsEvent(forClub:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

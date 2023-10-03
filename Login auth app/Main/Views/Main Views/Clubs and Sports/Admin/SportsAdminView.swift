@@ -17,7 +17,7 @@ struct SportsAdminView: View {
     @State var temptitle = ""
     @State var sportToDelete: sport?
     @State var sportToAdd: sport?
-    
+    @State var screen = ScreenSize()
     // adding event shit
     @State var sportname = ""
     @State var sportcoaches: [String] = []
@@ -45,7 +45,17 @@ struct SportsAdminView: View {
                 isPresentingAddSport = true
             } label: {
                 Text("Add Sport")
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
+                    .padding(10)
+                    .cornerRadius(15.0)
+                    .frame(width: screen.screenWidth-30)
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    .background(Rectangle()
+                        .foregroundColor(.blue)
+                        .cornerRadius(10)
+                    )
+
             }
 
             List(db.allsportlist, id: \.id) { sport in
