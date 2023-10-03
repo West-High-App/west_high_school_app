@@ -213,14 +213,9 @@ struct ClubNewsAdminView: View { // hello
                                             primaryButton:
                                                     .destructive(Text("Publish")) {
                                                         if let achievementToDelete = achievementToDelete {
-                                                            dataManager.deleteClubNews(clubNews: achievementToDelete) { error in
-                                                                if let error = error {
-                                                                    print("Error deleting club news: \(error.localizedDescription)")
-                                                                }
-                                                            }
                                                             var tempachievement = achievementToDelete
                                                             tempachievement.isApproved = true
-                                                            dataManager.createClubNews(clubNews: tempachievement) { error in
+                                                            dataManager.updateClubNews(clubNews: tempachievement) { error in
                                                                 if let error = error {
                                                                     print("Error approving club news: \(error.localizedDescription)")
                                                                 }
@@ -432,12 +427,8 @@ struct clubNewsRowlView: View {
                             newsimage.append(imagemanager.uploadPhoto(file: displayimage))
                         }
                         
-                        var check = false
-                        if isAdmin {
-                            check = true
-                        }
+                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: isAdmin, documentID: "NAN", imagedata: imagedata)
                         
-                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: check, documentID: "NAN", imagedata: imagedata)
                         dataManager.createClubNews(clubNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating club news: \(error.localizedDescription)")

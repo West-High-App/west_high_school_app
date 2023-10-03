@@ -449,15 +449,10 @@ struct sportNewsRowlView: View {
                             }
                         }
                          
-                        var check = false
-                        if isAdmin {
-                            check = true
-                        }
                         
-                        guard let achievement = editingAchievement else { return }
-                        
-                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: check, imagedata: imagedata, documentID: achievement.documentID)
-                        dataManager.updateSportNews(sportNews: achievementToSave) { error in
+                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: isAdmin, imagedata: imagedata, documentID: "NAN")
+                         
+                        dataManager.createSportNews(sportNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating sport news: \(error.localizedDescription)")
                             } else {
