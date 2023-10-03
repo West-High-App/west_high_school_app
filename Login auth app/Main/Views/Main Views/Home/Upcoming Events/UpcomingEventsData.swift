@@ -183,7 +183,10 @@ class upcomingEventsDataManager: ObservableObject {
             }
             if let snapshot = snapshot {
                 
-                self.lastDocument = snapshot.documents.last
+                
+                if self.lastDocument == nil {
+                    self.lastDocument = snapshot.documents.last
+                }
                 
                 let templist = snapshot.documents.map { document in
                     let data = document.data()

@@ -17,7 +17,7 @@ struct UpcomingEventsAdminView: View {
 
     var body: some View {
         ScrollView{
-            VStack {
+            LazyVStack {
                 HStack {
                     Text("Edit Upcoming Events")
                         .foregroundColor(Color.black)
@@ -82,9 +82,6 @@ struct UpcomingEventsAdminView: View {
                             .cornerRadius(9.0)
                             .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)
                             .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                        
-                        
-                        
                     }
                     .buttonStyle(PlainButtonStyle())
                     .contextMenu {
@@ -94,6 +91,19 @@ struct UpcomingEventsAdminView: View {
                             eventToDelete = event
                         }
                     }
+                }
+                if !dataManager.allupcomingeventslist.isEmpty && !dataManager.allDocsLoaded {
+                    ProgressView()
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        .background(Rectangle()
+                            .padding(.horizontal, 10)
+                            .cornerRadius(9.0)
+                            .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)
+                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                        .onAppear {
+                            dataManager.getMoreUpcomingEvents()
+                        }
                 }
             }
             .sheet(isPresented: $isPresentingAddEvent) {
