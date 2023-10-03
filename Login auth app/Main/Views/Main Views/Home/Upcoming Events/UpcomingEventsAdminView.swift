@@ -13,7 +13,10 @@ struct UpcomingEventsAdminView: View {
     @State private var isConfirmingDeleteEvent = false
     @State private var isConfirmingDeleteEventFinal = false
     @State private var eventToDelete: event?
+    @State var screen = ScreenSize()
+
     var body: some View {
+        ScrollView{
             VStack {
                 HStack {
                     Text("Edit Upcoming Events")
@@ -34,51 +37,87 @@ struct UpcomingEventsAdminView: View {
                     isPresentingAddEvent = true
                 } label: {
                     Text("Add Upcoming Event")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
                         .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10)
+                        )
                 }
                 
-                List(dataManager.allupcomingeventslist) { event in
+                ForEach(dataManager.allupcomingeventslist) { event in
                     VStack (alignment: .leading) {
                         
-                        Text(event.eventname)
-                            .font(.system(size: 17, weight: .semibold, design: .rounded))
-                        Text("\(event.month) \(event.day), \(event.year)")
-                            .font(.system(size: 17, weight: .regular, design: .rounded))
-                        Text(event.time)
-                            .font(.system(size: 17, weight: .regular, design: .rounded))
+                        HStack {
+                            VStack {
+                                Text(event.month)
+                                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                                    .foregroundColor(.red)
+                                Text(event.day)
+                                    .font(.system(size: 26, weight: .regular, design: .rounded))
+                                
+                            }
+                            .frame(width:50,height:50)
+                            Divider()
+                            VStack(alignment: .leading) {
+                                Text(event.eventname)
+                                    .lineLimit(2)
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                                Text(event.time)
+                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                    .lineLimit(1)
+                            }
+                            .padding(.leading, 5)
+                            Spacer()
+                            
+                        }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        .background(Rectangle()
+                            .padding(.horizontal, 10)
+                            .cornerRadius(9.0)
+                            .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)
+                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                        
+                        
                         
                     }
-                        .buttonStyle(PlainButtonStyle())
-                        .contextMenu {
-                            Button("Delete", role: .destructive) {
-                                tempEventTitle = event.eventname
-                                isConfirmingDeleteEvent = true
-                                eventToDelete = event
-                            }
-                        }
-                }
-            }
-        .sheet(isPresented: $isPresentingAddEvent) {
-            EventDetailView(dataManager: dataManager)
-        }
-        .sheet(item: $selectedEvent) { event in
-            EventDetailView(dataManager: dataManager, editingEvent: event)
-        }
-        .alert(isPresented: $isConfirmingDeleteEvent) {
-            Alert(
-                title: Text("You Are Deleting Public Data"),
-                message: Text("Are you sure you want to delete the event '\(tempEventTitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
-                primaryButton: .destructive(Text("Delete")) {
-                    if let eventToDelete = eventToDelete {
-                        dataManager.deleteEvent(event: eventToDelete) { error in
-                            if let error = error {
-                                print("Error deleting event: \(error.localizedDescription)")
-                            }
+                    .buttonStyle(PlainButtonStyle())
+                    .contextMenu {
+                        Button("Delete", role: .destructive) {
+                            tempEventTitle = event.eventname
+                            isConfirmingDeleteEvent = true
+                            eventToDelete = event
                         }
                     }
-                },
-                secondaryButton: .cancel(Text("Cancel"))
-            )
+                }
+            }
+            .sheet(isPresented: $isPresentingAddEvent) {
+                EventDetailView(dataManager: dataManager)
+            }
+            .sheet(item: $selectedEvent) { event in
+                EventDetailView(dataManager: dataManager, editingEvent: event)
+            }
+            .alert(isPresented: $isConfirmingDeleteEvent) {
+                Alert(
+                    title: Text("You Are Deleting Public Data"),
+                    message: Text("Are you sure you want to delete the event '\(tempEventTitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
+                    primaryButton: .destructive(Text("Delete")) {
+                        if let eventToDelete = eventToDelete {
+                            dataManager.deleteEvent(event: eventToDelete) { error in
+                                if let error = error {
+                                    print("Error deleting event: \(error.localizedDescription)")
+                                }
+                            }
+                        }
+                    },
+                    secondaryButton: .cancel(Text("Cancel"))
+                )
+            }
         }
     }
 }

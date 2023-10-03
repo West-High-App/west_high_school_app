@@ -21,6 +21,7 @@ struct SpotlightAdminView: View {
     @State var usableType: studentachievement?
     
     @State private var isAdmin = false
+    @State var screen = ScreenSize()
     @State private var isWriter = false
     
     @State private var presentingArticleSheet = false
@@ -66,7 +67,17 @@ struct SpotlightAdminView: View {
                 isPresentingAddAchievement = true
             } label: {
                 Text("Add Spotlight Article")
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
+                    .padding(10)
+                    .cornerRadius(15.0)
+                    .frame(width: screen.screenWidth-30)
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    .background(Rectangle()
+                        .foregroundColor(.blue)
+                        .cornerRadius(10)
+                    )
+
             }
 
             if isAdmin {

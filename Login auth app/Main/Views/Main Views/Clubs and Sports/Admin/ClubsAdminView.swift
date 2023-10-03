@@ -21,7 +21,7 @@ struct ClubsAdminView: View {
     @State var temptitle = ""
     @State var clubToDelete: club?
     @State var clubToAdd: club?
-    
+    @State var screen = ScreenSize()
     @State var clubname = ""
     @State var clubcaptain: [String]?
     @State var clubadvisor: [String] = []
@@ -49,7 +49,17 @@ struct ClubsAdminView: View {
                 isPresentingAddClub = true
             } label: {
                 Text("Add Club")
+                    .foregroundColor(.white)
+                    .fontWeight(.semibold)
+                    .padding(10)
+                    .cornerRadius(15.0)
+                    .frame(width: screen.screenWidth-30)
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    .background(Rectangle()
+                        .foregroundColor(.blue)
+                        .cornerRadius(10)
+                    )
+
             }
             
             List(db.allclublist, id: \.id) {
