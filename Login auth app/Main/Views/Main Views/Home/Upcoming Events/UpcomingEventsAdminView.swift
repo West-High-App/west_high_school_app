@@ -177,6 +177,12 @@ struct EventDetailView: View {
                     title: Text("You Are Publishing Changes"),
                     message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(eventName)\nSubtitle: \(eventTime)\nDate: \(months[selectedMonthIndex]) \(selectedDayIndex + 1),\(years[selectedYearIndex]) "),
                     primaryButton: .destructive(Text("Publish Changes")) {
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "MMMM d, yyyy"
+                        guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)") else {
+                            return
+                        }
+                        
                         let eventToSave = event(
                             documentID: "NAN",
                             eventname: eventName,
@@ -184,7 +190,8 @@ struct EventDetailView: View {
                             month: months[selectedMonthIndex],
                             day: "\(days[selectedDayIndex])",
                             year: years[selectedYearIndex],
-                            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)"
+                            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
+                            date: date
                         )
                         dataManager.createEvent(event: eventToSave) { error in
                             if let error = error {

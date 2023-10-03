@@ -77,7 +77,7 @@ class Newslist: ObservableObject {
         let collection = db.collection("Announcements")
         collection
             .order(by: "publisheddate", descending: true)
-            .start(atDocument: lastDocument)
+            .start(afterDocument: lastDocument)
             .limit(to: self.limit)
             .getDocuments { snapshot, error in
                 guard error == nil else {

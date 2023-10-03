@@ -58,7 +58,6 @@ struct HomeView: View {
          formatteddate = dateFormatter.string(from: currentDate)
          print("\n\nDate Stuff")
          print(dateFormatter.string(from: currentDate)) // MARK: CRASH PART
-        upcomingeventsdataManager.getUpcomingEvents()
         newstitlearray = newstitlearray.sorted { first, second in
             let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
             let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
@@ -95,21 +94,21 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
-            SwiftUIWebView(url: URL(string:"https://www.google.com/maps")!)
-                  .onAppear {
-                       shutdownmanager.fetchData { bool, string in
-                            isShutDown = bool
-                            shutdownMessage = string
-                       }
-                  }
-            StaffView()
-            LunchMenuView() // tryna load this shit early
-            ClassesView()
-            SchoolPolicyGuideView()
-            ClubsHibabi()
-            SportsHibabi()
-            AnnouncementsView()
-            UpcomingEventsView(upcomingeventslist: upcomingeventsdataManager.allupcomingeventslist, permission: hasPermissionsUpcomingEvents)
+//            SwiftUIWebView(url: URL(string:"https://www.google.com/maps")!)
+//                  .onAppear {
+//                       shutdownmanager.fetchData { bool, string in
+//                            isShutDown = bool
+//                            shutdownMessage = string
+//                       }
+//                  }
+//            StaffView()
+//            LunchMenuView() // tryna load this shit early
+//            ClassesView()
+//            SchoolPolicyGuideView()
+//            ClubsHibabi()
+//            SportsHibabi()
+//            AnnouncementsView()
+//            UpcomingEventsView(upcomingeventslist: upcomingeventsdataManager.allupcomingeventslist, permission: hasPermissionsUpcomingEvents)
             //MARK: HOME
              if !isShutDown {
                   NavigationView{
