@@ -73,7 +73,7 @@ struct StudentSpotlight: View {
                             ProgressView()
                                 .padding()
                                 .onAppear {
-                                    spotlightManager.getMoreAchievements()
+                                    spotlightManager.getMoreAchievements(getPending: false)
                                 }
                         }
                     }

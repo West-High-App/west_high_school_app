@@ -90,30 +90,178 @@ struct SpotlightAdminView: View {
                     .padding(.horizontal)
                 
                 if selected == 1 {
-                    List(dataManager.allstudentachievementlist, id: \.id) { achievement in
-                        if achievement.isApproved {
-                            VStack(alignment: .leading) {
-                                Text(achievement.achievementtitle)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                Text(achievement.publisheddate)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                Text(achievement.achievementdescription)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .lineLimit(2)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .contextMenu {
-                                Button("Delete", role: .destructive) {
-                                    tempAchievementTitle = achievement.achievementtitle
-                                    isConfirmingDeleteAchievement = true
-                                    achievementToDelete = achievement
+                    List {
+                        ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
+                            if achievement.isApproved {
+                                VStack(alignment: .leading) {
+                                    Text(achievement.achievementtitle)
+                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                    Text(achievement.publisheddate)
+                                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                                    Text(achievement.achievementdescription)
+                                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                                        .lineLimit(2)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .contextMenu {
+                                    Button("Delete", role: .destructive) {
+                                        tempAchievementTitle = achievement.achievementtitle
+                                        isConfirmingDeleteAchievement = true
+                                        achievementToDelete = achievement
+                                    }
                                 }
                             }
+                        }
+                        if !dataManager.allstudentachievementlist.isEmpty && !dataManager.allDocsLoaded {
+                            ProgressView()
+                                .padding()
+                                .onAppear {
+                                    dataManager.getMoreAchievements(getPending: false)
+                                }
                         }
                     }
                 }
                 if selected == 2 {
-                    List(dataManager.allstudentachievementlist, id: \.id) { achievement in
+                    List {
+                        ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
+                            if !achievement.isApproved {
+                                VStack(alignment: .leading) {
+                                    Text(achievement.achievementtitle)
+                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                    Text(achievement.publisheddate)
+                                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                                    Text(achievement.achievementdescription)
+                                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                                        .lineLimit(2)
+                                }
+                                .contextMenu {
+                                    Button("Edit") {
+                                        print(selectedArticle)
+                                        self.selectedArticle = achievement
+                                        if let index = dataManager.allstudentachievementlist.firstIndex(of: achievement) {
+                                            selectedIndex = index
+                                        }
+                                        presentingArticleSheet = true
+                                        self.selectedArticle = achievement
+                                    }
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                /*.contextMenu {
+                                 Button("Delete", role: .destructive) {
+                                 tempAchievementTitle = achievement.achievementtitle
+                                 isConfirmingDeleteAchievement = true
+                                 achievementToDelete = achievement
+                                 }
+                                 Button("Approve") {
+                                 tempAchievementTitle = achievement.achievementtitle
+                                 isConfirmingApproveAchievement = true
+                                 achievementToDelete = achievement
+                                 }
+                                 }*/
+                                .sheet(isPresented: $presentingArticleSheet) {
+                                    VStack {
+                                        if let usableType = usableType {
+                                            VStack {
+                                                HStack {
+                                                    Button("Cancel") {
+                                                        presentingArticleSheet = false
+                                                    }.padding()
+                                                    Spacer()
+                                                }
+                                                ScrollView {
+                                                    VStack (alignment: .leading){
+                                                        Text(usableType.achievementtitle)
+                                                            .fontWeight(.semibold)
+                                                            .padding(.leading)
+                                                        Text(usableType.articleauthor)
+                                                            .fontWeight(.medium)
+                                                            .padding(.leading)
+                                                        Text(usableType.publisheddate)
+                                                            .fontWeight(.medium)
+                                                            .padding(.leading)
+                                                        ForEach(usableType.imagedata, id: \.self) { image in
+                                                            Image(uiImage: image)
+                                                                .resizable()
+                                                                .cornerRadius(10)
+                                                                .padding()
+                                                                .frame(width: 300, height: 250)
+                                                        }
+                                                        Text(usableType.achievementdescription)
+                                                            .padding()
+                                                        Spacer()
+                                                    }
+                                                    
+                                                    HStack {
+                                                        Spacer()
+                                                        Button("Delete", role: .destructive) {
+                                                            presentingArticleSheet = false
+                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                tempAchievementTitle = selectedArticle.achievementtitle
+                                                                isConfirmingDeleteAchievement = true
+                                                                achievementToDelete = usableType
+                                                            }
+                                                        }
+                                                        Spacer()
+                                                        Button("Approve") {
+                                                            presentingArticleSheet = false
+                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                tempAchievementTitle = selectedArticle.achievementtitle
+                                                                isConfirmingApproveAchievement = true
+                                                                achievementToDelete = usableType
+                                                            }
+                                                        }
+                                                        Spacer()
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        }
+                                    }.onAppear {
+                                        print(selectedArticle)
+                                        usableType = dataManager.allstudentachievementlist[selectedIndex]
+                                    }
+                                    
+                                }
+                                .alert(isPresented: $isConfirmingApproveAchievement) {
+                                    Alert(
+                                        title: Text("You Are Editing Public Data"),
+                                        message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
+                                        primaryButton: .destructive(Text("Publish")) {
+                                            if let achievementToDelete = achievementToDelete {
+                                                dataManager.deleteAchievment(achievement: achievementToDelete) { error in
+                                                    if let error = error {
+                                                        print("Error deleting achievement: \(error.localizedDescription)")
+                                                    }
+                                                }
+                                                var tempachievement = achievementToDelete
+                                                tempachievement.isApproved = true
+                                                dataManager.createAchievement(achievement: tempachievement) { error in
+                                                    if let error = error {
+                                                        print("Error approving achievement: \(error.localizedDescription)")
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        secondaryButton: .cancel(Text("Cancel"))
+                                    )
+                                }
+                            }
+                        }
+                        if !dataManager.allstudentachievementlist.isEmpty && !dataManager.allPendingDocsLoaded {
+                            ProgressView()
+                                .padding()
+                                .onAppear {
+                                    dataManager.getMoreAchievements(getPending: true)
+                                }
+                        }
+                    }
+                }
+            } else if isWriter {
+                
+                Text("Current pending articles")
+                    .padding(10)
+                List {
+                    ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
                         if !achievement.isApproved {
                             VStack(alignment: .leading) {
                                 Text(achievement.achievementtitle)
@@ -124,136 +272,14 @@ struct SpotlightAdminView: View {
                                     .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .lineLimit(2)
                             }
-                            .contextMenu {
-                                Button("Edit") {
-                                    print(selectedArticle)
-                                    self.selectedArticle = achievement
-                                    if let index = dataManager.allstudentachievementlist.firstIndex(of: achievement) {
-                                        selectedIndex = index
-                                    }
-                                    presentingArticleSheet = true
-                                    self.selectedArticle = achievement
-                                }
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            /*.contextMenu {
-                                Button("Delete", role: .destructive) {
-                                    tempAchievementTitle = achievement.achievementtitle
-                                    isConfirmingDeleteAchievement = true
-                                    achievementToDelete = achievement
-                                }
-                                Button("Approve") {
-                                    tempAchievementTitle = achievement.achievementtitle
-                                    isConfirmingApproveAchievement = true
-                                    achievementToDelete = achievement
-                                }
-                            }*/
-                            .sheet(isPresented: $presentingArticleSheet) {
-                                VStack {
-                                    if let usableType = usableType {
-                                        VStack {
-                                            HStack {
-                                                Button("Cancel") {
-                                                    presentingArticleSheet = false
-                                                }.padding()
-                                                Spacer()
-                                            }
-                                            ScrollView {
-                                                VStack (alignment: .leading){
-                                                    Text(usableType.achievementtitle)
-                                                        .fontWeight(.semibold)
-                                                        .padding(.leading)
-                                                    Text(usableType.articleauthor)
-                                                        .fontWeight(.medium)
-                                                        .padding(.leading)
-                                                    Text(usableType.publisheddate)
-                                                        .fontWeight(.medium)
-                                                        .padding(.leading)
-                                                    ForEach(usableType.imagedata, id: \.self) { image in
-                                                        Image(uiImage: image)
-                                                            .resizable()
-                                                            .cornerRadius(10)
-                                                            .padding()
-                                                            .frame(width: 300, height: 250)
-                                                    }
-                                                    Text(usableType.achievementdescription)
-                                                        .padding()
-                                                    Spacer()
-                                                }
-                                                
-                                                HStack {
-                                                    Spacer()
-                                                    Button("Delete", role: .destructive) {
-                                                        presentingArticleSheet = false
-                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                            tempAchievementTitle = selectedArticle.achievementtitle
-                                                            isConfirmingDeleteAchievement = true
-                                                            achievementToDelete = usableType
-                                                        }
-                                                    }
-                                                    Spacer()
-                                                    Button("Approve") {
-                                                        presentingArticleSheet = false
-                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                            tempAchievementTitle = selectedArticle.achievementtitle
-                                                            isConfirmingApproveAchievement = true
-                                                            achievementToDelete = usableType
-                                                        }
-                                                    }
-                                                    Spacer()
-                                                }
-                                                
-                                            }
-                                        }
-                                    }
-                                }.onAppear {
-                                    print(selectedArticle)
-                                    usableType = dataManager.allstudentachievementlist[selectedIndex]
-                                }
-                                    
-                            }
-                            .alert(isPresented: $isConfirmingApproveAchievement) {
-                                Alert(
-                                    title: Text("You Are Editing Public Data"),
-                                    message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
-                                    primaryButton: .destructive(Text("Publish")) {
-                                        if let achievementToDelete = achievementToDelete {
-                                            dataManager.deleteAchievment(achievement: achievementToDelete) { error in
-                                                if let error = error {
-                                                    print("Error deleting achievement: \(error.localizedDescription)")
-                                                }
-                                            }
-                                            var tempachievement = achievementToDelete
-                                            tempachievement.isApproved = true
-                                            dataManager.createAchievement(achievement: tempachievement) { error in
-                                                if let error = error {
-                                                    print("Error approving achievement: \(error.localizedDescription)")
-                                                }
-                                            }
-                                        }
-                                    },
-                                    secondaryButton: .cancel(Text("Cancel"))
-                                )
-                            }
                         }
                     }
-                }
-            } else if isWriter {
-                
-                Text("Current pending articles")
-                    .padding(10)
-                
-                List(dataManager.allstudentachievementlist, id: \.id) { achievement in
-                    if !achievement.isApproved {
-                        VStack(alignment: .leading) {
-                            Text(achievement.achievementtitle)
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                            Text(achievement.publisheddate)
-                                .font(.system(size: 17, weight: .regular, design: .rounded))
-                            Text(achievement.achievementdescription)
-                                .font(.system(size: 17, weight: .regular, design: .rounded))
-                                .lineLimit(2)
-                        }
+                    if !dataManager.allstudentachievementlist.isEmpty && !dataManager.allPendingDocsLoaded {
+                        ProgressView()
+                            .padding()
+                            .onAppear {
+                                dataManager.getMoreAchievements(getPending: true)
+                            }
                     }
                 }
                 

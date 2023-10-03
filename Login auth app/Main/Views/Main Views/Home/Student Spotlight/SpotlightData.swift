@@ -45,12 +45,14 @@ class studentachievementlist: ObservableObject{
 
     @StateObject var imagemanager = imageManager()
     @ObservedObject var loading = Loading()
-    private let fetchLimit = 4
+    private let fetchLimit = 20
     private var lastDocument: DocumentSnapshot?
     @Published private(set) var allDocsLoaded = false
+    @Published private(set) var allPendingDocsLoaded = false
     
     init() {
-        connectAchievements()
+        connectAchievements(getPending: false)
+        connectAchievements(getPending: true)
     }
     
     private func handleFirestore(_ templist: [studentachievement]) {
@@ -84,7 +86,7 @@ class studentachievementlist: ObservableObject{
         }
     }
     
-    func getMoreAchievements() {
+    func getMoreAchievements(getPending: Bool) {
         guard let lastDocument else { return }
         
         print("LOADING ACHIEVMENTS LIST")
@@ -93,6 +95,7 @@ class studentachievementlist: ObservableObject{
         
         collection
             .order(by: "publisheddate", descending: true)
+            .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
             .limit(to: fetchLimit)
             .start(afterDocument: lastDocument)
             .getDocuments { snapshot, error in
@@ -126,20 +129,25 @@ class studentachievementlist: ObservableObject{
                     return achievement
                 }
                 self.handleFirestore(templist)
-                if snapshot.count < self.fetchLimit {
-                    self.allDocsLoaded = true
+                if snapshot.documents.count < self.fetchLimit {
+                    if getPending {
+                        self.allPendingDocsLoaded = true
+                    } else {
+                        self.allDocsLoaded = true
+                    }
                 }
             }
         }
     }
     
-    func connectAchievements() {
+    func connectAchievements(getPending: Bool) {
         print("LOADING ACHIEVMENTS LIST")
         let db = Firestore.firestore()
         let collection = db.collection("StudentAchievements")
         
         collection
             .order(by: "publisheddate", descending: true)
+            .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
             .limit(to: fetchLimit)
             .addSnapshotListener { snapshot, error in
             if let error = error {
