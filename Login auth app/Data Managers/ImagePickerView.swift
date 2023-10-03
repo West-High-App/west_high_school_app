@@ -88,6 +88,22 @@ struct ImagePickerView: View {
             }
         }
     
+    func getSpecialImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
+            let storageRef = Storage.storage().reference()
+            let fileRef = storageRef.child("specialimages/\(fileName)")
+            fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                if error == nil, let imageData = data {
+                    if let image = UIImage(data: imageData) {
+                        completion(image)
+                    } else {
+                        completion(nil)
+                    }
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+    
     func uploadPhoto() -> String{
         guard selectedImage != nil else {
             return ""
@@ -202,6 +218,22 @@ class imageManager: ObservableObject {
                     completion(image)
                 } else {
                     print("Error fetching image from Firebase: \(error?.localizedDescription ?? "Unknown error")")
+                    completion(nil)
+                }
+            }
+        }
+    
+    func getSpecialImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
+            let storageRef = Storage.storage().reference()
+            let fileRef = storageRef.child("specialimages/\(fileName)")
+            fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                if error == nil, let imageData = data {
+                    if let image = UIImage(data: imageData) {
+                        completion(image)
+                    } else {
+                        completion(nil)
+                    }
+                } else {
                     completion(nil)
                 }
             }
