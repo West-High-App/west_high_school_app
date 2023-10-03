@@ -60,7 +60,7 @@ class Newslist: ObservableObject {
                         let startIndex = endIndex-templist.count
                         
                         for (index, element) in self.topfiveUnsorted.enumerated() {
-                            if startIndex <= index, index <= endIndex, !templist.contains(where: { $0.documentID == element.documentID }) {
+                            if startIndex < index, index <= endIndex, !templist.contains(where: { $0.documentID == element.documentID }) {
                                 self.topfiveUnsorted.removeAll(where: { $0.documentID == element.documentID }) // Remove if not on server
                             }
                         }
@@ -85,16 +85,9 @@ class Newslist: ObservableObject {
                     return
                 }
                 if let snapshot = snapshot {
-                    var templist: [Newstab] = [] {
-                        didSet {
-                            if templist.count == snapshot.count {
-                                self.handleFirestoreData(templist)
-                            }
-                        }
-                    }
                     
                     self.lastDocument = snapshot.documents.last
-                    for document in snapshot.documents {
+                    let templist: [Newstab] = snapshot.documents.map { document in
                         let data = document.data()
                         let title = data["title"] as? String ?? ""
                         let description = data["description"] as? String ?? ""
@@ -102,8 +95,9 @@ class Newslist: ObservableObject {
                         let newsimagename = data["newsimagename"] as? String ?? ""
                         let documentID = document.documentID
                         let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description)
-                        templist.append(newstab)  // Add the newstab to the temporary array
+                        return newstab  // Add the newstab to the temporary array
                     }
+                    self.handleFirestoreData(templist)
                     if snapshot.count < self.limit {
                         self.allDocsLoaded = true
                     }
@@ -123,15 +117,8 @@ class Newslist: ObservableObject {
                 return
             }
             if let snapshot = snapshot {
-                var templist: [Newstab] = [] {
-                    didSet {
-                        if templist.count == snapshot.count {
-                            self.handleFirestoreData(templist)
-                        }
-                    }
-                }
                 self.lastDocument = snapshot.documents.last
-                for document in snapshot.documents {
+                let templist: [Newstab] = snapshot.documents.map { document in
                     let data = document.data()
                     let title = data["title"] as? String ?? ""
                     let description = data["description"] as? String ?? ""
@@ -139,8 +126,9 @@ class Newslist: ObservableObject {
                     let newsimagename = data["newsimagename"] as? String ?? ""
                     let documentID = document.documentID
                     let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description)
-                    templist.append(newstab)  // Add the newstab to the temporary array
+                    return newstab  // Add the newstab to the temporary array
                 }
+                self.handleFirestoreData(templist)
             }
         }
     }

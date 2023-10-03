@@ -117,7 +117,7 @@ class upcomingEventsDataManager: ObservableObject {
                 for (index, event) in self.allupcomingeventslistUnsorted.enumerated() {
                     if let docId = self.lastDocument?.documentID, let endIndex = self.allupcomingeventslistUnsorted.firstIndex(where: { $0.documentID == docId }) {
                         let startIndex = endIndex-templist.count
-                        if startIndex <= index, index <= endIndex, !templist.contains(where: { $0.documentID == event.documentID }) {
+                        if startIndex < index, index <= endIndex, !templist.contains(where: { $0.documentID == event.documentID }) {
                             self.allupcomingeventslistUnsorted.removeAll(where: { $0.documentID == event.documentID }) // Remove if not on server
                         }
                     }
@@ -182,17 +182,10 @@ class upcomingEventsDataManager: ObservableObject {
                 return
             }
             if let snapshot = snapshot {
-                var templist: [event] = [] {
-                    didSet {
-                        if templist.count == snapshot.count {
-                            self.handleFirestore(templist)
-                        }
-                    }
-                }
                 
                 self.lastDocument = snapshot.documents.last
                 
-                for document in snapshot.documents {
+                let templist = snapshot.documents.map { document in
                     let data = document.data()
                     let eventname = data["eventname"] as? String ?? ""
                     let time = data["time"] as? String ?? ""
@@ -203,8 +196,9 @@ class upcomingEventsDataManager: ObservableObject {
                     let documentID = document.documentID
                     let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", date: date)
                     
-                    templist.append(event) // adding event with info from firebase
+                   return event // adding event with info from firebase
                 }
+                self.handleFirestore(templist)
 
             }
         }

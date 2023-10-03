@@ -245,7 +245,7 @@ struct HomeView: View {
                                                 Spacer()
                                                 
                                                 NavigationLink {
-                                                     StudentSpotlight(spotlightarticles: spotlightManager.allstudentachievementlist)
+                                                     StudentSpotlight()
                                                 } label: {
                                                      HStack{
                                                           Text("See more")
