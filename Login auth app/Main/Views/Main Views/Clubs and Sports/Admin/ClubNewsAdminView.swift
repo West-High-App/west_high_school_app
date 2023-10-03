@@ -29,7 +29,7 @@ struct ClubNewsAdminView: View { // hello
     @State var isDisplayingAddImage = false
     
     @State var presentingArticleSheet = false
-    @State var selectedArticle = clubNews(newstitle: "", newsimage: [], newsdescription: "", newsdate: "", author: "", isApproved: false, documentID: "", imagedata: [])
+    @State var selectedArticle = clubNews(newstitle: "", newsimage: [], newsdescription: "", newsdate: "", newsdateSwift: Date(), author: "", isApproved: false, documentID: "", imagedata: [])
     @State var selectedIndex = 0
     
     @State var selected = 1
@@ -389,6 +389,12 @@ struct clubNewsRowlView: View {
                     title: Text("You Are Publishing Changes"),
                     message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(newstitle)\nDescription: \(newsdescription)\nAuthor: \(author)\nPublished Date: \(newsdate)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "MMMM d, yyyy"
+                        guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)") else {
+                            return
+                        }
+                        
                         
                         var imagedata: [UIImage] = []
                         
@@ -405,7 +411,7 @@ struct clubNewsRowlView: View {
                             check = true
                         }
                         
-                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", author: author, isApproved: check, documentID: "NAN", imagedata: imagedata)
+                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: check, documentID: "NAN", imagedata: imagedata)
                         dataManager.createClubNews(clubNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating club news: \(error.localizedDescription)")

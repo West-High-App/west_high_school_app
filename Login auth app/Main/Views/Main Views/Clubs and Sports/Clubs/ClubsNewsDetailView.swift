@@ -98,7 +98,7 @@ struct ClubsNewsDetailView_Previews: PreviewProvider {
             newstitle: "August learns how to piss!",
             newsimage: ["roboticsclub"],
             newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app",
-            newsdate: "Apr 1, 2023",
+            newsdate: "Apr 1, 2023", newsdateSwift: Date(),
             author: "Aiden Jamae Lee (not funny)", isApproved: false,
             documentID: "NAN", imagedata: []))
     }

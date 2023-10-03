@@ -228,10 +228,18 @@ struct ClubsHibabi: View {
                             }
                             else if clubselected == 3 {
                                 //mark
-                                List(clubNewsManager.allclubsnewslist) { news in  // filteredClubNews
-                                    if news.isApproved {
-                                        clubnewscell(feat: news)
-                                            .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                List {
+                                    ForEach(clubNewsManager.allclubsnewslist) { news in  // filteredClubNews
+                                        if news.isApproved {
+                                            clubnewscell(feat: news)
+                                                .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                        }
+                                    }
+                                    if !clubNewsManager.allclubsnewslist.map({ $0.documentID }).contains("NAN") && !clubNewsManager.allDocsLoaded {
+                                        ProgressView()
+                                            .onAppear {
+                                                clubNewsManager.getMoreClubNews()
+                                            }
                                     }
                                 }
                                 .searchable(text: $searchText)

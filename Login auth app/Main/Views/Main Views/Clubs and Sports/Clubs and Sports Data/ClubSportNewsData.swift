@@ -148,6 +148,7 @@ struct clubNews: Identifiable, Equatable {
     var newsimage: [String]
     var newsdescription: String
     var newsdate: String
+    var newsdateSwift: Date
     var author: String
     var isApproved: Bool
     var id = UUID()
@@ -171,7 +172,7 @@ class clubsNewslist: ObservableObject{
     @Published private var allclubsnewslistUnsorted = [clubNews(
         newstitle: "hardcoded title",
         newsimage: ["roboticsclub"],
-        newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app", newsdate: "Apr 1, 2023",
+        newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app", newsdate: "Apr 1, 2023", newsdateSwift: Date(),
         author: "aiden jamae lee lmfao remember",
         isApproved: false,
         documentID: "NAN", imagedata: [])]
@@ -179,18 +180,57 @@ class clubsNewslist: ObservableObject{
     var allclubsnewslist: [clubNews] {
         allclubsnewslistUnsorted.sortedByDate()
     }
+    private let fetchLimit = 30
+    private var lastDocument: DocumentSnapshot?
+    @Published private(set) var allDocsLoaded = false
     
     static let shared = clubsNewslist()
     
     init() {
-        getClubNews()
+        connectClubNews()
     }
     
-    func getClubNews() {
+    private func handleFirestore(_ templist: [clubNews]) {
+        DispatchQueue.main.async {
+            self.allclubsnewslistUnsorted.removeAll(where: { $0.documentID == "NAN" })
+            for temp in templist {
+                if let index = self.allclubsnewslistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                    self.allclubsnewslistUnsorted[index].imagedata = temp.imagedata
+                    self.allclubsnewslistUnsorted[index].newsdate = temp.newsdate
+                    self.allclubsnewslistUnsorted[index].newsdescription = temp.newsdescription
+                    self.allclubsnewslistUnsorted[index].newstitle = temp.newstitle
+                    self.allclubsnewslistUnsorted[index].author = temp.author
+                    self.allclubsnewslistUnsorted[index].newsimage = temp.newsimage
+                    self.allclubsnewslistUnsorted[index].isApproved = temp.isApproved
+                } else {
+                    self.allclubsnewslistUnsorted.append(temp)
+                }
+                if temp.documentID == templist.last?.documentID {
+                    if let docId = templist.last?.documentID, let endIndex = self.allclubsnewslistUnsorted.firstIndex(where: { $0.documentID == docId }) {
+                        let startIndex = endIndex-templist.count
+                        
+                        for (index, element) in self.allclubsnewslistUnsorted.enumerated() {
+                            if startIndex < index, index <= endIndex, !templist.contains(where: { $0.documentID == element.documentID }) {
+                                self.allclubsnewslistUnsorted.removeAll(where: { $0.documentID == element.documentID }) // Remove if not on server
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func getMoreClubNews() {
+        guard let lastDocument else { return }
+        
         let db = Firestore.firestore()
         let collection = db.collection("ClubNews")
         
-        collection.addSnapshotListener { snapshot, error in
+        collection
+            .order(by: "newsdateSwift", descending: true)
+            .limit(to: self.fetchLimit)
+            .start(afterDocument: lastDocument)
+            .getDocuments { snapshot, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
@@ -198,38 +238,20 @@ class clubsNewslist: ObservableObject{
             if let snapshot = snapshot {
                 var templist: [clubNews] = [] {
                     didSet {
-                        if templist.count == snapshot.count {
-                            DispatchQueue.main.async {
-                                for temp in templist {
-                                    if let index = self.allclubsnewslistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
-                                        self.allclubsnewslistUnsorted[index].imagedata = temp.imagedata
-                                        self.allclubsnewslistUnsorted[index].newsdate = temp.newsdate
-                                        self.allclubsnewslistUnsorted[index].newsdescription = temp.newsdescription
-                                        self.allclubsnewslistUnsorted[index].newstitle = temp.newstitle
-                                        self.allclubsnewslistUnsorted[index].author = temp.author
-                                        self.allclubsnewslistUnsorted[index].newsimage = temp.newsimage
-                                        self.allclubsnewslistUnsorted[index].isApproved = temp.isApproved
-                                    } else {
-                                        self.allclubsnewslistUnsorted.append(temp)
-                                    }
-                                    if temp == templist.last {
-                                        for sport in self.allclubsnewslistUnsorted {
-                                            if !templist.contains(where: { $0.documentID == sport.documentID }) {
-                                                self.allclubsnewslistUnsorted.removeAll(where: { $0.documentID == sport.documentID }) // Remove if not on server
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                        if templist.count == snapshot.documents.count {
+                            self.handleFirestore(templist)
                         }
                     }
                 }
+                
+                self.lastDocument = snapshot.documents.last
                 for document in snapshot.documents {
                     let data = document.data()
                     let newstitle = data["newstitle"] as? String ?? ""
                     let newsimage = data["newsimage"] as? [String] ?? []
                     let newsdescription = data["newsdescription"] as? String ?? ""
                     let newsdate = data["newsdate"] as? String ?? ""
+                    let newsdateSwift = (data["newsdateSwift"] as? Timestamp)?.dateValue() ?? Date()
                     let author = data["author"] as? String ?? ""
                     let isApproved = data["isApproved"] as? Bool ?? false
                     let documentID = document.documentID
@@ -239,11 +261,60 @@ class clubsNewslist: ObservableObject{
                             if let image = image {
                                 imagedata.append(image)
                             }
-                            let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, author: author, isApproved: isApproved, documentID: documentID, imagedata: imagedata)
+                            let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, documentID: documentID, imagedata: imagedata)
                             templist.append(clubnews)
                         }
                     }
-                    
+                }
+                if snapshot.count < self.fetchLimit {
+                    self.allDocsLoaded = true
+                }
+            }
+        }
+    }
+    
+    func connectClubNews() {
+        let db = Firestore.firestore()
+        let collection = db.collection("ClubNews")
+        
+        collection
+            .order(by: "newsdateSwift", descending: true)
+            .limit(to: self.fetchLimit)
+            .addSnapshotListener { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+            }
+            
+            if let snapshot = snapshot {
+                var templist: [clubNews] = [] {
+                    didSet {
+                        if templist.count == snapshot.documents.count {
+                            self.handleFirestore(templist)
+                        }
+                    }
+                }
+                
+                self.lastDocument = snapshot.documents.last
+                for document in snapshot.documents {
+                    let data = document.data()
+                    let newstitle = data["newstitle"] as? String ?? ""
+                    let newsimage = data["newsimage"] as? [String] ?? []
+                    let newsdescription = data["newsdescription"] as? String ?? ""
+                    let newsdate = data["newsdate"] as? String ?? ""
+                    let newsdateSwift = (data["newsdateSwift"] as? Timestamp)?.dateValue() ?? Date()
+                    let author = data["author"] as? String ?? ""
+                    let isApproved = data["isApproved"] as? Bool ?? false
+                    let documentID = document.documentID
+                    var imagedata: [UIImage] = []
+                    for file in newsimage {
+                        imageManager().getImage(fileName: file) { image in
+                            if let image = image {
+                                imagedata.append(image)
+                            }
+                            let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, documentID: documentID, imagedata: imagedata)
+                            templist.append(clubnews)
+                        }
+                    }
                 }
             }
         }
