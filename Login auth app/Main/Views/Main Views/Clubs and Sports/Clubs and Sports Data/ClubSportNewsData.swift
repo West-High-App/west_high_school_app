@@ -196,6 +196,13 @@ class sportsNewslist: ObservableObject {
                         }
                     }
                 }
+                if snapshot.documents.count < self.fetchLimit {
+                    if getPending {
+                        self.allPendingDocsLoaded = true
+                    } else {
+                        self.allDocsLoaded = true
+                    }
+                }
             }
         }
     }
@@ -428,6 +435,13 @@ class clubsNewslist: ObservableObject{
                             let clubnews = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, documentID: documentID, imagedata: imagedata)
                             templist.append(clubnews)
                         }
+                    }
+                }
+                if snapshot.documents.count < self.fetchLimit {
+                    if getPending {
+                        self.allPendingDocsLoaded = true
+                    } else {
+                        self.allDocsLoaded = true
                     }
                 }
             }

@@ -183,6 +183,13 @@ class studentachievementlist: ObservableObject{
                     return achievement
                 }
                 self.handleFirestore(templist)
+                if snapshot.documents.count < self.fetchLimit {
+                    if getPending {
+                        self.allPendingDocsLoaded = true
+                    } else {
+                        self.allDocsLoaded = true
+                    }
+                }
             }
         }
     }
