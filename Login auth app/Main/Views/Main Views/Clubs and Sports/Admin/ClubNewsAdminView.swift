@@ -1,5 +1,59 @@
 import SwiftUI
 
+struct dubclubnewscell: View{
+    var feat: clubNews
+    @State var screen = ScreenSize()
+    
+    var body:some View{
+        VStack{
+            if feat.imagedata.count > 0 {
+                Image(uiImage: feat.imagedata[0])
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .frame(maxWidth: screen.screenWidth - 60)
+                    .clipped()
+                    .cornerRadius(9)
+            } else {
+                Image(uiImage: UIImage())
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .frame(maxWidth: screen.screenWidth - 60)
+                    .clipped()
+                    .cornerRadius(9)
+            }
+            VStack(alignment: .leading, spacing:2){
+                HStack {
+                    Text(feat.newsdate)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .padding(.leading, 5)
+                    Spacer()
+                }
+                Text(feat.newstitle)
+                    .foregroundColor(.black)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.9)
+                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                    .padding(.leading, 5)
+                Text(feat.newsdescription)
+                    .foregroundColor(.secondary)
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .padding(.leading, 5)
+                    .lineLimit(1)
+//                    Text("Click here to read more")
+//                        .foregroundColor(.blue)
+//                        .lineLimit(2)
+//                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+//                        .padding(.leading, 5)
+
+            }
+        }
+    }
+}
+
 struct ClubNewsAdminView: View { // hello
     @StateObject var dataManager = clubsNewslist.shared
 
@@ -8,7 +62,8 @@ struct ClubNewsAdminView: View { // hello
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var tempAchievementTitle = ""
-    
+    @State var screen = ScreenSize()
+
     @State private var isConfirmingDeleteAchievement = false
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var isConfirmingApproveAchievement = false
@@ -20,7 +75,8 @@ struct ClubNewsAdminView: View { // hello
     @StateObject var permissionsManager = permissionsDataManager()
     
     @State var usableType: clubNews?
-    @State var screen = ScreenSize()
+    
+    @State var hasAppeared = false
     
     // images
     @StateObject var imagemanager = imageManager()
@@ -69,7 +125,9 @@ struct ClubNewsAdminView: View { // hello
                         .foregroundColor(.blue)
                         .cornerRadius(10)
                     )
+
             }
+            
             
             if isAdmin {
                 
@@ -85,15 +143,7 @@ struct ClubNewsAdminView: View { // hello
                     List {
                         ForEach(dataManager.allclubsnewslist, id: \.id) { news in
                             if news.isApproved {
-                                VStack(alignment: .leading) {
-                                    Text(news.newstitle)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    Text(news.newsdate)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    Text(news.newsdescription)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        .lineLimit(2)
-                                }
+                                clubnewscell(feat: news)
                                 .buttonStyle(PlainButtonStyle())
                                 .contextMenu {
                                     Button("Delete", role: .destructive) {
@@ -117,15 +167,8 @@ struct ClubNewsAdminView: View { // hello
                     List {
                         ForEach(dataManager.allclubsnewslist, id: \.id) { news in
                             if !news.isApproved {
-                                VStack(alignment: .leading) {
-                                    Text(news.newstitle)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    Text(news.newsdate)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    Text(news.newsdescription)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        .lineLimit(2)
-                                }
+                                clubnewscell(feat: news)
+
                                 .contextMenu {
                                     Button("Edit") {
                                         self.selectedArticle = news
@@ -254,15 +297,8 @@ struct ClubNewsAdminView: View { // hello
                     List {
                         ForEach(dataManager.allclubsnewslist, id: \.id) { news in
                             if !news.isApproved {
-                                VStack(alignment: .leading) {
-                                    Text(news.newstitle)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    Text(news.newsdate)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    Text(news.newsdescription)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        .lineLimit(2)
-                                }
+                                dubclubnewscell(feat: news)
+
                             }
                         }
                         if !dataManager.allclubsnewslist.filter({ $0.isApproved }).isEmpty && !dataManager.allPendingDocsLoaded {

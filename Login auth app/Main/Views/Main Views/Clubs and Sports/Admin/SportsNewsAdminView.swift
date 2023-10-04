@@ -13,11 +13,11 @@ struct SportsNewsAdminView: View {
     @State var isWriter = false
     @State var userInfo = UserInfo.shared
     @StateObject var permissionsManager = permissionsDataManager()
-    
+    @State var screen = ScreenSize()
     @State var hasAppeared = false
     
     @State var selected = 1
-    @State var screen = ScreenSize()
+    
     @State var usableType: sportNews?
     
     @State private var isConfirmingDeleteAchievement = false
@@ -88,16 +88,8 @@ struct SportsNewsAdminView: View {
                     List {
                         ForEach(dataManager.allsportsnewslist, id: \.id) { news in
                             if news.isApproved {
-                                VStack (alignment: .leading){
-                                    Text(news.newstitle)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    Text(news.newsdate)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    Text(news.newsdescription)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        .lineLimit(2)
-                                }
-                                
+                                sportnewscell(feat: news)
+
                                 .buttonStyle(PlainButtonStyle())
                                 .contextMenu {
                                     Button("Delete", role: .destructive) {
@@ -118,11 +110,6 @@ struct SportsNewsAdminView: View {
                                 .onAppear {
                                     dataManager.getMoreSportsNews(getPending: false)
                                 }
-                                
-                                
-                            }
-                            .padding(.trailing)
-                            
                         }
                     }
                 }
@@ -131,15 +118,7 @@ struct SportsNewsAdminView: View {
                     List {
                         ForEach(dataManager.allsportsnewslist, id: \.id) { news in
                             if !news.isApproved {
-                                VStack (alignment: .leading){
-                                    Text(news.newstitle)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    Text(news.newsdate)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    Text(news.newsdescription)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        .lineLimit(2)
-                                }
+                                sportnewscell(feat: news)
                                 .buttonStyle(PlainButtonStyle())
                                 .contextMenu {
                                     Button("Edit") {
@@ -277,15 +256,7 @@ struct SportsNewsAdminView: View {
                 List {
                     ForEach(dataManager.allsportsnewslist, id: \.id) { news in
                         if !news.isApproved {
-                            VStack (alignment: .leading){
-                                Text(news.newstitle)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                Text(news.newsdate)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                Text(news.newsdescription)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .lineLimit(2)
-                            }
+                            sportnewscell(feat: news)
                             .padding(.trailing)
                             .padding(.vertical,8)
                             
