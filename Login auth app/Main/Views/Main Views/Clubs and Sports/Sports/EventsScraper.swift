@@ -75,6 +75,9 @@ class HTMLParser: ObservableObject {
         
         let event = ParsedEvent(date: finalDate, type: type, opponent: opponent, location: location, comments: comments)
         
+        print("GOT NEW EVENT:")
+        print(event)
+        
         return event
     }
     

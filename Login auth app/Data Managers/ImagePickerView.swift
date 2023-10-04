@@ -189,18 +189,15 @@ class imageManager: ObservableObject {
         let userDefaults = UserDefaults.standard
         
         func getImage(fileName: String, completion: @escaping (UIImage?) -> Void) {
-            // Check if the image exists in UserDefaults
+            print("got local")
             if let imageData = userDefaults.data(forKey: fileName), let image = UIImage(data: imageData) {
-                print("IMAGE FOOUND")
                 completion(image)
             } else {
-                // If not, fetch it from Firebase
-                print("IMAGE NOT FOUND IN USER DEFAUILTS")
-                getImageFromStorage(fileName: fileName) { [weak self] image in
+                print("getting from firebase")
+                getImageFromStorage(fileName: fileName) { image in
                     if let image = image {
-                        // Cache the fetched image in UserDefaults
-                        self?.cacheImageInUserDefaults(image: image, fileName: fileName)
-                        print(self?.userDefaults.data(forKey: fileName) ?? "")
+                        print("caching locally..")
+                        self.cacheImageInUserDefaults(image: image, fileName: fileName)
                         completion(image)
                     } else {
                         completion(nil)
@@ -213,7 +210,7 @@ class imageManager: ObservableObject {
         func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
             let storageRef = Storage.storage().reference()
             let fileRef = storageRef.child(fileName)
-            fileRef.getData(maxSize: 1024 * 1024 * 10) { data, error in
+            fileRef.getData(maxSize: 1024 * 1024) { data, error in
                 if error == nil, let imageData = data, let image = UIImage(data: imageData) {
                     completion(image)
                 } else {
@@ -222,29 +219,14 @@ class imageManager: ObservableObject {
                 }
             }
         }
-    
-    func getSpecialImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
-            let storageRef = Storage.storage().reference()
-            let fileRef = storageRef.child("specialimages/\(fileName)")
-            fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
-                if error == nil, let imageData = data {
-                    if let image = UIImage(data: imageData) {
-                        completion(image)
-                    } else {
-                        completion(nil)
-                    }
-                } else {
-                    completion(nil)
-                }
-            }
-        }
         
         func cacheImageInUserDefaults(image: UIImage, fileName: String) {
             if let imageData = image.jpegData(compressionQuality: 1.0) {
                 userDefaults.set(imageData, forKey: fileName)
-                print("SET IMAGE")
+                print("set default")
             }
         }
+        
     
     func uploadPhoto(file: UIImage) -> String{
         let storageRef = Storage.storage().reference()
@@ -295,6 +277,22 @@ class imageManager: ObservableObject {
 
         return imageData
     }
+    
+    func getSpecialImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
+            let storageRef = Storage.storage().reference()
+            let fileRef = storageRef.child("specialimages/\(fileName)")
+            fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+                if error == nil, let imageData = data {
+                    if let image = UIImage(data: imageData) {
+                        completion(image)
+                    } else {
+                        completion(nil)
+                    }
+                } else {
+                    completion(nil)
+                }
+            }
+        }
 
     
     
