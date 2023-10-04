@@ -75,7 +75,7 @@ var currentnews: sportNews
             .onAppear {
             }
 
-            Text(currentnews.newsdescription)
+            LinkTextView(text: currentnews.newsdescription)
                 .multilineTextAlignment(.leading)
                 .foregroundColor(Color.black)
                 .font(.system(size: 17, weight: .regular, design: .rounded))

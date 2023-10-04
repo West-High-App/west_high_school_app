@@ -72,7 +72,7 @@ struct ClubsNewsDetailView: View {
                         .padding(.horizontal)
                     Spacer()
                     
-                    Text(currentclubnews.newsdescription)
+                    LinkTextView(text: currentclubnews.newsdescription)
                         .multilineTextAlignment(.leading)
                         .foregroundColor(Color.black)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
