@@ -109,6 +109,11 @@ struct ClubsEventsAdminView: View {
                     }
                 }
             }
+            Spacer()
+            if dataManager.clubsEvents.count == 0 {
+                Text("No events yet!")
+            }
+            Spacer()
         }.navigationTitle("Edit Club Events")
         .alert(isPresented: $isConfirmingDeleteEvent) {
             Alert(

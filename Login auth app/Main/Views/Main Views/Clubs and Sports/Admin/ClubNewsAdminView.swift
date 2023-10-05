@@ -293,11 +293,19 @@ struct ClubNewsAdminView: View { // hello
             } else {
                 
                 VStack {
-                    Text("Curernt pending Articles:")
+                    Text("Currrent pending Articles:")
                     List {
                         ForEach(dataManager.allclubsnewslist, id: \.id) { news in
                             if !news.isApproved {
                                 dubclubnewscell(feat: news)
+                                    .buttonStyle(PlainButtonStyle())
+                                    .contextMenu {
+                                        Button("Delete", role: .destructive) {
+                                            tempAchievementTitle = news.newstitle
+                                            isConfirmingDeleteAchievement = true
+                                            achievementToDelete = news
+                                        }
+                                    }
 
                             }
                         }
