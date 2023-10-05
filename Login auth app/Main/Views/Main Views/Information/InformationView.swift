@@ -16,6 +16,9 @@ struct InformationView: View {
     @State var hasAppeared = false
     @State var isAccountViewActive = false
     @State var isShowingAccountDetails = false
+    
+    @StateObject var linkManager = LinkManager.shared
+    
     var body: some View {
             NavigationView{
                 List{

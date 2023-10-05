@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct JobInternshipView: View {
+    
+    @ObservedObject var linkManager = LinkManager.shared
+    
     var body: some View {
         NavigationView{
             List{
-                Link(destination: URL(string: "https://docs.google.com/document/d/1pAMUB6xT41RtX-FZmkZ4-Ro4S4EvywxR9PFYIHO9H5k/edit")!,
+                Link(destination: URL(string: linkManager.linktionary["Food Service"] ?? "https://docs.google.com/document/d/1pAMUB6xT41RtX-FZmkZ4-Ro4S4EvywxR9PFYIHO9H5k/edit")!,
                      label: {
                     HStack{
                         Image(systemName: "fork.knife.circle")
@@ -21,7 +24,7 @@ struct JobInternshipView: View {
                 )
                 .padding(.vertical,10)
                 
-                Link(destination: URL(string: "https://docs.google.com/document/d/13qSxE_7Frzf6Wi7izKrJbqZVn0gE0FHYYZBNQjy2Pjk/edit")!,
+                Link(destination: URL(string: linkManager.linktionary["Grocery"] ?? "https://docs.google.com/document/d/13qSxE_7Frzf6Wi7izKrJbqZVn0gE0FHYYZBNQjy2Pjk/edit")!,
                      label: {
                     HStack{
                         Image(systemName: "cart")
@@ -31,7 +34,7 @@ struct JobInternshipView: View {
                 )
                 .padding(.vertical,10)
                 
-                Link(destination: URL(string: "https://docs.google.com/document/d/1ZCri06kozqMLGUQu3dAKPb4jZHbsNhL1fWlL-EXvGNM/edit")!,
+                Link(destination: URL(string: linkManager.linktionary["Retail"] ?? "https://docs.google.com/document/d/1ZCri06kozqMLGUQu3dAKPb4jZHbsNhL1fWlL-EXvGNM/edit")!,
                      label: {
                     HStack{
                         Image(systemName: "tshirt")
@@ -42,7 +45,7 @@ struct JobInternshipView: View {
                 .padding(.vertical,10)
             
                 
-                Link(destination: URL(string: "https://docs.google.com/document/d/1BQ4AG8qmVFGjtENkW0bdTyMYAh_tdYSgSdT3qIRmcw0/edit")!,
+                Link(destination: URL(string: linkManager.linktionary["Internships"] ?? "https://docs.google.com/document/d/1BQ4AG8qmVFGjtENkW0bdTyMYAh_tdYSgSdT3qIRmcw0/edit")!,
                      label: {
                     HStack{
                         Image(systemName: "graduationcap")
@@ -52,7 +55,7 @@ struct JobInternshipView: View {
                 )
                 .padding(.vertical,10)
                 
-                Link(destination: URL(string: "https://docs.google.com/document/u/1/d/1kj8bxwcxT30sDkN-WjPxmmlCdNthCi-a7I4aeDblXUQ/edit")!,
+                Link(destination: URL(string: linkManager.linktionary["Event & Volunteer"] ?? "https://docs.google.com/document/u/1/d/1kj8bxwcxT30sDkN-WjPxmmlCdNthCi-a7I4aeDblXUQ/edit")!,
                      label: {
                     HStack{
                         Image(systemName: "newspaper")
@@ -62,7 +65,7 @@ struct JobInternshipView: View {
                 )
                 .padding(.vertical,10)
                 
-                Link(destination: URL(string: "https://docs.google.com/document/d/1BO9BfYoBtKJkSL--WVvirIgbHB5S1Il1umEWHEsWEz4/edit")!,
+                Link(destination: URL(string: linkManager.linktionary["Other"] ?? "https://docs.google.com/document/d/1BO9BfYoBtKJkSL--WVvirIgbHB5S1Il1umEWHEsWEz4/edit")!,
                      label: {
                     HStack{
                         Image(systemName: "ellipsis.rectangle")
