@@ -343,7 +343,7 @@ struct SportsHibabi: View {
                                     self.hasPermissionSportsNews = result
                                 }
                             }
-                            permissionsManager.checkPermissions(dataType: "Sports", user: userInfo.email) { result in
+                            permissionsManager.checkPermissions(dataType: "Sports Admin", user: userInfo.email) { result in
                                 self.hasPermissionSports = result
                                 if result {
                                     userInfo.isSportsAdmin = true

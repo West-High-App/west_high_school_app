@@ -66,7 +66,6 @@ struct ClubDetailAdminView: View {
                                 
                 Section("Permissions") {
                     
-                    if userInfo.isClubsAdmin {
                         DisclosureGroup("Admins") {
                             ForEach($adminemails, id: \.self) { $adminEmail in
                                 HStack {
@@ -103,7 +102,6 @@ struct ClubDetailAdminView: View {
                                 }
                             }
                         }
-                    }
                 }
                  
                 Section("Members") {
@@ -321,6 +319,9 @@ struct ClubDetailAdminView: View {
                             }
                             
                             clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: editingclub.favoritedusers, imagedata: displayimage ?? UIImage(), documentID: editingclub.documentID, id: 0)
+                            
+                            print("update to club thingy this one:::::")
+                            print(clubtoedit)
                             
                             if let clubtoedit = clubtoedit {
                                 clubmanager.updateClub(data: clubtoedit)

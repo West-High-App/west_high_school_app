@@ -317,6 +317,7 @@ class clubManager: ObservableObject {
             "clubdescription": data.clubdescription,
             "clubcaptain": data.clubcaptain ?? [],
             "clubimage": data.clubimage,
+            "editoremails": data.editoremails,
             "clubmeetingroom": data.clubmeetingroom,
             "favoritedusers": data.favoritedusers,
             "clubmembercount": data.clubmembercount,

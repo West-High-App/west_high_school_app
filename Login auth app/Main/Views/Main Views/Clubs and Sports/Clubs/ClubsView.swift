@@ -155,7 +155,18 @@ struct ClubsHibabi: View {
                                         }.searchable(text: $clubsearchText)
                                         Spacer()
                                         
+                                    }.navigationBarItems(trailing:
+                                                            Group {
+                                        if hasPermissionClubs {
+                                            NavigationLink {
+                                                ClubsAdminView(clubslist: clubsmanager.allclublist)
+                                            } label: {
+                                                Text("Edit")
+                                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                            }
+                                        }
                                     }
+                                    )
                                 } else {
                                     VStack {
                                         if isLoading {
@@ -284,7 +295,7 @@ struct ClubsHibabi: View {
                                         self.hasPermissionClubNews = result
                                     }
                                 }
-                                permissionsManager.checkPermissions(dataType: "Clubs", user: userInfo.email) { result in
+                                permissionsManager.checkPermissions(dataType: "Clubs Admin", user: userInfo.email) { result in
                                     self.hasPermissionClubs = result
                                     if result == true {
                                         userInfo.isClubsAdmin = true
