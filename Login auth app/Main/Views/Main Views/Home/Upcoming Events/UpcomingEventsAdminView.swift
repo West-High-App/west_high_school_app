@@ -227,8 +227,9 @@ struct EventDetailView: View {
                     message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(eventName)\nSubtitle: \(eventTime)\nDate: \(months[selectedMonthIndex]) \(selectedDayIndex + 1),\(years[selectedYearIndex]) "),
                     primaryButton: .destructive(Text("Publish Changes")) {
                         let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "MMMM d, yyyy"
-                        guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)") else {
+                        dateFormatter.dateFormat = "MMMM dd, yyyy"
+                        guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(eventyear)") else {
+                            print("Error configuring date")
                             return
                         }
                         
