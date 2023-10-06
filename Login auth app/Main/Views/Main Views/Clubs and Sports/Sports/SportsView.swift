@@ -304,7 +304,7 @@ struct SportsHibabi: View {
                                         .font(.system(size: 17, weight: .semibold, design: .rounded))
                                 }
                             }
-                        } else {
+                        }/* else {
                             if hasPermissionSports {
                                 NavigationLink {
                                     SportsAdminView()
@@ -313,7 +313,7 @@ struct SportsHibabi: View {
                                         .font(.system(size: 17, weight: .semibold, design: .rounded))
                                 }
                             }
-                        }
+                        }*/
                     }
                     )
                     
