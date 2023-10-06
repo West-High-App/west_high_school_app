@@ -3,6 +3,7 @@ import SwiftUI
 struct dubclubnewscell: View{
     var feat: clubNews
     @State var screen = ScreenSize()
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     
     var body:some View{
         VStack{
@@ -57,6 +58,7 @@ struct dubclubnewscell: View{
 struct ClubNewsAdminView: View { // hello
     @StateObject var dataManager = clubsNewslist.shared
 
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @State private var isPresentingAddAchievement = false
     @State private var selectedAchievement: clubNews?
     @State private var showAlert = false
@@ -69,10 +71,7 @@ struct ClubNewsAdminView: View { // hello
     @State private var isConfirmingApproveAchievement = false
     @State private var achievementToDelete: clubNews?
     
-    @State var isAdmin = false
-    @State var isWriter = false
     @ObservedObject var userInfo = UserInfo.shared
-    @StateObject var permissionsManager = permissionsDataManager()
     
     @State var usableType: clubNews?
     
@@ -129,7 +128,7 @@ struct ClubNewsAdminView: View { // hello
             }
             
             
-            if isAdmin {
+            if hasPermission.articleadmin {
                 
                 Picker("Selected", selection: $selected) {
                     Text("Edit")
@@ -321,19 +320,6 @@ struct ClubNewsAdminView: View { // hello
             }
         }
         .navigationBarTitle(Text("Edit Club News"))
-
-        
-        .onAppear {
-            if !hasAppeared {
-                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                    self.isAdmin = result
-                }
-                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                    self.isWriter = result
-                }
-                hasAppeared = true
-            }
-        }
         
         .sheet(isPresented: $isPresentingAddAchievement) {
             clubNewsRowlView(dataManager: dataManager)
@@ -383,6 +369,7 @@ struct clubNewsRowView: View {
 
 struct clubNewsRowlView: View {
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @ObservedObject var dataManager: clubsNewslist
     @State var newstitle = ""
     @State var newsimage: [String] = []
@@ -401,10 +388,7 @@ struct clubNewsRowlView: View {
     @State var displayimage: UIImage?
     @State var isDisplayingAddImage = false
     
-    @State var isAdmin = false
-    @State var isWriter = false
     @ObservedObject var userInfo = UserInfo.shared
-    @StateObject var permissionsManager = permissionsDataManager()
     
     @State var hasAppeared = false
     
@@ -441,17 +425,6 @@ struct clubNewsRowlView: View {
                 }
                 .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
-            .onAppear {
-                if !hasAppeared {
-                    permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                        self.isAdmin = result
-                    }
-                    permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                        self.isWriter = result
-                    }
-                    hasAppeared = true
-                }
-            }
             
             .navigationBarTitle(editingAchievement == nil ? "Add Club News" : "Edit Club News")
             .navigationBarItems(trailing: Button("Cancel") {
@@ -479,7 +452,7 @@ struct clubNewsRowlView: View {
                             newsimage.append(imagemanager.uploadPhoto(file: displayimage))
                         }
                         
-                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: isAdmin, documentID: "NAN", imagedata: imagedata)
+                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: hasPermission.articleadmin, documentID: "NAN", imagedata: imagedata)
                         
                         dataManager.createClubNews(clubNews: achievementToSave) { error in
                             if let error = error {

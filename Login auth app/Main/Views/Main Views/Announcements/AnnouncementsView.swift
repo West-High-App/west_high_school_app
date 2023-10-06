@@ -2,10 +2,9 @@ import SwiftUI
 
 struct AnnouncementsView: View {
     @StateObject var newsDataManager = Newslist.shared
-    var permissionsManager = permissionsDataManager()
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
 
-    @State private var hasPermission = false
     @State var hasAppeared = false
 
     var body: some View {
@@ -49,7 +48,7 @@ struct AnnouncementsView: View {
                 )
                 .navigationBarItems(trailing:
                     Group {
-                        if hasPermission {
+                    if hasPermission.announcements {
                             NavigationLink {
                                 AnnouncementsAdminView()
                             } label: {
@@ -59,17 +58,6 @@ struct AnnouncementsView: View {
                         }
                     }
                 )
-            }
-        }
-        .onAppear {
-            if !hasAppeared {
-                permissionsManager.checkPermissions(dataType: "Announcements", user: userInfo.email) { result in
-                    self.hasPermission = result
-                }
-                if userInfo.isAdmin {
-                    self.hasPermission = true
-                }
-                hasAppeared = true
             }
         }
     }

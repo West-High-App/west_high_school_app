@@ -9,10 +9,8 @@ import SwiftUI
 
 struct ClubsHibabi: View {
     
-    var permissionsManager = permissionsDataManager()
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
-    @State private var hasPermissionClubNews = false
-    @State private var hasPermissionClubs = false
     @StateObject var clubsmanager = clubManager.shared 
     @StateObject var clubfavoritesmanager = FavoriteClubsManager()
 
@@ -157,7 +155,7 @@ struct ClubsHibabi: View {
                                         
                                     }.navigationBarItems(trailing:
                                                             Group {
-                                        if hasPermissionClubs {
+                                        if hasPermission.clubs {
                                             NavigationLink {
                                                 ClubsAdminView(clubslist: clubsmanager.allclublist)
                                             } label: {
@@ -224,7 +222,7 @@ struct ClubsHibabi: View {
                                     }.searchable(text: $clubsearchText)
                                         .navigationBarItems(trailing:
                                                                 Group {
-                                            if hasPermissionClubs {
+                                            if hasPermission.clubs {
                                                 NavigationLink {
                                                     ClubsAdminView(clubslist: clubsmanager.allclublist)
                                                 } label: {
@@ -256,7 +254,7 @@ struct ClubsHibabi: View {
                                 .searchable(text: $searchText)
                                 .navigationBarItems(trailing:
                                                         Group {
-                                    if hasPermissionClubNews {
+                                    if hasPermission.clubs || hasPermission.articles {
                                         NavigationLink {
                                             ClubNewsAdminView()
                                         } label: {
@@ -275,113 +273,11 @@ struct ClubsHibabi: View {
                             favoriteclublist = clubfavoritesmanager.favoriteClubs
                             
                             if !hasAppeared {
-//                                isLoading = true
-                                print("LOADING...")
-                                
-                                if userInfo.isAdmin {
-                                    self.hasPermissionClubNews = true
-                                    self.hasPermissionClubs
-                                }
-                                permissionsManager.checkPermissions(dataType: "ClubNews", user: userInfo.email) { result in
-                                    self.hasPermissionClubNews = result
-                                }
-                                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                                    if self.hasPermissionClubNews == false {
-                                        self.hasPermissionClubNews = result
-                                    }
-                                }
-                                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                                    if self.hasPermissionClubNews == false {
-                                        self.hasPermissionClubNews = result
-                                    }
-                                }
-                                permissionsManager.checkPermissions(dataType: "Clubs Admin", user: userInfo.email) { result in
-                                    self.hasPermissionClubs = result
-                                    if result == true {
-                                        userInfo.isClubsAdmin = true
-                                        print("became club admin")
-                                    }
-                                }
-                                
-//                                let dispatchGroup = DispatchGroup()
-//                                
-//                                var tempylist2: [club] = []
-//                                for club in clubsmanager.favoriteslist {
-//                                    dispatchGroup.enter()
-//                                    
-//                                    imagemanager.getImage(fileName: club.clubimage) { image in
-//                                        var tempclub2 = club
-//                                        if let image = image {
-//                                            tempclub2.imagedata = image
-//                                        }
-//                                        
-//                                        tempylist2.append(tempclub2)
-//                                        dispatchGroup.leave()
-//                                        
-//                                    }
-//                                }
-//                                
-//                                dispatchGroup.notify(queue: .main) { [self] in
-//                                    self.clubsmanager.favoriteslist = tempylist2
-//                                    self.favoriteclublist = tempylist2
-//                                    self.clubfavoritesmanager.favoriteClubs = tempylist2
-//                                }
-//                                var tempylist: [club] = []
-//                                
-//                                for club in clubsmanager.allclublist {
-//                                    dispatchGroup.enter()
-//                                    
-//                                    imagemanager.getImage(fileName: club.clubimage) { image in
-//                                        
-//                                        var tempclub = club
-//                                        if let image = image {
-//                                            tempclub.imagedata = image
-//                                        }
-//                                        tempylist.append(tempclub) //
-//                                        dispatchGroup.leave()
-//                                    }
-//                                }
-//                                
-//                                dispatchGroup.notify(queue: .main) { [self] in
-//                                    self.clubsmanager.allclublist = tempylist
-//                                }
-//                                
-//                                
-//                                var templist: [clubNews] = []
-//                                for news in clubNewsManager.allclubsnewslist {
-//                                    dispatchGroup.enter()
-//                                    
-//                                    imagesManager.getImage(fileName: news.newsimage[0]) { uiimage in
-//                                        var tempnews = news
-//                                        if let uiimage = uiimage {
-//                                            
-//                                            tempnews.imagedata.removeAll()
-//                                            tempnews.imagedata.append(uiimage)
-//                                        }
-//                                        templist.append(tempnews)
-//                                        print("NEW ITEM BRO")
-//                                        dispatchGroup.leave()
-//                                    }
-//                                }
-//                                
-//                                dispatchGroup.notify(queue: .main) { [self] in
-//                                    self.clubNewsManager.allclubsnewslist = templist
-//                                    self.clubNewsManager.allclubsnewslist = self.clubNewsManager.allclubsnewslist.sorted { first, second in
-//                                        let dateFormatter = DateFormatter()
-//                                        dateFormatter.dateFormat = "MMM dd, yyyy"
-//                                        let firstDate = dateFormatter.date(from: first.newsdate) ?? Date()
-//                                        let secondDate = dateFormatter.date(from: second.newsdate) ?? Date()
-//                                        return firstDate < secondDate
-//                                    }.reversed()
-//                                    print("DONE LOADING")
-                                    isLoading = false
-//                                }
-                                
-                                
+                                isLoading = false
                                 hasAppeared = true
-                                
+                                }
                             }
-                            
+                        
                         }
                         
                         .navigationTitle("Clubs")
@@ -405,19 +301,15 @@ struct ClubsHibabi: View {
                     print("VIEW APPEARED")
                     
                 }
-                
-                
             }
-        }
         else {
             Text("Log in to view clubs!")
                 .lineLimit(2)
                 .font(.system(size: 32, weight: .semibold, design: .rounded))
                 .padding(.leading, 5)
         }
-
+        }
     }
-}
 
 struct clubnewscell: View{
     var feat: clubNews

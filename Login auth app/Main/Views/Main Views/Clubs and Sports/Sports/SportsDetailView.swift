@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SportsDetailView: View {
-    var permissionsManager = permissionsDataManager()
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
     @EnvironmentObject var sportsmanager: sportsManager // <------
     @EnvironmentObject var sporteventmanager: sportEventManager
@@ -231,7 +231,7 @@ struct SportsDetailView: View {
                     // past games view
                     
                     if selected == 2 {
-                        if currentsport.editoremails.contains(userInfo.email) || currentsport.adminemails.contains(userInfo.email) || userInfo.isAdmin || userInfo.isSportsAdmin {
+                        if currentsport.editoremails.contains(userInfo.email) || currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
                             NavigationLink {
                                 PastSportEventsAdminView(currentsport: currentsport)
                             } label: {

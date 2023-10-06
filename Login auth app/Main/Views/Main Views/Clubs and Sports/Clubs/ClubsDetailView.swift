@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ClubsDetailView: View {
     @State var selected = 1
-    var permissionsManager = permissionsDataManager()
 
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
     @State private var isAdmin = false
     @State private var isEditor = false
@@ -270,13 +270,12 @@ struct ClubsDetailView: View {
                     }
                     
                     // checking permissions
-                    if userInfo.isClubsAdmin || userInfo.isAdmin || currentclub.adminemails.contains(userInfo.email) {
+                    if hasPermission.clubs || currentclub.adminemails.contains(userInfo.email) {
                         isAdmin = true
                     }
                     
                     if currentclub.editoremails.contains(userInfo.email) {
                         isEditor = true
-                        print("amtches")
                     } else {
                         print(currentclub.editoremails)
                         print(userInfo.email)

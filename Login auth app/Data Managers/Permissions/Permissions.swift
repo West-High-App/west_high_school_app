@@ -8,13 +8,72 @@ struct permission: Identifiable {
     var documentID: String
 }
 
-// TODO: Redo structure to use snapshot listener?
+class PermissionsCheck: ObservableObject {
+    
+    static let shared = PermissionsCheck()
+    
+    var permissions = permissionsDataManager()
+    var user = UserInfo()
+    
+    @Published var admin = false
+    @Published var clubs = false
+    @Published var sports = false
+    
+    @Published var upcomingevents = false
+    @Published var announcements = false
+    
+    @Published var articles = false
+    @Published var articleadmin = false
+    @Published var articlewriter = false
+    
+    init() {
+        
+        permissions.checkPermissions(dataType: "Clubs Admin", user: user.email) { result in
+            self.clubs = result
+        }
+        permissions.checkPermissions(dataType: "Sports Admin", user: user.email) { result in
+            self.sports = result
+        }
+        permissions.checkPermissions(dataType: "Upcoming Events", user: user.email) { result in
+            self.upcomingevents = result
+        }
+        permissions.checkPermissions(dataType: "Announcements", user: user.email) { result in
+            self.announcements = result
+        }
+        permissions.checkPermissions(dataType: "Article Admin", user: user.email) { result in
+            self.articleadmin = result
+            if result {
+                self.articles = result
+            }
+        }
+        permissions.checkPermissions(dataType: "Article Writer", user: user.email) { result in
+            self.articlewriter = result
+            if result {
+                self.articles = result
+            }
+        }
+        permissions.checkPermissions(dataType: "Admin", user: user.email) { result in
+            self.admin = result
+            if result {
+                self.clubs = true
+                self.sports = true
+                self.upcomingevents = true
+                self.announcements = true
+                self.articlewriter = true
+                self.articleadmin = true
+                self.articles = true
+            }
+        }
+    }
+}
+
 
 class permissionsDataManager: ObservableObject {
+    
     @Published var permissions: [String: [String]] = [:]
     
     func checkPermissions(dataType: String, user: String, completion: @escaping (Bool) -> Void) {
-        print("Checking permissions..")
+        
         self.permissions.removeAll()
         let db = Firestore.firestore()
         let ref = db.collection("Permissions")
@@ -29,7 +88,7 @@ class permissionsDataManager: ObservableObject {
                     let data = document.data()
                     let dataType = data["dataType"] as? String ?? ""
                     let allowedUsers = data["allowedUsers"] as? [String] ?? []
-                    let documentID = document.documentID
+                    let _ = document.documentID
                     
                     self.permissions[dataType] = allowedUsers
                 }
@@ -110,18 +169,11 @@ class permissionsDataManager: ObservableObject {
                                 completion()
                             }
                         }
-                        
                     }
-                    
                 }
-                
             }
-            
         }
-        
-        
-        
-        
     }
+    
 }
 

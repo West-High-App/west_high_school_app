@@ -12,10 +12,6 @@ import Firebase
 
 
 struct HomeView: View {
-//    func scrollToTop() {
-//        let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
-//        setContentOffset(desiredOffset, animated: true)
-//    }
      @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
     @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
     @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
@@ -29,8 +25,8 @@ struct HomeView: View {
      
 
     // permissions
+     @StateObject var hasPermission = PermissionsCheck.shared
      @ObservedObject var sportsnewsmanager = sportsNewslist.shared
-    var permissionsManager = permissionsDataManager()
     @State private var hasPermissionUpcomingEvents = false
     @State private var hasPermissionSpotlight = false
     @State private var hasAdmin = false
@@ -182,7 +178,7 @@ struct HomeView: View {
                                              .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                                            // edit button
                                            
-                                           if hasPermissionUpcomingEvents {
+                                           if hasPermission.upcomingevents {
                                                 NavigationLink {
                                                      UpcomingEventsAdminView()
                                                 } label: {
@@ -276,7 +272,7 @@ struct HomeView: View {
                                              .shadow(radius: 5, x: 3, y: 3)
                                              .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                                            
-                                           if hasPermissionSpotlight {
+                                           if hasPermission.articles {
                                                 NavigationLink {
                                                      SpotlightAdminView()
                                                 } label: {
@@ -398,35 +394,6 @@ struct HomeView: View {
                                                           }
                                                      }
                                                 }
-                                                
-                                                
-                                                // getting permissions
-                                                
-                                                permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
-                                                     self.hasPermissionSpotlight = result
-                                                }
-                                                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                                                     self.hasPermissionSpotlight = result
-                                                }
-                                                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                                                     self.hasPermissionSpotlight = result
-                                                }
-                                                permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
-                                                     self.hasPermissionUpcomingEvents = result
-                                                }
-                                                permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { result in
-                                                     self.hasAdmin = result
-                                                     if result {
-                                                          userInfo.isAdmin = true
-                                                          self.hasPermissionSpotlight = true
-                                                          self.hasPermissionUpcomingEvents = true
-                                                          self.hasPermissionUpcomingEvents = true
-                                                     }
-                                                }
-                                                permissionsManager.checkPermissions(dataType: "UpcomingEvents", user: userInfo.email) { result in
-                                                     self.hasPermissionsUpcomingEvents = result
-                                                }
-                                                
                                            }
                                            
                                            hasAppeared = true

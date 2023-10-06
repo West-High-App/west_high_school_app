@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct StudentSpotlight: View {
-    @State private var hasPermissionSpotlight = false
-    @State private var isAdmin = false
-    @State private var isWriter = false
-    var permissionsManager = permissionsDataManager()
     @EnvironmentObject var userInfo: UserInfo
     @ObservedObject var spotlightManager = studentachievementlist.shared
     @StateObject var imagemanager = imageManager()
@@ -79,18 +75,6 @@ struct StudentSpotlight: View {
                     }
                 }
                 .onAppear {
-                    if !hasAppeared {
-                        permissionsManager.checkPermissions(dataType: "StudentAchievements", user: userInfo.email) { result in
-                            self.hasPermissionSpotlight = result
-                        }
-                        permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                            self.isAdmin = result
-                        }
-                        permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                            self.isWriter = result
-                        }
-                        hasAppeared = true
-                    }
                     if  false { // !hasAppeared
                         print("LOADING....")
                         

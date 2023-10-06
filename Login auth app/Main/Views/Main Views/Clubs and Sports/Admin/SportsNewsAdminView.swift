@@ -3,16 +3,14 @@ import SwiftUI
 struct SportsNewsAdminView: View {
     @StateObject var dataManager = sportsNewslist.shared
     
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @State private var isPresentingAddAchievement = false
     @State private var selectedAchievement: sportNews?
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var tempAchievementTitle = ""
     
-    @State var isAdmin = false
-    @State var isWriter = false
     @State var userInfo = UserInfo.shared
-    @StateObject var permissionsManager = permissionsDataManager()
     @State var screen = ScreenSize()
     @State var hasAppeared = false
     
@@ -74,7 +72,7 @@ struct SportsNewsAdminView: View {
 
             }
             
-            if isAdmin {
+            if hasPermission.articleadmin {
                 
                 Picker("Selected", selection: $selected) {
                     Text("Edit")
@@ -281,17 +279,6 @@ struct SportsNewsAdminView: View {
             }
         }                .navigationBarTitle(Text("Edit Sport News"))
         
-        .onAppear {
-            if !hasAppeared {
-                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                    self.isAdmin = result
-                }
-                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                    self.isWriter = result
-                }
-                hasAppeared = true
-            }
-        }
         
         .sheet(isPresented: $isPresentingAddAchievement) {
             sportNewsRowlView(dataManager: dataManager)
@@ -341,6 +328,7 @@ struct sportNewsRowView: View {
 
 struct sportNewsRowlView: View {
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @ObservedObject var dataManager: sportsNewslist
     @State var newstitle = ""
     @State var newsimage: [String] = []
@@ -363,10 +351,7 @@ struct sportNewsRowlView: View {
     
     var editingAchievement: sportNews?
     
-    @State var isAdmin = false
-    @State var isWriter = false
     @State var userInfo = UserInfo.shared
-    @StateObject var permissionsManager = permissionsDataManager()
     
     @State var hasAppeared = false
     
@@ -400,18 +385,7 @@ struct sportNewsRowlView: View {
                 }.font(.system(size: 17, weight: .semibold, design: .rounded))
 
             }
-            
-            .onAppear {
-                if !hasAppeared {
-                    permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                        self.isAdmin = result
-                    }
-                    permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                        self.isWriter = result
-                    }
-                    hasAppeared = true
-                }
-            }
+        
             
             .navigationBarTitle(editingAchievement == nil ? "Add Sport News" : "Edit Sport News")
             .navigationBarItems(trailing: Button("Cancel") {
@@ -445,7 +419,7 @@ struct sportNewsRowlView: View {
                         }
                          
                         
-                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: isAdmin, imagedata: imagedata, documentID: "NAN")
+                        let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: hasPermission.articleadmin, imagedata: imagedata, documentID: "NAN")
                          
                         dataManager.createSportNews(sportNews: achievementToSave) { error in
                             if let error = error {

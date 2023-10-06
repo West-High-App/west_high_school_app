@@ -54,8 +54,8 @@ struct dubachievementcell: View{
 
 struct SpotlightAdminView: View {
     @ObservedObject var dataManager = studentachievementlist.shared
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @StateObject var userInfo = UserInfo.shared
-    @StateObject var permissionsManager = permissionsDataManager()
 
     @State private var isPresentingAddAchievement = false
     @State private var selectedAchievement: studentachievement?
@@ -72,10 +72,8 @@ struct SpotlightAdminView: View {
     @State var selectedIndex = 0
     @State var usableType: studentachievement?
     
-    @State private var isAdmin = false
     @State var screen = ScreenSize()
-    @State private var isWriter = false
-    
+
     @State private var presentingArticleSheet = false
     @State var selectedArticle = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [], isApproved: false, imagedata: [])
     
@@ -132,7 +130,7 @@ struct SpotlightAdminView: View {
 
             }
 
-            if isAdmin {
+            if hasPermission.articleadmin {
                 Picker("Selected", selection: $selected) {
                     Text("Edit")
                         .tag(1)
@@ -292,7 +290,7 @@ struct SpotlightAdminView: View {
                         }
                     }
                 }
-            } else if isWriter {
+            } else {
                 
                 Text("Current pending articles")
                     .padding(10)
@@ -333,12 +331,6 @@ struct SpotlightAdminView: View {
                 }
                 self.selectedArticle = selectedArticle
             }
-                permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                    self.isAdmin = result
-                }
-                permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                    self.isWriter = result
-                }
         }
         .sheet(isPresented: $isPresentingAddAchievement) {
             AchievementDetailView(dataManager: dataManager, editingAchievement: nil, displayimages: [])
@@ -397,15 +389,13 @@ struct AchievementDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var dataManager: studentachievementlist
     @State private var achievementTitle = ""
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @State private var achievementDescription = ""
     @State private var articleAuthor = ""
     @State private var publishedDate = ""
     @State var isApproved = false
     
-    @StateObject var permissionsManager = permissionsDataManager()
     @ObservedObject var userInfo = UserInfo.shared
-    @State private var isAdmin = false
-    @State private var isWriter = false
     
     let calendar = Calendar.current
     @State private var selectedMonthIndex = Calendar.current.component(.month, from: Date()) - 1
@@ -485,7 +475,7 @@ struct AchievementDetailView: View {
                         }
                         
                         var check = false
-                        if isAdmin {
+                        if hasPermission.articleadmin {
                             check = true
                         }
                         
@@ -509,15 +499,6 @@ struct AchievementDetailView: View {
                 )
             }
             .onAppear {
-                if !hasAppeared {
-                    permissionsManager.checkPermissions(dataType: "Article Admin", user: userInfo.email) { result in
-                        self.isAdmin = result
-                    }
-                    permissionsManager.checkPermissions(dataType: "Article Writer", user: userInfo.email) { result in
-                        self.isWriter = result
-                    }
-                    hasAppeared = true
-                }
                 if let achievement = editingAchievement {
                     achievementTitle = achievement.achievementtitle
                     achievementDescription = achievement.achievementdescription

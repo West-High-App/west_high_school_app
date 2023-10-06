@@ -9,10 +9,9 @@ import SwiftUI
 import Firebase
 
 struct InformationView: View {
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
     @State var isPresentingLogoutConfirmation = false
-    @State var hasAdmin = false
-    @StateObject var permissionsManager = permissionsDataManager()
     @State var hasAppeared = false
     @State var isAccountViewActive = false
     @State var isShowingAccountDetails = false
@@ -60,7 +59,7 @@ struct InformationView: View {
                         }
                     }.padding(.vertical, 10)
                     
-                    if hasAdmin {
+                    if hasPermission.admin {
                         NavigationLink {
                             PermissionsAdminView()
                         } label: {
@@ -189,19 +188,6 @@ struct InformationView: View {
                 
             }
             
-            
-            .onAppear {
-                
-                if !hasAppeared {
-                    
-                    permissionsManager.checkPermissions(dataType: "Admin", user: userInfo.email) { bool in
-                        hasAdmin = bool
-                    }
-                    
-                    hasAppeared = true
-                }
-                
-            }
     }
 }
 
