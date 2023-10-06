@@ -38,12 +38,12 @@ struct ClubsAdminView: View {
     var body: some View {
         
         VStack {
-            HStack {
-                Text("You are currently editing source data. Any changes will be made public across all devices.")
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 5)
-                Spacer()
-            }
+//            HStack {
+//                Text("You are currently editing source data. Any changes will be made public across all devices.")
+//                    .padding(.horizontal, 20)
+//                    .padding(.bottom, 5)
+//                Spacer()
+//            }
             
             Button {
                 isPresentingAddClub = true

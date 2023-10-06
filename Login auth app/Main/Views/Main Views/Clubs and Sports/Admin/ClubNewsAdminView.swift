@@ -103,14 +103,14 @@ struct ClubNewsAdminView: View { // hello
     
     var body: some View {
         VStack {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("You are currently editing source data. Any changes will be made public across all devices.")
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 5)
-                    Spacer()
-                }
-            }
+//            VStack(alignment: .leading) {
+//                HStack {
+//                    Text("You are currently editing source data. Any changes will be made public across all devices.")
+//                        .padding(.horizontal, 20)
+//                        .padding(.bottom, 5)
+//                    Spacer()
+//                }
+//            }
             Button {
                 isPresentingAddAchievement = true
             } label: {
