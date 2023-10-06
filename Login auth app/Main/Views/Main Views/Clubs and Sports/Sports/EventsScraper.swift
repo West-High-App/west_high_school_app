@@ -51,42 +51,67 @@ class HTMLParser: ObservableObject {
         return events
     }
     
+    private static func getDate(_ index: Int, tableShell: Elements) throws -> String? {
+        guard index >= 0 else {
+            return nil
+        }
+        let text = try tableShell[index].text()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMM d, yyyy"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
+        guard dateFormatter.date(from: "\(text)") != nil else {
+            if htmlStringIsValidIncludingEmptyString(text) {
+                return try getDate(index-1, tableShell: tableShell)
+            } else {
+                return nil
+            }
+        }
+        
+        return text
+    }
+    
     static func parsedHtml(_ index: Int, tableShell: Elements) throws -> ParsedEvent? {
-        guard index != tableShell.count-1 else { return nil }
-        let date = try tableShell[index].text()
+        guard index != tableShell.count-1, let date = try getDate(index, tableShell: tableShell) else {
+            return nil
+        }
         let info = try tableShell[index+1].text()
+        let infoHtml = try tableShell[index+1].html()
         
         let infoArray = info.components(separatedBy: "  ")
         
-        guard htmlStringIsValid(date), htmlStringIsValid(info), infoArray.count >= 4 else { return nil }
+        guard htmlStringIsValid(date), htmlStringIsValid(info), infoArray.count >= 3, !infoHtml.contains("</strike>") else { return nil }
         
-        let type = infoArray[0]
-        let time = infoArray[1].replacingOccurrences(of: "PM", with: " PM").replacingOccurrences(of: "AM", with: " AM")
-        let opponent = infoArray[2]
-        let location = infoArray[3]
-        let comments = infoArray.count == 6 ? infoArray[4] : ""
+        let isOffset = (infoArray[0].contains("AM") || infoArray[0].contains("PM"))
+        
+        let type = isOffset ? "\(infoArray[0].dropLast(7))" : infoArray[0]
+        let time = (isOffset ? "\(infoArray[0].dropFirst(type.count))": infoArray[1]).replacingOccurrences(of: "PM", with: " PM").replacingOccurrences(of: "AM", with: " AM")
+        let opponent = isOffset ? infoArray[1] : infoArray[2]
+        let location = isOffset ? infoArray[2] : infoArray[3]
+        let comments = infoArray.count == 6 ? (isOffset ? infoArray[3] : infoArray[4]) : infoArray.last ?? ""
         
         // convert time and date strings into Swift date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, MMM d, yyyy hh:mm a"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
+        dateFormatter.timeZone = TimeZone(identifier: "America/Chicago")
+//        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
         guard let finalDate = dateFormatter.date(from: "\(date) \(time)") else { return nil }
-        print(finalDate)
         
         let event = ParsedEvent(date: finalDate, type: type, opponent: opponent, location: location, comments: comments)
-        
-        print("GOT NEW EVENT:")
-        print(event)
         
         return event
     }
     
-    static func htmlStringIsValid(_ string: String) -> Bool {
+    private static func htmlStringIsValid(_ string: String) -> Bool {
+        guard !string.isEmpty else { return false }
+        return htmlStringIsValidIncludingEmptyString(string)
+    }
+    
+    private static func htmlStringIsValidIncludingEmptyString(_ string: String) -> Bool {
         let invalidStrings = [
-            "",
             " ",
             "Color Key:    Home Away",
             "Madison West Color Key:    Home Away Change View: Day/date Date condensed Month View",
+            "Change View: Day/date Date condensed Month View"
         ]
         let invalidComponents = [
             "Activity Time",
