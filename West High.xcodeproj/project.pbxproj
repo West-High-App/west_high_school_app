@@ -10,6 +10,7 @@
 		221388302AC1FF370052A285 /* EventsScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213882F2AC1FF370052A285 /* EventsScraper.swift */; };
 		221388332AC1FF7F0052A285 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 221388322AC1FF7F0052A285 /* SwiftSoup */; };
 		221388352AC202530052A285 /* SportEventStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221388342AC202530052A285 /* SportEventStorage.swift */; };
+		221423DD2ACF3EDB0015CD3B /* LinksData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221423DC2ACF3EDB0015CD3B /* LinksData.swift */; };
 		221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* Permissions.swift */; };
 		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
 		221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */; };
@@ -110,6 +111,7 @@
 /* Begin PBXFileReference section */
 		2213882F2AC1FF370052A285 /* EventsScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsScraper.swift; sourceTree = "<group>"; };
 		221388342AC202530052A285 /* SportEventStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportEventStorage.swift; sourceTree = "<group>"; };
+		221423DC2ACF3EDB0015CD3B /* LinksData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksData.swift; sourceTree = "<group>"; };
 		221A9CF92A95DD0A004A9F02 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
 		221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsNewsAdminView.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 			isa = PBXGroup;
 			children = (
 				2270B24F2A68E6BF00823E58 /* InformationView.swift */,
+				221423DC2ACF3EDB0015CD3B /* LinksData.swift */,
 				22DF41442AB3586E00D25707 /* AccountView.swift */,
 				2270B2512A68E6C300823E58 /* Information Views */,
 			);
@@ -642,6 +645,7 @@
 				2232FEEC2AA46F5E0067AAB8 /* SportEventAdminView.swift in Sources */,
 				2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */,
 				228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */,
+				221423DD2ACF3EDB0015CD3B /* LinksData.swift in Sources */,
 				E8ED91732AB5615200065526 /* ClassesListView.swift in Sources */,
 				E87A324E2A967ECF00D7CDB1 /* AboutView.swift in Sources */,
 				E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */,
@@ -840,7 +844,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = B2YZ849D42;
+				DEVELOPMENT_TEAM = N2R26K3XYA;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -860,7 +864,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApps;
+				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -879,7 +883,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = B2YZ849D42;
+				DEVELOPMENT_TEAM = N2R26K3XYA;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

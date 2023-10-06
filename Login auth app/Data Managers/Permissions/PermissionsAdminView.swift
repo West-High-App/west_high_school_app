@@ -7,7 +7,8 @@ struct PermissionsAdminView: View {
     @State var permissionsList: [String: [String]] = [:]
     @State var permissionsListKeys: [String] = []
     @State private var newPermissionValue: String = ""
-    
+    @State var screen = ScreenSize()
+
     func run(completion: @escaping () -> Void) {
         permissionsManager.checkPermissions(dataType: "", user: "") { _ in
             self.permissionsList = permissionsManager.permissions
@@ -38,6 +39,7 @@ struct EmailListView: View {
     @Binding var permissionsList: [String: [String]]
     @Binding var permissionsListKeys: [String]
     @State private var isPresentingAddAdmin = false
+    @State var screen = ScreenSize()
     @State var newAdminEmail = ""
     @StateObject var permissionsManager = permissionsDataManager()
     @State var isPresentingConfirmChanges = false
@@ -110,8 +112,16 @@ struct EmailListView: View {
                     
                     isPresentingConfirmChanges = true
                     
-                }.foregroundColor(.red)
-                    .fontWeight(.bold)
+                }.foregroundColor(.white)
+                    .fontWeight(.semibold)
+                    .padding(10)
+                    .cornerRadius(15.0)
+                    .frame(width: screen.screenWidth-60)
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                    .background(Rectangle()
+                        .foregroundColor(.blue)
+                        .cornerRadius(10)
+                    )
                 .alert(isPresented: $isPresentingConfirmChanges) {
                     
                     Alert(

@@ -394,6 +394,8 @@ struct SportsDetailView: View {
                                 let sortedFutureEvents = futureEvents.sorted { (event1, event2) -> Bool in
                                     return event1.date < event2.date
                                 }
+                                print("FUTURE EVENTS")
+                                print(sortedFutureEvents)
 
                                 let sortedPastEvents = pastEvents.sorted { (event1, event2) -> Bool in
                                     return event1.date > event2.date
@@ -416,7 +418,7 @@ struct SportsDetailView: View {
                                 self.pastevents = self.pastevents.reversed()
                                 self.isLoading = false
                                 sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                                    
+                                    // TODO: login for updating firebase with events
                                 }
                                 
                                 

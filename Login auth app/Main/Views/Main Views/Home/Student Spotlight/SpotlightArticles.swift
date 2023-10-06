@@ -79,7 +79,7 @@ struct SpotlightArticles: View {
             }.onAppear {
             }
 
-            Text(currentstudentdub.achievementdescription)
+            LinkTextView(text: currentstudentdub.achievementdescription)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(Color.black)
                     .font(.system(size: 17, weight: .regular, design: .rounded))

@@ -1,4 +1,56 @@
 import SwiftUI
+struct dubachievementcell: View{
+    var feat: studentachievement
+    @StateObject var imagemanager = imageManager()
+    @State var imagedata: [UIImage] = []
+    @State var screen = ScreenSize()
+    
+    var body:some View{
+        VStack{
+            Image(uiImage: feat.imagedata.first ?? UIImage())
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 250)
+                .frame(maxWidth: screen.screenWidth - 60)
+                .clipped()
+                .cornerRadius(9)
+            VStack(alignment: .leading, spacing:2){
+                HStack {
+                    Text(feat.articleauthor)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .padding(.leading, 5)
+                    Spacer()
+                    Text(feat.publisheddate)
+                        .foregroundColor(.secondary)
+                        .lineLimit(2)
+                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .padding(.leading, 5)
+                }
+                Text(feat.achievementtitle)
+                    .foregroundColor(.black)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.9)
+                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                    .padding(.leading, 5)
+                Text(feat.achievementdescription)
+                    .foregroundColor(.secondary)
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .padding(.leading, 5)
+                    .lineLimit(1)
+//                    Text("Click here to read more")
+//                        .foregroundColor(.blue)
+//                        .lineLimit(2)
+//                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+//                        .padding(.leading, 5)
+
+            }
+
+
+        }
+    }
+}
 
 struct SpotlightAdminView: View {
     @ObservedObject var dataManager = studentachievementlist.shared
@@ -93,15 +145,7 @@ struct SpotlightAdminView: View {
                     List {
                         ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
                             if achievement.isApproved {
-                                VStack(alignment: .leading) {
-                                    Text(achievement.achievementtitle)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    Text(achievement.publisheddate)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    Text(achievement.achievementdescription)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        .lineLimit(2)
-                                }
+                                dubachievementcell(feat: achievement)
                                 .buttonStyle(PlainButtonStyle())
                                 .contextMenu {
                                     Button("Delete", role: .destructive) {
@@ -125,15 +169,7 @@ struct SpotlightAdminView: View {
                     List {
                         ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
                             if !achievement.isApproved {
-                                VStack(alignment: .leading) {
-                                    Text(achievement.achievementtitle)
-                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    Text(achievement.publisheddate)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    Text(achievement.achievementdescription)
-                                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        .lineLimit(2)
-                                }
+                                dubachievementcell(feat: achievement)
                                 .contextMenu {
                                     Button("Edit") {
                                         print(selectedArticle)
@@ -263,15 +299,17 @@ struct SpotlightAdminView: View {
                 List {
                     ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
                         if !achievement.isApproved {
-                            VStack(alignment: .leading) {
-                                Text(achievement.achievementtitle)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                Text(achievement.publisheddate)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                Text(achievement.achievementdescription)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .lineLimit(2)
-                            }
+                            //
+                            dubachievementcell(feat: achievement)
+                                .buttonStyle(PlainButtonStyle())
+                                .contextMenu {
+                                    Button("Delete", role: .destructive) {
+                                        tempAchievementTitle = achievement.achievementtitle
+                                        isConfirmingDeleteAchievement = true
+                                        achievementToDelete = achievement
+                                    }
+                                }
+                            
                         }
                     }
                     if !dataManager.allstudentachievementlist.isEmpty && !dataManager.allPendingDocsLoaded {

@@ -276,6 +276,11 @@ struct ClubsDetailView: View {
                     
                     if currentclub.editoremails.contains(userInfo.email) {
                         isEditor = true
+                        print("amtches")
+                    } else {
+                        print(currentclub.editoremails)
+                        print(userInfo.email)
+                        print("doesn't match")
                     }
                     
                     
