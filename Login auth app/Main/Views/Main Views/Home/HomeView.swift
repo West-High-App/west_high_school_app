@@ -94,21 +94,12 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
-//            SwiftUIWebView(url: URL(string:"https://www.google.com/maps")!)
-//                  .onAppear {
-//                       shutdownmanager.fetchData { bool, string in
-//                            isShutDown = bool
-//                            shutdownMessage = string
-//                       }
-//                  }
-//            StaffView()
-//            LunchMenuView() // tryna load this shit early
-//            ClassesView()
-//            SchoolPolicyGuideView()
-//            ClubsHibabi()
-//            SportsHibabi()
-//            AnnouncementsView()
-//            UpcomingEventsView(upcomingeventslist: upcomingeventsdataManager.allupcomingeventslist, permission: hasPermissionsUpcomingEvents)
+            StaffView()
+            LunchMenuView() // tryna load this shit early
+            ClassesView()
+            SchoolPolicyGuideView()
+            ClubsHibabi()
+            SportsHibabi()
             //MARK: HOME
              if !isShutDown {
                   NavigationView{
