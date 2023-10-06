@@ -83,7 +83,9 @@ struct AccountView: View {
                                 print("trying to sign out.")
                                 try Auth.auth().signOut()
                                 DispatchQueue.main.async {
+                                    print("setting to none")
                                     userInfo.loginStatus = "none"
+                                    print("set to none")
                                 }
                             } catch let signOutError {
                                 print("tried to sign out failed")

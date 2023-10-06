@@ -73,7 +73,7 @@ struct AuthView: View {
     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     @StateObject private var viewModel = AuthenticationViewModel()
     @StateObject var dataManager = DataManager()
-    @EnvironmentObject var userInfo: UserInfo
+    @StateObject var userInfo = UserInfo() // changed this bitch
     @State var shutdownmanager = ShutdownManager()
     
     // check for internet connection
