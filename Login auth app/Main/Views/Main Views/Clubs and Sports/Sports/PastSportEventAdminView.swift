@@ -15,6 +15,7 @@ struct PastSportEventsAdminView: View {
     @State var eventToSave: sportEvent?
     
     @ObservedObject var userInfo = UserInfo.shared
+    @ObservedObject var hasPermission = PermissionsCheck.shared
     
     @State private var eventyear = ""
     let calendar = Calendar.current
@@ -137,7 +138,7 @@ struct PastSportEventsAdminView: View {
                     Spacer()
                 }
                 Form {
-                    if currentsport.adminemails.contains(userInfo.email) || userInfo.isAdmin || userInfo.isSportsAdmin{
+                    if currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
                         HStack {
                             VStack {
                                 Toggle(isOn: $isSpecial) {
