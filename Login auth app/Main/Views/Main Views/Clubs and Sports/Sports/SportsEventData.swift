@@ -68,12 +68,15 @@ class sportEventManager: ObservableObject {
                 let calendar = Calendar.current
                 let components = calendar.dateComponents([.day, .month, .year], from: parsedEvent.date)
                 
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MMM" // This will give you the abbreviated month name
+                
                 return sportEvent(
                     documentID: "NAN",
                     arrayId: "NAN",
                     title: parsedEvent.type,
                     subtitle: parsedEvent.opponent,
-                    month: "\(components.month ?? 0)",
+                    month: dateFormatter.string(from: parsedEvent.date),
                     day: "\(components.day ?? 0)",
                     year: "\(components.year ?? 0)",
                     publisheddate: parsedEvent.date.formatted(date: .abbreviated, time: .omitted),
@@ -86,15 +89,19 @@ class sportEventManager: ObservableObject {
             if let sportsEvents = parsedevents?.filter({ $0.date > Date() }) {
                 
                 self.sportsEvents = sportsEvents
-                
-                let pastsSortsEvents = allSportsEvents.filter({ $0.date < Date() })
-                
-                for pastSportsEvent in pastsSortsEvents where !self.pastSportsEvents.contains(where: {
-                    $0.date == pastSportsEvent.date &&
-                    $0.title == pastSportsEvent.title &&
-                    $0.subtitle == pastSportsEvent.subtitle
+            }
+            
+            let pastSortsEvents = allSportsEvents.filter({ $0.date < Date().dayBefore })
+            
+            for event in pastSortsEvents {
+                if !self.pastSportsEvents.contains(where: {
+                    $0.date == event.date &&
+                    $0.title == event.title &&
+                    $0.subtitle == event.subtitle
                 }) {
-                    self.createSportEvent(forSport: "\(sport.sportname) \(sport.sportsteam)", sportEvent: pastSportsEvent)
+                    print("sportEvent: \(event.title); \(event.subtitle)")
+                    print("")
+                    self.createSportEvent(forSport: "\(sport.sportname) \(sport.sportsteam)", sportEvent: event)
                 }
             }
             
@@ -209,7 +216,7 @@ class sportEventManager: ObservableObject {
         }
         
         let db = Firestore.firestore()
-        let collection = db.collection("SportEvents")
+        let collection = db.collection("SportEvents").whereField("sportID", isEqualTo: forSport)
         
         self.pastEventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
@@ -221,40 +228,6 @@ class sportEventManager: ObservableObject {
             }
             
             if let snapshot = snapshot {
-                var pastReturnValue: [sportEvent] = []
-                var returnValue: [sportEvent] = [] {
-                    didSet {
-                        if returnValue.count == snapshot.documents.count {
-                            for event in returnValue{
-                                if event.date < Date.yesterday{
-                                    
-                                    returnValue.removeAll {$0 == event}
-                                    pastReturnValue.append(event) // if its in the past, add it to the past list
-                                    
-                                }
-                            }
-                            
-                            // past lists
-                            
-                            self.pastEventDictionary[forSport] = pastReturnValue
-                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.sorted(by: {
-                                $0.date.compare($1.date) == .orderedDescending
-                            })
-                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
-                            self.pastSportsEvents = pastReturnValue
-                            self.pastSportsEvents = self.pastSportsEvents.sorted(by: {
-                                $0.date.compare($1.date) == .orderedDescending
-                            })
-                            print("got past sports events")
-                            print(self.pastSportsEvents)
-                            let completionValue = self.pastSportsEvents
-                            
-                            if let completion {
-                                completion(completionValue, nil)
-                            }
-                        }
-                    }
-                }
                 for document in snapshot.documents {
                     let data = document.data()
                     let sportID = data["sportID"] as? String ?? ""
@@ -264,7 +237,7 @@ class sportEventManager: ObservableObject {
                     if sportID == forSport {
                         // making in into a sportEvent
                         self.documentId = document.documentID
-                        for event in events {
+                        let returnValue: [sportEvent] = events.map { event in
                             let id = event["id"] as? String ?? ""
                             let eventname = event["title"] as? String ?? ""
                             let time = event["subtitle"] as? String ?? ""
@@ -276,9 +249,25 @@ class sportEventManager: ObservableObject {
                             let isUpdated = event["isUpdated"] as? Bool ?? false
 
                             let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
-                            returnValue.append(newEvent)
+                            return newEvent
                         }
                         
+//                            self.pastEventDictionary[forSport] = returnValue
+                        self.pastEventDictionary[forSport] = returnValue.sorted(by: {
+                            $0.date.compare($1.date) == .orderedDescending
+                        })
+//                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
+//                            self.pastSportsEvents = returnValue
+                        self.pastSportsEvents = returnValue.sorted(by: {
+                            $0.date.compare($1.date) == .orderedDescending
+                        })
+                        print("got past sports events")
+                        print(self.pastSportsEvents)
+                        let completionValue = self.pastSportsEvents
+                        
+                        if let completion {
+                            completion(completionValue, nil)
+                        }
                         
                     }
                 }
@@ -288,81 +277,47 @@ class sportEventManager: ObservableObject {
     }
     
     func createSportEvent(forSport: String, sportEvent: sportEvent) {
-        var eventlist: [[String: Any]] = []
         var eventdocumentID = ""
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents")
+        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport
         
-        collection.getDocuments { snapshot, error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
-            }
+        let uploadEvent = [sportEvent].map { event in
             
-            if let snapshot = snapshot {
-                var docID = ""
-                for doc in snapshot.documents {
-                    let data = doc.data()
-                    let sportID = data["sportID"] as? String ?? ""
-                    let events = data["pastevents"] as? [[String: Any]] ?? []
-                    docID = doc.documentID
-                    
-                    if sportID == forSport {
-                        eventlist = events // got up to here truw
-                        eventdocumentID = docID
-                        
-                        // update that bitch
-                        var eventtoadd: [String: Any] = [:]
-                        let title = sportEvent.title
-                        let subtitle = sportEvent.subtitle
-                        let month = sportEvent.month
-                        let day = sportEvent.day
-                        let year = sportEvent.year
-                        let publisheddate = "\(month) \(day), \(year)"
-                        let isSpecial = sportEvent.isSpecial
-                        let isUpdated = sportEvent.isUpdated
-                        let score = sportEvent.score
-                        eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
-                        eventlist.append(eventtoadd) // here you fat fuck
-                        
-                        collection.document(eventdocumentID).updateData([
-                            "pastevents": eventlist
-                        ]) { error in
-                            if let error = error {
-                                print("Error updating document: \(error)")
-                            } else {
-                                print("Document successfully updated")
-                            }
-                        }
-                    }
-                }
-                var Bool = true
-                for _ in eventlist {
-                    Bool = false
-                }
-                if Bool {
-                    var eventtoadd: [String: Any] = [:]
-                    let id = UUID().uuidString
-                    let title = sportEvent.title
-                    let subtitle = sportEvent.subtitle
-                    let month = sportEvent.month
-                    let day = sportEvent.day
-                    let year = sportEvent.year
-                    let publisheddate = "\(month) \(day), \(year)"
-                    let isSpecial = sportEvent.isSpecial
-                    let isUpdated = sportEvent.isUpdated
-                    let score = sportEvent.score
-                    eventtoadd = ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
-
-                    collection.addDocument(data: [
-                        "sportID": forSport,
-                        "pastevents": [eventtoadd]
-                    ]) { error in
-                        if let error = error {
-                            print("Error: \(error.localizedDescription)")
-                        }
-                    }
-                }
+            let id = UUID().uuidString
+            let title = event.title
+            let subtitle = event.subtitle
+            let month = event.month
+            let day = event.day
+            let year = event.year
+            let publisheddate = "\(month) \(day), \(year)"
+            let isSpecial = event.isSpecial
+            let isUpdated = event.isUpdated
+            let score = event.score
+            return ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
+        }
+        
+        let sportsEvents: [[String : Any]] = self.pastSportsEvents.map { event in
+            
+            let id = UUID().uuidString
+            let title = event.title
+            let subtitle = event.subtitle
+            let month = event.month
+            let day = event.day
+            let year = event.year
+            let publisheddate = "\(month) \(day), \(year)"
+            let isSpecial = event.isSpecial
+            let isUpdated = event.isUpdated
+            let score = event.score
+            return ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
+        } + uploadEvent
+        
+        collection.document(documentID).setData([
+            "sportID": forSport,
+            "pastevents": FieldValue.arrayUnion(uploadEvent)
+        ], merge: true) { error in
+            if let error = error {
+                print("ERROR ADDING EVENT: \(error.localizedDescription)")
             }
         }
     }

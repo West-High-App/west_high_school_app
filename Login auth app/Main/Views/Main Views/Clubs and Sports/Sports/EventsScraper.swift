@@ -92,8 +92,8 @@ class HTMLParser: ObservableObject {
         // convert time and date strings into Swift date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, MMM d, yyyy hh:mm a"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
         dateFormatter.timeZone = TimeZone(identifier: "America/Chicago")
-//        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
         guard let finalDate = dateFormatter.date(from: "\(date) \(time)") else { return nil }
         
         let event = ParsedEvent(date: finalDate, type: type, opponent: opponent, location: location, comments: comments)

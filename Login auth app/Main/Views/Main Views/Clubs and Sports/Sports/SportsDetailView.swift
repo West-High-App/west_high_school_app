@@ -348,27 +348,6 @@ struct SportsDetailView: View {
                     
                 }.padding(.top, 10 + screen.screenHeight / 10) // padding was here
                 
-                .onAppear {
-                    sporteventmanager.getSportsEvents(forSport: self.currentsport)
-                    sporteventmanager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)")
-                                        
-                    imagemanager.getImage(fileName: currentsport.rosterimage) { image in
-                        currentsport.rosterimagedata = image
-                    }
-                    
-                    // checking if club is a favorite
-                    if currentsport.favoritedusers.contains(userInfo.email) {
-                        isFavorited = true
-                    }
-                    
-                    // checking permissions
-                    if userInfo.isSportsAdmin || userInfo.isAdmin || currentsport.adminemails.contains(userInfo.email) {
-                        hasPermissionSport = true
-                    }
-                    
-                    // formatting stuff
-                    
-                }
                 .navigationDestination(isPresented: $isEditing, destination: {
                     SportsDetailAdminView(editingsport: currentsport)
                         .environmentObject(sportsmanager)
@@ -434,6 +413,27 @@ struct SportsDetailView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            sporteventmanager.getSportsEvents(forSport: self.currentsport)
+            sporteventmanager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)")
+                                
+            imagemanager.getImage(fileName: currentsport.rosterimage) { image in
+                currentsport.rosterimagedata = image
+            }
+            
+            // checking if club is a favorite
+            if currentsport.favoritedusers.contains(userInfo.email) {
+                isFavorited = true
+            }
+            
+            // checking permissions
+            if userInfo.isSportsAdmin || userInfo.isAdmin || currentsport.adminemails.contains(userInfo.email) {
+                hasPermissionSport = true
+            }
+            
+            // formatting stuff
+            
         }
     }
     }
