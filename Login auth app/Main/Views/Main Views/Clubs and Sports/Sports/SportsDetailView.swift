@@ -13,6 +13,7 @@ struct SportsDetailView: View {
     @EnvironmentObject var sportsmanager: sportsManager // <------
     @EnvironmentObject var sporteventmanager: sportEventManager
     @EnvironmentObject var sporteventstorage: SportsEventStorage
+    @StateObject var imagemanager = imageManager()
     @State private var hasPermissionSport = false
     @State private var canEditSport = false
     @State var selected = 1
@@ -29,10 +30,15 @@ struct SportsDetailView: View {
     @State var events: [ParsedEvent] = []
     @State var pastevents: [ParsedEvent] = []
     @State var newpastevents: [sportEvent] = []
+    @State var showingEditRoster = false
+    @State var isDisplayingAddImage = false
+    @State var temprosterimage: UIImage?
+    @State var isConfirmingChanges = false
+    @State var sporttoedit: sport?
     
     @State var isLoading = false
     
-    let currentsport: sport
+    @State var currentsport: sport
     
     func dateDate(date: Date) -> String {
         return date.formatted(date: .long, time: .omitted)
@@ -136,7 +142,7 @@ struct SportsDetailView: View {
                         } else {
                             Text("Past Games").tag(2)
                         }
-                        Text("Members (\(currentsport.sportsroster.count + currentsport.sportscaptains.count))").tag(3)
+                        Text("Roster").tag(3)
                     }).pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)
                     
@@ -315,60 +321,23 @@ struct SportsDetailView: View {
                     // members view
                     
                     if selected == 3 {
-                        
-                        if currentsport.sportcoaches.count == 0 && currentsport.sportscaptains.count == 0 && currentsport.sportsroster.count == 0 {
-                            Text("No members.")
-                                .font(.system(size: 17, weight: .medium, design: .rounded))
-                                .frame(maxHeight: .infinity)
-                        } else {
+                        VStack {
                             
-                            List{
-                                if currentsport.sportcoaches.count > 0 {
-                                    Section{
-                                        ForEach(currentsport.sportcoaches, id: \.self){coach in
-                                            HStack{
-                                                Text(coach)
-                                            }
-                                        }
-                                    }
-                                header:{
-                                    if currentsport.sportcoaches.count == 1 {
-                                        Text("Coach")
-                                    } else {
-                                        Text("Coaches")
-                                    }
+                            if currentsport.rosterimagedata != nil {
+                                NavigationLink {
+                                    ZoomableImageView(image: currentsport.rosterimagedata ?? UIImage())
+                                } label: {
+                                    Image(uiImage: currentsport.rosterimagedata ?? UIImage())
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .cornerRadius(10)
+                                        .frame(maxHeight: 800)
+                                        .padding(10)
                                 }
-                                }
-                                
-                                if currentsport.sportscaptains.count > 0 {
-                                    Section {
-                                        ForEach(currentsport.sportscaptains, id: \.self) { captain in
-                                            HStack {
-                                                Text(captain)
-                                            }
-                                        }
-                                    } header:{
-                                        if currentsport.sportscaptains.count == 1 {
-                                            Text("Captain")
-                                        } else {
-                                            Text("Captains")
-                                        }
-                                    }
-                                }
-                                
-                                if currentsport.sportsroster.count > 0 {
-                                    Section {
-                                        ForEach(currentsport.sportsroster, id: \.self) { member in
-                                            HStack {
-                                                Text(member)
-                                            }
-                                        }
-                                    } header: {
-                                        Text("Members")
-                                    }
-                                }
-                                
-                            }.frame(height: 450)
+                            }
+                            else {
+                                Text("No roster.")
+                            }
                         }
                     }
                     
@@ -376,6 +345,10 @@ struct SportsDetailView: View {
                 }.padding(.top, 10 + screen.screenHeight / 10) // padding was here
                 
                 .onAppear {
+                                        
+                    imagemanager.getImage(fileName: currentsport.rosterimage) { image in
+                        currentsport.rosterimagedata = image
+                    }
                     
                     //if sportsev MARK: run the dict functino before view appear
                     if sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
@@ -502,7 +475,7 @@ struct SportsDetailView: View {
                 .navigationBarItems(trailing:
                                         Group {
                     HStack {
-                        if hasPermissionSport {
+                        if currentsport.adminemails.contains(userInfo.email) || hasPermission.sports  {
                             Button {
                                 self.isEditing.toggle()
                             } label: {
@@ -565,7 +538,7 @@ struct SportsDetailView: View {
 
 struct SportsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-            SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
+        SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
     }
 }
 

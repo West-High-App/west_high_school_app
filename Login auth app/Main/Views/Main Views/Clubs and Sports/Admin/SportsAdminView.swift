@@ -4,8 +4,8 @@
 //
 //  Created by August Andersen on 02/09/2023.
 //
-
-import SwiftUI
+// MARK: DONT NEED BECAUSE SPORTS ARE NOW MANUALLY CREATED
+/*import SwiftUI
 
 struct SportsAdminView: View {
     // MARK: initializers
@@ -154,3 +154,4 @@ struct SportsAdminView_Previews: PreviewProvider {
         SportsAdminView()
     }
 }
+*/
