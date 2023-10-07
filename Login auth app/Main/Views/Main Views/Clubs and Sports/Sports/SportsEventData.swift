@@ -89,8 +89,9 @@ class sportEventManager: ObservableObject {
             }) ?? []
             
             if let sportsEvents = parsedevents?.filter({ $0.date > Date() }) {
-                
-                self.sportsEvents = sportsEvents
+                DispatchQueue.main.async {
+                    self.sportsEvents = sportsEvents
+                }
             }
             
             let pastSortsEvents = allSportsEvents.filter({ $0.date < Date().dayBefore })
