@@ -5,7 +5,7 @@ struct PastSportEventsAdminView: View {
     @State var eventlist: [sportEvent] = []
     @StateObject var dataManager = sportEventManager.shared
     var editingeventslist: [sportEvent] {
-        dataManager.pastSportsEvents
+        dataManager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
     }
 
     @State var temptitle = ""

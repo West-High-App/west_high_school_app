@@ -19,8 +19,6 @@ struct SportsDetailView: View {
     @State var selected = 1
     @State var isFavorited = false
     @State var favorites: [sport] = []
-    @State var sportEvents: [sportEvent] = []
-    @State var pastSportEvents: [sportEvent] = []
     //@EnvironmentObject var vm: SportsHibabi.ViewModel
     @State private var confirming = false
     @State private var confirming2 = false
@@ -28,10 +26,10 @@ struct SportsDetailView: View {
     @State var hasAppeared = false
     @State private var navigationBarHeight: CGFloat = 0.0
     var events: [ParsedEvent] {
-        sporteventmanager.sportsEvents
+        sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
     }
-    var pastevents: [sportEvent] {
-        sporteventmanager.pastSportsEvents
+    var pastSportEvents: [sportEvent] {
+        sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
     }
     @State var newpastevents: [sportEvent] = []
     @State var showingEditRoster = false
@@ -139,15 +137,7 @@ struct SportsDetailView: View {
                     
                     Picker(selection: $selected, label: Text(""), content: {
                         Text("Upcoming").tag(1)
-                        if !sportEvents.isEmpty { // calls it past events if it's a weird sport like cross country
-                            if sportEvents[0].isSpecial {
-                                Text("Past Events").tag(2)
-                            } else {
-                                Text("Past Games").tag(2)
-                            }
-                        } else {
-                            Text("Past Games").tag(2)
-                        }
+                        Text("Past Events").tag(2)
                         Text("Roster").tag(3)
                     }).pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)
@@ -262,12 +252,12 @@ struct SportsDetailView: View {
                             }
                         }
                         
-                        if sporteventmanager.pastSportsEvents.isEmpty {
+                        if pastSportEvents.isEmpty {
                             Text("No past events.")
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
                                 .frame(maxHeight: .infinity)
                         } else {
-                            List(sporteventmanager.pastSportsEvents, id: \.id) { event in
+                            List(pastSportEvents, id: \.id) { event in
                                 HStack {
                                     VStack {
                                         Text(event.month)
@@ -417,7 +407,9 @@ struct SportsDetailView: View {
             }
         }
         .onAppear {
-            sporteventmanager.getSportsEvents(forSport: self.currentsport)
+            if self.sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
+                sporteventmanager.getSportsEvents(forSport: self.currentsport)
+            }
             sporteventmanager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)")
                                 
             imagemanager.getImage(fileName: currentsport.rosterimage) { image in
@@ -438,7 +430,7 @@ struct SportsDetailView: View {
             
         }
     }
-    }
+}
 
 struct SportsDetailView_Previews: PreviewProvider {
     static var previews: some View {

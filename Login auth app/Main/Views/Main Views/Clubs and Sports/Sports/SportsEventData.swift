@@ -52,7 +52,7 @@ class sportEventManager: ObservableObject {
     @Published var pastSportsEvents: [sportEvent] = []
     @Published var topthree: [sportEvent] = []
     @Published var hasInitialized: Bool = false
-    @Published var eventDictionary: [String: [sportEvent]] = [:]
+    @Published var eventDictionary: [String: [ParsedEvent]] = [:]
     @Published private(set) var isLoading = false
     @Published var pastEventDictionary: [String: [sportEvent]] = [:]
     private var eventSnapshotListener: ListenerRegistration?
@@ -91,10 +91,11 @@ class sportEventManager: ObservableObject {
             if let sportsEvents = parsedevents?.filter({ $0.date > Date() }) {
                 DispatchQueue.main.async {
                     self.sportsEvents = sportsEvents
+                    self.eventDictionary["\(sport.sportname) \(sport.sportsteam)"] = sportsEvents
                 }
             }
             
-            let pastSortsEvents = allSportsEvents.filter({ $0.date < Date().dayBefore })
+            let pastSortsEvents = allSportsEvents.filter({ $0.date < Date() })
             
             for event in pastSortsEvents {
                 if !self.pastSportsEvents.contains(where: {
