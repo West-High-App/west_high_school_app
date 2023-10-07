@@ -21,7 +21,7 @@ struct SportsDetailView: View {
     @State var favorites: [sport] = []
     @State var sportEvents: [sportEvent] = []
     @State var pastSportEvents: [sportEvent] = []
-    @EnvironmentObject var vm: SportsHibabi.ViewModel
+    //@EnvironmentObject var vm: SportsHibabi.ViewModel
     @State private var confirming = false
     @State private var confirming2 = false
     @State var screen = ScreenSize()
@@ -440,7 +440,7 @@ struct SportsDetailView: View {
 
 struct SportsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: 1))
+        SportsDetailView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: UUID()))
     }
 }
 
