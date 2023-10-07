@@ -239,7 +239,7 @@ struct SportsDetailAdminView: View {
                 Button {
                     isConfirmingChanges.toggle()
                 } label: {
-                    Text("Publish Changes")//hello
+                    Text("Publish Changes")
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
                         .padding(10)

@@ -125,7 +125,7 @@ struct MessageDetailView: View {
                 }
             }
             .navigationBarTitle(editingEvent == nil ? "Add Event" : "Edit Event")
-            .navigationBarItems(trailing: Button("Cancel") {
+            .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             })
             .alert(isPresented: $isConfirmingAddEvent) {

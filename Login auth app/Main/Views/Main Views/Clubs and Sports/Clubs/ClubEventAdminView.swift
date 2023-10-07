@@ -178,7 +178,7 @@ struct ClubsEventsAdminView: View {
                             }
                         }
                     }
-                    Button("Publish new club event") {
+                    Button {
                         if admin {
                             eventToSave = clubEvent(
                                 documentID: "NAN",
@@ -208,6 +208,18 @@ struct ClubsEventsAdminView: View {
                             isPresetingAddEvent = false
                             
                         }
+                    } label: {
+                        Text("Publish New Club Event")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
                     }
                 }
                 .onAppear{

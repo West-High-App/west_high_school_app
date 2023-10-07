@@ -14,7 +14,7 @@ struct UpcomingEventsAdminView: View {
     @State private var isConfirmingDeleteEventFinal = false
     @State private var eventToDelete: event?
     @State var screen = ScreenSize()
-
+    
     var body: some View {
         ScrollView{
             LazyVStack {
@@ -179,6 +179,8 @@ struct EventDetailView: View {
     @State private var isConfirmingAddEvent = false
     @State private var isConfirmingDeleteEvent = false
     
+    @State var screen = ScreenSize()
+    
     var body: some View {
         
         NavigationView {
@@ -206,8 +208,20 @@ struct EventDetailView: View {
 
                 }
                 
-                Button("Publish New Event") {
+                Button {
                     isConfirmingAddEvent = true
+                } label: {
+                    Text("Publish New Event")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-60)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10)
+                        )
                 }
             }
             .onAppear{
@@ -218,7 +232,7 @@ struct EventDetailView: View {
                 eventyear = String(currentYear)
             }
             .navigationBarTitle(editingEvent == nil ? "Add Event" : "Edit Event")
-            .navigationBarItems(trailing: Button("Cancel") {
+            .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             })
             .alert(isPresented: $isConfirmingAddEvent) {

@@ -39,6 +39,8 @@ struct PastSportEventsAdminView: View {
     @State var otherscore = ""
     @State var documentID = ""
     
+    @State var screen = ScreenSize()
+    
     var body: some View {
         
         VStack {
@@ -169,7 +171,7 @@ struct PastSportEventsAdminView: View {
                                 TextField("Description", text: $subtitle)
                         }
                     }
-                    Button("Publish Changes") {
+                    Button {
                         
                         title = editingevent.title
                         subtitle = editingevent.subtitle
@@ -208,6 +210,18 @@ struct PastSportEventsAdminView: View {
 
                         
                         isPresentingEditEvent = false
+                    } label: {
+                        Text("Publish Changes")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
                     }
                 }
             }

@@ -75,7 +75,7 @@ struct StudentSpotlight: View {
                     }
                 }
                 .onAppear {
-                    if  false { // !hasAppeared
+                    if  !hasAppeared { // !hasAppeared
                         print("LOADING....")
                         
                         var returnlist: [studentachievement] = []

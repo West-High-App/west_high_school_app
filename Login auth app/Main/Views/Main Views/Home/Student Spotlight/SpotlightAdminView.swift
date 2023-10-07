@@ -420,6 +420,8 @@ struct AchievementDetailView: View {
     @State private var isConfirmingAddAchievement = false
     @State private var isConfirmingDeleteAchievement = false
     
+    @State var screen = ScreenSize()
+    
     var body: some View {
         NavigationView {
             Form {
@@ -454,12 +456,24 @@ struct AchievementDetailView: View {
                 }
 
 
-                Button("Publish New Article") {
+                Button {
                     isConfirmingAddAchievement = true
+                } label: {
+                    Text("Publish New Article")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-60)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10)
+                        )
                 }
             }
             .navigationBarTitle(editingAchievement == nil ? "Add Article" : "Edit Article")
-            .navigationBarItems(trailing: Button("Cancel") {
+            .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             })
             .alert(isPresented: $isConfirmingAddAchievement) {

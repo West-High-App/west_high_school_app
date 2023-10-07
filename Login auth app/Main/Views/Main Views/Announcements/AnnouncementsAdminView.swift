@@ -125,6 +125,8 @@ struct AnnouncementDetailView: View {
    @State private var announcementDescription = ""
    @State private var announcementImageName = ""
    var editingAnnouncement: Newstab?
+    
+    @State var screen = ScreenSize()
    
    // Define arrays for month and day options
    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -141,12 +143,24 @@ struct AnnouncementDetailView: View {
                    TextField("Announcement Description", text: $announcementDescription)
                }
                
-               Button("Publish New Announcement") {
+               Button {
                    isConfirmingAddAnnouncement = true
+               } label: {
+                   Text("Publish New Announcement")
+                       .foregroundColor(.white)
+                       .fontWeight(.semibold)
+                       .padding(10)
+                       .cornerRadius(15.0)
+                       .frame(width: screen.screenWidth-60)
+                       .font(.system(size: 17, weight: .semibold, design: .rounded))
+                       .background(Rectangle()
+                           .foregroundColor(.blue)
+                           .cornerRadius(10)
+                       )
                }
            }
            .navigationBarTitle(editingAnnouncement == nil ? "Add Announcement" : "Edit Announcement")
-           .navigationBarItems(trailing: Button("Cancel") {
+           .navigationBarItems(leading: Button("Cancel") {
                presentationMode.wrappedValue.dismiss()
            })
            .alert(isPresented: $isConfirmingAddAnnouncement) {

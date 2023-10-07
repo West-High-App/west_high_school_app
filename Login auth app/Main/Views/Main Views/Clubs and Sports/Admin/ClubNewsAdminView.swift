@@ -390,6 +390,8 @@ struct clubNewsRowlView: View {
     
     @ObservedObject var userInfo = UserInfo.shared
     
+    @State var screen = ScreenSize()
+    
     @State var hasAppeared = false
     
     var editingAchievement: clubNews?
@@ -420,14 +422,25 @@ struct clubNewsRowlView: View {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
                 }
                 
-                Button("Publish New Club Article") {
+                Button {
                     isConfirmingAddAchievement = true
+                } label: {
+                        Text("Publish New Club Article")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
                 }
-                .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
             
             .navigationBarTitle(editingAchievement == nil ? "Add Club News" : "Edit Club News")
-            .navigationBarItems(trailing: Button("Cancel") {
+            .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             })
             .alert(isPresented: $isConfirmingAddAchievement) {

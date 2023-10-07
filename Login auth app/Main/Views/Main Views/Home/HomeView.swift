@@ -9,8 +9,6 @@ import SwiftUI
 import UserNotifications
 import Firebase
 
-
-
 struct HomeView: View {
      @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
     @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
@@ -777,7 +775,7 @@ struct MostRecentAchievementCell: View{
     
     var body:some View{
         VStack(alignment:.leading){
-            Image(uiImage: feat.imagedata.first ?? UIImage())
+            Image(uiImage: imagedata) // (uiImage: feat.imagedata.first ?? UIImage())
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 250)

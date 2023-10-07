@@ -88,11 +88,11 @@ struct ClubsAdminView: View {
             .sheet(isPresented: $isPresentingAddClub) {
                 
                 HStack {
-                    Spacer()
                     Button("Cancel") {
                         isPresentingAddClub = false
                     }
                     .padding([.horizontal, .top])
+                    Spacer()
                 }
                 Text("Add Club")
                     .foregroundColor(Color.black)
@@ -107,7 +107,7 @@ struct ClubsAdminView: View {
                         Text("Additional information can be added after creation of club.")
                     }
                     
-                    Button ("Publish New Club") {
+                    Button {
                        adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                         
                         clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: [], imagedata: UIImage(), documentID: "NAN", id: 0)
@@ -120,8 +120,19 @@ struct ClubsAdminView: View {
                             }
                         }
                         isPresentingAddClub = false
-                    }.font(.system(size: 17, weight: .semibold, design: .rounded))
-                        .foregroundColor(.red)
+                    } label: {
+                        Text("Publish New Club")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.red)
+                                .cornerRadius(10)
+                            )
+                    }
                 }
                 Spacer()
             }
