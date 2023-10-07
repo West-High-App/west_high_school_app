@@ -190,6 +190,7 @@
 		228362F32A2C1BBB0061BFAE /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		228485CE2AB4B0F700D2AAD2 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		22AA046E2AD1C9270088BE03 /* West High.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "West High.gpx"; sourceTree = "<group>"; };
+		22AA04712AD1E7E50088BE03 /* VPN.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VPN.gpx; sourceTree = "<group>"; };
 		22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteClubsData.swift; sourceTree = "<group>"; };
 		22DECD672AAB655000061E60 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		22DECD692AAB656300061E60 /* ImagePickerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerData.swift; sourceTree = "<group>"; };
@@ -523,6 +524,7 @@
 				228362DE2A2AB3D80061BFAE /* Preview Content */,
 				221423E02AD0438D0015CD3B /* Entitlements.plist */,
 				22AA046E2AD1C9270088BE03 /* West High.gpx */,
+				22AA04712AD1E7E50088BE03 /* VPN.gpx */,
 			);
 			path = "Login auth app";
 			sourceTree = "<group>";
@@ -863,7 +865,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = N2R26K3XYA;
+				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -904,7 +906,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = N2R26K3XYA;
+				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
