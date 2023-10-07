@@ -187,6 +187,7 @@
 		228362F12A2C18CB0061BFAE /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		228362F32A2C1BBB0061BFAE /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		228485CE2AB4B0F700D2AAD2 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		22AA046E2AD1C9270088BE03 /* West High.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "West High.gpx"; sourceTree = "<group>"; };
 		22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteClubsData.swift; sourceTree = "<group>"; };
 		22DECD672AAB655000061E60 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		22DECD692AAB656300061E60 /* ImagePickerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerData.swift; sourceTree = "<group>"; };
@@ -515,6 +516,7 @@
 				228362DC2A2AB3D80061BFAE /* Assets.xcassets */,
 				228362DE2A2AB3D80061BFAE /* Preview Content */,
 				221423E02AD0438D0015CD3B /* Entitlements.plist */,
+				22AA046E2AD1C9270088BE03 /* West High.gpx */,
 			);
 			path = "Login auth app";
 			sourceTree = "<group>";

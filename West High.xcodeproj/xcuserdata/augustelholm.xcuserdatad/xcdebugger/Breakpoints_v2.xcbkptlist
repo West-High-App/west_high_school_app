@@ -291,5 +291,339 @@
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "24FF5947-4B7D-4713-8051-89A24C8C45A6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/SportsEventData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "getSportsEvents(forSport:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "24FF5947-4B7D-4713-8051-89A24C8C45A6 - 38301f9b91192666"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;West_High.ParsedEvent&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in West_High.sportEventManager.getSportsEvents(forSport: West_High.sport, completion: Swift.Optional&lt;(Swift.Optional&lt;Swift.Array&lt;West_High.sportEvent&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/SportsEventData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "384">
+               </Location>
+               <Location
+                  uuid = "24FF5947-4B7D-4713-8051-89A24C8C45A6 - 38301f9b91192666"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;West_High.ParsedEvent&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in West_High.sportEventManager.getSportsEvents(forSport: West_High.sport, completion: Swift.Optional&lt;(Swift.Optional&lt;Swift.Array&lt;West_High.sportEvent&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/SportsEventData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "436">
+               </Location>
+               <Location
+                  uuid = "24FF5947-4B7D-4713-8051-89A24C8C45A6 - 494f3c652deab724"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (West_High.ParsedEvent) -&gt; Swift.Optional&lt;West_High.sportEvent&gt; in closure #1 (Swift.Optional&lt;Swift.Array&lt;West_High.ParsedEvent&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in West_High.sportEventManager.getSportsEvents(forSport: West_High.sport, completion: Swift.Optional&lt;(Swift.Optional&lt;Swift.Array&lt;West_High.sportEvent&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; ()&gt;) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/SportsEventData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "70"
+                  endingLineNumber = "70"
+                  offsetFromSymbolStart = "712">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2920C9C2-DCA1-4887-B3EC-FCDFE7C6405A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "parseEvents(from:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "797E6556-8EFC-459A-A289-2E13EAA3B934"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "parseEvents(from:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "08D26A1B-8B3F-427E-AA0C-71859C2B8574"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "parseEvents(from:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5C02C4A9-AE1F-48B3-BF70-B9FE4BBB981A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "parsedHtml(_:tableShell:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7A46817F-3666-476D-9AB9-3FF74D9CBCC5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "parsedHtml(_:tableShell:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1E3BB342-C87D-42CE-8DB4-8D029B3BE799"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "parsedHtml(_:tableShell:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1E3BB342-C87D-42CE-8DB4-8D029B3BE799 - 2991068b01989c50"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.parsedHtml(_: Swift.Int, tableShell: SwiftSoup.Elements) throws -&gt; Swift.Optional&lt;West_High.ParsedEvent&gt;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "101"
+                  endingLineNumber = "101"
+                  offsetFromSymbolStart = "4672">
+               </Location>
+               <Location
+                  uuid = "1E3BB342-C87D-42CE-8DB4-8D029B3BE799 - 2991068b01989ea1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.parsedHtml(_: Swift.Int, tableShell: SwiftSoup.Elements) throws -&gt; Swift.Optional&lt;West_High.ParsedEvent&gt;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "4452">
+               </Location>
+               <Location
+                  uuid = "1E3BB342-C87D-42CE-8DB4-8D029B3BE799 - 2991068b01989ea1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.parsedHtml(_: Swift.Int, tableShell: SwiftSoup.Elements) throws -&gt; Swift.Optional&lt;West_High.ParsedEvent&gt;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "4628">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EE30A093-F09D-4E9A-B2D3-78038C0572CD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "parsedHtml(_:tableShell:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B764127C-A3F6-46B4-B707-E2C2C7A7D1B3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "parsedHtml(_:tableShell:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "37D27ECB-D0F4-41DB-9A08-D75656F3F25E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "parsedHtml(_:tableShell:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "37D27ECB-D0F4-41DB-9A08-D75656F3F25E - 2991068b0198a3fb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.parsedHtml(_: Swift.Int, tableShell: SwiftSoup.Elements) throws -&gt; Swift.Optional&lt;West_High.ParsedEvent&gt;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "1676">
+               </Location>
+               <Location
+                  uuid = "37D27ECB-D0F4-41DB-9A08-D75656F3F25E - 2991068b0198a3fb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.parsedHtml(_: Swift.Int, tableShell: SwiftSoup.Elements) throws -&gt; Swift.Optional&lt;West_High.ParsedEvent&gt;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "90"
+                  endingLineNumber = "90"
+                  offsetFromSymbolStart = "1668">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8C6D5156-77DD-4843-AC4D-71EA5DAE4753"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "parsedHtml(_:tableShell:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8C6D5156-77DD-4843-AC4D-71EA5DAE4753 - 7dd2fea72f16a27"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.htmlStringIsValid(Swift.String) -&gt; Swift.Bool"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  uuid = "8C6D5156-77DD-4843-AC4D-71EA5DAE4753 - 2991068b01989d0e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.parsedHtml(_: Swift.Int, tableShell: SwiftSoup.Elements) throws -&gt; Swift.Optional&lt;West_High.ParsedEvent&gt;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "3260">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
