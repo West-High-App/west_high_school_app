@@ -26,8 +26,12 @@ struct SportsDetailView: View {
     @State var screen = ScreenSize()
     @State var hasAppeared = false
     @State private var navigationBarHeight: CGFloat = 0.0
-    @State var events: [ParsedEvent] = []
-    @State var pastevents: [ParsedEvent] = []
+    var events: [ParsedEvent] {
+        sporteventmanager.sportsEvents
+    }
+    var pastevents: [sportEvent] {
+        sporteventmanager.pastSportsEvents
+    }
     @State var newpastevents: [sportEvent] = []
     
     @State var isLoading = false
@@ -145,7 +149,7 @@ struct SportsDetailView: View {
                     
                     if selected == 1 {
                         if !isLoading {
-                        //MARK: Aiden to the UI for this:
+                        // MARK: Aiden to the UI for this:
                         /// I think you have a pretty good idea of what needs to happen or what needs to be displayed. Basically just use the elements: date, type (like game, tournament, meet, etc.), opponent, and comments. You can change the date format using .formatted property.
                         
                         if events.isEmpty {
@@ -376,110 +380,8 @@ struct SportsDetailView: View {
                 }.padding(.top, 10 + screen.screenHeight / 10) // padding was here
                 
                 .onAppear {
-                    
-                    //if sportsev MARK: run the dict functino before view appear
-                    if sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
-                        isLoading = true
-                        HTMLParser.parseEvents(from: currentsport.eventslink) { parsedevents, error in
-                            if let parsedevents = parsedevents {
-                                let currentDate = Date()
-                                let futureEvents = parsedevents.filter { event in
-                                    return event.date > currentDate
-                                }
-
-                                let pastEvents = parsedevents.filter { event in
-                                    return event.date <= currentDate
-                                }
-
-                                let sortedFutureEvents = futureEvents.sorted { (event1, event2) -> Bool in
-                                    return event1.date < event2.date
-                                }
-                                print("FUTURE EVENTS")
-                                print(sortedFutureEvents)
-
-                                let sortedPastEvents = pastEvents.sorted { (event1, event2) -> Bool in
-                                    return event1.date > event2.date
-                                }
-
-
-                                self.events = sortedFutureEvents
-                                self.events = self.events.sorted(by: {
-                                    $0.date.compare($1.date) == .orderedDescending
-                                })
-                                self.events = self.events.reversed()
-                                
-                                sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] = sortedFutureEvents
-                                
-
-                                self.pastevents = sortedPastEvents
-                                self.pastevents = self.pastevents.sorted(by: {
-                                    $0.date.compare($1.date) == .orderedDescending
-                                })
-                                self.pastevents = self.pastevents.reversed()
-                                self.isLoading = false
-                                sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                                    // TODO: login for updating firebase with events
-                                }
-                                
-                                
-                            } else if let error = error {
-                                print("Error: \(error.localizedDescription)")
-                            }
-                        }
-                        
-                    } else {
-                        self.events = sporteventstorage.sportsevents["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
-                    }
-                    
-//                    // moved
-//                    sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-//                        
-//                        for existingevent in self.pastevents {
-//                            print("EVENT EXISTS")
-//                            print(existingevent)
-//                            if let matchingEvent = events?.first(where: { newEvent in
-//                                
-//                                let dateFormatter = DateFormatter()
-//                                dateFormatter.dateFormat = "MMM d, yyyy"
-//                                
-//                                let existingeventformatteddate = dateFormatter.string(from: existingevent.date)
-//                                let neweventformatteddate = dateFormatter.string(from: newEvent.date)
-//                                
-//                                return existingevent.type == newEvent.title && existingevent.opponent == newEvent.subtitle && existingeventformatteddate == neweventformatteddate
-//                                
-//                            }) {} else {
-//                                print("adding new bitch")
-//                                sporteventmanager.createParsedSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: existingevent)
-//                            }
-//                        }
-                        sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { newevents, error in
-                            if let newevents = newevents {
-                                print(newpastevents)
-                                print("NEW PAST EVENTS")
-                            }
-                        }
-//                    }
-                                        
-//                    // getting events (only once, then it saves)
-//                    if sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
-//                        sporteventmanager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-//                            if let events = events {
-//                                self.sportEvents = events
-//                            }
-//                        }
-//                    } else {
-//                        self.sportEvents = sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? []
-//                    }
-                    
-                    if sporteventmanager.pastEventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
-                        sporteventmanager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                            if let events = events {
-                                self.pastSportEvents = events
-                            }
-                        }
-                    } else {
-                        self.pastSportEvents = sporteventmanager.pastSportsEvents
-                    }
+                    sporteventmanager.getSportsEvents(forSport: self.currentsport)
+                    sporteventmanager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)")
                     
                     // checking if club is a favorite
                     if currentsport.favoritedusers.contains(userInfo.email) {

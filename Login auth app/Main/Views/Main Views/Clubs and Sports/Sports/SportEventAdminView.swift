@@ -73,31 +73,11 @@ struct SportEventsAdminView: View {
                                     }
                                 }
                             }
-                            dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                                if let error = error {
-                                    print("Error updating events: \(error.localizedDescription)")
-                                }
-                                if let events = events {
-                                    eventlist = events
-                                }
-                            }
                         }
                     }
                 }
             }
         }.navigationTitle("Edit Past Sport Events")
-        .onAppear {
-            dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                }
-                if let events = events {
-                    eventlist = events
-                    editingeventslist = dataManager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] ?? eventlist
-                    self.editingeventslist = self.editingeventslist.reversed()
-                }
-            }
-        }
         .alert(isPresented: $isConfirmingDeleteEvent) {
             Alert(
                 title: Text("You Are Deleting Public Data"),
@@ -185,15 +165,6 @@ struct SportEventsAdminView: View {
                             dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToSave)
                             isPresetingAddEvent = false*/
                             print("REMOVED ADDING CLUBS FUNCTION -- PLEASE DO THROUGH FIREBASE")
-                            
-                        }
-                        dataManager.getSportsEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)") { events, error in
-                            if let error = error {
-                                print("Error updating events: \(error.localizedDescription)")
-                            }
-                            if let events = events {
-                                eventlist = events
-                            }
                         }
                     }
                 }
