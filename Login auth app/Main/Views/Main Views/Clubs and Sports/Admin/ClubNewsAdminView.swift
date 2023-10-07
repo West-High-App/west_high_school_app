@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct dubclubnewscell: View{
+struct dubclubnewscell: View{ // hello aiden
     var feat: clubNews
     @State var screen = ScreenSize()
     @ObservedObject var hasPermission = PermissionsCheck.shared
