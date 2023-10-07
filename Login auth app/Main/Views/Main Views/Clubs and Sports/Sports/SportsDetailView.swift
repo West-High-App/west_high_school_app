@@ -40,7 +40,9 @@ struct SportsDetailView: View {
     @State var isConfirmingChanges = false
     @State var sporttoedit: sport?
     
-    @State var isLoading = false
+    var isLoading: Bool {
+        sporteventmanager.isLoading
+    }
     
     @State var currentsport: sport
     

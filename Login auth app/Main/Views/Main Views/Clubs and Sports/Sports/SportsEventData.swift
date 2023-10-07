@@ -53,6 +53,7 @@ class sportEventManager: ObservableObject {
     @Published var topthree: [sportEvent] = []
     @Published var hasInitialized: Bool = false
     @Published var eventDictionary: [String: [sportEvent]] = [:]
+    @Published private(set) var isLoading = false
     @Published var pastEventDictionary: [String: [sportEvent]] = [:]
     private var eventSnapshotListener: ListenerRegistration?
     private var pastEventSnapshotListener: ListenerRegistration?
@@ -61,6 +62,7 @@ class sportEventManager: ObservableObject {
     static let shared = sportEventManager() // singleton, i love you Per
     
     func getSportsEvents(forSport sport: sport, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
+        self.isLoading = true
         HTMLParser.parseEvents(from: sport.eventslink) { parsedevents, error in
             
             // Convert all events
@@ -108,6 +110,7 @@ class sportEventManager: ObservableObject {
             if let completion {
                 completion(allSportsEvents, error)
             }
+            self.isLoading = false
         }
     }
 //     
