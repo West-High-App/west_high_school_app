@@ -28,7 +28,7 @@ struct sport: Identifiable, Equatable, Hashable {
     var imagedata: UIImage? // NOT USED IN FIREBASE
     var documentID: String // NOT USED IN FIREBASE
     var sportid: String // NOT USED IN FIREBASE
-    var id: Int // NOT USED IN FIREBASE
+    var id = UUID() // NOT USED IN FIREBASE
 }
     
 class sportsManager: ObservableObject {
@@ -114,7 +114,7 @@ class sportsManager: ObservableObject {
                     let rosterimage = data["rosterimage"] as? String ?? ""
                     let documentID = document.documentID
                     let sportid = "\(sportname) \(sportsteam)"
-                    let id = tempID
+                    let id = UUID()
 
                     self.imagemanager.getImage(fileName: sportsimage) { image in //
                         

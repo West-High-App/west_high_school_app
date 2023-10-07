@@ -21,7 +21,7 @@ struct SportsHibabi: View {
     @ObservedObject var sportsmanager = sportsManager.shared // <---------
     @State var displaylist: [sport] = []
     @State var newstitlearray:[sportNews] = []
-    @State var vm = ViewModel()
+    // @State var vm = ViewModel()
     @State var searchText = "" // text for search field
     @State var selected = 1 // which tab is selected
     @State var selectedGender = 1
@@ -57,13 +57,13 @@ struct SportsHibabi: View {
     }
     let Colors = UsefulColors()
     let Screen = ScreenSize()
-    private var filteredFavoriteSports: [sport] {
+    /*private var filteredFavoriteSports: [sport] {
         return searchText == ""
             ? vm.filteredItems
             : vm.filteredItems.filter {
                 $0.sportname.lowercased().contains(searchText.lowercased())
             }
-    }
+    }*/
     private var filteredSports: [sport] {
         return searchText == ""
         ? sportsmanager.allsportlist
@@ -147,22 +147,23 @@ struct SportsHibabi: View {
                             .padding(.horizontal,30)
                             .onAppear() {
                                 if count == 0 {
-                                    vm.sortFavs()
+                                    
+                                    //vm.sortFavs()
                                     count = 1
                                 }
-                                templist = filteredList(fromList: vm.filteredItems)
+                                //templist = filteredList(fromList: vm.filteredItems)
                                 
                             }
                             .onChange(of: selected) { newValue in
                                 if (selected == 1 && tempSelection == 2) {
-                                    vm.sortFavs()
+                                    //vm.sortFavs()
                                     tempSelection = selected
                                 }
                                 else if (selected == 2 && tempSelection == 1) {
-                                    vm.sortFavs()
+                                    //vm.sortFavs()
                                     tempSelection = selected
                                 }
-                                templist = filteredList(fromList: vm.filteredItems)
+                                //templist = filteredList(fromList: vm.filteredItems)
                             }
                         
                         // MARK: my sports
@@ -217,7 +218,7 @@ struct SportsHibabi: View {
                                                 //                                                NavigationLink(value: item) {
                                                 NavigationLink {
                                                     SportsMainView(selectedsport: item)
-                                                        .environmentObject(vm)
+                                                        //.environmentObject(vm)
                                                         .environmentObject(sportsmanager)
                                                         .environmentObject(sporteventmanager)
                                                         .environmentObject(sporteventstorage)
@@ -265,7 +266,7 @@ struct SportsHibabi: View {
                                 .navigationDestination(for: sport.self) { item in
                                     if let index = filteredList(fromList: sportsmanager.allsportlist).firstIndex(where: { $0.documentID == item.documentID }) {
                                         SportsMainView(selectedsport: filteredList(fromList: sportsmanager.allsportlist)[index])
-                                            .environmentObject(vm)
+                                            //.environmentObject(vm)
                                             .environmentObject(sportsmanager)
                                             .environmentObject(sporteventmanager)
                                             .environmentObject(sporteventstorage)
@@ -413,7 +414,7 @@ struct SportsHibabi: View {
                                 selectedTeam = 1
                                 selectedGender = 1
                                 selectedSeason = 1
-                                templist = vm.filteredItems
+                                //templist = vm.filteredItems
                             } label: {
                                 Text("Reset")
                                     .padding(.top)
@@ -427,7 +428,7 @@ struct SportsHibabi: View {
                             Spacer()
                             Button {
                                 isFiltering = false
-                                templist = filteredList(fromList: vm.filteredItems)
+                                //templist = filteredList(fromList: vm.filteredItems)
                             } label: {
                                 Text("Done")
                                     .padding(.top)
