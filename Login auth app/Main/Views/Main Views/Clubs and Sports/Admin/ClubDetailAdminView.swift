@@ -102,10 +102,6 @@ struct ClubDetailAdminView: View {
                                 }
                             }
                         }
-                }
-                 
-                Section("Members") {
-                
                     DisclosureGroup("Editors") {
                         ForEach($editoremails, id: \.self) { $editoremail in
                             
@@ -144,6 +140,9 @@ struct ClubDetailAdminView: View {
                             }
                         }
                     }
+                }
+                 
+                Section("Members") {
                     
                     DisclosureGroup("Captains") {
                         ForEach($clubcaptain, id: \.self) { $captain in
