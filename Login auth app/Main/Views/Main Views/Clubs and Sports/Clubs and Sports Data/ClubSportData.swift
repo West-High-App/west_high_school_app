@@ -23,6 +23,8 @@ struct sport: Identifiable, Equatable, Hashable {
     var info: String
     var favoritedusers: [String] // list of email of users who have it as favorite
     var eventslink: String // link to site with all events
+    var rosterimage: String
+    var rosterimagedata: UIImage? // NOT USED IN FIREBASE
     var imagedata: UIImage? // NOT USED IN FIREBASE
     var documentID: String // NOT USED IN FIREBASE
     var sportid: String // NOT USED IN FIREBASE
@@ -77,6 +79,8 @@ class sportsManager: ObservableObject {
                                         self.allsportlist[index].eventslink = temp.eventslink
                                         self.allsportlist[index].tags = temp.tags
                                         self.allsportlist[index].sportid = temp.sportid
+                                        self.allsportlist[index].rosterimage = temp.rosterimage
+                                        self.allsportlist[index].rosterimagedata = temp.rosterimagedata
                                         self.allsportlist[index].id = temp.id
                                     } else {
                                         self.allsportlist.append(temp)
@@ -107,18 +111,18 @@ class sportsManager: ObservableObject {
                     let eventslink = data["eventslink"] as? String ?? ""
                     let info = data["info"] as? String ?? ""
                     let favoritedusers = data["favoritedusers"] as? [String] ?? []
+                    let rosterimage = data["rosterimage"] as? String ?? ""
                     let documentID = document.documentID
                     let sportid = "\(sportname) \(sportsteam)"
                     let id = tempID
-                    
-                    self.imagemanager.getImage(fileName: sportsimage) { image in
+
+                    self.imagemanager.getImage(fileName: sportsimage) { image in //
                         
-                        let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: image, documentID: documentID, sportid: sportid, id: id))
+                        let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, rosterimage: rosterimage, rosterimagedata: UIImage(), imagedata: image, documentID: documentID, sportid: sportid, id: id)) // its fine we don't have it for the roster image because it loads every time the detail view is opened.
                         tempID = tempID + 1
                         returnvalue.append(sport)
                     }
                 }
-                
             }
         }
     }
@@ -135,6 +139,7 @@ class sportsManager: ObservableObject {
             "sportsroster": sport.sportsroster,
             "sportscaptains": sport.sportscaptains,
             "favoritedusers": sport.favoritedusers,
+            "rosterimage": sport.rosterimage,
             "tags": sport.tags,
             "info": sport.info,
         ]) { error in
@@ -165,9 +170,21 @@ class sportsManager: ObservableObject {
             "sportscaptains": data.sportscaptains,
             "favoritedusers": data.favoritedusers,
             "eventslink": data.eventslink,
+            "rosterimage": data.rosterimage,
             "tags": data.tags,
             "info": data.info,
-        ])
+        ]) { error in
+            if let error = error {
+                print("Error updating sport: \(error)")
+            } else {
+                for (index, sportItem) in self.allsportlist.enumerated() {
+                    if sportItem.eventslink == data.eventslink {
+                        self.allsportlist[index] = data
+                        break
+                    }
+                }
+            }
+        }
     }
 }
 

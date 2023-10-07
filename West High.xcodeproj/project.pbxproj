@@ -12,6 +12,7 @@
 		221388352AC202530052A285 /* SportEventStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221388342AC202530052A285 /* SportEventStorage.swift */; };
 		221423DD2ACF3EDB0015CD3B /* LinksData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221423DC2ACF3EDB0015CD3B /* LinksData.swift */; };
 		221423E12AD0438D0015CD3B /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 221423E02AD0438D0015CD3B /* Entitlements.plist */; };
+		221423E32AD19F860015CD3B /* RosterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221423E22AD19F860015CD3B /* RosterDetailView.swift */; };
 		221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* Permissions.swift */; };
 		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
 		221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */; };
@@ -114,6 +115,7 @@
 		221388342AC202530052A285 /* SportEventStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportEventStorage.swift; sourceTree = "<group>"; };
 		221423DC2ACF3EDB0015CD3B /* LinksData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksData.swift; sourceTree = "<group>"; };
 		221423E02AD0438D0015CD3B /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		221423E22AD19F860015CD3B /* RosterDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterDetailView.swift; sourceTree = "<group>"; };
 		221A9CF92A95DD0A004A9F02 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
 		221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsNewsAdminView.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */,
 				2213882F2AC1FF370052A285 /* EventsScraper.swift */,
 				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
+				221423E22AD19F860015CD3B /* RosterDetailView.swift */,
 				221388342AC202530052A285 /* SportEventStorage.swift */,
 			);
 			path = Sports;
@@ -699,6 +702,7 @@
 				2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */,
 				221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */,
 				228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */,
+				221423E32AD19F860015CD3B /* RosterDetailView.swift in Sources */,
 				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,
 				E87A324C2A967EC100D7CDB1 /* HelpSupportView.swift in Sources */,
 				2270B2312A68E26900823E58 /* ClubsView.swift in Sources */,

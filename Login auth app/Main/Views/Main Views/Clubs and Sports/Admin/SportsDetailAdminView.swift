@@ -29,6 +29,8 @@ struct SportsDetailAdminView: View {
     @State var documentID: String = ""
     @State var favoritedusers: [String] = []
     @State var eventslink: String = ""
+    @State var rosterimage: String = ""
+    @State var rosterimagedata: UIImage?
     
     @State private var isAddingAdmin = false
     @State private var newAdminEmail = ""
@@ -54,6 +56,9 @@ struct SportsDetailAdminView: View {
     @StateObject var imagemanager = imageManager()
     @State var displayimage: UIImage?
     @State var isDisplayingAddImage = false
+        
+    @State var displayimage2: UIImage?
+    @State var isDisplayingAddImage2 = false
     
     var body: some View {
         VStack {
@@ -67,7 +72,7 @@ struct SportsDetailAdminView: View {
                     TextField("Info", text: $info)
                 }
                 
-                Section("Sport Members") {
+                Section("Permissions") {
                     
                     DisclosureGroup("Admins") {
                         ForEach($adminemails, id: \.self) { $adminEmail in
@@ -140,114 +145,6 @@ struct SportsDetailAdminView: View {
                             }
                         }
                     }
-                    
-                    DisclosureGroup("Roster") {
-                        ForEach($sportsroster, id: \.self) { $playerName in
-                            HStack {
-                                Text(playerName)
-                                    .contextMenu {
-                                        Button(role: .destructive) {
-                                            sportsroster.removeAll { $0 == playerName }
-                                        } label: {
-                                            Text("Delete")
-                                        }
-                                    }
-                            }
-                        }
-                        Button("Add Player") {
-                            isAddingPlayer = true
-                        }.sheet(isPresented: $isAddingPlayer) {
-                            VStack {
-                                HStack {
-                                    Button("Cancel") {
-                                        isAddingPlayer = false
-                                    }.padding()
-                                    Spacer()
-                                }
-                                Form {
-                                    Section("New Player Name:") {
-                                        TextField("Name", text: $newPlayerName)
-                                        Button("Add Player") {
-                                            isAddingPlayer = false
-                                            sportsroster.append(newPlayerName)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    DisclosureGroup("Coaches") {
-                        ForEach($sportcoaches, id: \.self) { $coachName in
-                            HStack {
-                                Text(coachName)
-                                    .contextMenu {
-                                        Button(role: .destructive) {
-                                            sportcoaches.removeAll { $0 == coachName }
-                                        } label: {
-                                            Text("Delete")
-                                        }
-                                    }
-                            }
-                        }
-                        Button("Add Coach") {
-                            isAddingCoach = true
-                        }.sheet(isPresented: $isAddingCoach) {
-                            VStack {
-                                HStack {
-                                    Button("Cancel") {
-                                        isAddingCoach = false
-                                    }.padding()
-                                    Spacer()
-                                }
-                                Form {
-                                    Section("New Coach Name:") {
-                                        TextField("Name", text: $newCoachName)
-                                        Button("Add Coach") {
-                                            isAddingCoach = false
-                                            sportcoaches.append(newCoachName)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    DisclosureGroup("Captains") {
-                        ForEach($sportscaptains, id: \.self) { $captainName in
-                            HStack {
-                                Text(captainName)
-                                    .contextMenu {
-                                        Button(role: .destructive) {
-                                            sportscaptains.removeAll { $0 == captainName }
-                                        } label: {
-                                            Text("Delete")
-                                        }
-                                    }
-                            }
-                        }
-                        Button("Add Captain") {
-                            isAddingCaptain = true
-                        }.sheet(isPresented: $isAddingCaptain) {
-                            VStack {
-                                HStack {
-                                    Button("Cancel") {
-                                        isAddingCaptain = false
-                                    }.padding()
-                                    Spacer()
-                                }
-                                Form {
-                                    Section("New Captain Name:") {
-                                        TextField("Name", text: $newCaptainName)
-                                        Button("Add Captain") {
-                                            isAddingCaptain = false
-                                            sportscaptains.append(newCaptainName)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
                 
                 Section("Filters") {
@@ -291,7 +188,7 @@ struct SportsDetailAdminView: View {
                     }
                 }
                 
-                Section("Image") {
+                Section("Sports Image") {
                     if let displayimage {
                         Image(uiImage: displayimage)
                             .resizable()
@@ -312,6 +209,31 @@ struct SportsDetailAdminView: View {
                 
                 .sheet(isPresented: $isDisplayingAddImage) {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
+                }
+                
+                Section("Roster Image") {
+                    if let displayimage2 {
+                        Image(uiImage: displayimage2)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: 250)
+                            .cornerRadius(10)
+                            .padding(.vertical, 5)
+                    } else {
+                        Image(uiImage: editingsport.rosterimagedata ?? UIImage())
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: 250)
+                            .cornerRadius(10)
+                            .padding(.vertical, 5)
+                    }
+                    Button("Upload New Image") {
+                        isDisplayingAddImage2 = true
+                    }
+                }
+                
+                .sheet(isPresented: $isDisplayingAddImage2) {
+                    ImagePicker(selectedImage: $displayimage2, isPickerShowing: $isDisplayingAddImage2)
                 }
                 
                 Button {
@@ -351,6 +273,17 @@ struct SportsDetailAdminView: View {
                             }
                         }
                     }
+                    
+                    if let displayimage2 {
+                        
+                        rosterimage = imagemanager.uploadPhoto(file: displayimage2)
+                        
+                        imagemanager.deleteImage(imageFileName: editingsport.rosterimage) { error in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            }
+                        }
+                    }
 //                    
                     // creating data
 //                    
@@ -360,11 +293,18 @@ struct SportsDetailAdminView: View {
                         selectedTeam
                     ]
                     
-                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, imagedata: displayimage, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: 1)
+                    sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, rosterimage: rosterimage, rosterimagedata: displayimage2, imagedata: displayimage, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: editingsport.id)
                     
                     
                     if let sporttoedit = sporttoedit {
                         sportsmanager.updateSport(data: sporttoedit)
+                        let tempsportindex = sportsmanager.allsportlist.firstIndex {$0.eventslink == sporttoedit.eventslink}
+                        print("TEMp SPORT INDEX")
+                        print(tempsportindex as Any)
+                        if let tempsportindex {
+                            sportsmanager.allsportlist[tempsportindex].imagedata = displayimage
+                            sportsmanager.allsportlist[tempsportindex].rosterimagedata = displayimage2
+                        }
                     }
                     
                     dismiss()
@@ -393,12 +333,14 @@ struct SportsDetailAdminView: View {
                 documentID = editingsport.documentID
                 favoritedusers = editingsport.favoritedusers
                 eventslink = editingsport.eventslink
+                rosterimage = editingsport.rosterimage
+                rosterimagedata = editingsport.rosterimagedata
             }
     }
 }
 
 struct SportsDetailAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: 1))
+        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: 1))
     }
 }

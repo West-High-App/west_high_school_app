@@ -210,7 +210,7 @@ class imageManager: ObservableObject {
         func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
             let storageRef = Storage.storage().reference()
             let fileRef = storageRef.child(fileName)
-            fileRef.getData(maxSize: 1024 * 1024) { data, error in
+            fileRef.getData(maxSize: 1024 * 1024 * 10) { data, error in
                 if error == nil, let imageData = data, let image = UIImage(data: imageData) {
                     completion(image)
                 } else {
@@ -245,8 +245,11 @@ class imageManager: ObservableObject {
             
             if let error = error {
                 print(error.localizedDescription)
+            } else {
+                print("SUCCESFULLY UPLOADED IMAGE")
             }
         }
+        print("PATH: \(path)")
        return path
     }
     
