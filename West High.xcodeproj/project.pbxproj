@@ -106,6 +106,8 @@
 		E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89012392A7F484A00FCB764 /* HomeMainView.swift */; };
 		E8A1E54F2A8CD311003BE94C /* DailyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */; };
 		E8A1E5512A8CDC85003BE94C /* DailyMessageAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A1E5502A8CDC85003BE94C /* DailyMessageAdminView.swift */; };
+		E8BD7FC72AD1DFDD0095443A /* Info thing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BD7FC62AD1DFDD0095443A /* Info thing.swift */; };
+		E8BD7FC92AD1E0080095443A /* Another Info Thing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BD7FC82AD1E0080095443A /* Another Info Thing.swift */; };
 		E8ED91712AB559B900065526 /* JobInternshipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ED91702AB559B900065526 /* JobInternshipView.swift */; };
 		E8ED91732AB5615200065526 /* ClassesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ED91722AB5615200065526 /* ClassesListView.swift */; };
 /* End PBXBuildFile section */
@@ -205,6 +207,8 @@
 		E89012392A7F484A00FCB764 /* HomeMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMainView.swift; sourceTree = "<group>"; };
 		E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyMessage.swift; sourceTree = "<group>"; };
 		E8A1E5502A8CDC85003BE94C /* DailyMessageAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyMessageAdminView.swift; sourceTree = "<group>"; };
+		E8BD7FC62AD1DFDD0095443A /* Info thing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Info thing.swift"; sourceTree = "<group>"; };
+		E8BD7FC82AD1E0080095443A /* Another Info Thing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Another Info Thing.swift"; sourceTree = "<group>"; };
 		E8ED91702AB559B900065526 /* JobInternshipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobInternshipView.swift; sourceTree = "<group>"; };
 		E8ED91722AB5615200065526 /* ClassesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -387,6 +391,8 @@
 				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
 				221423E22AD19F860015CD3B /* RosterDetailView.swift */,
 				221388342AC202530052A285 /* SportEventStorage.swift */,
+				E8BD7FC62AD1DFDD0095443A /* Info thing.swift */,
+				E8BD7FC82AD1E0080095443A /* Another Info Thing.swift */,
 			);
 			path = Sports;
 			sourceTree = "<group>";
@@ -421,8 +427,8 @@
 			children = (
 				2270B2292A68E0A400823E58 /* ClubSportData.swift */,
 				2232FEED2AA4BD6D0067AAB8 /* FavoriteSportsData.swift */,
-				22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */,
 				2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */,
+				22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */,
 				2270B2392A68E32200823E58 /* SportsDatabase.swift */,
 				2270B23B2A68E33A00823E58 /* ClubsDatabase.swift */,
 			);
@@ -658,6 +664,7 @@
 				E8ED91732AB5615200065526 /* ClassesListView.swift in Sources */,
 				E87A324E2A967ECF00D7CDB1 /* AboutView.swift in Sources */,
 				E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */,
+				E8BD7FC92AD1E0080095443A /* Another Info Thing.swift in Sources */,
 				2270B23C2A68E33A00823E58 /* ClubsDatabase.swift in Sources */,
 				222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */,
 				E8531F612A83D1D100FB64F5 /* SportsMainView.swift in Sources */,
@@ -721,6 +728,7 @@
 				228362F22A2C18CB0061BFAE /* Events.swift in Sources */,
 				222086EF2A62458900EF1ECA /* Utilities.swift in Sources */,
 				2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */,
+				E8BD7FC72AD1DFDD0095443A /* Info thing.swift in Sources */,
 				E87A32502A967EE900D7CDB1 /* ContactUsView.swift in Sources */,
 				E87A324A2A967EB400D7CDB1 /* PrivacySecurityView.swift in Sources */,
 				2270B24B2A68E66200823E58 /* SportsHibabi.swift in Sources */,
@@ -855,7 +863,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = B2YZ849D42;
+				DEVELOPMENT_TEAM = N2R26K3XYA;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -896,7 +904,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = B2YZ849D42;
+				DEVELOPMENT_TEAM = N2R26K3XYA;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
