@@ -177,7 +177,7 @@ struct SportsDetailAdminView: View {
                             .tag(1)
                         Text("Varsity")
                             .tag(2)
-                        Text("JV1")
+                        Text("JV")
                             .tag(3)
                         Text("JV2")
                             .tag(4)

@@ -34,13 +34,13 @@ struct InformationView: View {
                                         Image(systemName: "person.circle")
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 30, height: 30)
+                                            .frame(width: 50, height: 50)
                                             .cornerRadius(100)
                                     case .success(let image):
                                         image
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(width: 30, height: 30)
+                                            .frame(width: 50, height: 50)
                                             .cornerRadius(100)
                                     default:
                                         EmptyView()
@@ -57,7 +57,7 @@ struct InformationView: View {
                                 Text("Guest User")
                             }.foregroundColor(.primary)
                         }
-                    }.padding(.vertical, 10)
+                    }
                     
                     if hasPermission.admin {
                         NavigationLink {

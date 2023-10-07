@@ -201,7 +201,6 @@ class imageManager: ObservableObject {
                         completion(image)
                     } else {
                         completion(nil)
-                        print("Error fetching image from Firebase")
                     }
                 }
             }

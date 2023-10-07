@@ -139,21 +139,7 @@ struct SportsHibabi: View {
         if userInfo.loginStatus == "google" {
             NavigationStack(path: $sportsmanager.sportsPath) {
                 ZStack {
-                    VStack {
-                        Form {
-                            TextField("Sport Name", text: $tempname)
-                            TextField("Sport Team", text: $tempteam)
-                            Button("CREATE BLANK SPORT") {
-                                sportsmanager.createSport(sport: sport(sportname: tempname, sportcoaches: [], adminemails: [], editoremails: [], sportsimage: "", sportsteam: tempteam, sportsroster: [], sportscaptains: [], tags: [0, 0, 0], info: "", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: UIImage(), documentID: "", sportid: "", id: UUID())) { error in
-                                    if let error = error {
-                                        print("error creating blank sports: \(error.localizedDescription)")
-                                    }
-                                }
-                                tempname = ""
-                                tempteam = ""
-                            }
-                        }.frame(height: 150)
-                        
+                    VStack {                        
                         Picker(selection: $selected, label: Text(""), content: { // picker at top
                             Text("My Sports").tag(1)
                             Text("Browse").tag(2)
@@ -489,7 +475,7 @@ struct SportsHibabi: View {
                                         .tag(1)
                                     Text("Varsity")
                                         .tag(2)
-                                    Text("JV1")
+                                    Text("JV")
                                         .tag(3)
                                     Text("JV2")
                                         .tag(4)

@@ -90,6 +90,7 @@ struct StudentSpotlight: View {
                                 imagemanager.getImage(fileName: imagepath) { uiimage in
                                     if let uiimage = uiimage {
                                         tempimages.append(uiimage)
+                                        print("FOUND SPOTLIGHT IMAGE")
                                     }
                                     dispatchGroup.leave() // Leave the Dispatch Group when the async call is done
                                 }
