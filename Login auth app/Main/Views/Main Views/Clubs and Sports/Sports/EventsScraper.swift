@@ -92,7 +92,7 @@ class HTMLParser: ObservableObject {
         // convert time and date strings into Swift date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, MMM d, yyyy hh:mm a"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
+//        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
         dateFormatter.timeZone = TimeZone(identifier: "America/Chicago")
         guard let finalDate = dateFormatter.date(from: "\(date) \(time)") else { return nil }
         
