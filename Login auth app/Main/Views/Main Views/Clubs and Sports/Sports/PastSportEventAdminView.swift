@@ -96,6 +96,10 @@ struct PastSportEventsAdminView: View {
                     }.contextMenu {
                         Button("Edit") {
                             editingevent = event
+                            self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
+                            self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
+                            self.isSpecial = event.isSpecial
+                            self.subtitle = event.subtitle
                             isPresentingEditEvent = true
                         }.foregroundColor(.blue)
                     }
