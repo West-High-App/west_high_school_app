@@ -227,22 +227,46 @@ struct SpotlightAdminView: View {
                                                     
                                                     HStack {
                                                         Spacer()
-                                                        Button("Delete", role: .destructive) {
+                                                        Button {
                                                             presentingArticleSheet = false
                                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                                 tempAchievementTitle = selectedArticle.achievementtitle
                                                                 isConfirmingDeleteAchievement = true
                                                                 achievementToDelete = usableType
                                                             }
+                                                        } label: {
+                                                            Text("Delete")
+                                                                .foregroundColor(.white)
+                                                                .fontWeight(.semibold)
+                                                                .padding(10)
+                                                                .cornerRadius(15.0)
+                                                                .frame(width: screen.screenWidth/2-60)
+                                                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                .background(Rectangle()
+                                                                    .foregroundColor(.red)
+                                                                    .cornerRadius(10)
+                                                                )
                                                         }
                                                         Spacer()
-                                                        Button("Approve") {
+                                                        Button {
                                                             presentingArticleSheet = false
                                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                                 tempAchievementTitle = selectedArticle.achievementtitle
                                                                 isConfirmingApproveAchievement = true
                                                                 achievementToDelete = usableType
                                                             }
+                                                        } label: {
+                                                            Text("Approve")
+                                                                .foregroundColor(.white)
+                                                                .fontWeight(.semibold)
+                                                                .padding(10)
+                                                                .cornerRadius(15.0)
+                                                                .frame(width: screen.screenWidth/2-60)
+                                                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                .background(Rectangle()
+                                                                    .foregroundColor(.blue)
+                                                                    .cornerRadius(10)
+                                                                )
                                                         }
                                                         Spacer()
                                                     }
