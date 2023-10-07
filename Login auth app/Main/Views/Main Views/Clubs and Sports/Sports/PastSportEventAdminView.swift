@@ -50,7 +50,6 @@ struct PastSportEventsAdminView: View {
                             Text(event.day)
                                 .font(.system(size: 32, weight: .regular, design: .rounded))
                                 .foregroundColor(.black)
-
                         }
                         .foregroundColor(.red)
                         .frame(width:50,height:50)

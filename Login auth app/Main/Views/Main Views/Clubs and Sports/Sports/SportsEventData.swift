@@ -111,7 +111,9 @@ class sportEventManager: ObservableObject {
             if let completion {
                 completion(allSportsEvents, error)
             }
-            self.isLoading = false
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
         }
     }
 //     
