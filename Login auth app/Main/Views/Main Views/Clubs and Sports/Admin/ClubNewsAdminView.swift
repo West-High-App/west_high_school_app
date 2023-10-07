@@ -32,6 +32,7 @@ struct dubclubnewscell: View{
                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                         .padding(.leading, 5)
                     Spacer()
+    
                 }
                 Text(feat.newstitle)
                     .foregroundColor(.black)

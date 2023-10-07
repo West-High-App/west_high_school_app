@@ -25,7 +25,7 @@ extension Array<Newstab> {
             let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
             return firstDate > secondDate
         }
-    }
+    }//i hate grapes
 }
 
 class Newslist: ObservableObject {
