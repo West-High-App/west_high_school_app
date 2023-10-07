@@ -13,8 +13,8 @@ class sportEvent: NSObject, Identifiable {
     let id = UUID()
     let arrayId: String
     let documentID: String
-    let title: String
-    let subtitle: String
+    var title: String
+    var subtitle: String
     let month: String
     let day: String
     let year: String
@@ -369,22 +369,23 @@ class sportEventManager: ObservableObject {
         let db = Firestore.firestore()
         let ref = db.collection("SportEvents").document(self.documentId)
         
-        if let pastSportsEventsIndex = self.pastSportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) {
-            self.pastSportsEvents[pastSportsEventsIndex] = sportEvent
+        guard let pastSportEventsIndex = self.pastSportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) else {
+            return
         }
         
         let sportsEvents = self.pastSportsEvents.map { event in
+            let setEvent = (event.arrayId == sportEvent.arrayId) ? sportEvent : event
             
-            let id = event.arrayId
-            let title = event.title
-            let subtitle = event.subtitle
-            let month = event.month
-            let day = event.day
-            let year = event.year
+            let id = setEvent.arrayId
+            let title = setEvent.title
+            let subtitle = setEvent.subtitle
+            let month = setEvent.month
+            let day = setEvent.day
+            let year = setEvent.year
             let publisheddate = "\(month) \(day), \(year)"
-            let isSpecial = event.isSpecial
-            let isUpdated = event.isUpdated
-            let score = event.score
+            let isSpecial = setEvent.isSpecial
+            let isUpdated = setEvent.isUpdated
+            let score = setEvent.score
             return ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
         }
         

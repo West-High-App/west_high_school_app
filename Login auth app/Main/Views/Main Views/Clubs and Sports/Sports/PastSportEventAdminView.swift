@@ -95,19 +95,19 @@ struct PastSportEventsAdminView: View {
                         }
                     }.contextMenu {
                         Button("Edit") {
+                            self.isSpecial = event.isSpecial
                             editingevent = event
                             self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
                             self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
-                            self.isSpecial = event.isSpecial
                             self.subtitle = event.subtitle
                             isPresentingEditEvent = true
                         }.foregroundColor(.blue)
                     }
                     .onTapGesture {
+                        self.isSpecial = event.isSpecial
                         editingevent = event
                         self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
                         self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
-                        self.isSpecial = event.isSpecial
                         self.subtitle = event.subtitle
                         isPresentingEditEvent = true
                     }
@@ -128,7 +128,9 @@ struct PastSportEventsAdminView: View {
             documentID = currentsport.documentID
             
         }
-
+        .onChange(of: self.isSpecial) { _ in
+            print("Set isSpecial")
+        }
         .sheet(isPresented: $isPresentingEditEvent) {
             VStack {
                 HStack {
@@ -171,7 +173,6 @@ struct PastSportEventsAdminView: View {
                         
                         title = editingevent.title
                         subtitle = editingevent.subtitle
-                        isSpecial = isSpecial // MARK: add some code here
                         month = editingevent.month
                         day = editingevent.day
                         year = editingevent.year
@@ -221,7 +222,6 @@ struct PastSportEventsAdminView: View {
                     
                     title = editingevent.title
                     subtitle = editingevent.subtitle
-                    isSpecial = isSpecial // MARK: add some code here
                     month = editingevent.month
                     day = editingevent.day
                     year = editingevent.year
