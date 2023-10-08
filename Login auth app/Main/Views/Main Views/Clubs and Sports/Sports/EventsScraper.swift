@@ -15,7 +15,7 @@ struct ParsedEvent: Identifiable {
 class HTMLParser: ObservableObject {
     
     static func parseEvents(from baseUrl: String, completion: @escaping ([ParsedEvent]?, Error?) -> Void) {
-        let url = "\(baseUrl)&multipleSchools=0&cond_date=2"
+        let url = "\(baseUrl.replacingOccurrences(of: "&multipleSchools=0&cond_date=2", with: ""))&multipleSchools=0&cond_date=2"
         fetchHTML(from: url) { result in
             switch result {
             case .success(let html):
