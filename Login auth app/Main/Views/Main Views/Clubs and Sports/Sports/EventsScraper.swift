@@ -64,8 +64,8 @@ class HTMLParser: ObservableObject {
         let type = isOffset ? "\(infoArray[1].dropLast(7))" : infoArray[1]
         let time = (isOffset ? "\(infoArray[1].dropFirst(type.count))": infoArray[2]).replacingOccurrences(of: "PM", with: " PM").replacingOccurrences(of: "AM", with: " AM")
         let opponent = isOffset ? infoArray[2] : infoArray[3]
-        let location = isOffset ? infoArray[3] : infoArray[4]
-        let comments = (infoArray.last != location) ? infoArray.last ?? "" : ""
+        let location = infoArray.count <= 4 ? "" : (isOffset ? infoArray[3] : infoArray[4])
+        let comments = infoArray.count <= 4 ? "" : ((infoArray.last != location) ? infoArray.last ?? "" : "")
         
         // convert time and date strings into Swift date
         var finalDate: Date? {
