@@ -55,8 +55,17 @@ class studentachievementlist: ObservableObject{
         connectAchievements(getPending: true)
     }
     
-    private func handleFirestore(_ templist: [studentachievement]) {
+    private func handleFirestore(_ templist: [studentachievement], handlePending: Bool) {
         DispatchQueue.main.async {
+            if handlePending, templist.isEmpty {
+                for element in self.allstudentachievementlistUnsorted where !element.isApproved {
+                    if let index = self.allstudentachievementlistUnsorted.firstIndex(where: { element.documentID == $0.documentID }) {
+                        self.allstudentachievementlistUnsorted.remove(at: index)
+                    }
+                }
+                return
+            }
+            
             for temp in templist {
                 if let index = self.allstudentachievementlistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
                     self.allstudentachievementlistUnsorted[index].achievementdescription = temp.achievementdescription
@@ -128,7 +137,7 @@ class studentachievementlist: ObservableObject{
                     let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: imagedata)
                     return achievement
                 }
-                self.handleFirestore(templist)
+                self.handleFirestore(templist, handlePending: getPending)
                 if snapshot.documents.count < self.fetchLimit {
                     if getPending {
                         self.allPendingDocsLoaded = true
@@ -182,7 +191,7 @@ class studentachievementlist: ObservableObject{
                     let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: imagedata)
                     return achievement
                 }
-                self.handleFirestore(templist)
+                self.handleFirestore(templist, handlePending: getPending)
                 if snapshot.documents.count < self.fetchLimit {
                     if getPending {
                         self.allPendingDocsLoaded = true
