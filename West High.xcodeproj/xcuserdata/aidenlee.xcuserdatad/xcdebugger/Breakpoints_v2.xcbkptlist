@@ -304,5 +304,85 @@
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "717DEE6B-55BE-4F8C-9A21-028963D62DCD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "htmlStringIsValidIncludingEmptyString(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "717DEE6B-55BE-4F8C-9A21-028963D62DCD - 6a21c54cb61c65cb"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.htmlStringIsValid(Swift.String) -&gt; Swift.Bool"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aidenlee/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "132"
+                  endingLineNumber = "132"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "717DEE6B-55BE-4F8C-9A21-028963D62DCD - 446dec2dc57592e2"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static West_High.HTMLParser.parsedHtml(_: Swift.Int, tableShell: SwiftSoup.Elements) throws -&gt; Swift.Optional&lt;West_High.ParsedEvent&gt;"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aidenlee/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Clubs%20and%20Sports/Sports/EventsScraper.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "132"
+                  endingLineNumber = "132"
+                  offsetFromSymbolStart = "4856">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "465EECFB-F752-4662-9215-09C0030E6FC8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "htmlStringIsValidIncludingEmptyString(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "453F2E6E-B301-4400-B6C6-195178ADFA12"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Clubs and Sports/Sports/EventsScraper.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "htmlStringIsValidIncludingEmptyString(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

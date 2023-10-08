@@ -342,13 +342,11 @@ struct ClubsDetailView: View {
                         
                         var tempclub = currentclub
                         tempclub.favoritedusers.removeAll {$0 == userInfo.email}
-                        clubsmanager.updateClub(data: tempclub)
                         clubsmanager.allclublist.removeAll {$0 == currentclub}
                         clubsmanager.allclublist.append(tempclub)
+                        clubsmanager.updateClub(data: tempclub)
                         
                         clubsmanager.favoriteslist.removeAll {$0 == currentclub}
-                        clubfavoritesmanager.removeFavorite(club: currentclub)
-                        favoritesManager.removeFavorite(club: currentclub)
                         isFavorited = false
                     }
                 }
