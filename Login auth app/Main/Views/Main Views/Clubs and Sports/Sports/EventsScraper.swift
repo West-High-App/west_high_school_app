@@ -64,7 +64,7 @@ class HTMLParser: ObservableObject {
         let date = infoArray[0]
         let type = isOffset ? "\(infoArray[1].dropLast(7))" : infoArray[1]
         let time = (isOffset ? "\(infoArray[1].dropFirst(type.count))": infoArray[2]).replacingOccurrences(of: "PM", with: " PM").replacingOccurrences(of: "AM", with: " AM")
-        let opponent = isOffset ? infoArray[2] : infoArray[3]
+        let opponent = infoArray.count <= 3 ? "No Opponent Yet" : (isOffset ? infoArray[2] : infoArray[3])
         let location = infoArray.count <= 4 ? "" : (isOffset ? infoArray[3] : infoArray[4])
         let comments = infoArray.count <= 4 ? "" : ((infoArray.last != location) ? infoArray.last ?? "" : "")
         
