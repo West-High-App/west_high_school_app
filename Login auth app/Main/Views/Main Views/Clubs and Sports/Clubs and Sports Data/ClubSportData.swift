@@ -63,36 +63,37 @@ class sportsManager: ObservableObject {
                                 if !self.sportsPath.isEmpty {
 //                                    self.sportsPath.removeLast(self.sportsPath.count)
                                 }
-                                for temp in returnvalue {
-                                    if let index = self.allsportlist.firstIndex(where: { $0.documentID == temp.documentID }) {
-                                        self.allsportlist[index].sportname = temp.sportname
-                                        self.allsportlist[index].sportsteam = temp.sportsteam
-                                        self.allsportlist[index].sportscaptains = temp.sportscaptains
-                                        self.allsportlist[index].sportcoaches = temp.sportcoaches
-                                        self.allsportlist[index].sportsroster = temp.sportsroster
-                                        self.allsportlist[index].favoritedusers = temp.favoritedusers
-                                        self.allsportlist[index].editoremails = temp.editoremails
-                                        self.allsportlist[index].sportsimage = temp.sportsimage
-                                        self.allsportlist[index].adminemails = temp.adminemails
-                                        self.allsportlist[index].imagedata = temp.imagedata
-                                        self.allsportlist[index].info = temp.info
-                                        self.allsportlist[index].eventslink = temp.eventslink
-                                        self.allsportlist[index].tags = temp.tags
-                                        self.allsportlist[index].sportid = temp.sportid
-                                        self.allsportlist[index].rosterimage = temp.rosterimage
-                                        self.allsportlist[index].rosterimagedata = temp.rosterimagedata
-                                        self.allsportlist[index].id = temp.id
-                                    } else {
-                                        self.allsportlist.append(temp)
-                                    }
-                                    if temp == returnvalue.last {
-                                        for sport in self.allsportlist {
-                                            if !returnvalue.contains(where: { $0.documentID == sport.documentID }) {
-                                                self.allsportlist.removeAll(where: { $0.documentID == sport.documentID }) // Remove if not on server
-                                            }
-                                        }
-                                    }
-                                }
+                                self.allsportlist = returnvalue
+//                                for temp in returnvalue {
+//                                    if let index = self.allsportlist.firstIndex(where: { $0.documentID == temp.documentID }) {
+//                                        self.allsportlist[index].sportname = temp.sportname
+//                                        self.allsportlist[index].sportsteam = temp.sportsteam
+//                                        self.allsportlist[index].sportscaptains = temp.sportscaptains
+//                                        self.allsportlist[index].sportcoaches = temp.sportcoaches
+//                                        self.allsportlist[index].sportsroster = temp.sportsroster
+//                                        self.allsportlist[index].favoritedusers = temp.favoritedusers
+//                                        self.allsportlist[index].editoremails = temp.editoremails
+//                                        self.allsportlist[index].sportsimage = temp.sportsimage
+//                                        self.allsportlist[index].adminemails = temp.adminemails
+//                                        self.allsportlist[index].imagedata = temp.imagedata
+//                                        self.allsportlist[index].info = temp.info
+//                                        self.allsportlist[index].eventslink = temp.eventslink
+//                                        self.allsportlist[index].tags = temp.tags
+//                                        self.allsportlist[index].sportid = temp.sportid
+//                                        self.allsportlist[index].rosterimage = temp.rosterimage
+//                                        self.allsportlist[index].rosterimagedata = temp.rosterimagedata
+////                                        self.allsportlist[index].id = temp.id
+//                                    } else {
+//                                        self.allsportlist.append(temp)
+//                                    }
+//                                    if temp == returnvalue.last {
+//                                        for sport in self.allsportlist {
+//                                            if !returnvalue.contains(where: { $0.documentID == sport.documentID }) {
+//                                                self.allsportlist.removeAll(where: { $0.documentID == sport.documentID }) // Remove if not on server
+//                                            }
+//                                        }
+//                                    }
+//                                }
                             }
                         }
                     }
