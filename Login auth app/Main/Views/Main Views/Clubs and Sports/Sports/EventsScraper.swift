@@ -113,7 +113,7 @@ class HTMLParser: ObservableObject {
             "Time",
             "Change View"
         ]
-        return !invalidStrings.contains(string) && !invalidComponents.map({ string.contains($0) }).contains(true)
+        return !invalidStrings.contains(string) //&& !invalidComponents.map({ string.contains($0) }).contains(true)
     }
     
     static func fetchHTML(from urlString: String, completion: @escaping (Result<String, Error>) -> Void) {
