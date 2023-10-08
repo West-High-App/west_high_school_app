@@ -15,6 +15,7 @@ struct studentachievement: Identifiable, Equatable{
     var achievementdescription:String // localizedstringkey??
     var articleauthor:String
     var publisheddate:String
+    var date:Date
     var images:[String]
     var isApproved: Bool
     var imagedata: [UIImage] // , imagedata: []
@@ -103,7 +104,7 @@ class studentachievementlist: ObservableObject{
         let collection = db.collection("StudentAchievements")
         
         collection
-            .order(by: "publisheddate", descending: true)
+            .order(by: "date", descending: true)
             .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
             .limit(to: fetchLimit)
             .start(afterDocument: lastDocument)
@@ -121,6 +122,7 @@ class studentachievementlist: ObservableObject{
                     let achievementdescription = data["achievementdescription"] as? String ?? ""
                     let articleauthor = data["articleauthor"] as? String ?? ""
                     let publisheddate = data["publisheddate"] as? String ?? ""
+                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let images = data["images"] as? [String] ?? []
                     let isApproved = data["isApproved"] as? Bool ?? false
                     let documentID = document.documentID
@@ -134,7 +136,7 @@ class studentachievementlist: ObservableObject{
                         }
                     }
                     
-                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: imagedata)
+                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, imagedata: imagedata)
                     return achievement
                 }
                 self.handleFirestore(templist, handlePending: getPending)
@@ -155,7 +157,7 @@ class studentachievementlist: ObservableObject{
         let collection = db.collection("StudentAchievements")
         
         collection
-            .order(by: "publisheddate", descending: true)
+            .order(by: "date", descending: true)
             .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
             .limit(to: fetchLimit)
             .addSnapshotListener { snapshot, error in
@@ -175,6 +177,7 @@ class studentachievementlist: ObservableObject{
                     let achievementdescription = data["achievementdescription"] as? String ?? ""
                     let articleauthor = data["articleauthor"] as? String ?? ""
                     let publisheddate = data["publisheddate"] as? String ?? ""
+                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let images = data["images"] as? [String] ?? []
                     let isApproved = data["isApproved"] as? Bool ?? false
                     let documentID = document.documentID
@@ -188,7 +191,7 @@ class studentachievementlist: ObservableObject{
                         }
                     }
                     
-                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, images: images, isApproved: isApproved, imagedata: imagedata)
+                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, imagedata: imagedata)
                     return achievement
                 }
                 self.handleFirestore(templist, handlePending: getPending)
@@ -213,6 +216,7 @@ class studentachievementlist: ObservableObject{
             "articleauthor": achievement.articleauthor,
             "images": achievement.images,
             "publisheddate": achievement.publisheddate,
+            "date": achievement.date,
             "isApproved": achievement.isApproved
         ]) { error in
             completion(error)
@@ -258,6 +262,7 @@ class studentachievementlist: ObservableObject{
                     achievementdescription: article.achievementdescription,
                     articleauthor: article.articleauthor,
                     publisheddate: article.publisheddate,
+                    date: article.date,
                     images: article.images,
                     isApproved: article.isApproved,
                     imagedata: tempimages

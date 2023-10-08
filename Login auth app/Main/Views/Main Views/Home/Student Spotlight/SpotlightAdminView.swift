@@ -75,7 +75,7 @@ struct SpotlightAdminView: View {
     @State var screen = ScreenSize()
 
     @State private var presentingArticleSheet = false
-    @State var selectedArticle = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [], isApproved: false, imagedata: [])
+    @State var selectedArticle = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [], isApproved: false, imagedata: [])
     
     @State var selected = 1
     
@@ -505,6 +505,11 @@ struct AchievementDetailView: View {
                     title: Text("You Are Publishing Changes"),
                     message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(achievementTitle)\nDescription: \(achievementDescription)\nAuthor: \(articleAuthor)"),
                     primaryButton: .destructive(Text("Publish Changes")) {
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "MMMM dd, yyyy"
+                        guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)") else {
+                            return
+                        }
                         
                         
                         var images: [String] = []
@@ -523,6 +528,7 @@ struct AchievementDetailView: View {
                             achievementdescription: achievementDescription,
                             articleauthor: articleAuthor,
                             publisheddate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)",
+                            date: date,
                             images: images, isApproved: check, imagedata: []
                         )
                         dataManager.createAchievement(achievement: achievementToSave) { error in

@@ -10,9 +10,9 @@ import UserNotifications
 import Firebase
 
 struct HomeView: View {
-     @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
-    @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
-    @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", images: [""], isApproved: false, imagedata: [])
+     @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, imagedata: [])
+    @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, imagedata: [])
+    @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, imagedata: [])
     var screen = ScreenSize()
      @ObservedObject var clubmanager = clubManager.shared
      @StateObject var newsDataManager = Newslist.shared

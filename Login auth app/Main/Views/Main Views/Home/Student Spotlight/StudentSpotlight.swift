@@ -97,7 +97,7 @@ struct StudentSpotlight: View {
                             }
                             
                             dispatchGroup.notify(queue: .main) { // This block will be executed after all async calls are done
-                                returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
+                                returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, date: article.date, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
                                 
                                 isLoading = false
                                 print("DONE LOADING")

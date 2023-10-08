@@ -3,4 +3,118 @@
    uuid = "7D5C0F53-FFDA-4A8A-A278-E20CBB189D24"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0B89DE1C-FCC0-4F99-8F68-19EDCBAF0508"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Home/Student Spotlight/SpotlightData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "handleFirestore(_:handlePending:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "75391708-006F-4D82-B1FD-1986C51BB623"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Home/Student Spotlight/SpotlightData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "handleFirestore(_:handlePending:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "75391708-006F-4D82-B1FD-1986C51BB623 - 3cfeb17d26a16b9b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in West_High.studentachievementlist.handleFirestore(_: Swift.Array&lt;West_High.studentachievement&gt;, handlePending: Swift.Bool) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mcrich/Xcode/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Home/Student%20Spotlight/SpotlightData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "86"
+                  endingLineNumber = "86"
+                  offsetFromSymbolStart = "6176">
+               </Location>
+               <Location
+                  uuid = "75391708-006F-4D82-B1FD-1986C51BB623 - 4d5b12bd079e63dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 (West_High.studentachievement) -&gt; Swift.Bool in closure #1 @Swift.MainActor () -&gt; () in West_High.studentachievementlist.handleFirestore(_: Swift.Array&lt;West_High.studentachievement&gt;, handlePending: Swift.Bool) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mcrich/Xcode/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Home/Student%20Spotlight/SpotlightData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "86"
+                  endingLineNumber = "86"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AF0BD57E-DAEE-4C6F-B67F-C3EC8DA03243"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Home/Student Spotlight/SpotlightData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "handleFirestore(_:handlePending:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AF0BD57E-DAEE-4C6F-B67F-C3EC8DA03243 - 3cfeb17d26a16bb4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in West_High.studentachievementlist.handleFirestore(_: Swift.Array&lt;West_High.studentachievement&gt;, handlePending: Swift.Bool) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mcrich/Xcode/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Home/Student%20Spotlight/SpotlightData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87"
+                  offsetFromSymbolStart = "6524">
+               </Location>
+               <Location
+                  uuid = "AF0BD57E-DAEE-4C6F-B67F-C3EC8DA03243 - 1985f3c7eb02d1f8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #5 (West_High.studentachievement) -&gt; Swift.Bool in closure #1 @Swift.MainActor () -&gt; () in West_High.studentachievementlist.handleFirestore(_: Swift.Array&lt;West_High.studentachievement&gt;, handlePending: Swift.Bool) -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mcrich/Xcode/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Home/Student%20Spotlight/SpotlightData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
