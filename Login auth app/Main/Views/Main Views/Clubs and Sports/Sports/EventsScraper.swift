@@ -5,6 +5,7 @@ var events: [ParsedEvent] = []
 
 struct ParsedEvent: Identifiable {
     var date: Date
+    var isTBD: Bool
     var type: String
     var opponent: String
     var location: String
@@ -83,8 +84,9 @@ class HTMLParser: ObservableObject {
             }
         }
         guard let finalDate else { return nil }
+        let isTBD = (time == "TBD")
         
-        let event = ParsedEvent(date: finalDate, type: type, opponent: opponent, location: location, comments: comments)
+        let event = ParsedEvent(date: finalDate, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
         
         return event
     }

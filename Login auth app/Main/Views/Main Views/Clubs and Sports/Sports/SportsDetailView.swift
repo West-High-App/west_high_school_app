@@ -193,7 +193,7 @@ struct SportsDetailView: View {
                                                     Image(systemName: "clock")
                                                         .resizable()
                                                         .frame(width: 15, height: 15)
-                                                    Text("\(event.date.formatted(date: .omitted, time: .shortened))")
+                                                    Text(event.isTBD ? "TBD" : "\(event.date.formatted(date: .omitted, time: .shortened))")
                                                         .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                                         .foregroundColor(.black)
                                                         .lineLimit(1)
