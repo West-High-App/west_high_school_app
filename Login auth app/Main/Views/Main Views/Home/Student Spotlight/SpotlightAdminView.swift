@@ -316,15 +316,6 @@ struct SpotlightAdminView: View {
                         if !achievement.isApproved {
                             //
                             dubachievementcell(feat: achievement)
-                                .buttonStyle(PlainButtonStyle())
-                                .contextMenu {
-                                    Button("Delete", role: .destructive) {
-                                        tempAchievementTitle = achievement.achievementtitle
-                                        isConfirmingDeleteAchievement = true
-                                        achievementToDelete = achievement
-                                    }
-                                }
-                            
                         }
                     }
                 }
