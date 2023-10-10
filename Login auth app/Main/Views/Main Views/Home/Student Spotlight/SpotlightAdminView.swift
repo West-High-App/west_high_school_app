@@ -158,7 +158,7 @@ struct SpotlightAdminView: View {
                             ProgressView()
                                 .padding()
                                 .onAppear {
-                                    dataManager.getMoreAchievements(getPending: false)
+                                    dataManager.getMoreAchievements()
                                 }
                         }
                     }
@@ -305,13 +305,6 @@ struct SpotlightAdminView: View {
                                 }
                             }
                         }
-                        if !dataManager.allstudentachievementlist.isEmpty && !dataManager.allPendingDocsLoaded {
-                            ProgressView()
-                                .padding()
-                                .onAppear {
-                                    dataManager.getMoreAchievements(getPending: true)
-                                }
-                        }
                     }
                 }
             } else {
@@ -333,13 +326,6 @@ struct SpotlightAdminView: View {
                                 }
                             
                         }
-                    }
-                    if !dataManager.allstudentachievementlist.isEmpty && !dataManager.allPendingDocsLoaded {
-                        ProgressView()
-                            .padding()
-                            .onAppear {
-                                dataManager.getMoreAchievements(getPending: true)
-                            }
                     }
                 }
                 

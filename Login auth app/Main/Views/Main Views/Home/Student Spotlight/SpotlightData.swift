@@ -38,8 +38,9 @@ class studentachievementlist: ObservableObject{
     static let shared = studentachievementlist()
     
     @Published private var allstudentachievementlistUnsorted: [studentachievement] = []
+    @Published private var allpendingstudentachievementlistUnsorted: [studentachievement] = []
     var allstudentachievementlist: [studentachievement] {
-        allstudentachievementlistUnsorted.sortedByDate()
+        (allstudentachievementlistUnsorted + allpendingstudentachievementlistUnsorted).sortedByDate()
     }
     @Published var newstitlearray: [studentachievement] = []
     @Published var hasLoaded = false
@@ -49,24 +50,15 @@ class studentachievementlist: ObservableObject{
     private let fetchLimit = 20
     private var lastDocument: DocumentSnapshot?
     @Published private(set) var allDocsLoaded = false
-    @Published private(set) var allPendingDocsLoaded = false
+    @Published private(set) var allPendingDocsLoaded = true
     
     init() {
-        connectAchievements(getPending: false)
-        connectAchievements(getPending: true)
+        connectAchievements()
+        connectPendingAchievements()
     }
     
-    private func handleFirestore(_ templist: [studentachievement], handlePending: Bool) {
+    private func handleFirestore(_ templist: [studentachievement]) {
         DispatchQueue.main.async {
-            if handlePending, templist.isEmpty {
-                for element in self.allstudentachievementlistUnsorted where !element.isApproved {
-                    if let index = self.allstudentachievementlistUnsorted.firstIndex(where: { element.documentID == $0.documentID }) {
-                        self.allstudentachievementlistUnsorted.remove(at: index)
-                    }
-                }
-                return
-            }
-            
             for temp in templist {
                 if let index = self.allstudentachievementlistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
                     self.allstudentachievementlistUnsorted[index].achievementdescription = temp.achievementdescription
@@ -96,7 +88,7 @@ class studentachievementlist: ObservableObject{
         }
     }
     
-    func getMoreAchievements(getPending: Bool) {
+    func getMoreAchievements() {
         guard let lastDocument else { return }
         
         print("LOADING ACHIEVMENTS LIST")
@@ -105,7 +97,7 @@ class studentachievementlist: ObservableObject{
         
         collection
             .order(by: "date", descending: true)
-            .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
+            .whereField("isApproved", isEqualTo: true)
             .limit(to: fetchLimit)
             .start(afterDocument: lastDocument)
             .getDocuments { snapshot, error in
@@ -139,26 +131,22 @@ class studentachievementlist: ObservableObject{
                     let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, imagedata: imagedata)
                     return achievement
                 }
-                self.handleFirestore(templist, handlePending: getPending)
+                self.handleFirestore(templist)
                 if snapshot.documents.count < self.fetchLimit {
-                    if getPending {
-                        self.allPendingDocsLoaded = true
-                    } else {
                         self.allDocsLoaded = true
-                    }
                 }
             }
         }
     }
     
-    func connectAchievements(getPending: Bool) {
+    func connectAchievements() {
         print("LOADING ACHIEVMENTS LIST")
         let db = Firestore.firestore()
         let collection = db.collection("StudentAchievements")
         
         collection
             .order(by: "date", descending: true)
-            .whereField("isApproved", isEqualTo: !getPending) // get approved dpcs if getPending is false or pending if getPending is true
+            .whereField("isApproved", isEqualTo: true)
             .limit(to: fetchLimit)
             .addSnapshotListener { snapshot, error in
             if let error = error {
@@ -194,13 +182,80 @@ class studentachievementlist: ObservableObject{
                     let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, imagedata: imagedata)
                     return achievement
                 }
-                self.handleFirestore(templist, handlePending: getPending)
+                self.handleFirestore(templist)
                 if snapshot.documents.count < self.fetchLimit {
-                    if getPending {
-                        self.allPendingDocsLoaded = true
-                    } else {
-                        self.allDocsLoaded = true
+                    self.allDocsLoaded = true
+                }
+            }
+        }
+    }
+    
+    func connectPendingAchievements() {
+        print("LOADING ACHIEVMENTS LIST")
+        let db = Firestore.firestore()
+        let collection = db.collection("StudentAchievements")
+        
+        collection
+            .order(by: "date", descending: true)
+            .whereField("isApproved", isEqualTo: false)
+            .addSnapshotListener { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let snapshot = snapshot {
+                
+                let templist: [studentachievement] = snapshot.documents.map { document in
+                    let data = document.data()
+                    let achievementtitle = data["achievementtitle"] as? String ?? ""
+                    let achievementdescription = data["achievementdescription"] as? String ?? ""
+                    let articleauthor = data["articleauthor"] as? String ?? ""
+                    let publisheddate = data["publisheddate"] as? String ?? ""
+                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
+                    let images = data["images"] as? [String] ?? []
+                    let isApproved = data["isApproved"] as? Bool ?? false
+                    let documentID = document.documentID
+                    
+                    var imagedata: [UIImage] = []
+                    for file in images {
+                        let _ = imageManager().getImage(fileName: file) { image in
+                            if let image = image {
+                                imagedata.append(image)
+                            }
+                        }
                     }
+                    
+                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, imagedata: imagedata)
+                    return achievement
+                }
+                DispatchQueue.main.async {
+                    if templist.isEmpty {
+                        self.allpendingstudentachievementlistUnsorted.removeAll()
+                    }
+                    
+                    for temp in templist {
+                        if let index = self.allpendingstudentachievementlistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
+                            self.allpendingstudentachievementlistUnsorted[index].achievementdescription = temp.achievementdescription
+                            self.allpendingstudentachievementlistUnsorted[index].achievementtitle = temp.achievementtitle
+                            self.allpendingstudentachievementlistUnsorted[index].articleauthor = temp.articleauthor
+                            self.allpendingstudentachievementlistUnsorted[index].images = temp.images
+                            self.allpendingstudentachievementlistUnsorted[index].publisheddate = temp.publisheddate
+                            self.allpendingstudentachievementlistUnsorted[index].isApproved = temp.isApproved
+                            self.allpendingstudentachievementlistUnsorted[index].imagedata = temp.imagedata
+                        } else {
+                            self.allpendingstudentachievementlistUnsorted.append(temp)
+                        }
+                        if temp == templist.last {
+                            for studentachievement in self.allpendingstudentachievementlistUnsorted {
+                                if !templist.contains(where: { $0.documentID == studentachievement.documentID }) {
+                                    self.allpendingstudentachievementlistUnsorted.removeAll(where: { $0.documentID == studentachievement.documentID }) // Remove if not on server
+                                }
+                            }
+                        }
+                    }
+                    self.loading.hasLoaded = true
+                    self.hasLoaded = true
                 }
             }
         }
