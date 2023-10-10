@@ -53,7 +53,10 @@ struct InformationView: View {
                             HStack {
                                 Image(systemName: "person.circle")
                                     .resizable()
-                                    .frame(width: 30, height: 30)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 50, height: 50)
+                                    .cornerRadius(100)
+                                    .padding(.trailing, 10)
                                 Text("Guest User")
                             }.foregroundColor(.primary)
                         }

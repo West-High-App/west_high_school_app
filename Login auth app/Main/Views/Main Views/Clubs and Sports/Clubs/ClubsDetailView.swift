@@ -201,22 +201,23 @@ struct ClubsDetailView: View {
                 // members view
                 
                 if selected == 2 {
-                    if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
-                        Text("No members.")
-                        Spacer()
-                            .frame(height: 100)
-
-                    } else {
-                        
-                        List{
-                            if currentclub.clubadvisor.count > 0 {
-                                Section{
-                                    ForEach(currentclub.clubadvisor, id: \.self){coach in
-                                        HStack{
-                                            Text(coach)
+                    if userInfo.loginStatus == "google" {
+                        if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
+                            Text("No members.")
+                            Spacer()
+                                .frame(height: 100)
+                            
+                        } else {
+                            
+                            List{
+                                if currentclub.clubadvisor.count > 0 {
+                                    Section{
+                                        ForEach(currentclub.clubadvisor, id: \.self){coach in
+                                            HStack{
+                                                Text(coach)
+                                            }
                                         }
                                     }
-                                }
                                 header:{
                                     if currentclub.clubcaptain?.count == 1 {
                                         Text("Coach")
@@ -224,39 +225,47 @@ struct ClubsDetailView: View {
                                         Text("Coaches")
                                     }
                                 }
-                            }
-                            
-                            if currentclub.clubcaptain?.count ?? 0 > 0 {
-                                Section {
-                                    ForEach(currentclub.clubcaptain!, id: \.self) { captain in
-                                        HStack {
-                                            Text(captain)
+                                }
+                                
+                                if currentclub.clubcaptain?.count ?? 0 > 0 {
+                                    Section {
+                                        ForEach(currentclub.clubcaptain!, id: \.self) { captain in
+                                            HStack {
+                                                Text(captain)
+                                            }
                                         }
-                                    }
-                                } header:{
-                                    if currentclub.clubcaptain?.count ?? 0 == 1 {
-                                        Text("Captain")
-                                    } else {
-                                        Text("Captains")
+                                    } header:{
+                                        if currentclub.clubcaptain?.count ?? 0 == 1 {
+                                            Text("Captain")
+                                        } else {
+                                            Text("Captains")
+                                        }
                                     }
                                 }
-                            }
-                            
-                            if currentclub.clubmembers.count > 0 {
-                                Section {
-                                    ForEach(currentclub.clubmembers
-                                            , id: \.self) { member in
-                                        HStack {
-                                            Text(member)
+                                
+                                if currentclub.clubmembers.count > 0 {
+                                    Section {
+                                        ForEach(currentclub.clubmembers
+                                                , id: \.self) { member in
+                                            HStack {
+                                                Text(member)
+                                            }
                                         }
-                                    }
-                                } header: {
+                                    } header: {
                                         Text("Members")
+                                    }
                                 }
-                            }
-                            
-                        }.frame(height: 450)
+                                
+                            }.frame(height: 450)
+                        }
                     }
+                else {
+                    Text("Log in to members!")
+                        .lineLimit(1)
+                        .font(.system(size: 26, weight: .semibold, design: .rounded))
+                        .padding(.leading, 5)
+                }
+                    
                 }
 
                 

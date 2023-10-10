@@ -95,7 +95,6 @@ struct ClubsHibabi: View {
     
         // MARK: view
     var body: some View {
-        if userInfo.loginStatus == "google" {
             ZStack {
                 NavigationStack {
                     ZStack {
@@ -130,6 +129,7 @@ struct ClubsHibabi: View {
                             // TODO: Build clubs UI
                             
                             if clubselected == 1 || clubselected == 2 {
+                                
                                 
                                 if (!hasFavorites && clubselected == 1) {
                                     VStack {
@@ -171,9 +171,7 @@ struct ClubsHibabi: View {
                                             Text("Loading")
                                         }
                                         // HERE WE GO
-                                        if userInfo.loginStatus != "google" {
-                                            Text("Log in to save favorites!")
-                                        }
+                                        
                                         List {// MARK: foreach 1 or 2
                                             ForEach(filteredList(fromList: clubsmanager.allclublist)) { item in
                                                 if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
@@ -301,13 +299,7 @@ struct ClubsHibabi: View {
                     print("VIEW APPEARED")
                     
                 }
-            }
-        else {
-            Text("Log in to view clubs!")
-                .lineLimit(2)
-                .font(.system(size: 32, weight: .semibold, design: .rounded))
-                .padding(.leading, 5)
-        }
+            
         }
     }
 
