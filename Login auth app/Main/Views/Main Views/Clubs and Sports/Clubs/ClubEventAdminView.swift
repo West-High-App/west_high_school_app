@@ -67,43 +67,41 @@ struct ClubsEventsAdminView: View {
                         .cornerRadius(10)
                     )
             }
-            if admin {
-                List {
-                    ForEach(dataManager.clubsEvents, id: \.id) { event in
-                        HStack {
-                            VStack {
-                                Text(event.month)
-                                    .font(.system(size: 16, weight: .medium, design: .rounded))
-                                    .foregroundColor(.red)
-                                Text(event.day)
-                                    .font(.system(size: 26, weight: .regular, design: .rounded))
-                                
-                            }
-                            .frame(width:50,height:50)
-                            Divider()
-                                .padding(.vertical, 10)
-                            VStack(alignment: .leading) {
-                                Text(event.title)
-                                    .lineLimit(2)
-                                    .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                Text(event.subtitle)
-                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                    .lineLimit(1)
-                            }
-                            .padding(.leading, 5)
-                            Spacer()
+            List {
+                ForEach(dataManager.clubsEvents, id: \.id) { event in
+                    HStack {
+                        VStack {
+                            Text(event.month)
+                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                .foregroundColor(.red)
+                            Text(event.day)
+                                .font(.system(size: 26, weight: .regular, design: .rounded))
                             
                         }
+                        .frame(width:50,height:50)
+                        Divider()
+                            .padding(.vertical, 10)
+                        VStack(alignment: .leading) {
+                            Text(event.title)
+                                .lineLimit(2)
+                                .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                            Text(event.subtitle)
+                                .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                .lineLimit(1)
+                        }
+                        .padding(.leading, 5)
+                        Spacer()
+                        
+                    }
 .contextMenu {
-                            Button("Delete", role: .destructive) {
-                                temptitle = event.title
-                                // isConfirmingDeleteEvent = true
-                                eventToDelete = event
-                                if let eventToDelete = eventToDelete {
-                                    editingeventslist.removeAll {$0 == eventToDelete}
-                                    print("Removed \(eventToDelete)")
-                                    dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
-                                }
+                        Button("Delete", role: .destructive) {
+                            temptitle = event.title
+                            // isConfirmingDeleteEvent = true
+                            eventToDelete = event
+                            if let eventToDelete = eventToDelete {
+                                editingeventslist.removeAll {$0 == eventToDelete}
+                                print("Removed \(eventToDelete)")
+                                dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
                             }
                         }
                     }
