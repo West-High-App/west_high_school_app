@@ -137,7 +137,7 @@ struct SportsDetailView: View {
                     
                     Picker(selection: $selected, label: Text(""), content: {
                         Text("Upcoming").tag(1)
-                        Text("Past Events").tag(2)
+                        Text("Past Games").tag(2)
                         Text("Roster").tag(3)
                     }).pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)
@@ -147,12 +147,10 @@ struct SportsDetailView: View {
                     
                     if selected == 1 {
                         if !isLoading {
-                        // MARK: Aiden to the UI for this:
-                        /// I think you have a pretty good idea of what needs to happen or what needs to be displayed. Basically just use the elements: date, type (like game, tournament, meet, etc.), opponent, and comments. You can change the date format using .formatted property.
                         
                         if events.isEmpty {
                             Text("No upcoming events.")
-                                .font(.system(size: 17, weight: .medium, design: .rounded))
+                                .font(.system(size: 24, weight: .semibold, design: .rounded))
                                 .padding(.bottom, 100)
                         } else {
                             List {
@@ -237,7 +235,7 @@ struct SportsDetailView: View {
                             NavigationLink {
                                 PastSportEventsAdminView(currentsport: currentsport)
                             } label: {
-                                Text("Edit Past Events")
+                                Text("Edit past games")
                                     .foregroundColor(.white)
                                     .fontWeight(.semibold)
                                     .padding(10)
@@ -253,8 +251,8 @@ struct SportsDetailView: View {
                         }
                         
                         if pastSportEvents.isEmpty {
-                            Text("No past events.")
-                                .font(.system(size: 17, weight: .medium, design: .rounded))
+                            Text("No past games yet")
+                                .font(.system(size: 24, weight: .medium, design: .rounded))
                                 .frame(maxHeight: .infinity)
                         } else {
                             List(pastSportEvents, id: \.id) { event in
