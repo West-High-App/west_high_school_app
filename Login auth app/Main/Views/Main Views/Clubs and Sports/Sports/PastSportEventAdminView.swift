@@ -102,6 +102,11 @@ struct PastSportEventsAdminView: View {
                             self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
                             self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
                             self.subtitle = event.subtitle
+                            self.title = event.title
+                            self.month = event.month
+                            self.day = event.day
+                            self.year = event.year
+                            self.arrayId = event.arrayId
                             isPresentingEditEvent = true
                         }.foregroundColor(.blue)
                     }
@@ -111,7 +116,12 @@ struct PastSportEventsAdminView: View {
                         self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
                         self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
                         self.subtitle = event.subtitle
-                        isPresentingEditEvent = true
+                        self.title = event.title
+                        self.month = event.month
+                        self.day = event.day
+                        self.year = event.year
+                        self.arrayId = event.arrayId
+                        self.isPresentingEditEvent = true
                     }
                 }
             }
@@ -173,18 +183,9 @@ struct PastSportEventsAdminView: View {
                     }
                     Button {
                         
-                        title = editingevent.title
-                        subtitle = editingevent.subtitle
-                        month = editingevent.month
-                        day = editingevent.day
-                        year = editingevent.year
-                        arrayId = editingevent.arrayId
-                        var tempscore: [Int] = []
                         let score1 = Int(homescore) ?? 0
                         let score2 = Int(otherscore) ?? 0
-                        tempscore = [score1, score2]
-                        
-                        let oldevent = editingevent
+                        let tempscore = [score1, score2]
                         
                         editingevent = sportEvent(documentID: documentID, arrayId: arrayId, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
                         
