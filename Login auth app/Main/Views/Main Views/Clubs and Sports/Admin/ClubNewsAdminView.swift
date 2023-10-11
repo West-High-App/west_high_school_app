@@ -322,15 +322,6 @@ struct ClubNewsAdminView: View { // hello
                         ForEach(dataManager.allclubsnewslist, id: \.id) { news in
                             if !news.isApproved {
                                 dubclubnewscell(feat: news)
-                                    .buttonStyle(PlainButtonStyle())
-                                    .contextMenu {
-                                        Button("Delete", role: .destructive) {
-                                            tempAchievementTitle = news.newstitle
-                                            isConfirmingDeleteAchievement = true
-                                            achievementToDelete = news
-                                        }
-                                    }
-
                             }
                         }
                         if !dataManager.allclubsnewslist.filter({ $0.isApproved }).isEmpty && !dataManager.allPendingDocsLoaded {

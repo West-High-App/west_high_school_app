@@ -279,16 +279,6 @@ struct SportsNewsAdminView: View {
                     ForEach(dataManager.allsportsnewslist, id: \.id) { news in
                         if !news.isApproved {
                             sportnewscell(feat: news)
-                                .buttonStyle(PlainButtonStyle())
-                                .contextMenu {
-                                    Button("Delete", role: .destructive) {
-                                        tempAchievementTitle = news.newstitle
-                                        isConfirmingDeleteAchievement = true
-                                        achievementToDelete = news
-                                    }
-                                    
-                                    
-                                }
                                 .padding(.trailing)
                                 .padding(.vertical,8)
                         }
