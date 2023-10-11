@@ -129,7 +129,7 @@ struct ClubNewsAdminView: View { // hello
             }
             
             
-            if hasPermission.articleadmin {
+            if hasPermission.articleadmin || hasPermission.clubarticleadmin {
                 
                 Picker("Selected", selection: $selected) {
                     Text("Edit")
@@ -490,7 +490,9 @@ struct clubNewsRowlView: View {
                             newsimage.append(imagemanager.uploadPhoto(file: displayimage))
                         }
                         
-                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: hasPermission.articleadmin, documentID: "NAN", imagedata: imagedata)
+                        var autoapprove = hasPermission.articleadmin || hasPermission.clubarticleadmin ? true : false
+                        
+                        let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: autoapprove, documentID: "NAN", imagedata: imagedata)
                         
                         dataManager.createClubNews(clubNews: achievementToSave) { error in
                             if let error = error {

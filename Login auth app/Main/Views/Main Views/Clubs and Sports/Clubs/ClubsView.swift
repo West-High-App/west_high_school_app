@@ -252,7 +252,7 @@ struct ClubsHibabi: View {
                                 .searchable(text: $searchText)
                                 .navigationBarItems(trailing:
                                                         Group {
-                                    if hasPermission.clubs || hasPermission.articles {
+                                    if hasPermission.clubs || hasPermission.articles || hasPermission.clubarticleadmin || hasPermission.clubarticlewriter {
                                         NavigationLink {
                                             ClubNewsAdminView()
                                         } label: {

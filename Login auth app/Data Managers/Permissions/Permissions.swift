@@ -14,6 +14,7 @@ class PermissionsCheck: ObservableObject {
     
     var permissions = permissionsDataManager()
     var user = UserInfo()
+    var clubmanager = clubManager()
     
     @Published var admin = false
     @Published var clubs = false
@@ -25,6 +26,36 @@ class PermissionsCheck: ObservableObject {
     @Published var articles = false
     @Published var articleadmin = false
     @Published var articlewriter = false
+        
+    var clubarticleadmin: Bool {
+        if clubs || articleadmin {
+            return true
+        } else {
+            for club in clubmanager.allclublist {
+                if club.adminemails.contains(user.email) {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+    
+    var clubarticlewriter: Bool {
+        if articlewriter {
+            return true
+        } else {
+            for club in clubmanager.allclublist {
+                if club.adminemails.contains(user.email) {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+    
+   var clubartciles: Bool {
+        return clubarticleadmin || clubarticlewriter
+    }
     
     init() {
         
@@ -134,7 +165,6 @@ class permissionsDataManager: ObservableObject {
                 }
                 
             }
-            
             }
         let db = Firestore.firestore()
         let ref = db.collection("Permissions")
@@ -174,6 +204,5 @@ class permissionsDataManager: ObservableObject {
             }
         }
     }
-    
 }
 
