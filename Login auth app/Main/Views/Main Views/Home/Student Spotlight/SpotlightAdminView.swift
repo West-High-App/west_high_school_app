@@ -202,27 +202,83 @@ struct SpotlightAdminView: View {
                                                     }.padding()
                                                     Spacer()
                                                 }
-                                                ScrollView {
-                                                    VStack (alignment: .leading){
-                                                        Text(usableType.achievementtitle)
-                                                            .fontWeight(.semibold)
-                                                            .padding(.leading)
-                                                        Text(usableType.articleauthor)
-                                                            .fontWeight(.medium)
-                                                            .padding(.leading)
-                                                        Text(usableType.publisheddate)
-                                                            .fontWeight(.medium)
-                                                            .padding(.leading)
-                                                        ForEach(usableType.imagedata, id: \.self) { image in
-                                                            Image(uiImage: image)
-                                                                .resizable()
-                                                                .cornerRadius(10)
-                                                                .padding()
-                                                                .frame(width: 300, height: 250)
+                                                VStack {
+                                                    ScrollView{
+                                                        VStack{
+                                                            HStack {
+                                                                Text(usableType.achievementtitle)
+                                                                    .foregroundColor(Color.black)
+                                                                    .font(.system(size: 35, weight: .bold, design: .rounded))
+                                                                    .lineLimit(2)
+                                                                    .minimumScaleFactor(0.3)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+                                                            HStack {
+                                                                Text(usableType.articleauthor)
+                                                                    .foregroundColor(Color.gray)
+                                                                    .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                                                    .lineLimit(1)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+                                                            HStack {
+                                                                Text(usableType.publisheddate)
+                                                                    .foregroundColor(Color.gray)
+                                                                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                                    .lineLimit(1)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+
+
+                                                            VStack {
+                                                                TabView {
+                                                                    
+                                                                    // Loop through each recipe
+                                                                    ForEach(usableType.imagedata.indices, id: \.self) { index in
+                                                                        ZStack {
+                                                                            Rectangle()
+                                                                                .foregroundColor(.white)
+                                                                            
+                                                                            VStack(spacing: 0) {
+                                                                                Image(uiImage: usableType.imagedata[index])
+                                                                                    .resizable()
+                                                                                    .aspectRatio(contentMode: .fill)
+                                                                                    .frame(width: screen.screenWidth - 30, height: 250)
+                                                                                    .clipped()
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    
+                                                                    
+                                                                }
+                                                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                                                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                                                                
+                                                            }.cornerRadius(30)
+                                                                .frame(width: screen.screenWidth - 30, height: 250)
+                                                                .shadow(color: .gray, radius: 8, x:2, y:3)
+                                                            
+                                                                .padding(.horizontal)
+                                                            Spacer()
+                                                        }.onAppear {
                                                         }
-                                                        Text(usableType.achievementdescription)
-                                                            .padding()
-                                                        Spacer()
+
+                                                        LinkTextView(text: usableType.achievementdescription)
+                                                                .multilineTextAlignment(.leading)
+                                                                .foregroundColor(Color.black)
+                                                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                                .padding(.horizontal, 25)
+                                                                .padding(.vertical, 5)
+                                                                .background(Rectangle()
+                                                                    .cornerRadius(10)
+                                                                    .padding(.horizontal)
+                                                                    .shadow(radius: 5, x: 3, y: 3)
+                                                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                                                .padding(.bottom)
+                                                            
+                                                        
                                                     }
                                                     
                                                     HStack {
