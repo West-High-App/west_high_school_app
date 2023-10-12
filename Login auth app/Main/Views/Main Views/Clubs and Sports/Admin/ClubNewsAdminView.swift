@@ -186,39 +186,84 @@ struct ClubNewsAdminView: View { // hello
                                             
                                             if let usableType = usableType {
                                                 
-                                                VStack {
+                                                ScrollView {
                                                     HStack {
                                                         Button("Cancel") {
                                                             presentingArticleSheet = false
                                                         }.padding()
                                                         Spacer()
                                                     }
-                                                    ScrollView {
                                                         
-                                                        VStack(alignment: .leading) {
-                                                            
+                                                    VStack{
+                                                        HStack {
                                                             Text(usableType.newstitle)
-                                                                .padding(.leading)
-                                                                .fontWeight(.semibold)
-                                                            Text(usableType.author)
-                                                                .padding(.leading)
-                                                                .fontWeight(.medium)
-                                                            Text(usableType.newsdate)
-                                                                .padding(.leading)
-                                                                .fontWeight(.medium)
-                                                            
-                                                            ForEach(usableType.imagedata, id: \.self) { image in
-                                                                Image(uiImage: image)
-                                                                    .resizable()
-                                                                    .cornerRadius(10)
-                                                                    .padding()
-                                                                    .frame(width: 300, height: 250)
-                                                            }
-                                                            
-                                                            Text(usableType.newsdescription)
-                                                                .padding()
+                                                                .foregroundColor(Color.black)
+                                                                .font(.system(size: 35, weight: .bold, design: .rounded))                            .lineLimit(2)
+                                                                .minimumScaleFactor(0.3)
+                                                                .padding(.horizontal)
                                                             Spacer()
                                                         }
+
+                                                        HStack {
+                                                            Text(usableType.author)
+                                                                .foregroundColor(Color.gray)
+                                                                .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                                                .lineLimit(1)
+                                                                .padding(.horizontal)
+                                                            Spacer()
+                                                        }
+                                                        HStack {
+                                                            Text(usableType.newsdate)
+                                                                .foregroundColor(Color.gray)
+                                                                .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                                .lineLimit(1)
+                                                                .padding(.horizontal)
+                                                            Spacer()
+                                                        }
+
+
+                                                        VStack {
+                                                            TabView {
+                                                                ForEach(usableType.imagedata.indices, id: \.self) { index in
+                                                                    ZStack {
+                                                                        Rectangle()
+                                                                            .foregroundColor(.white)
+                                                                        
+                                                                        VStack(spacing: 0) {
+                                                                            Image(uiImage: usableType.imagedata[index])
+                                                                                .resizable()
+                                                                                .padding(.bottom, 2)
+                                                                                .aspectRatio(contentMode: .fill)
+                                                                                .frame(width: screen.screenWidth - 20, height: 250)
+                                                                                .clipped()
+                                                                                .cornerRadius(30)
+                                                                        }
+                                                                    }
+                                                                }
+                                                                
+                                                                
+                                                            }
+                                                            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                                            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                                                            
+                                                        }.cornerRadius(30)
+                                                            .frame(width: screen.screenWidth - 20, height: 250)
+                                                            .shadow(color: .gray, radius: 8, x:2, y:3)
+                                                            .padding(.horizontal)
+                                                        Spacer() // here
+                                                        LinkTextView(text: usableType.newsdescription)
+                                                            .multilineTextAlignment(.leading)
+                                                            .foregroundColor(Color.black)
+                                                            .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                            .padding(.horizontal, 25)
+                                                            .padding(.vertical, 5)
+                                                            .background(Rectangle()
+                                                                .cornerRadius(10)
+                                                                .padding(.horizontal)
+                                                                .shadow(radius: 5, x: 3, y: 3)
+                                                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                                            .padding(.bottom)
+                                                    }
                                                         
                                                         HStack {
                                                             Spacer()
@@ -236,7 +281,7 @@ struct ClubNewsAdminView: View { // hello
                                                                     .fontWeight(.semibold)
                                                                     .padding(10)
                                                                     .cornerRadius(15.0)
-                                                                    .frame(width: screen.screenWidth-60)
+                                                                    .frame(width: screen.screenWidth/2-60)
                                                                     .font(.system(size: 17, weight: .semibold, design: .rounded))
                                                                     .background(Rectangle()
                                                                         .foregroundColor(.red)
@@ -258,7 +303,7 @@ struct ClubNewsAdminView: View { // hello
                                                                     .fontWeight(.semibold)
                                                                     .padding(10)
                                                                     .cornerRadius(15.0)
-                                                                    .frame(width: screen.screenWidth-60)
+                                                                    .frame(width: screen.screenWidth/2-60)
                                                                     .font(.system(size: 17, weight: .semibold, design: .rounded))
                                                                     .background(Rectangle()
                                                                         .foregroundColor(.blue)
@@ -266,8 +311,6 @@ struct ClubNewsAdminView: View { // hello
                                                                     )
                                                             }
                                                             Spacer()
-                                                        }
-                                                        
                                                     }
                                                 }
                                                 
