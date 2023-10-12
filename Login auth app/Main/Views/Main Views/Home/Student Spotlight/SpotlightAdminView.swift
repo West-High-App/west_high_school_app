@@ -365,8 +365,10 @@ struct SpotlightAdminView: View {
                 }
             } else {
                 
-                Text("Current pending articles")
-                    .padding(10)
+                Text("Current pending articles:")
+                    .multilineTextAlignment(.center)
+                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                    .padding(5)
                 List {
                     ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
                         if !achievement.isApproved {

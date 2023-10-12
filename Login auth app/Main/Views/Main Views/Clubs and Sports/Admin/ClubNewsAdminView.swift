@@ -360,7 +360,10 @@ struct ClubNewsAdminView: View { // hello
             } else {
                 
                 VStack {
-                    Text("Currrent pending Articles:")
+                    Text("Current pending articles:")
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .padding(5)
                     List {
                         ForEach(dataManager.allclubsnewslist, id: \.id) { news in
                             if !news.isApproved {

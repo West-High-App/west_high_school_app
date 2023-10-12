@@ -317,6 +317,9 @@ struct SportsNewsAdminView: View {
                 
             } else {
                 Text("Current pending articles:")
+                    .multilineTextAlignment(.center)
+                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                    .padding(5)
                 List {
                     ForEach(dataManager.allsportsnewslist, id: \.id) { news in
                         if !news.isApproved {
