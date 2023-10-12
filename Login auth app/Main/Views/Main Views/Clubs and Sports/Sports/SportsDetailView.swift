@@ -277,7 +277,6 @@ struct SportsDetailView: View {
                                             HStack {
                                                 if event.score.count > 1 {
                                                     if event.score[0] == 0 && event.score[1] == 0 {
-                                                        Text("Pending score...")
                                                     } else {
                                                         if event.score[0] > event.score[1] {
                                                             Text(String(event.score[0]))
@@ -299,7 +298,6 @@ struct SportsDetailView: View {
                                                         }
                                                     }
                                                 } else {
-                                                    Text("Pending score...")
                                                 }
                                             }
                                         } else {
