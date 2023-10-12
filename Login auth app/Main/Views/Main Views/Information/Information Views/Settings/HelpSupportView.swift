@@ -9,73 +9,7 @@ import SwiftUI
 
 struct HelpSupportView: View {
     var body: some View {
-        let screenSize: CGRect = UIScreen.main.bounds
-        ScrollView(showsIndicators: false){
-            ZStack{
-                ZStack{
-                    Rectangle()
-                        .frame(width: screenSize.width, height: 60)
-                        .foregroundColor(Color(red: 41/255, green: 51/255, blue:145/255))
-                    HStack{
-                        Text("WEST HIGH SCHOOL")
-                            .padding(.leading, 15)
-                            .foregroundColor(Color(red: 240/255, green: 241/255, blue: 247/255))
-                            .font(
-                                .custom(
-                                    "Devanagari Sangam MN",
-                                    fixedSize: 13.4)
-                                .weight(.semibold)
-                            )
-                        Spacer()
-                    }
-                    
-                }
-                ZStack{
-                    Rectangle()
-                        .frame(width:screenSize.width, height:40)
-                        .foregroundColor(Color(red: 85/255, green: 85/255, blue: 85/255))
-                        .offset(y:50)
-                    HStack{
-                        Image("mmsd")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width:20)
-                            .offset(y:50)
-
-                        
-                        Text("MADISON METROPOLITAN SCHOOL DISTRICT")
-                            .font(
-                                .custom(
-                                    "Devanagari Sangam MN",
-                                    fixedSize: 11)
-                            )
-                            .foregroundColor(Color(red: 240/255, green: 241/255, blue: 247/255))
-                            .offset(y:50)
-                        Spacer()
-                    }
-                    .padding(.leading,15)
-                }
-            }
-            VStack{
-                VStack{
-                    HStack{
-                        Text("Help & Support")
-                            .foregroundColor(Color.black)
-                            .font(.system(size: 45, weight: .bold, design: .rounded))
-                            .lineLimit(2)
-                            .foregroundColor(.black)
-                            .padding(.bottom, 10)
-                            .padding(.leading,10)
-                        Spacer()
-                    }
-                    
-                }
-                .padding(.vertical,50)
-            }
-            .padding(.top, 30)
-            .padding(.bottom, -30)
-
-            
+        ScrollView{
             VStack{
                 DisclosureGroup("FAQs"){
                     VStack(alignment:.leading){
@@ -99,21 +33,13 @@ struct HelpSupportView: View {
                             Text("Student Council helps maintain the West High app, if you are interested feel free to join Student Council. If you have any suggestions or improvements, contact us at westhighapp@gmail.com.\n")
                         }
                     }
-                    .font(
-                        .custom(
-                            "arial",
-                            fixedSize: 18)
-                        .weight(.regular)
-                    )
+                    .font(.system(size: 18, weight: .regular, design: .rounded))
+
                     .foregroundColor(.black)
                     .padding(.vertical, 10.0)
                 }
-                .font(
-                    .custom(
-                        "arial",
-                        fixedSize: 24)
-                    .weight(.semibold)
-                )
+                .font(.system(size: 17, weight: .semibold, design: .rounded))
+
                 .padding()
                 .tint(.black)
                 .foregroundColor(.black)
@@ -138,22 +64,14 @@ struct HelpSupportView: View {
                         }
                         Text("Logging in as a guest will allow you to enter the app without logging in with an email, logging in as a guest will restrict you from editing or adding content onto the app. You willl also not be able to save favorite clubs or sports.\n")
                     }
-                    .font(
-                        .custom(
-                            "arial",
-                            fixedSize: 18)
-                        .weight(.regular)
-                    )
+                    .font(.system(size: 18, weight: .regular, design: .rounded))
+
                     .foregroundColor(.black)
                     .padding(.vertical, 10.0)
 
                 }
-                .font(
-                    .custom(
-                        "arial",
-                        fixedSize: 24)
-                    .weight(.semibold)
-                )
+                .font(.system(size: 17, weight: .semibold, design: .rounded))
+
                 .padding()
                 .tint(.black)
                 .foregroundColor(.black)
@@ -182,21 +100,13 @@ struct HelpSupportView: View {
                             Text("Other questions and concerns can be emailed to WestHighApp@gmail.com, emails may take one to three business days to process. Thank you for your patience.")
                         }
                     }
-                    .font(
-                        .custom(
-                            "arial",
-                            fixedSize: 18)
-                        .weight(.regular)
-                    )
+                    .font(.system(size: 18, weight: .regular, design: .rounded))
+
                     .foregroundColor(.black)
                     .padding(.vertical, 10.0)
                 }
-                .font(
-                    .custom(
-                        "arial",
-                        fixedSize: 24)
-                    .weight(.semibold)
-                )
+                .font(.system(size: 17, weight: .semibold, design: .rounded))
+
                 .padding()
                 .tint(.black)
                 .foregroundColor(.black)
@@ -207,7 +117,7 @@ struct HelpSupportView: View {
             
             .padding(.horizontal, 5)
             
-        }
+        }.navigationTitle("Help & Support")
 
     }
 }

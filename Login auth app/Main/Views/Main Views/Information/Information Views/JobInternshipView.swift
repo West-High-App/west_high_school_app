@@ -80,7 +80,7 @@ struct JobInternshipView: View {
 
             
         }
-        .navigationBarTitle("Information")
+        .navigationBarTitle("Jobs & Internships")
     }
 }
 

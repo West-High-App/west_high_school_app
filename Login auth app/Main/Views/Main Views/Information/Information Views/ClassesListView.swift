@@ -89,7 +89,7 @@ struct ClassesListView: View {
             
             
         }
-        .navigationTitle("Courses")
+        .navigationTitle("Courses Info")
         .foregroundColor(.black)
         .font(.system(size: 22, weight: .medium, design: .rounded))
     }
