@@ -279,6 +279,24 @@ class sportEventManager: ObservableObject {
                     }
                 }
 
+            } else {
+                let returnValue: [sportEvent] = []
+//                            self.pastEventDictionary[forSport] = returnValue
+                self.pastEventDictionary[forSport] = returnValue.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
+//                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
+//                            self.pastSportsEvents = returnValue
+                self.pastSportsEvents = returnValue.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
+                print("got past sports events")
+                print(self.pastSportsEvents)
+                let completionValue = self.pastSportsEvents
+                
+                if let completion {
+                    completion(completionValue, nil)
+                }
             }
         }
     }
