@@ -97,7 +97,7 @@ struct HelpSupportView: View {
                                 Text("**Additional Questions**")
                                 Spacer()
                             }
-                            Text("Other questions and concerns can be emailed to WestHighApp@gmail.com, emails may take one to three business days to process. Thank you for your patience.")
+                            Text("Other questions and concerns can be emailed to westhighapp@gmail.com, emails may take one to three business days to process. Thank you for your patience.")
                         }
                     }
                     .font(.system(size: 18, weight: .regular, design: .rounded))
