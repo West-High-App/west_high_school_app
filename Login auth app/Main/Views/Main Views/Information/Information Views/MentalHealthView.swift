@@ -203,9 +203,7 @@ If you're in crisis, please check the crisis line information below to speak to 
             .background(Color(red: 41/255, green: 52/255, blue: 145/255))
             .cornerRadius(10)
             .scaleEffect(1)
-            
-            
-        }
+        }.padding(.top, -1) // new code
     }
 }
 
