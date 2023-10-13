@@ -137,7 +137,7 @@ struct SportsDetailView: View {
                     
                     Picker(selection: $selected, label: Text(""), content: {
                         Text("Upcoming").tag(1)
-                        Text("Past Games").tag(2)
+                        Text("Past Events").tag(2)
                         Text("Roster").tag(3)
                     }).pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)
@@ -235,7 +235,7 @@ struct SportsDetailView: View {
                             NavigationLink {
                                 PastSportEventsAdminView(currentsport: currentsport)
                             } label: {
-                                Text("Edit past games")
+                                Text("Edit past events")
                                     .foregroundColor(.white)
                                     .fontWeight(.semibold)
                                     .padding(10)
@@ -269,6 +269,8 @@ struct SportsDetailView: View {
                                     .frame(width:50,height:50)
                                     Divider()
                                         .padding(.vertical, 10)
+                                    Spacer()
+                                        .frame(width: 10) // new
                                     VStack (alignment: .leading){
                                         Text(event.title)
                                             .font(.headline)
