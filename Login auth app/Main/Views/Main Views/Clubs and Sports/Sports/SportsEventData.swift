@@ -57,12 +57,25 @@ class sportEventManager: ObservableObject {
     @Published var pastEventDictionary: [String: [sportEvent]] = [:]
     private var eventSnapshotListener: ListenerRegistration?
     private var pastEventSnapshotListener: ListenerRegistration?
+    private var currentSport: sport = sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: UUID())
     private var documentId = ""
     
     static let shared = sportEventManager() // singleton, i love you Per
     
-    func getSportsEvents(forSport sport: sport, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
-        self.isLoading = true
+    
+    func getData(forSport sport: sport) {
+        self.currentSport = sport
+        self.getSportsEvents(forSport: sport)
+        self.getPastSportsEvents(forSport: "\(sport.sportname) \(sport.sportsteam)")
+    }
+    
+    private func getSportsEvents(forSport sport: sport, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
+        guard currentSport == sport else { return }
+        
+        if self.eventDictionary["\(sport.sportname) \(sport.sportsteam)"] == nil {
+            self.isLoading = true
+        }
+        
         HTMLParser.parseEvents(from: sport.eventslink) { parsedevents, error in
             
             // Convert all events
@@ -114,6 +127,9 @@ class sportEventManager: ObservableObject {
             }
             DispatchQueue.main.async {
                 self.isLoading = false
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(3)) {
+                self.getSportsEvents(forSport: sport)
             }
         }
     }
@@ -216,7 +232,7 @@ class sportEventManager: ObservableObject {
 //        }
 //    }
     
-    func getPastSportsEvents(forSport: String, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
+    private func getPastSportsEvents(forSport: String, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
         if pastEventSnapshotListener != nil {
             pastEventSnapshotListener?.remove()
             self.pastEventSnapshotListener = nil

@@ -405,10 +405,7 @@ struct SportsDetailView: View {
             }
         }
         .onAppear {
-            if self.sporteventmanager.eventDictionary["\(currentsport.sportname) \(currentsport.sportsteam)"] == nil {
-                sporteventmanager.getSportsEvents(forSport: self.currentsport)
-            }
-            sporteventmanager.getPastSportsEvents(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)")
+            sporteventmanager.getData(forSport: self.currentsport)
                                 
             imagemanager.getImage(fileName: currentsport.rosterimage) { image in
                 currentsport.rosterimagedata = image
