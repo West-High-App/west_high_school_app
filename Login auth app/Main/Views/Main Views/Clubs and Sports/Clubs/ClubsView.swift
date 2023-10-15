@@ -101,7 +101,7 @@ struct ClubsHibabi: View {
                         VStack {
                             
                             Picker(selection: $clubselected, label: Text(""), content: { // picker at top
-                                Text("My Clubs").tag(1)
+                                Text("Favorites").tag(1)
                                 Text("Browse").tag(2)
                                 Text("News").tag(3)
                                 
