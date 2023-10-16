@@ -171,11 +171,11 @@ class sportEventManager: ObservableObject {
                 }
                 
                 self.eventDictionary[forSport] = upcomingArray.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
+                    $0.date.compare($1.date) == .orderedAscending
                 })
                 
                 self.sportsEvents = upcomingArray.sorted(by: {
-                    $0.date.compare($1.date) == .orderedDescending
+                    $0.date.compare($1.date) == .orderedAscending
                 })
             }
         }
