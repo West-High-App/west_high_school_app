@@ -107,9 +107,14 @@ struct ClubsEventsAdminView: View {
                     }
                 }
             }
-            Spacer()
+            // Spacer()
             if dataManager.clubsEvents.count == 0 {
-                Text("No events yet!")
+                Text("No upcoming events.")
+                    .lineLimit(1)
+                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                    .padding(.leading, 5)
+                Spacer()
+                    .frame(height: 500)
             }
             Spacer()
         }.navigationTitle("Edit Club Events")

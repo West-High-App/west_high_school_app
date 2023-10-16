@@ -160,9 +160,10 @@ struct ClubsDetailView: View {
                         }
                     }
                     if upcomingeventlist.count < 1 {
-                        Text("No upcoming events.")
-                            .multilineTextAlignment(.center)
-                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                             Text("No upcoming events.")
+                                 .lineLimit(1)
+                                 .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                 .padding(.leading, 5)
                         Spacer()
                             .frame(height: 100)
                     } else {

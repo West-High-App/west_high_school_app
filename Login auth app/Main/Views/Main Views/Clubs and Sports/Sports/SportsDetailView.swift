@@ -150,8 +150,9 @@ struct SportsDetailView: View {
                         
                         if events.isEmpty {
                             Text("No upcoming events.")
-                                .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                .padding(.bottom, 100)
+                                .lineLimit(1)
+                                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                .padding(.leading, 5)
                         } else {
                             List {
                                 ForEach(events, id: \.id) { event in
@@ -251,9 +252,10 @@ struct SportsDetailView: View {
                         }
                         
                         if pastSportEvents.isEmpty {
-                            Text("No past games yet")
-                                .font(.system(size: 24, weight: .medium, design: .rounded))
-                                .frame(maxHeight: .infinity)
+                            Text("No past events.")
+                                .lineLimit(1)
+                                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                .padding(.leading, 5)
                         } else {
                             List(pastSportEvents, id: \.id) { event in
                                 HStack {
