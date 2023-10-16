@@ -57,6 +57,10 @@ class PermissionsCheck: ObservableObject {
         return clubarticleadmin || clubarticlewriter
     }
     
+    var hasFullViewAccess: Bool {
+        return user.isMMSD || admin || clubs || clubarticleadmin || sports
+    }
+    
     init() {
         
         permissions.checkPermissions(dataType: "Clubs Admin", user: user.email) { result in

@@ -202,7 +202,7 @@ struct ClubsDetailView: View {
                 // members view
                 
                 if selected == 2 {
-                    if userInfo.hasFullViewAccess {
+                    if hasPermission.hasFullViewAccess {
                         if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
                             Text("No members.")
                             Spacer()
