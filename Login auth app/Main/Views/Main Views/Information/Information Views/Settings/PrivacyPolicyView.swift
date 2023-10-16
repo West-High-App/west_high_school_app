@@ -69,13 +69,9 @@ struct PrivacyPolicyView: View {
                         Text("**Contact Us**")
                         Text("If you have any questions or suggestions about our Privacy Policy, contact us at westhighapp@gmail.com.\n")
                     }
-                    
-                    
-                    
-                    
-                    
                 }
-                .padding(.vertical, -50)
+            
+                .padding(.top, -50) // .vertical
                 .padding(.horizontal,10)
             
             

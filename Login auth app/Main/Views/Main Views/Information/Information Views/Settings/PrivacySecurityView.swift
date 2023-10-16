@@ -75,7 +75,7 @@ struct PrivacySecurityView: View {
                     }
                 }
             }
-            .padding(.vertical, -50)
+            .padding(.top, -50)
             .padding(.horizontal,10)
         }
     }

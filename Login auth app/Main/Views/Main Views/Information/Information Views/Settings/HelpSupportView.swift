@@ -27,10 +27,10 @@ struct HelpSupportView: View {
                             Text("The articles shown in the student spotlight as well as the sports and club news are written by the Regent Review. If you are interested in helping out or have an article suggestion, join the Regent Review!\n")
                             
                             HStack{
-                                Text("**How can I help with developing the app?**")
+                                Text("**Who maintains the app?**")
                                 Spacer()
                             }
-                            Text("Student Council helps maintain the West High app, if you are interested feel free to join Student Council. If you have any suggestions or improvements, contact us at westhighapp@gmail.com.\n")
+                            Text("Student Council helps maintain the West High app, if you are interested feel free to join Student Council (more info under 'Clubs'). If you have any suggestions or improvements, contact us at westhighapp@gmail.com.")
                         }
                     }
                     .font(.system(size: 18, weight: .regular, design: .rounded))
@@ -53,16 +53,16 @@ struct HelpSupportView: View {
                 DisclosureGroup("Logging in"){
                     VStack(alignment:.leading){
                         HStack{
-                            Text("**Why can't I log in with my school email?**")
+                            Text("**Why should I log in?**")
                             Spacer()
                         }
-                        Text("Email accounts with the MMSD email domain (@madison.k12.wi.us) will not be able to log in because the app hasn't gotten reviewed by MMSD yet. Lets get this app to MMSD!\n")
+                        Text("Logging in with your MMSD email allows access to certain features, such as club rosters, that are otherwise hidden. Logging in also enables you to save  sports and clubs to the 'Favorites' tab, so they are always easily accessible. If you do not want to log in, you can always continue as a guest.\n")
                         
                         HStack{
                             Text("**What is logging in as a guest?**")
                             Spacer()
                         }
-                        Text("Logging in as a guest will allow you to enter the app without logging in with an email, logging in as a guest will restrict you from editing or adding content onto the app. You willl also not be able to save favorite clubs or sports.\n")
+                        Text("Logging in as a guest will allow you to enter the app without logging in with an email, logging in as a guest will restrict you from certain features of the app, as well as editing or adding content onto the app. You willl also not be able to save favorite clubs or sports.")
                     }
                     .font(.system(size: 18, weight: .regular, design: .rounded))
 
