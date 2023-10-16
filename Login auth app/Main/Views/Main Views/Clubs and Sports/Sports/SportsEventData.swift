@@ -18,7 +18,7 @@ class sportEvent: NSObject, Identifiable {
     let month: String
     let day: String
     let year: String
-    var date: Date = Date()
+    var date: Date
     var isSpecial: Bool// should the score be shown in the view
     var score: [Int] = [0, 0] // score of game (if applicable), home team first
     var isUpdated: Bool // should it show on past games
@@ -40,6 +40,8 @@ class sportEvent: NSObject, Identifiable {
         dateFormatter.dateFormat = "MMM dd, yyyy"
         if let date = dateFormatter.date(from: publisheddate) {
             self.date = date
+        } else {
+            self.date = Date()
         }
     }
 }
@@ -65,172 +67,119 @@ class sportEventManager: ObservableObject {
     
     func getData(forSport sport: sport) {
         self.currentSport = sport
-        self.getSportsEvents(forSport: sport)
+        self.getSportsEvent(forSport: "\(sport.sportname) \(sport.sportsteam)")
         self.getPastSportsEvents(forSport: "\(sport.sportname) \(sport.sportsteam)")
     }
     
-    private func getSportsEvents(forSport sport: sport, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
-        guard currentSport == sport else { return }
-        
-        if self.eventDictionary["\(sport.sportname) \(sport.sportsteam)"] == nil {
-            self.isLoading = true
-        }
-        
-        HTMLParser.parseEvents(from: sport.eventslink) { parsedevents, error in
-            
-            // Convert all events
-            let allSportsEvents: [sportEvent] = parsedevents?.compactMap({ parsedEvent in
-                let calendar = Calendar.current
-                let components = calendar.dateComponents([.day, .month, .year], from: parsedEvent.date)
-                
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "MMM" // This will give you the abbreviated month name
-                
-                return sportEvent(
-                    documentID: "NAN",
-                    arrayId: "NAN",
-                    title: parsedEvent.type,
-                    subtitle: parsedEvent.opponent,
-                    month: dateFormatter.string(from: parsedEvent.date),
-                    day: "\(components.day ?? 0)",
-                    year: "\(components.year ?? 0)",
-                    publisheddate: parsedEvent.date.formatted(date: .abbreviated, time: .omitted),
-                    isSpecial: false,
-                    score: [0, 0],
-                    isUpdated: false
-                )
-            }) ?? []
-            
-            if let sportsEvents = parsedevents?.filter({ $0.date > Date() }) {
-                DispatchQueue.main.async {
-                    self.sportsEvents = sportsEvents
-                    self.eventDictionary["\(sport.sportname) \(sport.sportsteam)"] = sportsEvents
-                }
-            }
-            
-            let pastSortsEvents = allSportsEvents.filter({ $0.date < Date() })
-            
-            for event in pastSortsEvents {
-                if !self.pastSportsEvents.contains(where: {
-                    $0.date == event.date &&
-                    $0.title == event.title &&
-                    $0.subtitle == event.subtitle
-                }) {
-                    print("sportEvent: \(event.title); \(event.subtitle)")
-                    print("")
-                    self.createSportEvent(forSport: "\(sport.sportname) \(sport.sportsteam)", sportEvent: event)
-                }
-            }
-            
-            if let completion {
-                completion(allSportsEvents, error)
-            }
-            DispatchQueue.main.async {
-                self.isLoading = false
-            }
-            /* DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(3)) {
-                self.getSportsEvents(forSport: sport)
-            } */ // MARK: this is duplicating the elements in the list and slowing down the app significantly
-        }
-    }
-//     
-//    func getSportsEvent(forSport: String, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
-//        if eventSnapshotListener != nil {
-//            eventSnapshotListener?.remove()
-//            self.eventSnapshotListener = nil
+//    private func getSportsEvents(forSport sport: sport, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
+//        guard currentSport == sport else { return }
+//        
+//        if self.eventDictionary["\(sport.sportname) \(sport.sportsteam)"] == nil {
+//            self.isLoading = true
 //        }
 //        
-//        let db = Firestore.firestore()
-//        let collection = db.collection("SportEvents")
-//        
-//        self.eventSnapshotListener = collection.addSnapshotListener { snapshot, error in
-//            if let error = error {
-//                print("Error: \(error.localizedDescription)")
-//                if let completion {
-//                    completion(nil, error)
+//        HTMLParser.parseEvents(from: sport.eventslink) { parsedevents, error in
+//            
+//            // Convert all events
+//            let allSportsEvents: [sportEvent] = parsedevents?.compactMap({ parsedEvent in
+//                let calendar = Calendar.current
+//                let components = calendar.dateComponents([.day, .month, .year], from: parsedEvent.date)
+//                
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "MMM" // This will give you the abbreviated month name
+//                
+//                return sportEvent(
+//                    documentID: "NAN",
+//                    arrayId: "NAN",
+//                    title: parsedEvent.type,
+//                    subtitle: parsedEvent.opponent,
+//                    month: dateFormatter.string(from: parsedEvent.date),
+//                    day: "\(components.day ?? 0)",
+//                    year: "\(components.year ?? 0)",
+//                    publisheddate: parsedEvent.date.formatted(date: .abbreviated, time: .omitted),
+//                    isSpecial: false,
+//                    score: [0, 0],
+//                    isUpdated: false
+//                )
+//            }) ?? []
+//            
+//            if let sportsEvents = parsedevents?.filter({ $0.date > Date() }) {
+//                DispatchQueue.main.async {
+//                    self.sportsEvents = sportsEvents
+//                    self.eventDictionary["\(sport.sportname) \(sport.sportsteam)"] = sportsEvents
 //                }
-//                return
 //            }
 //            
-//            if let snapshot = snapshot {
-//                var pastReturnValue: [sportEvent] = []
-//                var returnValue: [sportEvent] = [] {
-//                    didSet {
-//                        if returnValue.count == snapshot.documents.count {
-//                            for event in returnValue{
-//                                if event.date < Date.yesterday{
-//                                    
-//                                    // returnValue.removeAll {$0 == event}
-//                                    pastReturnValue.append(event) // if its in the past, add it to the past list
-//                                    
-//                                }
-//                            }
-//                            
-//                            // past lists
-//                            
-//                            self.pastEventDictionary[forSport] = pastReturnValue
-//                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.sorted(by: {
-//                                $0.date.compare($1.date) == .orderedDescending
-//                            })
-//                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
-//                            self.pastSportsEvents = pastReturnValue
-//                            self.pastSportsEvents = self.pastSportsEvents.sorted(by: {
-//                                $0.date.compare($1.date) == .orderedDescending
-//                            })
-//                            print("got past sports events")
-//                            print(self.pastSportsEvents)
-//                            
-//                            // upcoming lists
-//
-//                            self.eventDictionary[forSport] = returnValue
-//                            self.eventDictionary[forSport] = self.eventDictionary[forSport]?.sorted(by: {
-//                                $0.date.compare($1.date) == .orderedDescending
-//                            })
-//                            self.eventDictionary[forSport] = self.eventDictionary[forSport]?.reversed()
-//                            self.sportsEvents = returnValue
-//                            self.sportsEvents = self.sportsEvents.sorted(by: {
-//                                $0.date.compare($1.date) == .orderedDescending
-//                            })
-//                            self.sportsEvents = self.sportsEvents.reversed()
-//                            print("got upcoming sports events")
-//                            print()
-//                            
-//                            if let completion {
-//                                completion(returnValue, nil)
-//                            }
-//                        }
-//                    }
-//                }
-//                for document in snapshot.documents {
-//                    let data = document.data()
-//                    let sportID = data["sportID"] as? String ?? ""
-//                    let events = data["pastevents"] as? [[String: Any]] ?? []
-//                    let documentID = document.documentID
-//                    
-//                    if sportID == forSport {
-//                        // making in into a sportEvent
-//                        self.documentId = document.documentID
-//                        for event in events {
-//                            let id = event["id"] as? String ?? UUID().uuidString
-//                            let eventname = event["title"] as? String ?? ""
-//                            let time = event["subtitle"] as? String ?? ""
-//                            let month = event["month"] as? String ?? ""
-//                            let day = event["day"] as? String ?? ""
-//                            let year = event["year"] as? String ?? ""
-//                            let isSpecial = event["isSpecial"] as? Bool ?? false
-//                            let score = event["score"] as? [Int] ?? []
-//                            let isUpdated = event["isUpdated"] as? Bool ?? false
-//
-//                            let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
-//                            returnValue.append(newEvent)
-//                        }
-//                        
-//                        
-//                    }
+//            let pastSortsEvents = allSportsEvents.filter({ $0.date < Date() })
+//            
+//            for event in pastSortsEvents {
+//                if !self.pastSportsEvents.contains(where: {
+//                    $0.date == event.date &&
+//                    $0.title == event.title &&
+//                    $0.subtitle == event.subtitle
+//                }) {
+//                    print("sportEvent: \(event.title); \(event.subtitle)")
+//                    print("")
+//                    self.createSportEvent(forSport: "\(sport.sportname) \(sport.sportsteam)", sportEvent: event)
 //                }
 //            }
+//            
+//            if let completion {
+//                completion(allSportsEvents, error)
+//            }
+//            DispatchQueue.main.async {
+//                self.isLoading = false
+//            }
+//            /* DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(3)) {
+//                self.getSportsEvents(forSport: sport)
+//            } */ // MARK: this is duplicating the elements in the list and slowing down the app significantly
 //        }
 //    }
+//     
+    func getSportsEvent(forSport: String, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
+        if eventSnapshotListener != nil {
+            eventSnapshotListener?.remove()
+            self.eventSnapshotListener = nil
+        }
+        
+        let db = Firestore.firestore()
+        let collection = db.collection("SportEvents").document(forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20"))
+        
+        self.eventSnapshotListener = collection.addSnapshotListener { snapshot, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                if let completion {
+                    completion(nil, error)
+                }
+                return
+            }
+            
+            if let snapshot = snapshot {
+                let documentID = snapshot.documentID
+                self.documentId = documentID
+                guard let upcomingArrayDict = snapshot.get("upcommingevents") as? [[String : Any]] else { return }
+                let upcomingArray = upcomingArrayDict.map { event in
+                    let type = event["type"] as? String ?? UUID().uuidString
+                    let opponent = event["opponent"] as? String ?? ""
+                    let location = event["location"] as? String ?? ""
+                    let isTBD = event["isTBD"] as? Bool ?? false
+                    let comments = event["comments"] as? String ?? ""
+                    let date = (event["date"] as? Timestamp)?.dateValue() ?? Date()
+                    
+                    let newEvent = ParsedEvent(date: date, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
+                    return newEvent
+                }
+                
+                self.eventDictionary[forSport] = upcomingArray.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
+                
+                self.sportsEvents = upcomingArray.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
+            }
+        }
+    }
     
     private func getPastSportsEvents(forSport: String, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
         if pastEventSnapshotListener != nil {
