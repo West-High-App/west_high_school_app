@@ -331,8 +331,8 @@ struct ClubsDetailView: View {
                 )
             
             // add/remove sports confirm
-                .confirmationDialog("Add to My Clubs", isPresented: $confirming) {
-                    Button("Add to My Clubs") {
+                .confirmationDialog("Add to Favorites", isPresented: $confirming) {
+                    Button("Add to Favorites") {
                         
                         var tempclub = currentclub
                         tempclub.favoritedusers.append(userInfo.email)
@@ -348,8 +348,8 @@ struct ClubsDetailView: View {
                     }
                 }
             
-                .confirmationDialog("Remove from My Clubs", isPresented: $confirming2) {
-                    Button("Remove from My Clubs", role: .destructive) {
+                .confirmationDialog("Remove from Favorites", isPresented: $confirming2) {
+                    Button("Remove from Favorites", role: .destructive) {
                         
                         var tempclub = currentclub
                         tempclub.favoritedusers.removeAll {$0 == userInfo.email}

@@ -140,7 +140,7 @@ struct SportsHibabi: View {
             ZStack {
                 VStack {
                     Picker(selection: $selected, label: Text(""), content: { // picker at top
-                        Text("My Sports").tag(1)
+                        Text("Favorites").tag(1)
                         Text("Browse").tag(2)
                         Text("News").tag(3)
                         
