@@ -19,21 +19,27 @@ struct GoogleSignInResultModel {
 
 // MARK: SIGN IN FUNCTIONS
 func SignInGoogle(tokens: GoogleSignInResultModel, bypass: Bool) async throws -> Bool {
+    var userInfo = UserInfo.shared
     print("Signing in to Google.")
     let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
     let _ = try await Auth.auth().signIn(with: credential)
     let allowedDomain = "@madison.k12.wi.us"
-    if Auth.auth().currentUser?.email?.contains(allowedDomain) != nil && bypass == false {
-            print("Incorrect domain.")
-            try Auth.auth().signOut()
-            return false
-        }
-        else {
-            print("Domain verified.")
-            return true
-        }
+    /* if Auth.auth().currentUser?.email?.contains(allowedDomain) != nil && bypass == false {
+     print("Incorrect domain.")
+     try Auth.auth().signOut()
+     return false
+     }
+     else {
+     print("Domain verified.")
+     return true
+     }
+     } */
+    print("Verified login.")
+    if Auth.auth().currentUser?.email?.contains(allowedDomain) != nil {
+        userInfo.isMMSD = true
     }
-
+    return true
+}
 
 @MainActor
 final class AuthenticationViewModel: ObservableObject {

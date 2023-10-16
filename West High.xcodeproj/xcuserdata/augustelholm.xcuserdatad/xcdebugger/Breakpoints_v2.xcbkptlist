@@ -287,7 +287,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "69"
             endingLineNumber = "69"
-            landmarkName = "getSportsEvents(forSport:completion:)"
+            landmarkName = "getData(forSport:)"
             landmarkType = "7">
             <Locations>
                <Location

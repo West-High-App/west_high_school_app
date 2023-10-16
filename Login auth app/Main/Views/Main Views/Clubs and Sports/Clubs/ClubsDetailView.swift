@@ -201,7 +201,7 @@ struct ClubsDetailView: View {
                 // members view
                 
                 if selected == 2 {
-                    if userInfo.loginStatus == "google" {
+                    if userInfo.hasFullViewAccess {
                         if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
                             Text("No members.")
                             Spacer()
@@ -260,9 +260,9 @@ struct ClubsDetailView: View {
                         }
                     }
                 else {
-                    Text("Log in to members!")
+                    Text("Members not available.")
                         .lineLimit(1)
-                        .font(.system(size: 26, weight: .semibold, design: .rounded))
+                        .font(.system(size: 22, weight: .semibold, design: .rounded))
                         .padding(.leading, 5)
                 }
                     

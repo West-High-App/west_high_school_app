@@ -128,9 +128,9 @@ class sportEventManager: ObservableObject {
             DispatchQueue.main.async {
                 self.isLoading = false
             }
-            DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(3)) {
+            /* DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(3)) {
                 self.getSportsEvents(forSport: sport)
-            }
+            } */ // MARK: this is duplicating the elements in the list and slowing down the app significantly
         }
     }
 //     

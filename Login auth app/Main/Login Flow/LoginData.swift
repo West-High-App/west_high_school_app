@@ -2,8 +2,8 @@ import Foundation
 import SwiftKeychainWrapper
 
 class UserInfo: ObservableObject {
-    private let loginStatusKey = "loginStatusKey"
-    private let emailKey = "emailKey"
+    private let loginStatusKey: String = "loginStatusKey"
+    private let emailKey: String = "emailKey"
     
     static let shared = UserInfo()
     
@@ -19,9 +19,15 @@ class UserInfo: ObservableObject {
         }
     }
     
-    @Published var isAdmin = false
-    @Published var isClubsAdmin = false
-    @Published var isSportsAdmin = false
+    @Published var isAdmin: Bool = false
+    @Published var isClubsAdmin: Bool = false
+    @Published var isSportsAdmin: Bool = false
+    
+    @Published var isMMSD: Bool = false
+    
+    var hasFullViewAccess: Bool {
+        return isMMSD || isAdmin
+    }
     
     // Data available when user signs in with Google (if loginStatus = "google")
     @Published var displayName: String = ""
@@ -40,6 +46,6 @@ class UserInfo: ObservableObject {
         let fullname = displayName
         let namelist = fullname.components(separatedBy: " ")
         let name = namelist.first
-        return name ?? "student"
+        return name ?? "user"
     }
 }
