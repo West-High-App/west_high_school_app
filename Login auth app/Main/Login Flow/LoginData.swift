@@ -5,6 +5,8 @@ class UserInfo: ObservableObject {
     private let loginStatusKey: String = "loginStatusKey"
     private let emailKey: String = "emailKey"
     
+    var hasPermissions = PermissionsCheck.shared
+    
     static let shared = UserInfo()
     
     @Published var loginStatus: String {
@@ -26,8 +28,7 @@ class UserInfo: ObservableObject {
     @Published var isMMSD: Bool = false
     
     var hasFullViewAccess: Bool {
-        return isMMSD || isAdmin
-    }
+        return isMMSD || hasPermissions.admin || hasPermissions.clubs || hasPermissions.clubarticleadmin || hasPermissions.sports
     
     // Data available when user signs in with Google (if loginStatus = "google")
     @Published var displayName: String = ""
