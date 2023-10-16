@@ -209,7 +209,9 @@ struct ClubsEventsAdminView: View {
 
                             dataManager.createClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToSave)
                             isPresetingAddEvent = false
-                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                isPresentingConfirmEvent = true // here?
+                            }
                         }
                     } label: {
                         Text("Publish New Club Event")
@@ -220,7 +222,7 @@ struct ClubsEventsAdminView: View {
                             .frame(width: screen.screenWidth-60)
                             .font(.system(size: 17, weight: .semibold, design: .rounded))
                             .background(Rectangle()
-                                .foregroundColor(.blue)
+                                .foregroundColor(.red)
                                 .cornerRadius(10)
                             )
                     }

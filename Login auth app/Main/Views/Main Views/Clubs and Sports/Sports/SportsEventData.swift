@@ -45,7 +45,7 @@ class sportEvent: NSObject, Identifiable {
 }
 
 // TODO: Rewrite flows to allow for snapshot listener
-// TODO: get this shit to work bro what :o
+// TODO: get this shit to work
 
 class sportEventManager: ObservableObject {
     @Published var sportsEvents: [ParsedEvent] = []
