@@ -188,7 +188,7 @@ class sportEventManager: ObservableObject {
         }
         
         let db = Firestore.firestore()
-        let collection = db.collection("SportEvents").whereField("sportID", isEqualTo: forSport)
+        let collection = db.collection("SportEvents").document(forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20"))
         
         self.pastEventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
@@ -200,48 +200,42 @@ class sportEventManager: ObservableObject {
             }
             
             if let snapshot = snapshot {
-                for document in snapshot.documents {
-                    let data = document.data()
-                    let sportID = data["sportID"] as? String ?? ""
-                    let events = data["pastevents"] as? [[String: Any]] ?? []
-                    let documentID = document.documentID
-                    
-                    if sportID == forSport {
-                        // making in into a sportEvent
-                        self.documentId = document.documentID
-                        let returnValue: [sportEvent] = events.map { event in
-                            let id = event["id"] as? String ?? ""
-                            let eventname = event["title"] as? String ?? ""
-                            let time = event["subtitle"] as? String ?? ""
-                            let month = event["month"] as? String ?? ""
-                            let day = event["day"] as? String ?? ""
-                            let year = event["year"] as? String ?? ""
-                            let isSpecial = event["isSpecial"] as? Bool ?? false
-                            let score = event["score"] as? [Int] ?? []
-                            let isUpdated = event["isUpdated"] as? Bool ?? false
+                let document = snapshot
+                guard let data = document.data() else { return }
+                let events = data["pastevents"] as? [[String: Any]] ?? []
+                let documentID = document.documentID
+                
+                self.documentId = document.documentID
+                let returnValue: [sportEvent] = events.map { event in
+                    let id = event["id"] as? String ?? ""
+                    let eventname = event["title"] as? String ?? ""
+                    let time = event["subtitle"] as? String ?? ""
+                    let month = event["month"] as? String ?? ""
+                    let day = event["day"] as? String ?? ""
+                    let year = event["year"] as? String ?? ""
+                    let isSpecial = event["isSpecial"] as? Bool ?? false
+                    let score = event["score"] as? [Int] ?? []
+                    let isUpdated = event["isUpdated"] as? Bool ?? false
 
-                            let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
-                            return newEvent
-                        }
-                        
+                    let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
+                    return newEvent
+                }
+                
 //                            self.pastEventDictionary[forSport] = returnValue
-                        self.pastEventDictionary[forSport] = returnValue.sorted(by: {
-                            $0.date.compare($1.date) == .orderedDescending
-                        })
+                self.pastEventDictionary[forSport] = returnValue.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
 //                            self.pastEventDictionary[forSport] = self.pastEventDictionary[forSport]?.reversed()
 //                            self.pastSportsEvents = returnValue
-                        self.pastSportsEvents = returnValue.sorted(by: {
-                            $0.date.compare($1.date) == .orderedDescending
-                        })
-                        print("got past sports events")
-                        print(self.pastSportsEvents)
-                        let completionValue = self.pastSportsEvents
-                        
-                        if let completion {
-                            completion(completionValue, nil)
-                        }
-                        
-                    }
+                self.pastSportsEvents = returnValue.sorted(by: {
+                    $0.date.compare($1.date) == .orderedDescending
+                })
+                print("got past sports events")
+                print(self.pastSportsEvents)
+                let completionValue = self.pastSportsEvents
+                
+                if let completion {
+                    completion(completionValue, nil)
                 }
 
             } else {
