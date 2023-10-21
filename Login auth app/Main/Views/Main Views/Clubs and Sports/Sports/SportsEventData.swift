@@ -203,7 +203,7 @@ class sportEventManager: ObservableObject {
                 let returnValue: [sportEvent] = snapshot.documents.compactMap { document in
                     let event = document.data()
                     
-                    let id = event["id"] as? String ?? ""
+                    let id = document.documentID
                     let eventname = event["title"] as? String ?? ""
                     let time = event["subtitle"] as? String ?? ""
                     let month = event["month"] as? String ?? ""
