@@ -60,7 +60,6 @@ class sportEventManager: ObservableObject {
     private var eventSnapshotListener: ListenerRegistration?
     private var pastEventSnapshotListener: ListenerRegistration?
     private var currentSport: sport = sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: UUID())
-    private var documentId = ""
     
     static let shared = sportEventManager() // singleton, i love you Per
     
@@ -145,7 +144,6 @@ class sportEventManager: ObservableObject {
         let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents").document(documentID).collection("UpcomingEvents")
-        self.documentId = documentID
         
         self.eventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
@@ -191,7 +189,6 @@ class sportEventManager: ObservableObject {
         let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents").document(documentID).collection("PastEvents")
-        self.documentId = documentID
         
         self.pastEventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
@@ -264,7 +261,7 @@ class sportEventManager: ObservableObject {
         let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let db = Firestore.firestore()
         
-        db.collection("SportEvents").document(sportEvent.documentID).collection("PastEvents").document(documentID).delete { error in
+        db.collection("SportEvents").document(documentID).collection("PastEvents").document(sportEvent.arrayId).delete { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 completion(error)
@@ -280,7 +277,7 @@ class sportEventManager: ObservableObject {
         
         let db = Firestore.firestore()
         let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
-        let ref = db.collection("SportEvents").document(self.documentId).collection("PastEvents").document(documentID)
+        let ref = db.collection("SportEvents").document(documentID).collection("PastEvents").document(sportEvent.arrayId)
         
         guard let pastSportEventsIndex = self.pastSportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) else {
             return
