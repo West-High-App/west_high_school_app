@@ -257,76 +257,12 @@ class sportEventManager: ObservableObject {
         }
     }
     
-    func createSportEvent(forSport: String, sportEvent: sportEvent) {
-        var eventdocumentID = ""
-        let db = Firestore.firestore()
-        let collection = db.collection("SportEvents")
-        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport
-        
-        let uploadEvent = [sportEvent].map { event in
-            
-            let id = UUID().uuidString
-            let title = event.title
-            let subtitle = event.subtitle
-            let month = event.month
-            let day = event.day
-            let year = event.year
-            let publisheddate = "\(month) \(day), \(year)"
-            let isSpecial = event.isSpecial
-            let isUpdated = event.isUpdated
-            let score = event.score
-            return ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
-        }
-        
-        let sportsEvents: [[String : Any]] = self.pastSportsEvents.map { event in
-            
-            let id = UUID().uuidString
-            let title = event.title
-            let subtitle = event.subtitle
-            let month = event.month
-            let day = event.day
-            let year = event.year
-            let publisheddate = "\(month) \(day), \(year)"
-            let isSpecial = event.isSpecial
-            let isUpdated = event.isUpdated
-            let score = event.score
-            return ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
-        } + uploadEvent
-        
-        collection.document(documentID).setData([
-            "sportID": forSport,
-            "pastevents": FieldValue.arrayUnion(uploadEvent)
-        ], merge: true) { error in
-            if let error = error {
-                print("ERROR ADDING EVENT: \(error.localizedDescription)")
-            }
-        }
-    }
-    
     func deleteSportEventNews(forSport: String, sportEvent: sportEvent, completion: @escaping (Error?) -> Void) {
         print("deleting event...")
+        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let db = Firestore.firestore()
-        let ref = db.collection("SportEvents").document(sportEvent.documentID)
         
-        var eventtoremove: [String: Any] = [:]
-        let id = sportEvent.arrayId
-        let title = sportEvent.title
-        let subtitle = sportEvent.subtitle
-        let month = sportEvent.month
-        let day = sportEvent.day
-        let year = sportEvent.year
-        let publisheddate = "\(month) \(day), \(year)"
-        let isSpecial = sportEvent.isSpecial
-        let isUpdated = sportEvent.isUpdated
-        let score = sportEvent.score
-        eventtoremove = ["id": id, "title": title, "subtitle": subtitle, "month": month, "day": day, "year": year, "publisheddate": publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": true]
-        
-        print("try a remove:")
-        print(eventtoremove)
-        
-        ref.updateData([
-            "pastevents": FieldValue.arrayRemove([eventtoremove])
-        ]) { error in
+        db.collection("SportEvents").document(sportEvent.documentID).collection("PastEvents").document(documentID).delete { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 completion(error)
@@ -341,35 +277,28 @@ class sportEventManager: ObservableObject {
     func updateSportEventScore(forSport: String, sportEvent: sportEvent) {
         
         let db = Firestore.firestore()
-        let ref = db.collection("SportEvents").document(self.documentId)
+        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
+        let ref = db.collection("SportEvents").document(self.documentId).collection("PastEvents").document(documentID)
         
         guard let pastSportEventsIndex = self.pastSportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) else {
             return
         }
         
-        let sportsEvents = self.pastSportsEvents.map { event in
-            let setEvent = (event.arrayId == sportEvent.arrayId) ? sportEvent : event
-            
-            let id = setEvent.arrayId
-            let title = setEvent.title
-            let subtitle = setEvent.subtitle
-            let month = setEvent.month
-            let day = setEvent.day
-            let year = setEvent.year
-            let publisheddate = "\(month) \(day), \(year)"
-            let isSpecial = setEvent.isSpecial
-            let isUpdated = setEvent.isUpdated
-            let score = setEvent.score
-            return ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated]
-        }
+        let setEvent = sportEvent
         
-        ref.updateData([
-            "pastevents": sportsEvents
-        ]) { error in
-            if let error = error {
-                print("ERROR ADDING EVENT: \(error.localizedDescription)")
-            }
-        }
+        let id = setEvent.arrayId
+        let title = setEvent.title
+        let subtitle = setEvent.subtitle
+        let month = setEvent.month
+        let day = setEvent.day
+        let year = setEvent.year
+        let publisheddate = "\(month) \(day), \(year)"
+        let isSpecial = setEvent.isSpecial
+        let isUpdated = setEvent.isUpdated
+        let score = setEvent.score
+        let dict = ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated] as [String : Any]
+        
+        ref.setData(dict)
         
     }
     
