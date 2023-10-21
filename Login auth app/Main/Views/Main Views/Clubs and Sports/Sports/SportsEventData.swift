@@ -142,8 +142,9 @@ class sportEventManager: ObservableObject {
             self.eventSnapshotListener = nil
         }
         
+        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let db = Firestore.firestore()
-        let collection = db.collection("SportEvents").document(forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20"))
+        let collection = db.collection("SportEvents").document(documentID).collection("UpcomingEvents")
         
         self.eventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
@@ -155,10 +156,10 @@ class sportEventManager: ObservableObject {
             }
             
             if let snapshot = snapshot {
-                let documentID = snapshot.documentID
-                self.documentId = documentID
-                guard let upcomingArrayDict = snapshot.get("upcommingevents") as? [[String : Any]] else { return }
-                let upcomingArray = upcomingArrayDict.map { event in
+                
+                let upcomingArray = snapshot.documents.map { document in
+                    let event = document.data()
+                    
                     let type = event["type"] as? String ?? UUID().uuidString
                     let opponent = event["opponent"] as? String ?? ""
                     let location = event["location"] as? String ?? ""
@@ -186,9 +187,9 @@ class sportEventManager: ObservableObject {
             pastEventSnapshotListener?.remove()
             self.pastEventSnapshotListener = nil
         }
-        
+        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let db = Firestore.firestore()
-        let collection = db.collection("SportEvents").document(forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20"))
+        let collection = db.collection("SportEvents").document(documentID).collection("PastEvents")
         
         self.pastEventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
@@ -200,13 +201,9 @@ class sportEventManager: ObservableObject {
             }
             
             if let snapshot = snapshot {
-                let document = snapshot
-                guard let data = document.data() else { return }
-                let events = data["pastevents"] as? [[String: Any]] ?? []
-                let documentID = document.documentID
-                
-                self.documentId = document.documentID
-                let returnValue: [sportEvent] = events.map { event in
+                let returnValue: [sportEvent] = snapshot.documents.compactMap { document in
+                    let event = document.data()
+                    
                     let id = event["id"] as? String ?? ""
                     let eventname = event["title"] as? String ?? ""
                     let time = event["subtitle"] as? String ?? ""
