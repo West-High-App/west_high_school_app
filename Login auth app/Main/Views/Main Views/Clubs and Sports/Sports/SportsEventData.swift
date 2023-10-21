@@ -145,6 +145,7 @@ class sportEventManager: ObservableObject {
         let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents").document(documentID).collection("UpcomingEvents")
+        self.documentId = documentID
         
         self.eventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
@@ -190,6 +191,7 @@ class sportEventManager: ObservableObject {
         let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents").document(documentID).collection("PastEvents")
+        self.documentId = documentID
         
         self.pastEventSnapshotListener = collection.addSnapshotListener { snapshot, error in
             if let error = error {
