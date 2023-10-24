@@ -39,6 +39,22 @@ struct PastSportEventsAdminView: View {
     @State var otherscore = ""
     @State var documentID = ""
     
+    @State var olddescription: String = ""
+    @State var editingdescription: String = ""
+    var fulldescription: String {
+        var part1 = ""
+        
+        print(olddescription)
+        if olddescription.contains("\n") {
+            part1 = olddescription.components(separatedBy: "\n")[1]
+        } else {
+            part1 = olddescription
+        }
+        
+        let returnvalue = part1 + "\n" + editingdescription
+        return returnvalue
+    }
+    
     @State var screen = ScreenSize()
     
     var body: some View {
@@ -107,6 +123,13 @@ struct PastSportEventsAdminView: View {
                             self.day = event.day
                             self.year = event.year
                             self.arrayId = event.arrayId
+                            self.olddescription = event.subtitle
+                            if event.subtitle.contains("\n") {
+                                self.editingdescription = event.subtitle.components(separatedBy: "\n")[1]
+                            } else {
+                                self.editingdescription = event.subtitle
+                            }
+                                                        
                             isPresentingEditEvent = true
                         }.foregroundColor(.blue)
                     }
@@ -121,7 +144,14 @@ struct PastSportEventsAdminView: View {
                         self.day = event.day
                         self.year = event.year
                         self.arrayId = event.arrayId
-                        self.isPresentingEditEvent = true
+                        self.olddescription = event.subtitle
+                        if event.subtitle.contains("\n") {
+                            self.editingdescription = event.subtitle.components(separatedBy: "\n")[1]
+                        } else {
+                            self.editingdescription = event.subtitle
+                        }
+                                                    
+                        isPresentingEditEvent = true
                     }
                 }
             }
@@ -138,7 +168,6 @@ struct PastSportEventsAdminView: View {
 //            }
             
             documentID = currentsport.documentID
-            
         }
         .onChange(of: self.isSpecial) { _ in
             print("Set isSpecial")
@@ -166,19 +195,19 @@ struct PastSportEventsAdminView: View {
                     if !isSpecial {
                         Section(header: Text("Home Score")) {
                             //TextField("Home score", text: $homescore)
-                                //.keyboardType(.numberPad)
+                            //.keyboardType(.numberPad)
                             
                             NumericTextField(text: $homescore, displaytext: "Home score")
                         }
                         Section(header: Text("Opponent Score")) {
                             //TextField("Opponent score", text: $otherscore)
-                                //.keyboardType(.numberPad)
+                            //.keyboardType(.numberPad)
                             
                             NumericTextField(text: $otherscore, displaytext: "Opponent score")
                         }
                     } else {
                         Section(header: Text("Event information")) {
-                                TextField("Description", text: $subtitle)
+                            TextField("Description", text: $editingdescription)
                         }
                     }
                     Button {
@@ -187,7 +216,24 @@ struct PastSportEventsAdminView: View {
                         let score2 = Int(otherscore) ?? 0
                         let tempscore = [score1, score2]
                         
-                        editingevent = sportEvent(documentID: documentID, arrayId: arrayId, title: title, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
+                        var part1 = ""
+                        
+                        print(subtitle)
+                        if subtitle.contains("\n") {
+                            print("contains /n")
+                            part1 = subtitle.components(separatedBy: "\n")[1]
+                        } else {
+                            print("doest not contain /n")
+                            part1 = subtitle
+                        }
+                        
+                        print("part 1")
+                        print(part1)
+                        print("part2")
+                        print(editingdescription)
+                        let returnvalue = part1 + "\n" + editingdescription
+                        
+                        editingevent = sportEvent(documentID: documentID, arrayId: arrayId, title: title, subtitle: returnvalue, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
                         
                         print(editingevent)
                         
@@ -195,20 +241,21 @@ struct PastSportEventsAdminView: View {
                         
                         // HERE IS THE ISSUE
                         
-//                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent) { error in
-//                            if error == nil {
-//                                dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
-//                            }
-//                        }
+                        //                        dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent) { error in
+                        //                            if error == nil {
+                        //                                dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
+                        //                            }
+                        //                        }
                         
                         dataManager.updateSportEventScore(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
-                        
+                        subtitle = ""
+                        editingdescription = ""
                         /*dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent)
-
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
-                        }*/
-
+                         
+                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                         dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
+                         }*/
+                        
                         
                         isPresentingEditEvent = false
                     } label: {
