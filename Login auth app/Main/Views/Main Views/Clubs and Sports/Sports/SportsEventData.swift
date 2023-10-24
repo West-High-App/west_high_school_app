@@ -136,6 +136,8 @@ class sportEventManager: ObservableObject {
 //    }
 //     
     func getSportsEvent(forSport: String, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
+        self.isLoading = true
+        
         if eventSnapshotListener != nil {
             eventSnapshotListener?.remove()
             self.eventSnapshotListener = nil
@@ -177,6 +179,7 @@ class sportEventManager: ObservableObject {
                 self.sportsEvents = upcomingArray.sorted(by: {
                     $0.date.compare($1.date) == .orderedAscending
                 })
+                self.isLoading = false
             }
         }
     }

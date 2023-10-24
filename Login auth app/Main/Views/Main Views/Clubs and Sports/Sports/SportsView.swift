@@ -7,6 +7,7 @@
 
 
 import SwiftUI
+import Shimmer
 
 struct SportsHibabi: View {
     // MARK: initializers
@@ -170,8 +171,55 @@ struct SportsHibabi: View {
                         }
                     
                     // MARK: my sports
-                    if selected == 1 || selected == 2{
-                        if selected == 1 && allfavoriteslist.count == 0 {
+                    if selected == 1 || selected == 2 {
+                        if sportsmanager.isLoading {
+                            Button {
+                                isFiltering = true
+                            } label: {
+                                HStack {
+                                    Label("Filter \(countFilters())", systemImage: "line.3.horizontal.decrease.circle")
+                                        .padding(.horizontal)
+                                        .padding(.top, 1)
+                                        .foregroundColor(.gray)
+                                    Spacer()
+                                }
+                            }
+                            .disabled(true)
+                            List { // MARK: load sports
+                                ForEach(0..<8) { _ in
+                                    HStack {
+                                        Image(systemName: "questionmark.circle")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 50, height: 50)
+                                            .cornerRadius(1000)
+                                            .padding(.trailing, 10)
+                                            .redacted(reason: .placeholder)
+                                        VStack (alignment: .center){
+                                            HStack {
+                                                Text("Baseball")
+                                                    .foregroundColor(.primary)
+                                                    .lineLimit(2)
+                                                    .minimumScaleFactor(0.9)
+                                                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                    .redacted(reason: .placeholder)
+                                                Spacer()
+                                            }
+                                            HStack {
+                                                Text("JV")
+                                                    .foregroundColor(.secondary)
+                                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                    .redacted(reason: .placeholder)
+                                                Spacer()
+                                            }
+                                        }
+                                        Spacer()
+                                    }
+                                    .shimmering()
+                                }
+                            }
+                            .searchable(text: .constant(""))
+                        } else if selected == 1 && allfavoriteslist.count == 0 {
                             VStack {
                                 Spacer()
                                 HStack{
@@ -195,8 +243,7 @@ struct SportsHibabi: View {
                                 Spacer()
                                 
                             }
-                        }
-                        else {
+                        } else {
                             Button {
                                 isFiltering = true
                             } label: {

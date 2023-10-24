@@ -36,6 +36,7 @@ class sportsManager: ObservableObject {
     
     @Published var allsportlist: [sport] = []
     @Published var favoriteslist: [sport] = []
+    @Published private(set) var isLoading = false
     private var imagemanager = imageManager()
     
     static let shared = sportsManager()
@@ -45,6 +46,7 @@ class sportsManager: ObservableObject {
     }
     
     func getSports() {
+        self.isLoading = true
         var tempID = 0
         let db = Firestore.firestore()
         let collection = db.collection("Sport")
@@ -64,6 +66,7 @@ class sportsManager: ObservableObject {
 //                                    self.sportsPath.removeLast(self.sportsPath.count)
                                 }
                                 self.allsportlist = returnvalue
+                                self.isLoading = false
 //                                for temp in returnvalue {
 //                                    if let index = self.allsportlist.firstIndex(where: { $0.documentID == temp.documentID }) {
 //                                        self.allsportlist[index].sportname = temp.sportname
@@ -214,6 +217,7 @@ class clubManager: ObservableObject {
     var favoriteclubs = FavoriteClubs() // make favorite clubs
     private var imagemanager = imageManager()
     @Published var favoriteslist: [club] = []
+    @Published private(set) var isLoading = false
     
     static let shared = clubManager()
     
@@ -225,7 +229,7 @@ class clubManager: ObservableObject {
     }
     
     func getClubs() {
-        
+        self.isLoading = true
         let db = Firestore.firestore()
         let collection = db.collection("Clubs")
         
@@ -264,6 +268,7 @@ class clubManager: ObservableObject {
                                         }
                                     }
                                 }
+                                self.isLoading = false
                             }
                         }
                     }

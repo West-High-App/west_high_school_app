@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Shimmer
 
 struct ClubsHibabi: View {
     
@@ -131,8 +132,55 @@ struct ClubsHibabi: View {
                             // TODO: Build clubs UI
                     
                             if clubselected == 1 || clubselected == 2 {
-                                
-                                if (!hasFavorites && clubselected == 1) {
+                                if clubsmanager.isLoading {
+                                    List { // MARK: load sports
+                                        ForEach(0..<8) { _ in
+                                            HStack {
+                                                Image(systemName: "questionmark.circle")
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 50, height: 50)
+                                                    .cornerRadius(1000)
+                                                    .padding(.trailing, 10)
+                                                    .redacted(reason: .placeholder)
+                                                VStack (alignment: .center){
+                                                    HStack {
+                                                        Text("Chess Club")
+                                                            .foregroundColor(.primary)
+                                                            .lineLimit(2)
+                                                            .minimumScaleFactor(0.9)
+                                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                            .redacted(reason: .placeholder)
+                                                        Spacer()
+                                                    }
+                                                    HStack {
+                                                        Text("304")
+                                                            .foregroundColor(.secondary)
+                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                            .redacted(reason: .placeholder)
+                                                        Spacer()
+                                                    }
+                                                }
+                                                Spacer()
+                                            }
+                                            .shimmering()
+                                        }
+                                    }
+                                    .searchable(text: .constant(""))
+                                    .navigationBarItems(trailing:
+                                                            Group {
+                                        if hasPermission.clubs {
+                                            NavigationLink {
+                                                ClubsAdminView(clubslist: clubsmanager.allclublist)
+                                            } label: {
+                                                Text("Edit")
+                                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                            }
+                                            .disabled(true)
+                                        }
+                                    }
+                                    )
+                                } else if (!hasFavorites && clubselected == 1) {
                                     VStack {
                                         Spacer()
                                         HStack{
@@ -168,9 +216,6 @@ struct ClubsHibabi: View {
                                     )
                                 } else {
                                     VStack {
-                                        if isLoading {
-                                            Text("Loading")
-                                        }
                                         // HERE WE GO
                                         
                                         List {// MARK: foreach 1 or 2
