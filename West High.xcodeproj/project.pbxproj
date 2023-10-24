@@ -33,6 +33,7 @@
 		224B2EE42AC8472A00BCF08B /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224B2EE32AC8472A00BCF08B /* ImageCropView.swift */; };
 		2263AD372ABB77EA0016AA73 /* uitestview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD362ABB77E90016AA73 /* uitestview.swift */; };
 		2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */; };
+		22664E162AE83213004FC227 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 22664E152AE83213004FC227 /* Shimmer */; };
 		2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B1EB2A68D23300823E58 /* WestHighApp.swift */; };
 		2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2072A68D9FC00823E58 /* AuthView.swift */; };
 		2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20C2A68DC3F00823E58 /* MenuView.swift */; };
@@ -219,6 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22664E162AE83213004FC227 /* Shimmer in Frameworks */,
 				228362EC2A2AB9700061BFAE /* FirebaseAnalyticsSwift in Frameworks */,
 				228362F72A2C1E720061BFAE /* FirebaseFirestore in Frameworks */,
 				228362EE2A2AB9700061BFAE /* FirebaseAuth in Frameworks */,
@@ -585,6 +587,7 @@
 				228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */,
 				22DECD6B2AAB65B800061E60 /* FirebaseStorage */,
 				221388322AC1FF7F0052A285 /* SwiftSoup */,
+				22664E152AE83213004FC227 /* Shimmer */,
 			);
 			productName = "Login auth app";
 			productReference = 228362D52A2AB3D70061BFAE /* West High.app */;
@@ -619,6 +622,7 @@
 				222086E72A6224D400EF1ECA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				228309FD2A8680D100AE9C08 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 				221388312AC1FF7F0052A285 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				22664E142AE83213004FC227 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
 			);
 			productRefGroup = 228362D62A2AB3D70061BFAE /* Products */;
 			projectDirPath = "";
@@ -978,6 +982,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		22664E142AE83213004FC227 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
 		228309FD2A8680D100AE9C08 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
@@ -1011,6 +1023,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 222086E72A6224D400EF1ECA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		22664E152AE83213004FC227 /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 22664E142AE83213004FC227 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
+			productName = Shimmer;
 		};
 		228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */ = {
 			isa = XCSwiftPackageProductDependency;

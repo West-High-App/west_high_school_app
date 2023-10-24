@@ -172,18 +172,11 @@ struct SportsDetailView: View {
                                         VStack {
                                             HStack {
                                                 Text("\(event.type)")
-                                                    .minimumScaleFactor(0.8)
-                                                    .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-
+                                                    .font(.headline)
                                                 Spacer()
                                             }
                                             HStack {
                                                 Text("\(event.opponent)")
-                                                    .minimumScaleFactor(0.8)
-
-                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-
-                                                
                                                 Spacer()
                                             }
                                             
@@ -333,7 +326,9 @@ struct SportsDetailView: View {
                             }
                             else {
                                 Text("No roster.")
-                            }
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)                            }
                         }
                     }
                     

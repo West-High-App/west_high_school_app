@@ -110,8 +110,6 @@ struct SportEventsAdminView: View {
                             Toggle(isOn: $isSpecial) {
                                 Text("Special event")
                             }
-                            Text("If the sport type does not support scores (e.g. cross country) this should be toggled on.")
-                                .font(.system(size: 14, weight: .regular, design: .rounded))
                         }
                         
                         if !isSpecial {
