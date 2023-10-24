@@ -298,7 +298,20 @@ struct SportsDetailView: View {
                                                 }
                                             }
                                         } else {
-                                            Text(event.subtitle)
+                                            if event.subtitle.contains("$WIN$") {
+                                                Text("Win")
+                                                    .foregroundColor(.green)
+                                            } else if event.subtitle.contains("$LOSS$") {
+                                                Text("Loss")
+                                                    .foregroundColor(.red)
+                                            }
+                                            else if event.subtitle.contains("$TIE$") {
+                                                Text("Tie")
+                                                    .foregroundColor(.black)
+                                            }
+                                            else {
+                                                Text(event.subtitle)
+                                            }
                                         }
                                     }
                                 }

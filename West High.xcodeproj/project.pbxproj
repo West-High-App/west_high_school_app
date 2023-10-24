@@ -136,7 +136,7 @@
 		2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEventAdminView.swift; sourceTree = "<group>"; };
 		224B2EE32AC8472A00BCF08B /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
 		2263AD362ABB77E90016AA73 /* uitestview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = uitestview.swift; sourceTree = "<group>"; };
-		2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastSportEventAdminView.swift; sourceTree = "<group>"; };
+		2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastSportEventAdminView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
 		2270B1F92A68D5ED00823E58 /* Login_auth_app_testApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_auth_app_testApp.swift; sourceTree = "<group>"; };
 		2270B1FB2A68D5ED00823E58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };

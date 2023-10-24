@@ -14,6 +14,8 @@ struct PastSportEventsAdminView: View {
     @State var eventToDelete: sportEvent?
     @State var eventToSave: sportEvent?
     
+    @State var selectedspecialeventtype = 0
+    
     @ObservedObject var userInfo = UserInfo.shared
     @ObservedObject var hasPermission = PermissionsCheck.shared
     
@@ -108,7 +110,20 @@ struct PastSportEventsAdminView: View {
                                     }
                                 }
                             } else {
-                                Text(event.subtitle)
+                                if event.subtitle.contains("$WIN$") {
+                                    Text("Win")
+                                        .foregroundColor(.green)
+                                } else if event.subtitle.contains("$LOSS$") {
+                                    Text("Loss")
+                                        .foregroundColor(.red)
+                                }
+                                else if event.subtitle.contains("$TIE$") {
+                                    Text("Tie")
+                                        .foregroundColor(.black)
+                                }
+                                else {
+                                    Text(event.subtitle)
+                                }
                             }
                         }
                     }.contextMenu {
@@ -204,8 +219,23 @@ struct PastSportEventsAdminView: View {
                             NumericTextField(text: $otherscore, displaytext: "Opponent score")
                         }
                     } else {
-                        Section(header: Text("Event information")) {
-                            TextField("Description", text: $editingdescription)
+                        Section(header: Text("Event Type")) {
+                            Picker("Outcome", selection: $selectedspecialeventtype) {
+                                Text("Win")
+                                    .tag(0)
+                                Text("Loss")
+                                    .tag(1)
+                                Text("Tie")
+                                    .tag(2)
+                                Text("Manual Description")
+                                    .tag(3)
+                            }
+                        }
+                        
+                        if selectedspecialeventtype == 3 {
+                            Section(header: Text("Event Description")) {
+                                TextField("Description", text: $editingdescription)
+                            }
                         }
                     }
                     Button {
@@ -215,6 +245,20 @@ struct PastSportEventsAdminView: View {
                         let tempscore = [score1, score2]
                         
                         var part1 = ""
+                        
+                        switch selectedspecialeventtype {
+                            case 0:
+                                editingdescription = "$WIN$";
+                                break
+                            case 1:
+                                editingdescription = "$LOSS$";
+                                break
+                            case 2:
+                                editingdescription = "$TIE$";
+                                break
+                            default:
+                                break
+                        }
                         
                         print(subtitle)
                         if subtitle.contains("\n") {
@@ -229,7 +273,16 @@ struct PastSportEventsAdminView: View {
                         print(part1)
                         print("part2")
                         print(editingdescription)
-                        let returnvalue = part1 + "\n" + editingdescription
+                        
+                        var returnvalue = ""
+                        
+                        if isSpecial {
+                            returnvalue = part1 + "\n" + editingdescription
+                        } else {
+                            returnvalue = subtitle
+                        }
+                        
+                        
                         
                         editingevent = sportEvent(documentID: documentID, arrayId: arrayId, title: title, subtitle: returnvalue, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
                         
