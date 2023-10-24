@@ -139,6 +139,22 @@ struct PastSportEventsAdminView: View {
                             self.year = event.year
                             self.arrayId = event.arrayId
                             self.olddescription = event.subtitle
+                            
+                            
+                            if event.subtitle.contains("\n") {
+                                selectedspecialeventtype = 3
+                            }
+                            if event.subtitle.contains("$WIN$") {
+                                selectedspecialeventtype = 0
+                            }
+                            if event.subtitle.contains("$LOSS$") {
+                                selectedspecialeventtype = 1
+                            }
+                            if event.subtitle.contains("$TIE$") {
+                                selectedspecialeventtype = 2
+                            }
+                            
+                            
                             if event.subtitle.contains("\n") {
                                 self.editingdescription = event.subtitle.components(separatedBy: "\n")[1]
                             } else {
@@ -150,6 +166,20 @@ struct PastSportEventsAdminView: View {
                     }
                     .onTapGesture {
                         self.isSpecial = event.isSpecial
+                        
+                        if event.subtitle.contains("\n") {
+                            selectedspecialeventtype = 3
+                        }
+                        if event.subtitle.contains("$WIN$") {
+                            selectedspecialeventtype = 0
+                        }
+                        if event.subtitle.contains("$LOSS$") {
+                            selectedspecialeventtype = 1
+                        }
+                        if event.subtitle.contains("$TIE$") {
+                            selectedspecialeventtype = 2
+                        }
+                        
                         editingevent = event
                         self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
                         self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
