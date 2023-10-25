@@ -168,7 +168,15 @@ class sportEventManager: ObservableObject {
                     let comments = event["comments"] as? String ?? ""
                     let date = (event["date"] as? Timestamp)?.dateValue() ?? Date()
                     
-                    let newEvent = ParsedEvent(date: date, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
+                    let calendar = Calendar.current
+                    var finalDate: Date {
+                        guard let centralTime = TimeZone(identifier: "America/Chicago") else { return date }
+                                
+                        let finalDate = date.convertToTimeZone(initTimeZone: centralTime, timeZone: calendar.timeZone)
+                        return finalDate
+                    }
+                    
+                    let newEvent = ParsedEvent(date: finalDate, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
                     return newEvent
                 }
                 
