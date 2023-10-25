@@ -34,7 +34,6 @@
 		224B2EE42AC8472A00BCF08B /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224B2EE32AC8472A00BCF08B /* ImageCropView.swift */; };
 		2263AD372ABB77EA0016AA73 /* uitestview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD362ABB77E90016AA73 /* uitestview.swift */; };
 		2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */; };
-		22664E162AE83213004FC227 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 22664E152AE83213004FC227 /* Shimmer */; };
 		2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B1EB2A68D23300823E58 /* WestHighApp.swift */; };
 		2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2072A68D9FC00823E58 /* AuthView.swift */; };
 		2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20C2A68DC3F00823E58 /* MenuView.swift */; };
@@ -870,7 +869,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = B2YZ849D42;
+				DEVELOPMENT_TEAM = N2R26K3XYA;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -890,7 +889,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApp;
+				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -911,7 +910,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = B2YZ849D42;
+				DEVELOPMENT_TEAM = N2R26K3XYA;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -931,7 +930,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApp;
+				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -991,14 +990,6 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		22664E142AE83213004FC227 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
-			};
-		};
 		228309FD2A8680D100AE9C08 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
@@ -1037,11 +1028,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 222086E72A6224D400EF1ECA /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
-		};
-		22664E152AE83213004FC227 /* Shimmer */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 22664E142AE83213004FC227 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
-			productName = Shimmer;
 		};
 		228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */ = {
 			isa = XCSwiftPackageProductDependency;

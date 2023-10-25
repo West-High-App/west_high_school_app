@@ -52,71 +52,75 @@ struct ClubsEventsAdminView: View {
     var body: some View {
         
         VStack {
-            Button {
-                isPresetingAddEvent = true
-            } label: {
-                Text("Add Club Event")
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-                    .padding(10)
-                    .cornerRadius(15.0)
-                    .frame(width: screen.screenWidth-30)
-                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                    .background(Rectangle()
-                        .foregroundColor(.blue)
-                        .cornerRadius(10)
-                    )
-            }
-            List {
-                ForEach(dataManager.clubsEvents, id: \.id) { event in
-                    HStack {
-                        VStack {
-                            Text(event.month)
-                                .font(.system(size: 16, weight: .medium, design: .rounded))
-                                .foregroundColor(.red)
-                            Text(event.day)
-                                .font(.system(size: 26, weight: .regular, design: .rounded))
-                            
-                        }
-                        .frame(width:50,height:50)
-                        Divider()
-                            .padding(.vertical, 10)
-                        VStack(alignment: .leading) {
-                            Text(event.title)
-                                .lineLimit(2)
-                                .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                            Text(event.subtitle)
-                                .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                .lineLimit(1)
-                        }
-                        .padding(.leading, 5)
-                        Spacer()
-                        
-                    }
-.contextMenu {
-                        Button("Delete", role: .destructive) {
-                            temptitle = event.title
-                            // isConfirmingDeleteEvent = true
-                            eventToDelete = event
-                            if let eventToDelete = eventToDelete {
-                                editingeventslist.removeAll {$0 == eventToDelete}
-                                print("Removed \(eventToDelete)")
-                                dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
+            VStack{
+                Button {
+                    isPresetingAddEvent = true
+                } label: {
+                    Text("Add Club Event")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10)
+                        )
+                }
+                .padding(.top, 70)
+                if dataManager.clubsEvents.count > 0 {
+                    List {
+                        ForEach(dataManager.clubsEvents, id: \.id) { event in
+                            HStack {
+                                VStack {
+                                    Text(event.month)
+                                        .font(.system(size: 16, weight: .medium, design: .rounded))
+                                        .foregroundColor(.red)
+                                    Text(event.day)
+                                        .font(.system(size: 26, weight: .regular, design: .rounded))
+                                    
+                                }
+                                .frame(width:50,height:50)
+                                Divider()
+                                    .padding(.vertical, 10)
+                                VStack(alignment: .leading) {
+                                    Text(event.title)
+                                        .lineLimit(2)
+                                        .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                                    Text(event.subtitle)
+                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                        .lineLimit(1)
+                                }
+                                .padding(.leading, 5)
+                                Spacer()
+                                
+                            }
+                            .contextMenu {
+                                Button("Delete", role: .destructive) {
+                                    temptitle = event.title
+                                    // isConfirmingDeleteEvent = true
+                                    eventToDelete = event
+                                    if let eventToDelete = eventToDelete {
+                                        editingeventslist.removeAll {$0 == eventToDelete}
+                                        print("Removed \(eventToDelete)")
+                                        dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
+                                    }
+                                }
                             }
                         }
                     }
                 }
+                // Spacer()
+                else if dataManager.clubsEvents.count == 0 {
+                    Text("No upcoming events.")
+                        .lineLimit(1)
+                        .font(.system(size: 22, weight: .semibold, design: .rounded))
+                        .padding(.leading, 5)
+                    Spacer()
+                        .frame(height: 500)
+                }
             }
-            // Spacer()
-            if dataManager.clubsEvents.count == 0 {
-                Text("No upcoming events.")
-                    .lineLimit(1)
-                    .font(.system(size: 22, weight: .semibold, design: .rounded))
-                    .padding(.leading, 5)
-                Spacer()
-                    .frame(height: 500)
-            }
-            Spacer()
         }.navigationTitle("Edit Club Events")
         .alert(isPresented: $isConfirmingDeleteEvent) {
             Alert(
