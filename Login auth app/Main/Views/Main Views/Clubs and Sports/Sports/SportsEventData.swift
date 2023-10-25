@@ -158,7 +158,7 @@ class sportEventManager: ObservableObject {
             
             if let snapshot = snapshot {
                 
-                let upcomingArray = snapshot.documents.map { document in
+                let upcomingArray = snapshot.documents.compactMap { document in
                     let event = document.data()
                     
                     let type = event["type"] as? String ?? UUID().uuidString
@@ -166,18 +166,20 @@ class sportEventManager: ObservableObject {
                     let location = event["location"] as? String ?? ""
                     let isTBD = event["isTBD"] as? Bool ?? false
                     let comments = event["comments"] as? String ?? ""
-                    let date = (event["date"] as? Timestamp)?.dateValue() ?? Date()
+                    let day = event["day"] as? String ?? ""
+                    let month = event["month"] as? String ?? ""
+                    let year = event["year"] as? String ?? ""
+                    let time = event["time"] as? String ?? ""
                     
-                    let calendar = Calendar.current
-                    var finalDate: Date {
-                        guard let centralTime = TimeZone(identifier: "America/Chicago") else { return date }
-                                
-                        let finalDate = date.convertToTimeZone(initTimeZone: centralTime, timeZone: calendar.timeZone)
-                        return finalDate
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "dd-MMM-yyyy h:mm a"
+                    if let date = dateFormatter.date(from: "\(day)/\(month)/\(year) \(time)") {
+                        
+                        let newEvent = ParsedEvent(date: date, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
+                        return newEvent
+                    } else {
+                        return nil
                     }
-                    
-                    let newEvent = ParsedEvent(date: finalDate, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
-                    return newEvent
                 }
                 
                 self.eventDictionary[forSport] = upcomingArray.sorted(by: {
