@@ -192,13 +192,15 @@ struct SportsDetailView: View {
 
                                                     Spacer()
                                                 }.foregroundColor(.black)
-                                                HStack {
-                                                    Image(systemName: "location")
-                                                        .resizable()
-                                                        .frame(width: 15, height: 15)
-                                                    Text("\(event.location)")
-                                                    Spacer()
-                                                }.foregroundColor(.black)
+                                                if !event.location.isEmpty {
+                                                    HStack {
+                                                        Image(systemName: "location")
+                                                            .resizable()
+                                                            .frame(width: 15, height: 15)
+                                                        Text("\(event.location)")
+                                                        Spacer()
+                                                    }.foregroundColor(.black)
+                                                }
                                                 
                                                 if !event.comments.isEmpty {
                                                     HStack {
