@@ -297,15 +297,18 @@ struct SportsDetailView: View {
                                                 } else {
                                                 }
                                             }
-                                        } else {
+                                        } else { // MARK: new shit here
                                             if event.subtitle.contains("$WIN$") {
+                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                                 Text("Win")
                                                     .foregroundColor(.green)
                                             } else if event.subtitle.contains("$LOSS$") {
+                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                                 Text("Loss")
                                                     .foregroundColor(.red)
                                             }
                                             else if event.subtitle.contains("$TIE$") {
+                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                                 Text("Tie")
                                                     .foregroundColor(.black)
                                             }
