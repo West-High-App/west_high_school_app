@@ -76,7 +76,57 @@ struct AccountView: View {
                     
                 }
             }.navigationTitle("User Info")
-                .confirmationDialog("Log Out", isPresented: $isPresentingLogoutConfirmation) {
+        
+            .alert(isPresented: $isPresentingLogoutConfirmation) {
+                
+                if userInfo.loginStatus == "google" {
+                    Alert(
+                        title: Text("Sign Out"),
+                        message: Text("Signing out of your Google account will return you to the login screen."),
+                        primaryButton: .destructive(Text("Sign Out")) {
+                            DispatchQueue.main.async { // should fix the issue
+                                do {
+                                    print("trying to sign out.")
+                                    try Auth.auth().signOut()
+                                    DispatchQueue.main.async {
+                                        print("setting to none")
+                                        userInfo.loginStatus = "none"
+                                        print("set to none")
+                                    }
+                                } catch let signOutError {
+                                    print("tried to sign out failed")
+                                    print(signOutError.localizedDescription)
+                                }
+                            }
+                        },
+                        secondaryButton: .cancel(Text("Cancel"))
+                    )
+                } else {
+                    Alert(
+                        title: Text("Continue"),
+                        message: Text("Continuing will return you to the login screen."),
+                        primaryButton: .destructive(Text("Continue")) {
+                            DispatchQueue.main.async { // should fix the issue
+                                do {
+                                    print("trying to sign out.")
+                                    try Auth.auth().signOut()
+                                    DispatchQueue.main.async {
+                                        print("setting to none")
+                                        userInfo.loginStatus = "none"
+                                        print("set to none")
+                                    }
+                                } catch let signOutError {
+                                    print("tried to sign out failed")
+                                    print(signOutError.localizedDescription)
+                                }
+                            }
+                        },
+                        secondaryButton: .cancel(Text("Cancel"))
+                    )
+                }
+            }
+        
+                /*.confirmationDialog("Log Out", isPresented: $isPresentingLogoutConfirmation) {
                     Button("Sign Out", role: .destructive) {
                         DispatchQueue.main.async { // should fix the issue
                             do {
@@ -93,7 +143,7 @@ struct AccountView: View {
                             }
                         }
                     }
-                }
+                } */
     }
 }
 
