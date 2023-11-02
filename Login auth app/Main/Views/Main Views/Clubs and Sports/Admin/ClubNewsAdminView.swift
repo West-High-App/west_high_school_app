@@ -101,6 +101,35 @@ struct ClubNewsAdminView: View { // hello
         }
     }
     
+    var articlesEmpty: Bool {
+        
+        var flag = false
+        for article in dataManager.allclubsnewslist {
+            if !flag {
+                if article.isApproved {
+                    flag = true
+                }
+            }
+        }
+        
+        return !flag
+    }
+    
+    var pendingArticlesEmpty: Bool {
+        
+        var flag = false
+        for article in dataManager.allclubsnewslist {
+            if !flag {
+                if !article.isApproved {
+                    flag = true
+                }
+            }
+        }
+        
+        return !flag
+    }
+
+    
     var body: some View {
         VStack {
 //            VStack(alignment: .leading) {
@@ -140,130 +169,138 @@ struct ClubNewsAdminView: View { // hello
                     .padding(.horizontal)
                 
                 if selected == 1 {
-                    List {
-                        ForEach(dataManager.allclubsnewslist, id: \.id) { news in
-                            if news.isApproved {
-                                clubnewscell(feat: news)
-                                .buttonStyle(PlainButtonStyle())
-                                .contextMenu {
-                                    Button("Delete", role: .destructive) {
-                                        tempAchievementTitle = news.newstitle
-                                        isConfirmingDeleteAchievement = true
-                                        achievementToDelete = news
-                                    }
+                    if !articlesEmpty {
+                        List {
+                            ForEach(dataManager.allclubsnewslist, id: \.id) { news in
+                                if news.isApproved {
+                                    clubnewscell(feat: news)
+                                        .buttonStyle(PlainButtonStyle())
+                                        .contextMenu {
+                                            Button("Delete", role: .destructive) {
+                                                tempAchievementTitle = news.newstitle
+                                                isConfirmingDeleteAchievement = true
+                                                achievementToDelete = news
+                                            }
+                                        }
                                 }
                             }
+                            if !dataManager.allclubsnewslist.map({ $0.documentID }).contains("NAN") && !dataManager.allDocsLoaded {
+                                ProgressView()
+                                    .onAppear {
+                                        dataManager.getMoreClubNews(getPending: false)
+                                    }
+                            }
                         }
-                        if !dataManager.allclubsnewslist.map({ $0.documentID }).contains("NAN") && !dataManager.allDocsLoaded {
-                            ProgressView()
-                                .onAppear {
-                                    dataManager.getMoreClubNews(getPending: false)
-                                }
-                        }
+                    } else {
+                        Text("No public articles.")
+                            .lineLimit(1)
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .padding(.leading, 5)
                     }
                 }
                 
                 if selected == 2 {
-                    List {
-                        ForEach(dataManager.allclubsnewslist, id: \.id) { news in
-                            if !news.isApproved {
-                                clubnewscell(feat: news)
-
-                                .contextMenu {
-                                    Button("Edit") {
-                                        self.selectedArticle = news
-                                        if let index = dataManager.allclubsnewslist.firstIndex(of: news) {
-                                            selectedIndex = index
-                                        }
-                                        presentingArticleSheet = true
-                                        self.selectedArticle = news
-                                    }
-                                }.buttonStyle(PlainButtonStyle())
-                                
-                                    .sheet(isPresented: $presentingArticleSheet) {
-                                        
-                                        VStack  {
+                    if !pendingArticlesEmpty {
+                        List {
+                            ForEach(dataManager.allclubsnewslist, id: \.id) { news in
+                                if !news.isApproved {
+                                    clubnewscell(feat: news)
+                                    
+                                        .contextMenu {
+                                            Button("Edit") {
+                                                self.selectedArticle = news
+                                                if let index = dataManager.allclubsnewslist.firstIndex(of: news) {
+                                                    selectedIndex = index
+                                                }
+                                                presentingArticleSheet = true
+                                                self.selectedArticle = news
+                                            }
+                                        }.buttonStyle(PlainButtonStyle())
+                                    
+                                        .sheet(isPresented: $presentingArticleSheet) {
                                             
-                                            if let usableType = usableType {
+                                            VStack  {
                                                 
-                                                ScrollView {
-                                                    HStack {
-                                                        Button("Cancel") {
-                                                            presentingArticleSheet = false
-                                                        }.padding()
-                                                        Spacer()
-                                                    }
+                                                if let usableType = usableType {
+                                                    
+                                                    ScrollView {
+                                                        HStack {
+                                                            Button("Cancel") {
+                                                                presentingArticleSheet = false
+                                                            }.padding()
+                                                            Spacer()
+                                                        }
                                                         
-                                                    VStack{
-                                                        HStack {
-                                                            Text(usableType.newstitle)
-                                                                .foregroundColor(Color.black)
-                                                                .font(.system(size: 35, weight: .bold, design: .rounded))                            .lineLimit(2)
-                                                                .minimumScaleFactor(0.3)
-                                                                .padding(.horizontal)
-                                                            Spacer()
-                                                        }
-
-                                                        HStack {
-                                                            Text(usableType.author)
-                                                                .foregroundColor(Color.gray)
-                                                                .font(.system(size: 26, weight: .semibold, design: .rounded))
-                                                                .lineLimit(1)
-                                                                .padding(.horizontal)
-                                                            Spacer()
-                                                        }
-                                                        HStack {
-                                                            Text(usableType.newsdate)
-                                                                .foregroundColor(Color.gray)
-                                                                .font(.system(size: 20, weight: .semibold, design: .rounded))
-                                                                .lineLimit(1)
-                                                                .padding(.horizontal)
-                                                            Spacer()
-                                                        }
-
-
-                                                        VStack {
-                                                            TabView {
-                                                                ForEach(usableType.imagedata.indices, id: \.self) { index in
-                                                                    ZStack {
-                                                                        Rectangle()
-                                                                            .foregroundColor(.white)
-                                                                        
-                                                                        VStack(spacing: 0) {
-                                                                            Image(uiImage: usableType.imagedata[index])
-                                                                                .resizable()
-                                                                                .padding(.bottom, 2)
-                                                                                .aspectRatio(contentMode: .fill)
-                                                                                .frame(width: screen.screenWidth - 20, height: 250)
-                                                                                .clipped()
-                                                                                .cornerRadius(30)
+                                                        VStack{
+                                                            HStack {
+                                                                Text(usableType.newstitle)
+                                                                    .foregroundColor(Color.black)
+                                                                    .font(.system(size: 35, weight: .bold, design: .rounded))                            .lineLimit(2)
+                                                                    .minimumScaleFactor(0.3)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+                                                            
+                                                            HStack {
+                                                                Text(usableType.author)
+                                                                    .foregroundColor(Color.gray)
+                                                                    .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                                                    .lineLimit(1)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+                                                            HStack {
+                                                                Text(usableType.newsdate)
+                                                                    .foregroundColor(Color.gray)
+                                                                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                                    .lineLimit(1)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+                                                            
+                                                            
+                                                            VStack {
+                                                                TabView {
+                                                                    ForEach(usableType.imagedata.indices, id: \.self) { index in
+                                                                        ZStack {
+                                                                            Rectangle()
+                                                                                .foregroundColor(.white)
+                                                                            
+                                                                            VStack(spacing: 0) {
+                                                                                Image(uiImage: usableType.imagedata[index])
+                                                                                    .resizable()
+                                                                                    .padding(.bottom, 2)
+                                                                                    .aspectRatio(contentMode: .fill)
+                                                                                    .frame(width: screen.screenWidth - 20, height: 250)
+                                                                                    .clipped()
+                                                                                    .cornerRadius(30)
+                                                                            }
                                                                         }
                                                                     }
+                                                                    
+                                                                    
                                                                 }
+                                                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                                                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                                                                 
-                                                                
-                                                            }
-                                                            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                                                            .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-                                                            
-                                                        }.cornerRadius(30)
-                                                            .frame(width: screen.screenWidth - 20, height: 250)
-                                                            .shadow(color: .gray, radius: 8, x:2, y:3)
-                                                            .padding(.horizontal)
-                                                        Spacer() // here
-                                                        LinkTextView(text: usableType.newsdescription)
-                                                            .multilineTextAlignment(.leading)
-                                                            .foregroundColor(Color.black)
-                                                            .font(.system(size: 17, weight: .regular, design: .rounded))
-                                                            .padding(.horizontal, 25)
-                                                            .padding(.vertical, 5)
-                                                            .background(Rectangle()
-                                                                .cornerRadius(10)
+                                                            }.cornerRadius(30)
+                                                                .frame(width: screen.screenWidth - 20, height: 250)
+                                                                .shadow(color: .gray, radius: 8, x:2, y:3)
                                                                 .padding(.horizontal)
-                                                                .shadow(radius: 5, x: 3, y: 3)
-                                                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                                                            .padding(.bottom)
-                                                    }
+                                                            Spacer() // here
+                                                            LinkTextView(text: usableType.newsdescription)
+                                                                .multilineTextAlignment(.leading)
+                                                                .foregroundColor(Color.black)
+                                                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                                .padding(.horizontal, 25)
+                                                                .padding(.vertical, 5)
+                                                                .background(Rectangle()
+                                                                    .cornerRadius(10)
+                                                                    .padding(.horizontal)
+                                                                    .shadow(radius: 5, x: 3, y: 3)
+                                                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                                                .padding(.bottom)
+                                                        }
                                                         
                                                         HStack {
                                                             Spacer()
@@ -311,49 +348,55 @@ struct ClubNewsAdminView: View { // hello
                                                                     )
                                                             }
                                                             Spacer()
+                                                        }
                                                     }
+                                                    
                                                 }
                                                 
+                                            }.onAppear {
+                                                usableType = dataManager.allclubsnewslist[selectedIndex]
                                             }
                                             
-                                        }.onAppear {
-                                            usableType = dataManager.allclubsnewslist[selectedIndex]
-                                        }
-                                        
-                                        
-                                    }
-                                    .alert(isPresented: $isConfirmingApproveAchievement) {
-                                        
-                                        Alert(
                                             
-                                            title: Text("You Are Editing Public Data"),
-                                            message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
-                                            primaryButton:
-                                                    .destructive(Text("Publish")) {
-                                                        if let achievementToDelete = achievementToDelete {
-                                                            var tempachievement = achievementToDelete
-                                                            tempachievement.isApproved = true
-                                                            dataManager.updateClubNews(clubNews: tempachievement) { error in
-                                                                if let error = error {
-                                                                    print("Error approving club news: \(error.localizedDescription)")
+                                        }
+                                        .alert(isPresented: $isConfirmingApproveAchievement) {
+                                            
+                                            Alert(
+                                                
+                                                title: Text("You Are Editing Public Data"),
+                                                message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
+                                                primaryButton:
+                                                        .destructive(Text("Publish")) {
+                                                            if let achievementToDelete = achievementToDelete {
+                                                                var tempachievement = achievementToDelete
+                                                                tempachievement.isApproved = true
+                                                                dataManager.updateClubNews(clubNews: tempachievement) { error in
+                                                                    if let error = error {
+                                                                        print("Error approving club news: \(error.localizedDescription)")
+                                                                    }
                                                                 }
                                                             }
-                                                        }
-                                                        
-                                                    },
-                                            secondaryButton: .cancel()
+                                                            
+                                                        },
+                                                secondaryButton: .cancel()
+                                                
+                                            )
                                             
-                                        )
-                                        
+                                        }
+                                }
+                            }
+                            if !dataManager.allclubsnewslist.filter({ $0.isApproved }).isEmpty && !dataManager.allPendingDocsLoaded {
+                                ProgressView()
+                                    .onAppear {
+                                        dataManager.getMoreClubNews(getPending: true)
                                     }
                             }
                         }
-                        if !dataManager.allclubsnewslist.filter({ $0.isApproved }).isEmpty && !dataManager.allPendingDocsLoaded {
-                            ProgressView()
-                                .onAppear {
-                                    dataManager.getMoreClubNews(getPending: true)
-                                }
-                        }
+                    } else {
+                        Text("No pending articles.")
+                            .lineLimit(1)
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .padding(.leading, 5)
                     }
                 }
                 

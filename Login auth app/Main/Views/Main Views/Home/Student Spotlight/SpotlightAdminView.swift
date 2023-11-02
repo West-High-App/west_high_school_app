@@ -89,6 +89,34 @@ struct SpotlightAdminView: View {
             return " (\(pendingCount))"
         }
     }
+    
+    var articlesEmpty: Bool {
+        
+        var flag = false
+        for article in dataManager.allstudentachievementlist {
+            if !flag {
+                if article.isApproved {
+                    flag = true
+                }
+            }
+        }
+        
+        return !flag
+    }
+    
+    var pendingArticlesEmpty: Bool {
+        
+        var flag = false
+        for article in dataManager.allstudentachievementlist {
+            if !flag {
+                if !article.isApproved {
+                    flag = true
+                }
+            }
+        }
+        
+        return !flag
+    }
 
     @StateObject var imagemanager = imageManager()
     @State var displayimages: [UIImage] = []
@@ -140,227 +168,241 @@ struct SpotlightAdminView: View {
                     .padding(.horizontal)
                 
                 if selected == 1 {
-                    List {
-                        ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
-                            if achievement.isApproved {
-                                dubachievementcell(feat: achievement)
-                                .buttonStyle(PlainButtonStyle())
-                                .contextMenu {
-                                    Button("Delete", role: .destructive) {
-                                        tempAchievementTitle = achievement.achievementtitle
-                                        isConfirmingDeleteAchievement = true
-                                        achievementToDelete = achievement
-                                    }
+                    if !articlesEmpty {
+                        List {
+                            ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
+                                if achievement.isApproved {
+                                    dubachievementcell(feat: achievement)
+                                        .buttonStyle(PlainButtonStyle())
+                                        .contextMenu {
+                                            Button("Delete", role: .destructive) {
+                                                tempAchievementTitle = achievement.achievementtitle
+                                                isConfirmingDeleteAchievement = true
+                                                achievementToDelete = achievement
+                                            }
+                                        }
                                 }
                             }
+                            if !dataManager.allstudentachievementlist.isEmpty && !dataManager.allDocsLoaded {
+                                ProgressView()
+                                    .padding()
+                                    .onAppear {
+                                        dataManager.getMoreAchievements()
+                                    }
+                            }
                         }
-                        if !dataManager.allstudentachievementlist.isEmpty && !dataManager.allDocsLoaded {
-                            ProgressView()
-                                .padding()
-                                .onAppear {
-                                    dataManager.getMoreAchievements()
-                                }
-                        }
+                    } else {
+                        Text("No public articles.")
+                            .lineLimit(1)
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .padding(.leading, 5)
                     }
                 }
                 if selected == 2 {
-                    List {
-                        ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
-                            if !achievement.isApproved {
-                                dubachievementcell(feat: achievement)
-                                .contextMenu {
-                                    Button("Edit") {
-                                        print(selectedArticle)
-                                        self.selectedArticle = achievement
-                                        if let index = dataManager.allstudentachievementlist.firstIndex(of: achievement) {
-                                            selectedIndex = index
-                                        }
-                                        presentingArticleSheet = true
-                                        self.selectedArticle = achievement
-                                    }
-                                }
-                                .buttonStyle(PlainButtonStyle())
-                                /*.contextMenu {
-                                 Button("Delete", role: .destructive) {
-                                 tempAchievementTitle = achievement.achievementtitle
-                                 isConfirmingDeleteAchievement = true
-                                 achievementToDelete = achievement
-                                 }
-                                 Button("Approve") {
-                                 tempAchievementTitle = achievement.achievementtitle
-                                 isConfirmingApproveAchievement = true
-                                 achievementToDelete = achievement
-                                 }
-                                 }*/
-                                .sheet(isPresented: $presentingArticleSheet) {
-                                    VStack {
-                                        if let usableType = usableType {
-                                            VStack {
-                                                HStack {
-                                                    Button("Cancel") {
-                                                        presentingArticleSheet = false
-                                                    }.padding()
-                                                    Spacer()
+                    if !pendingArticlesEmpty {
+                        List {
+                            ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
+                                if !achievement.isApproved {
+                                    dubachievementcell(feat: achievement)
+                                        .contextMenu {
+                                            Button("Edit") {
+                                                print(selectedArticle)
+                                                self.selectedArticle = achievement
+                                                if let index = dataManager.allstudentachievementlist.firstIndex(of: achievement) {
+                                                    selectedIndex = index
                                                 }
-                                                VStack {
-                                                    ScrollView{
-                                                        VStack{
-                                                            HStack {
-                                                                Text(usableType.achievementtitle)
-                                                                    .foregroundColor(Color.black)
-                                                                    .font(.system(size: 35, weight: .bold, design: .rounded))
-                                                                    .lineLimit(2)
-                                                                    .minimumScaleFactor(0.3)
-                                                                    .padding(.horizontal)
-                                                                Spacer()
-                                                            }
-                                                            HStack {
-                                                                Text(usableType.articleauthor)
-                                                                    .foregroundColor(Color.gray)
-                                                                    .font(.system(size: 26, weight: .semibold, design: .rounded))
-                                                                    .lineLimit(1)
-                                                                    .padding(.horizontal)
-                                                                Spacer()
-                                                            }
-                                                            HStack {
-                                                                Text(usableType.publisheddate)
-                                                                    .foregroundColor(Color.gray)
-                                                                    .font(.system(size: 20, weight: .semibold, design: .rounded))
-                                                                    .lineLimit(1)
-                                                                    .padding(.horizontal)
-                                                                Spacer()
-                                                            }
-
-
-                                                            VStack {
-                                                                TabView {
-                                                                    
-                                                                    // Loop through each recipe
-                                                                    ForEach(usableType.imagedata.indices, id: \.self) { index in
-                                                                        ZStack {
-                                                                            Rectangle()
-                                                                                .foregroundColor(.white)
-                                                                            
-                                                                            VStack(spacing: 0) {
-                                                                                Image(uiImage: usableType.imagedata[index])
-                                                                                    .resizable()
-                                                                                    .aspectRatio(contentMode: .fill)
-                                                                                    .frame(width: screen.screenWidth - 30, height: 250)
-                                                                                    .clipped()
-                                                                            }
-                                                                        }
+                                                presentingArticleSheet = true
+                                                self.selectedArticle = achievement
+                                            }
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
+                                    /*.contextMenu {
+                                     Button("Delete", role: .destructive) {
+                                     tempAchievementTitle = achievement.achievementtitle
+                                     isConfirmingDeleteAchievement = true
+                                     achievementToDelete = achievement
+                                     }
+                                     Button("Approve") {
+                                     tempAchievementTitle = achievement.achievementtitle
+                                     isConfirmingApproveAchievement = true
+                                     achievementToDelete = achievement
+                                     }
+                                     }*/
+                                        .sheet(isPresented: $presentingArticleSheet) {
+                                            VStack {
+                                                if let usableType = usableType {
+                                                    VStack {
+                                                        HStack {
+                                                            Button("Cancel") {
+                                                                presentingArticleSheet = false
+                                                            }.padding()
+                                                            Spacer()
+                                                        }
+                                                        VStack {
+                                                            ScrollView{
+                                                                VStack{
+                                                                    HStack {
+                                                                        Text(usableType.achievementtitle)
+                                                                            .foregroundColor(Color.black)
+                                                                            .font(.system(size: 35, weight: .bold, design: .rounded))
+                                                                            .lineLimit(2)
+                                                                            .minimumScaleFactor(0.3)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
+                                                                    }
+                                                                    HStack {
+                                                                        Text(usableType.articleauthor)
+                                                                            .foregroundColor(Color.gray)
+                                                                            .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                                                            .lineLimit(1)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
+                                                                    }
+                                                                    HStack {
+                                                                        Text(usableType.publisheddate)
+                                                                            .foregroundColor(Color.gray)
+                                                                            .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                                            .lineLimit(1)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
                                                                     }
                                                                     
                                                                     
+                                                                    VStack {
+                                                                        TabView {
+                                                                            
+                                                                            // Loop through each recipe
+                                                                            ForEach(usableType.imagedata.indices, id: \.self) { index in
+                                                                                ZStack {
+                                                                                    Rectangle()
+                                                                                        .foregroundColor(.white)
+                                                                                    
+                                                                                    VStack(spacing: 0) {
+                                                                                        Image(uiImage: usableType.imagedata[index])
+                                                                                            .resizable()
+                                                                                            .aspectRatio(contentMode: .fill)
+                                                                                            .frame(width: screen.screenWidth - 30, height: 250)
+                                                                                            .clipped()
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            
+                                                                            
+                                                                        }
+                                                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                                                        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                                                                        
+                                                                    }.cornerRadius(30)
+                                                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                                                        .shadow(color: .gray, radius: 8, x:2, y:3)
+                                                                    
+                                                                        .padding(.horizontal)
+                                                                    Spacer()
+                                                                }.onAppear {
                                                                 }
-                                                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                                                                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                                                                 
-                                                            }.cornerRadius(30)
-                                                                .frame(width: screen.screenWidth - 30, height: 250)
-                                                                .shadow(color: .gray, radius: 8, x:2, y:3)
-                                                            
-                                                                .padding(.horizontal)
-                                                            Spacer()
-                                                        }.onAppear {
-                                                        }
-
-                                                        LinkTextView(text: usableType.achievementdescription)
-                                                                .multilineTextAlignment(.leading)
-                                                                .foregroundColor(Color.black)
-                                                                .font(.system(size: 17, weight: .regular, design: .rounded))
-                                                                .padding(.horizontal, 25)
-                                                                .padding(.vertical, 5)
-                                                                .background(Rectangle()
-                                                                    .cornerRadius(10)
-                                                                    .padding(.horizontal)
-                                                                    .shadow(radius: 5, x: 3, y: 3)
-                                                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                                                                .padding(.bottom)
-                                                            
-                                                        
-                                                    }
-                                                    
-                                                    HStack {
-                                                        Spacer()
-                                                        Button {
-                                                            presentingArticleSheet = false
-                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                                tempAchievementTitle = selectedArticle.achievementtitle
-                                                                isConfirmingDeleteAchievement = true
-                                                                achievementToDelete = usableType
+                                                                LinkTextView(text: usableType.achievementdescription)
+                                                                    .multilineTextAlignment(.leading)
+                                                                    .foregroundColor(Color.black)
+                                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                                    .padding(.horizontal, 25)
+                                                                    .padding(.vertical, 5)
+                                                                    .background(Rectangle()
+                                                                        .cornerRadius(10)
+                                                                        .padding(.horizontal)
+                                                                        .shadow(radius: 5, x: 3, y: 3)
+                                                                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                                                    .padding(.bottom)
+                                                                
+                                                                
                                                             }
-                                                        } label: {
-                                                            Text("Delete")
-                                                                .foregroundColor(.white)
-                                                                .fontWeight(.semibold)
-                                                                .padding(10)
-                                                                .cornerRadius(15.0)
-                                                                .frame(width: screen.screenWidth/2-60)
-                                                                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                                                .background(Rectangle()
-                                                                    .foregroundColor(.red)
-                                                                    .cornerRadius(10)
-                                                                )
-                                                        }
-                                                        Spacer()
-                                                        Button {
-                                                            presentingArticleSheet = false
-                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                                tempAchievementTitle = selectedArticle.achievementtitle
-                                                                isConfirmingApproveAchievement = true
-                                                                achievementToDelete = usableType
+                                                            
+                                                            HStack {
+                                                                Spacer()
+                                                                Button {
+                                                                    presentingArticleSheet = false
+                                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                        tempAchievementTitle = selectedArticle.achievementtitle
+                                                                        isConfirmingDeleteAchievement = true
+                                                                        achievementToDelete = usableType
+                                                                    }
+                                                                } label: {
+                                                                    Text("Delete")
+                                                                        .foregroundColor(.white)
+                                                                        .fontWeight(.semibold)
+                                                                        .padding(10)
+                                                                        .cornerRadius(15.0)
+                                                                        .frame(width: screen.screenWidth/2-60)
+                                                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                        .background(Rectangle()
+                                                                            .foregroundColor(.red)
+                                                                            .cornerRadius(10)
+                                                                        )
+                                                                }
+                                                                Spacer()
+                                                                Button {
+                                                                    presentingArticleSheet = false
+                                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                        tempAchievementTitle = selectedArticle.achievementtitle
+                                                                        isConfirmingApproveAchievement = true
+                                                                        achievementToDelete = usableType
+                                                                    }
+                                                                } label: {
+                                                                    Text("Approve")
+                                                                        .foregroundColor(.white)
+                                                                        .fontWeight(.semibold)
+                                                                        .padding(10)
+                                                                        .cornerRadius(15.0)
+                                                                        .frame(width: screen.screenWidth/2-60)
+                                                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                        .background(Rectangle()
+                                                                            .foregroundColor(.blue)
+                                                                            .cornerRadius(10)
+                                                                        )
+                                                                }
+                                                                Spacer()
                                                             }
-                                                        } label: {
-                                                            Text("Approve")
-                                                                .foregroundColor(.white)
-                                                                .fontWeight(.semibold)
-                                                                .padding(10)
-                                                                .cornerRadius(15.0)
-                                                                .frame(width: screen.screenWidth/2-60)
-                                                                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                                                .background(Rectangle()
-                                                                    .foregroundColor(.blue)
-                                                                    .cornerRadius(10)
-                                                                )
+                                                            
                                                         }
-                                                        Spacer()
                                                     }
-                                                    
                                                 }
+                                            }.onAppear {
+                                                print(selectedArticle)
+                                                usableType = dataManager.allstudentachievementlist[selectedIndex]
                                             }
+                                            
                                         }
-                                    }.onAppear {
-                                        print(selectedArticle)
-                                        usableType = dataManager.allstudentachievementlist[selectedIndex]
-                                    }
-                                    
-                                }
-                                .alert(isPresented: $isConfirmingApproveAchievement) {
-                                    Alert(
-                                        title: Text("You Are Editing Public Data"),
-                                        message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
-                                        primaryButton: .destructive(Text("Publish")) {
-                                            if let achievementToDelete = achievementToDelete {
-                                                dataManager.deleteAchievment(achievement: achievementToDelete) { error in
-                                                    if let error = error {
-                                                        print("Error deleting achievement: \(error.localizedDescription)")
+                                        .alert(isPresented: $isConfirmingApproveAchievement) {
+                                            Alert(
+                                                title: Text("You Are Editing Public Data"),
+                                                message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
+                                                primaryButton: .destructive(Text("Publish")) {
+                                                    if let achievementToDelete = achievementToDelete {
+                                                        dataManager.deleteAchievment(achievement: achievementToDelete) { error in
+                                                            if let error = error {
+                                                                print("Error deleting achievement: \(error.localizedDescription)")
+                                                            }
+                                                        }
+                                                        var tempachievement = achievementToDelete
+                                                        tempachievement.isApproved = true
+                                                        dataManager.createAchievement(achievement: tempachievement) { error in
+                                                            if let error = error {
+                                                                print("Error approving achievement: \(error.localizedDescription)")
+                                                            }
+                                                        }
                                                     }
-                                                }
-                                                var tempachievement = achievementToDelete
-                                                tempachievement.isApproved = true
-                                                dataManager.createAchievement(achievement: tempachievement) { error in
-                                                    if let error = error {
-                                                        print("Error approving achievement: \(error.localizedDescription)")
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        secondaryButton: .cancel(Text("Cancel"))
-                                    )
+                                                },
+                                                secondaryButton: .cancel(Text("Cancel"))
+                                            )
+                                        }
                                 }
                             }
                         }
+                    } else {
+                        Text("No pending articles.")
+                            .lineLimit(1)
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .padding(.leading, 5)
                     }
                 }
             } else {
