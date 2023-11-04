@@ -320,7 +320,7 @@ struct ClubDetailAdminView: View {
                             clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: editingclub.favoritedusers, imagedata: displayimage ?? UIImage(), documentID: editingclub.documentID, id: 0)
                             
                             print("update to club thingy this one:::::")
-                            print(clubtoedit)
+                            print(clubtoedit as Any)
                             
                             if let clubtoedit = clubtoedit {
                                 clubmanager.updateClub(data: clubtoedit)

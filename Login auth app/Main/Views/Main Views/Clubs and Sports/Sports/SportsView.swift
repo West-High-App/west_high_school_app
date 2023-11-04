@@ -439,7 +439,7 @@ struct SportsHibabi: View {
                         }
                     }
                     
-                    if isLoading {
+                    /*if isLoading {
                         ZStack {
                             Color.white
                                 .edgesIgnoringSafeArea(.all)
@@ -450,7 +450,7 @@ struct SportsHibabi: View {
                                     .font(.system(size: 17, weight: .semibold, design: .rounded))
                             }
                         }
-                    }
+                     }*/ // isn't used becaue of shimmer
                     
                     
                     // MARK: sheets and stuff

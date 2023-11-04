@@ -15,9 +15,6 @@ final class Utilities {
     
     @MainActor
     func topViewController(controller: UIViewController? = nil) -> UIViewController? {
-        
-        let controller = controller ?? UIApplication.shared.keyWindow?.rootViewController
-        
         if let navigationController = controller as? UINavigationController {
             return topViewController(controller: navigationController.visibleViewController)
         }
@@ -31,5 +28,7 @@ final class Utilities {
         }
         return controller
     }
+
+
     
 }

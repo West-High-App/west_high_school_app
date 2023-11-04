@@ -299,7 +299,7 @@ struct HomeView: View {
                                  }
                                  .zIndex(0)
                                  
-                                 if false {
+                                 /* if false {
                                       Button {
                                            let center = UNUserNotificationCenter.current()
                                            
@@ -342,7 +342,7 @@ struct HomeView: View {
                                              .shadow(radius: 5, x: 3, y: 3)
                                              .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                                       }
-                                 }
+                                 } */
                                  
                             }
                             .padding(.bottom, 10)

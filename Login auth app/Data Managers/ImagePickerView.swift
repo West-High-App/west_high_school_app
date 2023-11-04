@@ -230,7 +230,7 @@ class imageManager: ObservableObject {
     func uploadPhoto(file: UIImage) -> String{
         let storageRef = Storage.storage().reference()
         
-        let maxsize = 1024 * 300 // 150kb
+        _ = 1024 * 300 // 150kb
         let imageData = file.jpegData(compressionQuality: 0.3)
         
         guard imageData != nil else {

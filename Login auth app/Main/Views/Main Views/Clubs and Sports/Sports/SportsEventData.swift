@@ -292,7 +292,7 @@ class sportEventManager: ObservableObject {
         let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
         let ref = db.collection("SportEvents").document(documentID).collection("PastEvents").document(sportEvent.arrayId)
         
-        guard let pastSportEventsIndex = self.pastSportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) else {
+        guard self.pastSportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) != nil else {
             return
         }
         

@@ -19,7 +19,7 @@ struct GoogleSignInResultModel {
 
 // MARK: SIGN IN FUNCTIONS
 func SignInGoogle(tokens: GoogleSignInResultModel, bypass: Bool) async throws -> Bool {
-    var userInfo = UserInfo.shared
+    let userInfo = UserInfo.shared
     print("Signing in to Google.")
     let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
     let _ = try await Auth.auth().signIn(with: credential)

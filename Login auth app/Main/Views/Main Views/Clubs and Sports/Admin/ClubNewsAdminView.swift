@@ -570,7 +570,7 @@ struct clubNewsRowlView: View {
                             newsimage.append(imagemanager.uploadPhoto(file: displayimage))
                         }
                         
-                        var autoapprove = hasPermission.articleadmin || hasPermission.clubarticleadmin ? true : false
+                        let autoapprove = hasPermission.articleadmin || hasPermission.clubarticleadmin ? true : false
                         
                         let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: autoapprove, documentID: "NAN", imagedata: imagedata)
                         
