@@ -15,18 +15,18 @@ final class Utilities {
     
     @MainActor
     func topViewController(controller: UIViewController? = nil) -> UIViewController? {
-        if let navigationController = controller as? UINavigationController {
-            return topViewController(controller: navigationController.visibleViewController)
+        if let controller = controller {
+            return controller
         }
-        if let tabController = controller as? UITabBarController {
-            if let selected = tabController.selectedViewController {
-                return topViewController(controller: selected)
-            }
+
+        if let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first(where: { $0.activationState == .foregroundActive }),
+            let rootViewController = windowScene.windows.first?.rootViewController {
+            return topViewController(controller: rootViewController)
         }
-        if let presented = controller?.presentedViewController {
-            return topViewController(controller: presented)
-        }
-        return controller
+
+        return nil
     }
 
 
