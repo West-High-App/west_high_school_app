@@ -374,9 +374,9 @@ struct SpotlightAdminView: View {
                                         }
                                         .alert(isPresented: $isConfirmingApproveAchievement) {
                                             Alert(
-                                                title: Text("You Are Editing Public Data"),
-                                                message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
-                                                primaryButton: .destructive(Text("Publish")) {
+                                                title: Text("Approve Article"),
+                                                message: Text("This action cannot be undone."),
+                                                primaryButton: .default(Text("Approve")) {
                                                     if let achievementToDelete = achievementToDelete {
                                                         dataManager.deleteAchievment(achievement: achievementToDelete) { error in
                                                             if let error = error {
@@ -441,8 +441,8 @@ struct SpotlightAdminView: View {
         }
         .alert(isPresented: $isConfirmingDeleteAchievement) {
             Alert(
-                title: Text("You Are Deleting Public Data"),
-                message: Text("Are you sure you want to delete the achievement '\(tempAchievementTitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
+                title: Text("Delete Article"),
+                message: Text("This action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
                     if let achievementToDelete = achievementToDelete {
                         dataManager.deleteAchievment(achievement: achievementToDelete) { error in
@@ -528,11 +528,15 @@ struct AchievementDetailView: View {
             Form {
                 Section(header: Text("Article Details")) {
                     TextField("Article Title", text: $achievementTitle)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     TextField("Article Description", text: $achievementDescription)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     TextField("Article Author", text: $articleAuthor)
-                }
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+
                 
-                Section("Image") {
+                Section("Images") {
                     List {
                         ForEach(displayimagesdata, id: \.self) { image in
                             
@@ -545,21 +549,20 @@ struct AchievementDetailView: View {
                     }
                     Button("Upload New Image") {
                         isDisplayingAddImage = true
-                    }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
                     
                     .sheet(isPresented: $isDisplayingAddImage) {
                         ImagePicker(selectedImage: $currentimage, isPickerShowing: $isDisplayingAddImage)
                     }
-                }.onChange(of: currentimage) { newImage in
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+                .onChange(of: currentimage) { newImage in
                     if let currentimage = newImage {
                         displayimagesdata.append(currentimage)
                     }
                 }
 
 
-                Button {
-                    isConfirmingAddAchievement = true
-                } label: {
+                if displayimagesdata.isEmpty || achievementTitle == "" || articleAuthor == "" || achievementDescription == "" {
                     Text("Publish New Article")
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
@@ -568,9 +571,25 @@ struct AchievementDetailView: View {
                         .frame(width: screen.screenWidth-60)
                         .font(.system(size: 17, weight: .semibold, design: .rounded))
                         .background(Rectangle()
-                            .foregroundColor(.blue)
+                            .foregroundColor(.gray)
                             .cornerRadius(10)
                         )
+                } else {
+                    Button {
+                        isConfirmingAddAchievement = true
+                    } label: {
+                        Text("Publish New Article")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
+                    }
                 }
             }
             .navigationBarTitle(editingAchievement == nil ? "Add Article" : "Edit Article")
@@ -579,9 +598,9 @@ struct AchievementDetailView: View {
             })
             .alert(isPresented: $isConfirmingAddAchievement) {
                 Alert(
-                    title: Text("You Are Publishing Changes"),
-                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(achievementTitle)\nDescription: \(achievementDescription)\nAuthor: \(articleAuthor)"),
-                    primaryButton: .destructive(Text("Publish Changes")) {
+                    title: Text("Publish Article"),
+                    message: Text("This action cannot be undone."),
+                    primaryButton: .default(Text("Publish")) {
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "MMMM dd, yyyy"
                         guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)") else {
