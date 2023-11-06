@@ -11,7 +11,7 @@ struct ClubsNewsDetailView: View {
     var currentclubnews: clubNews
     @State var screen = ScreenSize()
     var body: some View {
-            ScrollView{
+            ScrollView(showsIndicators: true){
                 VStack{
                     HStack {
                         Text(currentclubnews.newstitle)
