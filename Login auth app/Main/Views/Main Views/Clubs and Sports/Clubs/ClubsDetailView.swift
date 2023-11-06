@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ClubsDetailView: View {
     @State var selected = 1
-
+    
     @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
     @State private var isAdmin = false
@@ -160,10 +160,10 @@ struct ClubsDetailView: View {
                         }
                     }
                     if upcomingeventlist.count < 1 {
-                             Text("No upcoming events.")
-                                 .lineLimit(1)
-                                 .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                 .padding(.leading, 5)
+                        Text("No upcoming events.")
+                            .lineLimit(1)
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .padding(.leading, 5)
                         Spacer()
                             .frame(height: 100)
                     } else {
@@ -205,6 +205,9 @@ struct ClubsDetailView: View {
                     if hasPermission.hasFullViewAccess {
                         if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
                             Text("No members.")
+                                .lineLimit(1)
+                                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                .padding(.leading, 5)
                             Spacer()
                                 .frame(height: 100)
                             
@@ -260,15 +263,15 @@ struct ClubsDetailView: View {
                             }.frame(height: 450)
                         }
                     }
-                else {
-                    Text("Members not available.")
-                        .lineLimit(1)
-                        .font(.system(size: 22, weight: .semibold, design: .rounded))
-                        .padding(.leading, 5)
-                }
+                    else {
+                        Text("Members not available.")
+                            .lineLimit(1)
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .padding(.leading, 5)
+                    }
                     
                 }
-
+                
                 
             }.padding(.top, 10 + screen.screenHeight / 10)
             
@@ -344,7 +347,7 @@ struct ClubsDetailView: View {
                         print("3")
                         print(tempclub)
                         clubsmanager.updateClub(data: tempclub) // this is the error
-
+                        
                         isFavorited = true
                     }
                 }
@@ -363,11 +366,11 @@ struct ClubsDetailView: View {
                     }
                 }
         }
-
-    }
-        
         
     }
+    
+    
+}
 
 
 struct ClubsDetailView_Previews: PreviewProvider {
