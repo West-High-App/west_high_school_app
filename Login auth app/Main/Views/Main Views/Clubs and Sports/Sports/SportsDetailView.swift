@@ -135,6 +135,25 @@ struct SportsDetailView: View {
                         .padding(.horizontal, 25)
                         .padding(.vertical, 5)
                     
+                    if currentsport.editoremails.contains(userInfo.email) || currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
+                        NavigationLink {
+                            PastSportEventsAdminView(currentsport: currentsport)
+                        } label: {
+                            Text("Edit Past Events")
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
+                                .padding(10)
+                                .cornerRadius(15.0)
+                                .frame(width: screen.screenWidth-30)
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                .background(Rectangle()
+                                    .foregroundColor(.blue)
+                                    .cornerRadius(10)
+                                )
+
+                        }
+                    }
+                    
                     Picker(selection: $selected, label: Text(""), content: {
                         Text("Upcoming").tag(1)
                         Text("Past Events").tag(2)
@@ -149,10 +168,13 @@ struct SportsDetailView: View {
                         if !isLoading {
                         
                         if events.isEmpty {
-                            Text("No upcoming events.")
-                                .lineLimit(1)
-                                .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                .padding(.leading, 5)
+                            VStack {
+                                Text("No upcoming events.")
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)
+                                Spacer()
+                            }.frame(height: 450)
                         } else {
                             List {
                                 ForEach(events, id: \.id) { event in
@@ -227,30 +249,14 @@ struct SportsDetailView: View {
                     // past games view
                     
                     if selected == 2 {
-                        if currentsport.editoremails.contains(userInfo.email) || currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
-                            NavigationLink {
-                                PastSportEventsAdminView(currentsport: currentsport)
-                            } label: {
-                                Text("Edit past events")
-                                    .foregroundColor(.white)
-                                    .fontWeight(.semibold)
-                                    .padding(10)
-                                    .cornerRadius(15.0)
-                                    .frame(width: screen.screenWidth-30)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    .background(Rectangle()
-                                        .foregroundColor(.blue)
-                                        .cornerRadius(10)
-                                    )
-
-                            }
-                        }
-                        
                         if pastSportEvents.isEmpty {
-                            Text("No past events.")
-                                .lineLimit(1)
-                                .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                .padding(.leading, 5)
+                            VStack {
+                                Text("No past events.")
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)
+                                Spacer()
+                            }.frame(height: 450)
                         } else {
                             List(pastSportEvents, id: \.id) { event in
                                 HStack {
@@ -338,16 +344,20 @@ struct SportsDetailView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .cornerRadius(10)
-                                        .frame(maxHeight: 800)
+                                        .frame(maxHeight: 440)
                                         .padding(10)
                                 }
                             }
                             else {
-                                Text("No roster.")
-                                    .lineLimit(1)
-                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                    .padding(.leading, 5)                            }
-                        }
+                                VStack {
+                                    Text("No roster.")
+                                        .lineLimit(1)
+                                        .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                        .padding(.leading, 5)
+                                    Spacer()
+                                }.frame(height: 450)
+                            }
+                        }.frame(height: 450)
                     }
                     
                     
