@@ -115,8 +115,8 @@ struct UpcomingEventsAdminView: View {
             }
             .alert(isPresented: $isConfirmingDeleteEvent) {
                 Alert(
-                    title: Text("You Are Deleting Public Data"),
-                    message: Text("Are you sure you want to delete the event '\(tempEventTitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
+                    title: Text("Delete Event"),
+                    message: Text("This action cannot be undone."),
                     primaryButton: .destructive(Text("Delete")) {
                         if let eventToDelete = eventToDelete {
                             dataManager.deleteEvent(event: eventToDelete) { error in
@@ -267,9 +267,9 @@ struct EventDetailView: View {
             })
             .alert(isPresented: $isConfirmingAddEvent) {
                 Alert(
-                    title: Text("You Are Publishing Changes"),
-                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(eventName)\nSubtitle: \(eventTime)\nDate: \(months[selectedMonthIndex]) \(selectedDayIndex + 1),\(years[selectedYearIndex]) "),
-                    primaryButton: .destructive(Text("Publish Changes")) {
+                    title: Text("Publish Event"),
+                    message: Text("This action cannot be undone."),
+                    primaryButton: .default(Text("Publish")) {
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "MMMM dd, yyyy"
                         guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(eventyear)") else {
