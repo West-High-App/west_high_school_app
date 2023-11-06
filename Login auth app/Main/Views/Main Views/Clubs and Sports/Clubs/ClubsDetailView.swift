@@ -118,54 +118,61 @@ struct ClubsDetailView: View {
                     .padding(.horizontal, 25)
                     .padding(.vertical, 5)
                 
+                if isAdmin {
+                    NavigationLink {
+                        ClubsEventsAdminView(currentclub: currentclub, admin: true)
+                    } label: {
+                        Text("Edit Upcoming Events")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-30)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
+                    }
+                } else if isEditor {
+                    NavigationLink {
+                        ClubsEventsAdminView(currentclub: currentclub, admin: false)
+                    } label: {
+                        Text("Edit Upcoming Events")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-30)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
+                    }
+                }
+                
+                
                 Picker(selection: $selected, label: Text(""), content: {
                     Text("Upcoming").tag(1)
-                    Text("Members (\(currentclub.clubmembers.count + (currentclub.clubcaptain?.count ?? 0)))").tag(2)
+                    if userInfo.loginStatus == "google" {
+                        Text("Members (\(currentclub.clubmembers.count + (currentclub.clubcaptain?.count ?? 0)))").tag(2)
+                    } else {
+                        Text("Members").tag(2)
+                    }
                 }).pickerStyle(SegmentedPickerStyle())
                     .padding(.horizontal)
                 // upcoming events view
                 
                 if selected == 1 {
-                    if isAdmin {
-                        NavigationLink {
-                            ClubsEventsAdminView(currentclub: currentclub, admin: true)
-                        } label: {
-                            Text("Edit Upcoming Events")
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
-                                .padding(10)
-                                .cornerRadius(15.0)
-                                .frame(width: screen.screenWidth-30)
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                .background(Rectangle()
-                                    .foregroundColor(.blue)
-                                    .cornerRadius(10)
-                                )
-                        }
-                    } else if isEditor {
-                        NavigationLink {
-                            ClubsEventsAdminView(currentclub: currentclub, admin: false)
-                        } label: {
-                            Text("Edit Upcoming Events")
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
-                                .padding(10)
-                                .cornerRadius(15.0)
-                                .frame(width: screen.screenWidth-30)
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                .background(Rectangle()
-                                    .foregroundColor(.blue)
-                                    .cornerRadius(10)
-                                )
-                        }
-                    }
                     if upcomingeventlist.count < 1 {
-                        Text("No upcoming events.")
-                            .lineLimit(1)
-                            .font(.system(size: 22, weight: .semibold, design: .rounded))
-                            .padding(.leading, 5)
-                        Spacer()
-                            .frame(height: 100)
+                        VStack {
+                            Text("No upcoming events.")
+                                .lineLimit(1)
+                                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                .padding(.leading, 5)
+                            Spacer()
+                        }.frame(height: 450)
                     } else {
                         List {
                             ForEach(clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? upcomingeventlist, id: \.id) {event in
@@ -204,12 +211,13 @@ struct ClubsDetailView: View {
                 if selected == 2 {
                     if hasPermission.hasFullViewAccess {
                         if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
-                            Text("No members.")
-                                .lineLimit(1)
-                                .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                .padding(.leading, 5)
-                            Spacer()
-                                .frame(height: 100)
+                            VStack {
+                                Text("No members.")
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)
+                                Spacer()
+                            }.frame(height: 450)
                             
                         } else {
                             
@@ -219,14 +227,18 @@ struct ClubsDetailView: View {
                                         ForEach(currentclub.clubadvisor, id: \.self){coach in
                                             HStack{
                                                 Text(coach)
+                                                    .font(.system(size: 17, weight: .medium, design: .rounded))
                                             }
                                         }
                                     }
                                 header:{
                                     if currentclub.clubcaptain?.count == 1 {
                                         Text("Coach")
+                                            .font(.system(size: 12, weight: .medium, design: .rounded))
                                     } else {
                                         Text("Coaches")
+                                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                                        
                                     }
                                 }
                                 }
@@ -236,13 +248,16 @@ struct ClubsDetailView: View {
                                         ForEach(currentclub.clubcaptain!, id: \.self) { captain in
                                             HStack {
                                                 Text(captain)
+                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                             }
                                         }
                                     } header:{
                                         if currentclub.clubcaptain?.count ?? 0 == 1 {
                                             Text("Captain")
+                                                .font(.system(size: 12, weight: .medium, design: .rounded))
                                         } else {
                                             Text("Captains")
+                                                .font(.system(size: 12, weight: .medium, design: .rounded))
                                         }
                                     }
                                 }
@@ -253,10 +268,12 @@ struct ClubsDetailView: View {
                                                 , id: \.self) { member in
                                             HStack {
                                                 Text(member)
+                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                             }
                                         }
                                     } header: {
                                         Text("Members")
+                                            .font(.system(size: 12, weight: .medium, design: .rounded))
                                     }
                                 }
                                 
@@ -264,10 +281,15 @@ struct ClubsDetailView: View {
                         }
                     }
                     else {
-                        Text("Members not available.")
-                            .lineLimit(1)
-                            .font(.system(size: 22, weight: .semibold, design: .rounded))
-                            .padding(.leading, 5)
+                        VStack {
+                            Text("Members not available.")
+                                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                .padding(.leading, 5)
+                            Text("Log in with your school account to view members.")
+                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                .padding(.horizontal, 5)
+                            Spacer()
+                        }.frame(height: 450)
                     }
                     
                 }
