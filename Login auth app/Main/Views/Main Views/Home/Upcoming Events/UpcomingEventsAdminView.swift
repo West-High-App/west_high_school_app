@@ -106,6 +106,7 @@ struct UpcomingEventsAdminView: View {
                         }
                 }
             }
+            .padding(.bottom, 15)
             .sheet(isPresented: $isPresentingAddEvent) {
                 EventDetailView(dataManager: dataManager)
             }
@@ -181,6 +182,18 @@ struct EventDetailView: View {
     
     @State var screen = ScreenSize()
     
+    var monthdays: [String: Int] = ["Jan": 31, "Feb": 28, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30, "Jul": 31, "Aug": 31, "Sep": 30, "Oct": 31, "Nov": 30, "Dec": 31]
+    
+    var isRealDate: Bool {
+        if monthdays[months[selectedMonthIndex]] ?? 32 >= days[selectedDayIndex] {
+            return true
+        }
+        if months[selectedMonthIndex] == "Feb" && days[selectedDayIndex] == 29 && ((Int(years[selectedYearIndex]) ?? 1) % 4 == 0) {
+            return true
+        }
+        return false
+    }
+    
     var body: some View {
         
         NavigationView {
@@ -188,29 +201,45 @@ struct EventDetailView: View {
                 
                 Section(header: Text("Event Details")) {
                     TextField("Event Name", text: $eventName)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     TextField("Event Time", text: $eventTime)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     Picker("Month", selection: $selectedMonthIndex) {
                         ForEach(0..<months.count, id: \.self) { index in
                             Text(months[index]).tag(index)
                         }
-                    }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
                     
                     Picker("Day", selection: $selectedDayIndex) {
                         ForEach(0..<days.count, id: \.self) { index in
                             Text("\(days[index])").tag(index)
                         }
-                    }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
                     Picker("Year", selection: $selectedYearIndex) {
                         ForEach(0..<years.count, id: \.self) { index in
                             Text("\(years[index])").tag(index)
                         }
-                    }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
 
-                }
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
-                Button {
-                    isConfirmingAddEvent = true
-                } label: {
+                if !eventName.isEmpty && !eventTime.isEmpty && isRealDate {
+                    Button {
+                        isConfirmingAddEvent = true
+                    } label: {
+                        Text("Publish New Event")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
+                    }
+                } else {
                     Text("Publish New Event")
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
@@ -219,10 +248,11 @@ struct EventDetailView: View {
                         .frame(width: screen.screenWidth-60)
                         .font(.system(size: 17, weight: .semibold, design: .rounded))
                         .background(Rectangle()
-                            .foregroundColor(.blue)
+                            .foregroundColor(.gray)
                             .cornerRadius(10)
                         )
                 }
+                
             }
             .onAppear{
                 for i in 0...2 {
