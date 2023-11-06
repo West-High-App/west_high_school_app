@@ -101,7 +101,7 @@ struct HomeView: View {
                //MARK: HOME
                if !isShutDown {
                     NavigationView{
-                         ScrollView(.vertical) {
+                         ScrollView(.vertical, showsIndicators: false) {
                               VStack{
                                    // artwork
                                    Artwork()
@@ -404,6 +404,7 @@ struct HomeView: View {
                               }
                               
                          }
+                         
                          .background(westblue)
                          .coordinateSpace(name: "SCROLL")
                          .padding(.top, -60)
