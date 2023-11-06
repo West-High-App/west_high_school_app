@@ -37,6 +37,9 @@ struct SportsDetailView: View {
     @State var temprosterimage: UIImage?
     @State var isConfirmingChanges = false
     @State var sporttoedit: sport?
+    @State var showingeventdetails = false
+    @State var showAlert = false
+    @State var selectedevent: ParsedEvent?
     
     var isLoading: Bool {
         sporteventmanager.isLoading
@@ -178,63 +181,91 @@ struct SportsDetailView: View {
                         } else {
                             List {
                                 ForEach(events, id: \.id) { event in
-                                    HStack {
-                                        VStack {
-                                            Text(getFirstThreeCharactersOfMonth(from: event.date))
-                                                .font(.system(size: 16, weight: .medium, design: .rounded))
-                                            Text(String(calendar.component(.day, from: event.date)))
-                                                .font(.system(size: 32, weight: .regular, design: .rounded))
-                                                .foregroundColor(.black)
-                                        }
-                                        .foregroundColor(.red)
-                                        .frame(width:50,height:50)
-                                        Divider()
-                                            .padding(.vertical, 10)
-
-                                        VStack {
-                                            HStack {
-                                                Text("\(event.type)")
-                                                    .font(.headline)
-                                                Spacer()
+                                    Button {
+                                        selectedevent = event
+                                        showAlert = true
+                                    } label: {
+                                        HStack {
+                                            VStack {
+                                                Text(getFirstThreeCharactersOfMonth(from: event.date))
+                                                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                                                Text(String(calendar.component(.day, from: event.date)))
+                                                    .font(.system(size: 32, weight: .regular, design: .rounded))
+                                                    .foregroundColor(.black)
                                             }
-                                            HStack {
-                                                Text("\(event.opponent)")
-                                                Spacer()
-                                            }
+                                            .foregroundColor(.red)
+                                            .frame(width:50,height:50)
+                                            Divider()
+                                                .padding(.vertical, 10)
                                             
-                                            DisclosureGroup("See More") {
+                                            VStack {
                                                 HStack {
-                                                    Image(systemName: "clock")
-                                                        .resizable()
-                                                        .frame(width: 15, height: 15)
-                                                    Text(event.isTBD ? "TBD" : "\(event.date.formatted(date: .omitted, time: .shortened))")
-                                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                    Text("\(event.type)")
+                                                        .font(.headline)
                                                         .foregroundColor(.black)
-                                                        .lineLimit(1)
-
                                                     Spacer()
-                                                }.foregroundColor(.black)
-                                                if !event.location.isEmpty {
-                                                    HStack {
-                                                        Image(systemName: "location")
-                                                            .resizable()
-                                                            .frame(width: 15, height: 15)
-                                                        Text("\(event.location)")
-                                                        Spacer()
-                                                    }.foregroundColor(.black)
+                                                }
+                                                HStack {
+                                                    Text("\(event.opponent)")
+                                                        .foregroundColor(.black)
+                                                    Spacer()
                                                 }
                                                 
-                                                if !event.comments.isEmpty {
-                                                    HStack {
-                                                        Text("Comments: \(event.comments)")
-                                                        Spacer()
-                                                    }.foregroundColor(.black)
-                                                }
-
-                                            }.padding(.top, -10)
-                                                .accentColor(.gray)
-                                                .foregroundColor(.gray)
+                                            }
+                                        }
+                                    }
+                                    
+                                   /* VStack {
+                                        HStack {
+                                            Image(systemName: "clock")
+                                                .resizable()
+                                                .frame(width: 15, height: 15)
+                                            Text(event.isTBD ? "TBD" : "\(event.date.formatted(date: .omitted, time: .shortened))")
+                                                .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                .foregroundColor(.black)
+                                                .lineLimit(1)
                                             
+                                            Spacer()
+                                        }.foregroundColor(.black)
+                                            .padding(.top, -10)
+                                        if !event.location.isEmpty {
+                                            HStack {
+                                                Image(systemName: "location")
+                                                    .resizable()
+                                                    .frame(width: 15, height: 15)
+                                                Text("\(event.location)")
+                                                    .lineLimit(1)
+                                                Spacer()
+                                            }.foregroundColor(.black)
+                                                .padding(.top, -10)
+                                                .padding(.bottom, -5)
+                                        }
+                                        
+                                        if !event.comments.isEmpty {
+                                            HStack {
+                                                Text("Comments: \(event.comments)")
+                                                    .lineLimit(2)
+                                                Spacer()
+                                            }.foregroundColor(.black)
+                                                .padding(.top, -5)
+                                                .padding(.bottom, -5)
+                                        }
+                                    } */
+                                    
+                                    .alert(isPresented: $showAlert) {
+                                        if let event = selectedevent {
+                                            Alert(
+                                                title: Text("Event Info"),
+                                                message: Text("Event: \(event.type)\nOpponent: \(event.opponent)\nTime: \(event.isTBD ? "TBD" : "\(event.date.formatted(date: .omitted, time: .shortened))")\(!event.location.isEmpty ? "\nLocation: \(event.location)" : "")\(!event.comments.isEmpty ? "\nComments: \(event.comments)" : "")"),
+                                                dismissButton: .default(Text("Ok"))
+                                            )
+                                            
+                                        } else {
+                                            Alert(
+                                                title: Text("Error"),
+                                                message: Text("No info to display. Please try again with another event."),
+                                                dismissButton: .default(Text("Ok"))
+                                            )
                                         }
                                     }
                                 }
