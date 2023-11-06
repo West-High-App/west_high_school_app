@@ -283,9 +283,11 @@ struct ClubsHibabi: View {
                                 //mark
                                 List {
                                     ForEach(clubNewsManager.allclubsnewslist) { news in  // filteredClubNews
-                                        if news.isApproved {
-                                            clubnewscell(feat: news)
-                                                .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                        if searchText.isEmpty || news.newstitle.localizedStandardContains(searchText){
+                                            if news.isApproved {
+                                                clubnewscell(feat: news)
+                                                    .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                            }
                                         }
                                     }
                                     if !clubNewsManager.allclubsnewslist.map({ $0.documentID }).contains("NAN") && !clubNewsManager.allDocsLoaded {
