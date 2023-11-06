@@ -39,7 +39,6 @@
 		2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20C2A68DC3F00823E58 /* MenuView.swift */; };
 		2270B2102A68DD7100823E58 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20F2A68DD7100823E58 /* HomeView.swift */; };
 		2270B2142A68DDFC00823E58 /* StudentSpotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2132A68DDFC00823E58 /* StudentSpotlight.swift */; };
-		2270B2162A68DE1E00823E58 /* SpotlightArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */; };
 		2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2182A68DE9E00823E58 /* SpotlightData.swift */; };
 		2270B2212A68DF9400823E58 /* AnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2202A68DF9400823E58 /* AnnouncementsView.swift */; };
 		2270B2232A68DFDD00823E58 /* AnnouncementsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2222A68DFDD00823E58 /* AnnouncementsDetailView.swift */; };
@@ -72,6 +71,7 @@
 		2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26B2A68E89400823E58 /* SettingsView.swift */; };
 		2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26D2A68E8E600823E58 /* WebViewModel.swift */; };
 		22778C082A9571D000547C8C /* AnnouncementsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22778C072A9571D000547C8C /* AnnouncementsAdminView.swift */; };
+		227B05C12AF9767400D9B572 /* SpotlightArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */; };
 		228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */; };
 		228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */; };
 		228309FF2A8680D100AE9C08 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */; };
@@ -709,13 +709,13 @@
 				2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */,
 				2270B2252A68E00F00823E58 /* AnnouncementsData.swift in Sources */,
 				2270B25C2A68E79800823E58 /* SocialView.swift in Sources */,
-				2270B2162A68DE1E00823E58 /* SpotlightArticles.swift in Sources */,
 				2270B2372A68E2AE00823E58 /* ClubsDetailView.swift in Sources */,
 				2232FEF02AA681AE0067AAB8 /* ClubsAdminView.swift in Sources */,
 				2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */,
 				2270B2492A68E65000823E58 /* SportsDetailView.swift in Sources */,
 				2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */,
 				221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */,
+				227B05C12AF9767400D9B572 /* SpotlightArticles.swift in Sources */,
 				228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */,
 				221423E32AD19F860015CD3B /* RosterDetailView.swift in Sources */,
 				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,

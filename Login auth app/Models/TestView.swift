@@ -12,12 +12,14 @@ struct LinkTextView: View {
                         Text(item)
                             .lineLimit(1)
                             .foregroundColor(.blue)
+                            .padding(.bottom, -10)
                         }
                 } else {
                     Text(item)
+                        .padding(.bottom, -10)
                 }
             }
-        }
+        }.padding(.bottom)
     }
     
     func parseText(_ text: String) -> [String] {
