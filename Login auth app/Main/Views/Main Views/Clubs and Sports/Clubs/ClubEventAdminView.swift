@@ -196,6 +196,18 @@ struct ClubEventAdminDetailView: View {
     var admin: Bool
       
    @State private var isConfirmingAddClubEvent = false
+    
+    var monthdays: [String: Int] = ["Jan": 31, "Feb": 28, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30, "Jul": 31, "Aug": 31, "Sep": 30, "Oct": 31, "Nov": 30, "Dec": 31]
+    
+    var isRealDate: Bool {
+        if monthdays[months[selectedMonthIndex]] ?? 32 >= days[selectedDayIndex] {
+            return true
+        }
+        if months[selectedMonthIndex] == "Feb" && days[selectedDayIndex] == 29 && ((Int(years[selectedYearIndex]) ?? 1) % 4 == 0) {
+            return true
+        }
+        return false
+    }
    
    var body: some View {
        NavigationView {
@@ -243,9 +255,23 @@ struct ClubEventAdminDetailView: View {
                    }
                }
                
-               Button {
-                   isConfirmingAddClubEvent = true
-               } label: {
+               if ((admin && !title.isEmpty) || !admin) && isRealDate {
+                   Button {
+                       isConfirmingAddClubEvent = true
+                   } label: {
+                       Text("Publish New Club Event")
+                           .foregroundColor(.white)
+                           .fontWeight(.semibold)
+                           .padding(10)
+                           .cornerRadius(15.0)
+                           .frame(width: screen.screenWidth-60)
+                           .font(.system(size: 17, weight: .semibold, design: .rounded))
+                           .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10)
+                           )
+                   }
+               } else {
                    Text("Publish New Club Event")
                        .foregroundColor(.white)
                        .fontWeight(.semibold)
@@ -254,8 +280,8 @@ struct ClubEventAdminDetailView: View {
                        .frame(width: screen.screenWidth-60)
                        .font(.system(size: 17, weight: .semibold, design: .rounded))
                        .background(Rectangle()
-                           .foregroundColor(.blue)
-                           .cornerRadius(10)
+                        .foregroundColor(.gray)
+                        .cornerRadius(10)
                        )
                }
            }
