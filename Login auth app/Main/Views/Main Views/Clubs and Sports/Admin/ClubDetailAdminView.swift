@@ -58,11 +58,13 @@ struct ClubDetailAdminView: View {
                 
                 Section("Description") {
                     TextField("Description", text: $clubdescription)
-                }
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 Section("Club Meeting Room") {
                     TextField("Meeting room", text: $clubmeetingroom)
-                }
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                                 
                 Section("Permissions") {
                     
@@ -70,6 +72,7 @@ struct ClubDetailAdminView: View {
                             ForEach($adminemails, id: \.self) { $adminEmail in
                                 HStack {
                                     Text(adminEmail)
+                                        .font(.system(size: 17, weight: .regular, design: .rounded))
                                         .contextMenu {
                                             Button(role: .destructive) {
                                                 adminemails.removeAll { $0 == adminEmail }
@@ -81,7 +84,8 @@ struct ClubDetailAdminView: View {
                             }
                             Button("Add Admin") {
                                 isAddingAdmin = true
-                            }.sheet(isPresented: $isAddingAdmin) {
+                            }.font(.system(size: 17, weight: .regular, design: .rounded))
+                            .sheet(isPresented: $isAddingAdmin) {
                                 VStack {
                                     HStack {
                                         Button("Cancel") {
@@ -92,21 +96,24 @@ struct ClubDetailAdminView: View {
                                     Form {
                                         Section("New Admin Email:") {
                                             TextField("Email", text: $newAdminEmail)
+                                                .font(.system(size: 17, weight: .regular, design: .rounded))
                                             Button("Add Admin") {
                                                 isAddingAdmin = false
                                                 adminemails.append(newAdminEmail)
                                                 newAdminEmail = ""
                                             }
-                                        }
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
+                                        }.font(.system(size: 12, weight: .medium, design: .rounded))
                                     }
                                 }
                             }
-                        }
+                        }.font(.system(size: 17, weight: .regular, design: .rounded))
                     DisclosureGroup("Editors") {
                         ForEach($editoremails, id: \.self) { $editoremail in
                             
                             HStack {
                                 Text(editoremail)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .contextMenu {
                                         Button(role: .destructive) {
                                             editoremails.removeAll { $0 == editoremail }
@@ -118,36 +125,41 @@ struct ClubDetailAdminView: View {
                         }
                         Button("Add Editor") {
                             isAddingEditor = true
-                        }.sheet(isPresented: $isAddingEditor) {
+                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                        .sheet(isPresented: $isAddingEditor) {
                             VStack {
                                 HStack {
                                     Button("Cancel") {
                                         isAddingEditor = false
-                                    }.padding()
+                                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    .padding()
                                     Spacer()
                                 }
                                 Form {
                                     
                                     Section("New Editor Email:") {
                                         TextField("Email", text: $newEditorEmail)
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
                                         Button("Add Editor") {
                                             isAddingEditor = false
                                             editoremails.append(newEditorEmail)
                                             newEditorEmail = ""
-                                        }
-                                    }
+                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
                                 }
                             }
                         }
-                    }
-                }
-                 
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+                
+
                 Section("Members") {
                     
                     DisclosureGroup("Captains") {
                         ForEach($clubcaptain, id: \.self) { $captain in
                             HStack {
                                 Text(captain)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .contextMenu {
                                         Button(role: .destructive) {
                                             clubcaptain.removeAll { $0 == captain }
@@ -159,32 +171,36 @@ struct ClubDetailAdminView: View {
                         }
                         Button("Add Captain") {
                             isAddingCaptain = true
-                        }.sheet(isPresented: $isAddingCaptain) {
+                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                        .sheet(isPresented: $isAddingCaptain) {
                             VStack {
                                 HStack {
                                     Button("Cancel") {
                                         isAddingCaptain = false
-                                    }.padding()
+                                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    .padding()
                                     Spacer()
                                 }
                                 Form {
                                     Section("New Captain Name:") {
                                         TextField("Email", text: $newCaptainName)
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
                                         Button("Add Captain") {
                                             isAddingCaptain = false
                                             clubcaptain.append(newCaptainName)
                                             newCaptainName = ""
-                                        }
-                                    }
+                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
                                 }
                             }
                         }
-                    }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
                     
                     DisclosureGroup("Advisors") {
                         ForEach($clubadvisor, id: \.self) {$advisor in
                             HStack {
                                 Text(advisor)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .contextMenu {
                                         Button(role: .destructive) {
                                             clubadvisor.removeAll { $0 == advisor }
@@ -197,34 +213,38 @@ struct ClubDetailAdminView: View {
                         
                         Button("Add Advisor") {
                             isAddingAdvisor = true
-                        }.sheet(isPresented: $isAddingAdvisor) {
+                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                        .sheet(isPresented: $isAddingAdvisor) {
                             VStack {
                                 HStack {
                                     Button("Cancel") {
                                         isAddingAdvisor = false
-                                    }.padding()
+                                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    .padding()
                                     Spacer()
                                 }
                                 Form {
                                     Section("New Advisor Name:") {
                                         TextField("Name", text: $newAdvisorName)
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
                                         Button("Add Advisor") {
                                             isAddingAdvisor = false
                                             clubadvisor.append(newAdvisorName)
                                             newAdvisorName = ""
-                                        }
-                                    }
+                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
                                 }
                             }
                         }
                         
-                    }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
                     
                     DisclosureGroup("Members") {
                         ForEach($clubmembers, id: \.self) { $player in
                             
                             HStack {
                                 Text(player)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .contextMenu {
                                         Button(role: .destructive) {
                                             clubmembers.removeAll { $0 == player }
@@ -236,30 +256,33 @@ struct ClubDetailAdminView: View {
                         }
                         Button("Add Member") {
                             isAddingMember = true
-                        }.sheet(isPresented: $isAddingMember) {
+                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                        .sheet(isPresented: $isAddingMember) {
                             VStack {
                                 HStack {
                                     Button("Cancel") {
                                         isAddingMember = false
-                                    }.padding()
+                                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    .padding()
                                     Spacer()
                                 }
                                 Form {
                                     
                                     Section("New Member Name:") {
                                         TextField("Name", text: $newMemberName)
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
                                         Button("Add Player") {
                                             isAddingMember = false
                                             clubmembers.append(newMemberName)
                                             newMemberName = ""
-                                        }
-                                    }
+                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
                                 }
                             }
                         }
-                    }
-                    
-                }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+                
                 
                 Section("Image") {
                     if let displayimage {
@@ -277,8 +300,8 @@ struct ClubDetailAdminView: View {
                     }
                     Button("Upload New Image") {
                         isDisplayingAddImage = true
-                    }
-                }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 .sheet(isPresented: $isDisplayingAddImage) {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
                         .onDisappear() {
