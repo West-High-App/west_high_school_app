@@ -56,6 +56,8 @@ struct ClubsEventsAdminView: View {
                     Text("You are currently editing source data. Any changes will be made public across all devices.")
                         .padding(.horizontal, 20)
                         .padding(.bottom, 5)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.8)
                     Spacer()
                 }
             }
@@ -123,7 +125,7 @@ struct ClubsEventsAdminView: View {
                     .font(.system(size: 22, weight: .semibold, design: .rounded))
                     .padding(.leading, 5)
                 Spacer()
-                    .frame(height: 500)
+                    // .frame(height: 500)
             }
         }.navigationTitle("Edit Club Events")
             .alert(isPresented: $isConfirmingDeleteEvent) {

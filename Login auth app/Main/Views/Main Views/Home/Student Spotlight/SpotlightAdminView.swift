@@ -216,6 +216,15 @@ struct SpotlightAdminView: View {
                                             }
                                         }
                                         .buttonStyle(PlainButtonStyle())
+                                        .onTapGesture {
+                                            print(selectedArticle)
+                                            self.selectedArticle = achievement
+                                            if let index = dataManager.allstudentachievementlist.firstIndex(of: achievement) {
+                                                selectedIndex = index
+                                            }
+                                            presentingArticleSheet = true
+                                            self.selectedArticle = achievement
+                                        }
                                     /*.contextMenu {
                                      Button("Delete", role: .destructive) {
                                      tempAchievementTitle = achievement.achievementtitle
@@ -231,7 +240,6 @@ struct SpotlightAdminView: View {
                                         .sheet(isPresented: $presentingArticleSheet) {
                                             VStack {
                                                 if let usableType = usableType {
-                                                    VStack {
                                                         HStack {
                                                             Button("Cancel") {
                                                                 presentingArticleSheet = false
@@ -364,7 +372,6 @@ struct SpotlightAdminView: View {
                                                             }
                                                             
                                                         }
-                                                    }
                                                 }
                                             }.onAppear {
                                                 print(selectedArticle)
@@ -406,18 +413,24 @@ struct SpotlightAdminView: View {
                     }
                 }
             } else {
-                
-                Text("Current pending articles:")
-                    .multilineTextAlignment(.center)
-                    .font(.system(size: 24, weight: .semibold, design: .rounded))
-                    .padding(5)
-                List {
-                    ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
-                        if !achievement.isApproved {
-                            //
-                            dubachievementcell(feat: achievement)
+                if pendingCount != 0 {
+                    Text("Current pending articles:")
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .padding(5)
+                    List {
+                        ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
+                            if !achievement.isApproved {
+                                //
+                                dubachievementcell(feat: achievement)
+                            }
                         }
                     }
+                } else {
+                    Text("No pending articles.")
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .padding(5)
                 }
                 
             }

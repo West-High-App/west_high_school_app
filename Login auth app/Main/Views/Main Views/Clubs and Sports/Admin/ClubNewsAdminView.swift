@@ -403,22 +403,29 @@ struct ClubNewsAdminView: View { // hello
             } else {
                 
                 VStack {
-                    Text("Current pending articles:")
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 24, weight: .semibold, design: .rounded))
-                        .padding(5)
-                    List {
-                        ForEach(dataManager.allclubsnewslist, id: \.id) { news in
-                            if !news.isApproved {
-                                dubclubnewscell(feat: news)
+                    if pendingCount != 0 {
+                        Text("Current pending articles:")
+                            .multilineTextAlignment(.center)
+                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                            .padding(5)
+                        List {
+                            ForEach(dataManager.allclubsnewslist, id: \.id) { news in
+                                if !news.isApproved {
+                                    dubclubnewscell(feat: news)
+                                }
+                            }
+                            if !dataManager.allclubsnewslist.filter({ $0.isApproved }).isEmpty && !dataManager.allPendingDocsLoaded {
+                                ProgressView()
+                                    .onAppear {
+                                        dataManager.getMoreClubNews(getPending: true)
+                                    }
                             }
                         }
-                        if !dataManager.allclubsnewslist.filter({ $0.isApproved }).isEmpty && !dataManager.allPendingDocsLoaded {
-                            ProgressView()
-                                .onAppear {
-                                    dataManager.getMoreClubNews(getPending: true)
-                                }
-                        }
+                    } else {
+                        Text("No pending articles.")
+                            .multilineTextAlignment(.center)
+                            .font(.system(size: 24, weight: .semibold, design: .rounded))
+                            .padding(5)
                     }
                 }
                 

@@ -360,24 +360,31 @@ struct SportsNewsAdminView: View {
                 }
                 
             } else {
-                Text("Current pending articles:")
-                    .multilineTextAlignment(.center)
-                    .font(.system(size: 24, weight: .semibold, design: .rounded))
-                    .padding(5)
-                List {
-                    ForEach(dataManager.allsportsnewslist, id: \.id) { news in
-                        if !news.isApproved {
-                            sportnewscell(feat: news)
-                                .padding(.trailing)
-                                .padding(.vertical,8)
+                if pendingCount != 0 {
+                    Text("Current pending articles:")
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .padding(5)
+                    List {
+                        ForEach(dataManager.allsportsnewslist, id: \.id) { news in
+                            if !news.isApproved {
+                                sportnewscell(feat: news)
+                                    .padding(.trailing)
+                                    .padding(.vertical,8)
+                            }
+                        }
+                        if !dataManager.allsportsnewslist.filter({ $0.isApproved }).isEmpty && !dataManager.allPendingDocsLoaded {
+                            ProgressView()
+                                .onAppear {
+                                    dataManager.getMoreSportsNews(getPending: true)
+                                }
                         }
                     }
-                    if !dataManager.allsportsnewslist.filter({ $0.isApproved }).isEmpty && !dataManager.allPendingDocsLoaded {
-                        ProgressView()
-                            .onAppear {
-                                dataManager.getMoreSportsNews(getPending: true)
-                            }
-                    }
+                } else {
+                    Text("No pending articles.")
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .padding(5)
                 }
             }
         }                .navigationBarTitle(Text("Edit Sport News"))

@@ -210,7 +210,7 @@ struct ClubAdminDetailView: View {
                                }
                            }
                        }
-                       isPresentingAddClub = false
+                       presentationMode.wrappedValue.dismiss()
                    },
                    secondaryButton: .cancel()
                )
