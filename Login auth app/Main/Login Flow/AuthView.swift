@@ -36,7 +36,9 @@ func SignInGoogle(tokens: GoogleSignInResultModel, bypass: Bool) async throws ->
      } */
     print("Verified login.")
     if Auth.auth().currentUser?.email?.contains(allowedDomain) != nil {
-        userInfo.isMMSD = true
+        DispatchQueue.main.async {
+            userInfo.isMMSD = true
+        }
     }
     return true
 }
