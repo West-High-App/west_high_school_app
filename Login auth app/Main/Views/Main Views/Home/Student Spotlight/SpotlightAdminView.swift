@@ -381,7 +381,7 @@ struct SpotlightAdminView: View {
                                         }
                                         .alert(isPresented: $isConfirmingApproveAchievement) {
                                             Alert(
-                                                title: Text("Approve Article"),
+                                                title: Text("Approve Article?"),
                                                 message: Text("This action cannot be undone."),
                                                 primaryButton: .default(Text("Approve")) {
                                                     if let achievementToDelete = achievementToDelete {
@@ -454,7 +454,7 @@ struct SpotlightAdminView: View {
         }
         .alert(isPresented: $isConfirmingDeleteAchievement) {
             Alert(
-                title: Text("Delete Article"),
+                title: Text("Delete Article?"),
                 message: Text("This action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
                     if let achievementToDelete = achievementToDelete {

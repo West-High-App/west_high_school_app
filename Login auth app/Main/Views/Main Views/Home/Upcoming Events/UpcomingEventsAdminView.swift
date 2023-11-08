@@ -115,7 +115,7 @@ struct UpcomingEventsAdminView: View {
             }
             .alert(isPresented: $isConfirmingDeleteEvent) {
                 Alert(
-                    title: Text("Delete Event"),
+                    title: Text("Delete Event?"),
                     message: Text("This action cannot be undone."),
                     primaryButton: .destructive(Text("Delete")) {
                         if let eventToDelete = eventToDelete {
@@ -267,7 +267,7 @@ struct EventDetailView: View {
             })
             .alert(isPresented: $isConfirmingAddEvent) {
                 Alert(
-                    title: Text("Publish Event"),
+                    title: Text("Publish Event?"),
                     message: Text("This action cannot be undone."),
                     primaryButton: .default(Text("Publish")) {
                         let dateFormatter = DateFormatter()
