@@ -85,27 +85,28 @@ struct ClubsDetailView: View {
                         }
                         Spacer()
                     }
-                    
-                    VStack {
-                        
-                        ZStack {
-                            Rectangle()
-                                .foregroundColor(.white)
+                    if currentclub.imagedata != UIImage() {
+                        VStack {
                             
-                            VStack(spacing: 0) {
-                                Image(uiImage: currentclub.imagedata )
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: screen.screenWidth - 30, height: 250)
-                                    .clipped()
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.white)
+                                
+                                VStack(spacing: 0) {
+                                    Image(uiImage: currentclub.imagedata )
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                        .clipped()
+                                }
                             }
-                        }
+                            
+                        }.cornerRadius(30)
+                            .frame(width: screen.screenWidth - 30, height: 250)
+                            .shadow(color: .gray, radius: 8, x:2, y:3)
                         
-                    }.cornerRadius(30)
-                        .frame(width: screen.screenWidth - 30, height: 250)
-                        .shadow(color: .gray, radius: 8, x:2, y:3)
-                    
-                        .padding(.horizontal)
+                            .padding(.horizontal)
+                    }
                     
                     Spacer()
                 }

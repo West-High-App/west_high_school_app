@@ -150,6 +150,8 @@ struct ClubDetailAdminView: View {
                             }
                         }
                     }.font(.system(size: 17, weight: .regular, design: .rounded))
+                    Text("Admins can edit all aspects of the club.\nEditors can add upcoming events with a template.")
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
 
@@ -286,17 +288,21 @@ struct ClubDetailAdminView: View {
                 
                 Section("Image") {
                     if let displayimage {
-                        Image(uiImage: displayimage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 250, height: 200)
-                            .cornerRadius(10)
+                        if displayimage != UIImage() {
+                            Image(uiImage: displayimage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 250, height: 200)
+                                .cornerRadius(10)
+                        }
                     } else {
-                        Image(uiImage: editingclub.imagedata)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 250, height: 200)
-                            .cornerRadius(10)
+                        if editingclub.imagedata != UIImage() {
+                            Image(uiImage: editingclub.imagedata)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 250, height: 200)
+                                .cornerRadius(10)
+                        }
                     }
                     Button("Upload New Image") {
                         isDisplayingAddImage = true

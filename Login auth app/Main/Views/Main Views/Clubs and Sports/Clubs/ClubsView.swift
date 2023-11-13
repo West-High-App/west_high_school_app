@@ -231,12 +231,21 @@ struct ClubsHibabi: View {
                                                                 .environmentObject(clubsmanager)
                                                         } label: {
                                                             HStack {
-                                                                Image(uiImage: item.imagedata)
-                                                                    .resizable()
-                                                                    .aspectRatio(contentMode: .fill)
-                                                                    .frame(width: 50, height: 50)
-                                                                    .cornerRadius(1000)
-                                                                    .padding(.trailing, 10)
+                                                                if item.imagedata != UIImage() {
+                                                                    Image(uiImage: item.imagedata)
+                                                                        .resizable()
+                                                                        .aspectRatio(contentMode: .fill)
+                                                                        .frame(width: 50, height: 50)
+                                                                        .cornerRadius(1000)
+                                                                        .padding(.trailing, 10)
+                                                                } else {
+                                                                    Image(systemName: "questionmark.circle")
+                                                                        .resizable()
+                                                                        .aspectRatio(contentMode: .fill)
+                                                                        .frame(width: 50, height: 50)
+                                                                        .cornerRadius(1000)
+                                                                        .padding(.trailing, 10)
+                                                                }
                                                                 VStack(alignment: .center) {
                                                                     HStack {
                                                                         Text(item.clubname)
