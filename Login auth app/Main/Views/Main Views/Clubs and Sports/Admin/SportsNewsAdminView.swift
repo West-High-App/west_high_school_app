@@ -166,22 +166,30 @@ struct SportsNewsAdminView: View {
                                                 self.selectedArticle = news
                                             }
                                         }
+                                        .onTapGesture {
+                                            self.selectedArticle = news
+                                            if let index = dataManager.allsportsnewslist.firstIndex(of: news) {
+                                                selectedIndex = index
+                                            }
+                                            presentingArticleSheet = true
+                                            self.selectedArticle = news
+                                        }
                                     
                                         .sheet(isPresented: $presentingArticleSheet) {
                                             
                                             
                                             VStack {
                                                 
+                                                HStack {
+                                                    Button("Cancel") {
+                                                        presentingArticleSheet = false
+                                                    }.padding()
+                                                    Spacer()
+                                                }
+                                                
                                                 if let usableType = usableType {
                                                     
                                                     ScrollView {
-                                                        HStack {
-                                                            Button("Cancel") {
-                                                                presentingArticleSheet = false
-                                                            }.padding()
-                                                            Spacer()
-                                                        }
-                                                        
                                                         
                                                         VStack{
                                                             HStack {
@@ -279,16 +287,8 @@ struct SportsNewsAdminView: View {
                                                             Button {
                                                                 tempAchievementTitle = selectedArticle.newstitle
                                                                 achievementToDelete = usableType
+                                                                isConfirmingApproveAchievement = true
                                                                 
-                                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                                    
-                                                                    isConfirmingApproveAchievement = true
-                                                                    
-                                                                }
-                                                                
-                                                                /*DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                                 isConfirmingApproveAchievement = true
-                                                                 }*/
                                                             } label: {
                                                                 Text("Approve")
                                                                     .foregroundColor(.white)
@@ -317,9 +317,9 @@ struct SportsNewsAdminView: View {
                                             .alert(isPresented: $isConfirmingApproveAchievement) {
                                                 Alert(
                                                     
-                                                    title: Text("You Are Editing Public Data"),
-                                                    message: Text("Are you sure you want to approve the achievement '\(tempAchievementTitle)'? \nOnce approved, the article will be public. This action cannot be undone."),
-                                                    primaryButton: .destructive(Text("Publish")) {
+                                                    title: Text("Approve Article?"),
+                                                    message: Text("This action cannot be undone."),
+                                                    primaryButton: .default(Text("Approve")) {
                                                         if let achievementToDelete = achievementToDelete {
                                                             var tempachievement = achievementToDelete
                                                             tempachievement.isApproved = true
@@ -330,6 +330,7 @@ struct SportsNewsAdminView: View {
                                                                     dismiss()
                                                                 }
                                                             }
+                                                            presentingArticleSheet = false
                                                         }
                                                     },
                                                     secondaryButton: .cancel()
@@ -398,8 +399,8 @@ struct SportsNewsAdminView: View {
         }
         .alert(isPresented: $isConfirmingDeleteAchievement) {
             Alert(
-                title: Text("You Are Deleting Public Data"),
-                message: Text("Are you sure you want to delete the achievement '\(tempAchievementTitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
+                title: Text("Delete Article?"),
+                message: Text("This action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
                     if let achievementToDelete = achievementToDelete {
                         dataManager.deleteSportNews(sportNews: achievementToDelete) { error in
@@ -473,28 +474,48 @@ struct sportNewsRowlView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Sports News Details")) {
+                Section(header: Text("Sport Article Details")) {
                     TextField("Title", text: $newstitle)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     TextField("Description", text: $newsdescription)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     TextField("Author", text: $author)
-                }
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 Section(header: Text("Image")) {
-                    Image(uiImage: displayimage ?? UIImage())
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 200, height: 150)
-                        .cornerRadius(10)
+                    if let displayimage = displayimage {
+                        Image(uiImage: displayimage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 200, height: 150)
+                            .cornerRadius(10)
+                    }
                     Button("Upload New Image") {
                         isDisplayingAddImage = true
-                    }
-                }.sheet(isPresented: $isDisplayingAddImage) {
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+                .sheet(isPresented: $isDisplayingAddImage) {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
                 }
                 
-                Button {
-                    isConfirmingAddAchievement = true
-                } label: {
+                if newstitle != "" && newsdescription != "" && author != "" && displayimage != nil {
+                    Button {
+                        isConfirmingAddAchievement = true
+                    } label: {
+                        Text("Publish New Sport News")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
+                    }
+                } else {
                     Text("Publish New Sport News")
                         .foregroundColor(.white)
                         .fontWeight(.semibold)
@@ -503,7 +524,7 @@ struct sportNewsRowlView: View {
                         .frame(width: screen.screenWidth-60)
                         .font(.system(size: 17, weight: .semibold, design: .rounded))
                         .background(Rectangle()
-                            .foregroundColor(.blue)
+                            .foregroundColor(.gray)
                             .cornerRadius(10)
                         )
                 }
