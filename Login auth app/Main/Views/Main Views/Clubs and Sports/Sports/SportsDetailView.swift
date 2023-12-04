@@ -297,7 +297,7 @@ struct SportsDetailView: View {
                                             Text(event.subtitle)
                                             HStack {
                                                 if event.score.count > 1 {
-                                                    if event.score[0] == 0 && event.score[1] == 0 {
+                                                    if event.score[0] == 0 && event.score[1] == 0 && event.isUpdated == false {
                                                     } else {
                                                         if event.score[0] > event.score[1] {
                                                             Text(String(event.score[0]))

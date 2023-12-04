@@ -72,11 +72,14 @@ struct PastSportEventsAdminView: View {
                                 Text(event.day)
                                     .font(.system(size: 32, weight: .regular, design: .rounded))
                                     .foregroundColor(.black)
+
                             }
                             .foregroundColor(.red)
                             .frame(width:50,height:50)
                             Divider()
                                 .padding(.vertical, 10)
+                            Spacer()
+                                .frame(width: 10) // new
                             VStack (alignment: .leading){
                                 Text(event.title)
                                     .font(.headline)
@@ -84,8 +87,7 @@ struct PastSportEventsAdminView: View {
                                     Text(event.subtitle)
                                     HStack {
                                         if event.score.count > 1 {
-                                            if event.score[0] == 0 && event.score[1] == 0 {
-                                                Text("Pending score...")
+                                            if event.score[0] == 0 && event.score[1] == 0 && event.isUpdated == false {
                                             } else {
                                                 if event.score[0] > event.score[1] {
                                                     Text(String(event.score[0]))
@@ -107,24 +109,30 @@ struct PastSportEventsAdminView: View {
                                                 }
                                             }
                                         } else {
-                                            Text("Pending score...")
                                         }
                                     }
-                                } else {
+                                } else { // MARK: new shit here
                                     if event.subtitle.contains("$WIN$") {
+                                        Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                         Text("Win")
                                             .foregroundColor(.green)
                                     } else if event.subtitle.contains("$LOSS$") {
+                                        Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                         Text("Loss")
                                             .foregroundColor(.red)
                                     }
                                     else if event.subtitle.contains("$TIE$") {
+                                        Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                         Text("Tie")
                                             .foregroundColor(.black)
                                     }
                                     else {
                                         Text(event.subtitle)
                                     }
+                                }
+                                if !event.isUpdated {
+                                    Text("Pending score...")
+                                        .italic()
                                 }
                             }
                         }.contextMenu {
@@ -191,7 +199,9 @@ struct PastSportEventsAdminView: View {
                             self.year = event.year
                             self.arrayId = event.arrayId
                             self.olddescription = event.subtitle
-                            if event.subtitle.contains("\n") {
+                            if event.subtitle.contains("$WIN$") || event.subtitle.contains("$LOSS$") || event.subtitle.contains("$TIE$") {
+                                self.editingdescription = ""
+                            } else if event.subtitle.contains("\n") {
                                 self.editingdescription = event.subtitle.components(separatedBy: "\n")[1]
                             } else {
                                 self.editingdescription = event.subtitle
@@ -243,7 +253,7 @@ struct PastSportEventsAdminView: View {
                         HStack {
                             VStack {
                                 Toggle(isOn: $isSpecial) {
-                                    Text("Special event")
+                                    Text("Custom event")
                                 }
                             }
                         }
@@ -306,7 +316,7 @@ struct PastSportEventsAdminView: View {
                         print(subtitle)
                         if subtitle.contains("\n") {
                             print("contains /n")
-                            part1 = subtitle.components(separatedBy: "\n")[1]
+                            part1 = subtitle.components(separatedBy: "\n")[0] // [1]
                         } else {
                             print("doest not contain /n")
                             part1 = subtitle
@@ -327,7 +337,7 @@ struct PastSportEventsAdminView: View {
                         
                         
                         
-                        editingevent = sportEvent(documentID: documentID, arrayId: arrayId, title: title, subtitle: returnvalue, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: isUpdated)
+                        editingevent = sportEvent(documentID: documentID, arrayId: arrayId, title: title, subtitle: returnvalue, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: tempscore, isUpdated: true)
                         
                         print(editingevent)
                         
