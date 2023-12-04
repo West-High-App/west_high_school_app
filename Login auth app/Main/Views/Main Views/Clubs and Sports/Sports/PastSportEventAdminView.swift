@@ -62,84 +62,111 @@ struct PastSportEventsAdminView: View {
     var body: some View {
         
         VStack {
-            List {
-                ForEach(editingeventslist, id: \.id) { event in
-                    HStack {
-                        VStack {
-                            Text(event.month)
-                                .font(.system(size: 16, weight: .medium, design: .rounded))
-                            Text(event.day)
-                                .font(.system(size: 32, weight: .regular, design: .rounded))
-                                .foregroundColor(.black)
-                        }
-                        .foregroundColor(.red)
-                        .frame(width:50,height:50)
-                        Divider()
-                            .padding(.vertical, 10)
-                        VStack (alignment: .leading){
-                            Text(event.title)
-                                .font(.headline)
-                            if !event.isSpecial {
-                                Text(event.subtitle)
-                                HStack {
-                                    if event.score.count > 1 {
-                                        if event.score[0] == 0 && event.score[1] == 0 {
-                                            Text("Pending score...")
-                                        } else {
-                                            if event.score[0] > event.score[1] {
-                                                Text(String(event.score[0]))
-                                                Text("-")
-                                                Text(String(event.score[1]))
-                                                Text("(Win)")
-                                                    .foregroundColor(.green)
-                                            } else                                 if event.score[0] < event.score[1] {
-                                                Text(String(event.score[0]))
-                                                Text("-")
-                                                Text(String(event.score[1]))
-                                                Text("(Loss)")
-                                                    .foregroundColor(.red)
+            if !editingeventslist.isEmpty {
+                List {
+                    ForEach(editingeventslist, id: \.id) { event in
+                        HStack {
+                            VStack {
+                                Text(event.month)
+                                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                                Text(event.day)
+                                    .font(.system(size: 32, weight: .regular, design: .rounded))
+                                    .foregroundColor(.black)
+                            }
+                            .foregroundColor(.red)
+                            .frame(width:50,height:50)
+                            Divider()
+                                .padding(.vertical, 10)
+                            VStack (alignment: .leading){
+                                Text(event.title)
+                                    .font(.headline)
+                                if !event.isSpecial {
+                                    Text(event.subtitle)
+                                    HStack {
+                                        if event.score.count > 1 {
+                                            if event.score[0] == 0 && event.score[1] == 0 {
+                                                Text("Pending score...")
                                             } else {
-                                                Text(String(event.score[0]))
-                                                Text("-")
-                                                Text(String(event.score[1]))
-                                                Text("(Tie)")
+                                                if event.score[0] > event.score[1] {
+                                                    Text(String(event.score[0]))
+                                                    Text("-")
+                                                    Text(String(event.score[1]))
+                                                    Text("(Win)")
+                                                        .foregroundColor(.green)
+                                                } else                                 if event.score[0] < event.score[1] {
+                                                    Text(String(event.score[0]))
+                                                    Text("-")
+                                                    Text(String(event.score[1]))
+                                                    Text("(Loss)")
+                                                        .foregroundColor(.red)
+                                                } else {
+                                                    Text(String(event.score[0]))
+                                                    Text("-")
+                                                    Text(String(event.score[1]))
+                                                    Text("(Tie)")
+                                                }
                                             }
+                                        } else {
+                                            Text("Pending score...")
                                         }
-                                    } else {
-                                        Text("Pending score...")
+                                    }
+                                } else {
+                                    if event.subtitle.contains("$WIN$") {
+                                        Text("Win")
+                                            .foregroundColor(.green)
+                                    } else if event.subtitle.contains("$LOSS$") {
+                                        Text("Loss")
+                                            .foregroundColor(.red)
+                                    }
+                                    else if event.subtitle.contains("$TIE$") {
+                                        Text("Tie")
+                                            .foregroundColor(.black)
+                                    }
+                                    else {
+                                        Text(event.subtitle)
                                     }
                                 }
-                            } else {
-                                if event.subtitle.contains("$WIN$") {
-                                    Text("Win")
-                                        .foregroundColor(.green)
-                                } else if event.subtitle.contains("$LOSS$") {
-                                    Text("Loss")
-                                        .foregroundColor(.red)
-                                }
-                                else if event.subtitle.contains("$TIE$") {
-                                    Text("Tie")
-                                        .foregroundColor(.black)
-                                }
-                                else {
-                                    Text(event.subtitle)
-                                }
                             }
+                        }.contextMenu {
+                            Button("Edit") {
+                                self.isSpecial = event.isSpecial
+                                editingevent = event
+                                self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
+                                self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
+                                self.subtitle = event.subtitle
+                                self.title = event.title
+                                self.month = event.month
+                                self.day = event.day
+                                self.year = event.year
+                                self.arrayId = event.arrayId
+                                self.olddescription = event.subtitle
+                                
+                                
+                                if event.subtitle.contains("\n") {
+                                    selectedspecialeventtype = 3
+                                }
+                                if event.subtitle.contains("$WIN$") {
+                                    selectedspecialeventtype = 0
+                                }
+                                if event.subtitle.contains("$LOSS$") {
+                                    selectedspecialeventtype = 1
+                                }
+                                if event.subtitle.contains("$TIE$") {
+                                    selectedspecialeventtype = 2
+                                }
+                                
+                                
+                                if event.subtitle.contains("\n") {
+                                    self.editingdescription = event.subtitle.components(separatedBy: "\n")[1]
+                                } else {
+                                    self.editingdescription = event.subtitle
+                                }
+                                
+                                isPresentingEditEvent = true
+                            }.foregroundColor(.blue)
                         }
-                    }.contextMenu {
-                        Button("Edit") {
+                        .onTapGesture {
                             self.isSpecial = event.isSpecial
-                            editingevent = event
-                            self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
-                            self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
-                            self.subtitle = event.subtitle
-                            self.title = event.title
-                            self.month = event.month
-                            self.day = event.day
-                            self.year = event.year
-                            self.arrayId = event.arrayId
-                            self.olddescription = event.subtitle
-                            
                             
                             if event.subtitle.contains("\n") {
                                 selectedspecialeventtype = 3
@@ -154,50 +181,36 @@ struct PastSportEventsAdminView: View {
                                 selectedspecialeventtype = 2
                             }
                             
-                            
+                            editingevent = event
+                            self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
+                            self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
+                            self.subtitle = event.subtitle
+                            self.title = event.title
+                            self.month = event.month
+                            self.day = event.day
+                            self.year = event.year
+                            self.arrayId = event.arrayId
+                            self.olddescription = event.subtitle
                             if event.subtitle.contains("\n") {
                                 self.editingdescription = event.subtitle.components(separatedBy: "\n")[1]
                             } else {
                                 self.editingdescription = event.subtitle
                             }
-                                                        
+                            
                             isPresentingEditEvent = true
-                        }.foregroundColor(.blue)
+                        }
                     }
-                    .onTapGesture {
-                        self.isSpecial = event.isSpecial
-                        
-                        if event.subtitle.contains("\n") {
-                            selectedspecialeventtype = 3
-                        }
-                        if event.subtitle.contains("$WIN$") {
-                            selectedspecialeventtype = 0
-                        }
-                        if event.subtitle.contains("$LOSS$") {
-                            selectedspecialeventtype = 1
-                        }
-                        if event.subtitle.contains("$TIE$") {
-                            selectedspecialeventtype = 2
-                        }
-                        
-                        editingevent = event
-                        self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
-                        self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
-                        self.subtitle = event.subtitle
-                        self.title = event.title
-                        self.month = event.month
-                        self.day = event.day
-                        self.year = event.year
-                        self.arrayId = event.arrayId
-                        self.olddescription = event.subtitle
-                        if event.subtitle.contains("\n") {
-                            self.editingdescription = event.subtitle.components(separatedBy: "\n")[1]
-                        } else {
-                            self.editingdescription = event.subtitle
-                        }
-                                                    
-                        isPresentingEditEvent = true
+                }
+            } else {
+                VStack {
+                    HStack {
+                        Text("No past events.")
+                            .lineLimit(1)
+                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            .padding(.leading, 18)
+                        Spacer()    
                     }
+                    Spacer()
                 }
             }
         }.navigationTitle("Edit Past Events")
