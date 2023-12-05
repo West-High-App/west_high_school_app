@@ -19,7 +19,7 @@ struct LinkTextView: View {
                         .padding(.bottom, -10)
                 }
             }
-        }.padding(.bottom)
+        }.padding(.bottom, 10)
     }
     
     func parseText(_ text: String) -> [String] {
