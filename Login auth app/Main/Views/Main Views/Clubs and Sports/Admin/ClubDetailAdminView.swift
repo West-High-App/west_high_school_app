@@ -332,9 +332,9 @@ struct ClubDetailAdminView: View {
                 
                 .alert(isPresented: $isConfirmingChanges) {
                     Alert(
-                        title: Text("You Are Publishing Changes"),
-                        message: Text("Make sure you double check your edits.\nThis action annot be undone."),
-                        primaryButton: .destructive(Text("Publish")) {
+                        title: Text("Publish Changes?"),
+                        message: Text("This action annot be undone."),
+                        primaryButton: .default(Text("Publish")) {
                             
                             if let displayimage = displayimage {
                                 clubimage = imagemanager.uploadPhoto(file: displayimage)
