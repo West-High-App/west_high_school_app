@@ -65,12 +65,15 @@ struct SportsDetailAdminView: View {
             Form {
                 Section("Sport Details (Not editable)") {
                     Text("Sport Name: \(editingsport.sportname)")
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     Text("Sport Team: \(editingsport.sportsteam)")
-                }
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 Section("Sport Info") {
                     TextField("Info", text: $info)
-                }
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 Section("Permissions") {
                     
@@ -78,6 +81,7 @@ struct SportsDetailAdminView: View {
                         ForEach($adminemails, id: \.self) { $adminEmail in
                             HStack {
                                 Text(adminEmail)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .contextMenu {
                                         Button(role: .destructive) {
                                             adminemails.removeAll { $0 == adminEmail }
@@ -95,25 +99,28 @@ struct SportsDetailAdminView: View {
                                     Button("Cancel") {
                                         isAddingAdmin = false
                                     }.padding()
+                                        .font(.system(size: 17, weight: .regular, design: .rounded))
                                     Spacer()
                                 }
                                 Form {
                                     Section("New Admin Email:") {
                                         TextField("Email", text: $newAdminEmail)
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
                                         Button("Add Admin") {
                                             isAddingAdmin = false
                                             adminemails.append(newAdminEmail)
-                                        }
-                                    }
+                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
                                 }
                             }
                         }
-                    }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
                     
                     DisclosureGroup("Editors") {
                         ForEach($editoremails, id: \.self) { $editoremail in
                             HStack {
                                 Text(editoremail)
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .contextMenu {
                                         Button(role: .destructive) {
                                             editoremails.removeAll { $0 == editoremail }
@@ -136,16 +143,20 @@ struct SportsDetailAdminView: View {
                                 Form {
                                     Section("New Editor Email:") {
                                         TextField("Email", text: $newEditorEmail)
+                                            .font(.system(size: 17, weight: .regular, design: .rounded))
                                         Button("Add Editor") {
                                             isAddingEditor = false
                                             editoremails.append(newEditorEmail)
-                                        }
-                                    }
+                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
                                 }
                             }
                         }
-                    }
-                }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                    Text("Admins can edit all aspects of the club.\nEditors can update scores of past games.")
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 Section("Filters") {
                     Picker(selection: $selectedGender) {
@@ -159,6 +170,7 @@ struct SportsDetailAdminView: View {
                             .tag(4)
                     } label: {
                         Text("Gender")
+                            .font(.system(size: 17, weight: .regular, design: .rounded))
                     }
                     Picker(selection: $selectedSeason) {
                         Text("Not Specified")
@@ -171,6 +183,7 @@ struct SportsDetailAdminView: View {
                             .tag(4)
                     } label: {
                         Text("Season")
+                            .font(.system(size: 17, weight: .regular, design: .rounded))
                     }
                     Picker(selection: $selectedTeam) {
                         Text("Not Specified")
@@ -185,10 +198,11 @@ struct SportsDetailAdminView: View {
                             .tag(5)
                     } label: {
                         Text("Team")
+                            .font(.system(size: 17, weight: .regular, design: .rounded))
                     }
-                }
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
-                Section("Sports Image") {
+                Section("Image") {
                     if let displayimage {
                         Image(uiImage: displayimage)
                             .resizable()
@@ -196,16 +210,18 @@ struct SportsDetailAdminView: View {
                             .frame(width: 250, height: 200)
                             .cornerRadius(10)
                     } else {
-                        Image(uiImage: editingsport.imagedata ?? UIImage())
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 250, height: 200)
-                            .cornerRadius(10)
+                        if editingsport.imagedata != nil && editingsport.imagedata != UIImage() {
+                            Image(uiImage: editingsport.imagedata ?? UIImage())
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 250, height: 200)
+                                .cornerRadius(10)
+                        }
                     }
                     Button("Upload New Image") {
                         isDisplayingAddImage = true
-                    }
-                }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 .sheet(isPresented: $isDisplayingAddImage) {
                     ImagePicker(selectedImage: $displayimage, isPickerShowing: $isDisplayingAddImage)
@@ -220,17 +236,19 @@ struct SportsDetailAdminView: View {
                             .cornerRadius(10)
                             .padding(.vertical, 5)
                     } else {
-                        Image(uiImage: editingsport.rosterimagedata ?? UIImage())
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(maxWidth: 250)
-                            .cornerRadius(10)
-                            .padding(.vertical, 5)
+                        if editingsport.rosterimagedata != nil && editingsport.rosterimagedata != UIImage(){
+                            Image(uiImage: editingsport.rosterimagedata ?? UIImage())
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: 250)
+                                .cornerRadius(10)
+                                .padding(.vertical, 5)
+                        }
                     }
                     Button("Upload New Image") {
                         isDisplayingAddImage2 = true
-                    }
-                }
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 .sheet(isPresented: $isDisplayingAddImage2) {
                     ImagePicker(selectedImage: $displayimage2, isPickerShowing: $isDisplayingAddImage2)
@@ -258,9 +276,9 @@ struct SportsDetailAdminView: View {
         
         .alert(isPresented: $isConfirmingChanges) {
             Alert(
-                title: Text("You Are Publishing Changes"),
-                message: Text("Make sure you double check your edits.\nThis action annot be undone."),
-                primaryButton: .destructive(Text("Publish")) {
+                title: Text("Publish Changes?"),
+                message: Text("This action cannot be undone."),
+                primaryButton: .default(Text("Publish")) {
                     
 //                    // images
 //
@@ -341,6 +359,6 @@ struct SportsDetailAdminView: View {
 
 struct SportsDetailAdminView_Previews: PreviewProvider {
     static var previews: some View {
-        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: UUID()))
+        SportsDetailAdminView(editingsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: nil, imagedata: nil, documentID: "NAN", sportid: "SPORT ID", id: UUID()))
     }
 }
