@@ -189,6 +189,10 @@ struct PastSportEventsAdminView: View {
                                 selectedspecialeventtype = 2
                             }
                             
+                            if !event.isSpecial {
+                                selectedspecialeventtype = 0
+                            }
+                            
                             editingevent = event
                             self.homescore = event.score.first == nil ? "" : "\(event.score.first!)"
                             self.otherscore = event.score.last == nil ? "" : "\(event.score.last!)"
@@ -249,7 +253,6 @@ struct PastSportEventsAdminView: View {
                     Spacer()
                 }
                 Form {
-                    if currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
                         HStack {
                             VStack {
                                 Toggle(isOn: $isSpecial) {
@@ -257,7 +260,6 @@ struct PastSportEventsAdminView: View {
                                 }
                             }
                         }
-                    }
                     if !isSpecial {
                         Section(header: Text("Home Score")) {
                             //TextField("Home score", text: $homescore)
@@ -287,7 +289,11 @@ struct PastSportEventsAdminView: View {
                         
                         if selectedspecialeventtype == 3 {
                             Section(header: Text("Event Description")) {
-                                TextField("Description", text: $editingdescription)
+                                if currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
+                                    TextField("Description", text: $editingdescription)
+                                } else {
+                                    Text("Only admins can enter a description!")
+                                }
                             }
                         }
                     }
@@ -401,7 +407,9 @@ struct PastSportEventsAdminView: View {
                     dataManager.updateSportEventScore(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
                 
                 },
-                secondaryButton: .cancel(Text("Cancel"))
+                secondaryButton: .cancel(Text("Cancel")) {
+                    selectedspecialeventtype = 0
+                }
             )
         }
         
