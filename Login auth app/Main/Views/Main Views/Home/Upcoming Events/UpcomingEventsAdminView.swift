@@ -26,12 +26,6 @@ struct UpcomingEventsAdminView: View {
                         .padding(.leading)
                     Spacer()
                 }
-                HStack {
-                    Text("You are currently editing source data. Any changes will be made public across all devices.")
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 5)
-                    Spacer()
-                }
                 
                 Button {
                     isPresentingAddEvent = true

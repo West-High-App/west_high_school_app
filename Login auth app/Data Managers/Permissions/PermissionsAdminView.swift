@@ -45,7 +45,7 @@ struct EmailListView: View {
     @State var isPresentingConfirmChanges = false
     var body: some View {
         VStack {
-            Text("You are currently editing the permissions of the app. These users can create, edit, and delete public data on the app -- therefore be absolutely certain you are entering correct data.")
+            Text("You are currently editing source data. Any changes will be made public across all devices.")
                 .padding(.horizontal)
             List {
                 ForEach(permissionsListKeys, id: \.self) { key in
@@ -125,10 +125,9 @@ struct EmailListView: View {
                 .alert(isPresented: $isPresentingConfirmChanges) {
                     
                     Alert(
-                        
-                        title: Text("You Are Changing Admin Permissions"),
-                        message: Text("These people can create, edit, and delete public data. Please double check your edits. THIS ACTION CANNOT BE UNDONE."),
-                        primaryButton: .destructive(Text("Publish")) {
+                        title: Text("Change Permissions?"),
+                        message: Text("This action cannot be undone."),
+                        primaryButton: .default(Text("Publish")) {
                             // update the permissions data
                             permissionsManager.updatePermissions(newpermissions: permissionsList, oldpermissions: originalPermissionsList) {}
                         },

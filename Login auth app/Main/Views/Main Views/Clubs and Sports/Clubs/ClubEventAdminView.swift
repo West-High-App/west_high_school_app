@@ -51,16 +51,6 @@ struct ClubsEventsAdminView: View {
     var body: some View {
         
         VStack {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("You are currently editing source data. Any changes will be made public across all devices.")
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 5)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.8)
-                    Spacer()
-                }
-            }
             Button {
                 isPresetingAddEvent = true
             } label: {
