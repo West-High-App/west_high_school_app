@@ -256,11 +256,19 @@ struct ClubsHibabi: View {
                                                                         Spacer()
                                                                     }
                                                                     HStack {
-                                                                        Text("Room \(item.clubmeetingroom)")
-                                                                            .foregroundColor(.secondary)
-                                                                            .lineLimit(1)
-                                                                            .minimumScaleFactor(0.5)
-                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                        if item.clubmeetingroom != "" {
+                                                                            Text("Room \(item.clubmeetingroom)")
+                                                                                .foregroundColor(.secondary)
+                                                                                .lineLimit(1)
+                                                                                .minimumScaleFactor(0.5)
+                                                                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                        } else {
+                                                                            Text("No meeting room")
+                                                                                .foregroundColor(.secondary)
+                                                                                .lineLimit(1)
+                                                                                .minimumScaleFactor(0.5)
+                                                                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                        }
                                                                         Spacer()
                                                                     }
                                                                 }
