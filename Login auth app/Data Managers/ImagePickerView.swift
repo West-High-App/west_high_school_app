@@ -73,9 +73,10 @@ struct ImagePickerView: View {
     }
     
     func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
+        print("got nonlocal")
             let storageRef = Storage.storage().reference()
             let fileRef = storageRef.child("images/\(fileName)")
-            fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+            fileRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
                 if error == nil, let imageData = data {
                     if let image = UIImage(data: imageData) {
                         completion(image)
@@ -207,6 +208,7 @@ class imageManager: ObservableObject {
         }
         
         func getImageFromStorage(fileName: String, completion: @escaping (UIImage?) -> Void) {
+            print("got non-local")
             let storageRef = Storage.storage().reference()
             let fileRef = storageRef.child(fileName)
             fileRef.getData(maxSize: 1024 * 1024 * 10) { data, error in

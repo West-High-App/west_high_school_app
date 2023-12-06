@@ -711,7 +711,7 @@ struct MostRecentAnnouncementCell: View{
                     .padding(.horizontal)
                     .padding(.vertical, 5)
                
-               Text(news.description)
+               Text(news.description.replacingOccurrences(of: "  ", with: " "))
                     .lineLimit(3)
                     .font(.system(size: 17, weight: .regular, design: .rounded))
                     .multilineTextAlignment(.leading)
@@ -820,8 +820,9 @@ struct MostRecentAchievementCell: View{
                     .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
           
                .onAppear {
-                    if !hasAppeared {
+                    if !hasAppeared { // || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil
                          guard let image = feat.images.first else { return }
+                         print("IMAGE FUNCTION RUN hv")
                          imagemanager.getImage(fileName: image) { uiimage in
                               if let uiimage = uiimage {
                                    imagedata = uiimage

@@ -114,7 +114,7 @@ struct HelpSupportView: View {
                 .cornerRadius(20)
                 .padding(.horizontal,5)
             }
-            
+            .padding(.bottom, 10)
             .padding(.horizontal, 5)
             
         }.navigationTitle("Help & Support")

@@ -3,4 +3,54 @@
    uuid = "F881F60F-3C4C-49D3-BC04-074C2953802A"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "152BEF3D-7950-4091-8073-2F86B32F6426"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Login auth app/Main/Views/Main Views/Home/Student Spotlight/SpotlightData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "connectAchievements()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "152BEF3D-7950-4091-8073-2F86B32F6426 - 2c8dbd8aedf0ce6a"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRQuerySnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in West_High.studentachievementlist.connectAchievements() -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Home/Student%20Spotlight/SpotlightData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
+                  offsetFromSymbolStart = "1824">
+               </Location>
+               <Location
+                  uuid = "152BEF3D-7950-4091-8073-2F86B32F6426 - cb99a013fbfaa756"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.FIRQueryDocumentSnapshot) -&gt; West_High.studentachievement in closure #1 (Swift.Optional&lt;__C.FIRQuerySnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in West_High.studentachievementlist.connectAchievements() -&gt; ()"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/Login%20auth%20app/Main/Views/Main%20Views/Home/Student%20Spotlight/SpotlightData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
+                  offsetFromSymbolStart = "532">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

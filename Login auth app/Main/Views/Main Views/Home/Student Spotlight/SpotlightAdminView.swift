@@ -530,6 +530,8 @@ struct AchievementDetailView: View {
     
     @State var screen = ScreenSize()
     
+    @State var hasAppeared2 = false
+    
     var body: some View {
         NavigationView {
             Form {
@@ -655,11 +657,13 @@ struct AchievementDetailView: View {
                 }
                
                 for image in displayimages {
-                    
-                    imagemanager.getImage(fileName: image) { uiimage in
-                        if let uiimage = uiimage {
-                            displayimagesdata.append(uiimage)
+                    if !hasAppeared2 {
+                        imagemanager.getImage(fileName: image) { uiimage in
+                            if let uiimage = uiimage {
+                                displayimagesdata.append(uiimage)
+                            }
                         }
+                        hasAppeared2 = true
                     }
                 }
                 
