@@ -92,6 +92,28 @@ struct SportsHibabi: View {
     }
     @State var refreshView = false
     
+    var hasResults: Bool {
+        var bool = false
+        for item in filteredList(fromList: sportsmanager.allsportlist) {
+            if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
+                if (item.favoritedusers.contains(userInfo.email) && selected == 1) || selected == 2 {
+                    bool = true
+                }
+            }
+        }
+        return bool
+    }
+    
+    var hasResultsNews: Bool {
+        var bool = false
+        for news in filteredSportsNews {
+            if news.isApproved {
+                bool = true
+            }
+        }
+        return bool
+    }
+    
     // MARK: functions
         
     func filteredList(fromList list: [sport]) -> [sport] {
@@ -256,57 +278,64 @@ struct SportsHibabi: View {
                                 }
                             }
                             List { // MARK: foreach my sports
-                                ForEach(filteredList(fromList: sportsmanager.allsportlist)) { item in
-                                    if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
-                                        
-                                        
-                                        if (item.favoritedusers.contains(userInfo.email) && selected == 1) || selected == 2 {
+                                if hasResults {
+                                    ForEach(filteredList(fromList: sportsmanager.allsportlist)) { item in
+                                        if searchText.isEmpty || item.sportname.localizedStandardContains(searchText) {
                                             
-                                            //                                                NavigationLink(value: item) {
-                                            NavigationLink {
-                                                SportsMainView(selectedsport: item)
+                                            
+                                            if (item.favoritedusers.contains(userInfo.email) && selected == 1) || selected == 2 {
+                                                
+                                                //                                                NavigationLink(value: item) {
+                                                NavigationLink {
+                                                    SportsMainView(selectedsport: item)
                                                     //.environmentObject(vm)
-                                                    .environmentObject(sportsmanager)
-                                                    .environmentObject(sporteventmanager)
-                                                    .environmentObject(sporteventstorage)
-                                            } label: {
-                                                HStack {
-                                                    if item.imagedata != nil {
-                                                        Image(uiImage: item.imagedata!)
-                                                            .resizable()
-                                                            .aspectRatio(contentMode: .fill)
-                                                            .frame(width: 50, height: 50)
-                                                            .cornerRadius(1000)
-                                                            .padding(.trailing, 10)
-                                                    } else {
-                                                        Image(systemName: "questionmark.circle")
-                                                            .resizable()
-                                                            .aspectRatio(contentMode: .fill)
-                                                            .frame(width: 50, height: 50)
-                                                            .cornerRadius(1000)
-                                                            .padding(.trailing, 10)
-                                                    }
-                                                    VStack (alignment: .center){
-                                                        HStack {
-                                                            Text(item.sportname)
-                                                                .foregroundColor(.primary)
-                                                                .lineLimit(2)
-                                                                .minimumScaleFactor(0.9)
-                                                                .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                                            Spacer()
+                                                        .environmentObject(sportsmanager)
+                                                        .environmentObject(sporteventmanager)
+                                                        .environmentObject(sporteventstorage)
+                                                } label: {
+                                                    HStack {
+                                                        if item.imagedata != nil {
+                                                            Image(uiImage: item.imagedata!)
+                                                                .resizable()
+                                                                .aspectRatio(contentMode: .fill)
+                                                                .frame(width: 50, height: 50)
+                                                                .cornerRadius(1000)
+                                                                .padding(.trailing, 10)
+                                                        } else {
+                                                            Image(systemName: "questionmark.circle")
+                                                                .resizable()
+                                                                .aspectRatio(contentMode: .fill)
+                                                                .frame(width: 50, height: 50)
+                                                                .cornerRadius(1000)
+                                                                .padding(.trailing, 10)
                                                         }
-                                                        HStack {
-                                                            Text(item.sportsteam)
-                                                                .foregroundColor(.secondary)
-                                                                .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                            Spacer()
+                                                        VStack (alignment: .center){
+                                                            HStack {
+                                                                Text(item.sportname)
+                                                                    .foregroundColor(.primary)
+                                                                    .lineLimit(2)
+                                                                    .minimumScaleFactor(0.9)
+                                                                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                                Spacer()
+                                                            }
+                                                            HStack {
+                                                                Text(item.sportsteam)
+                                                                    .foregroundColor(.secondary)
+                                                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                Spacer()
+                                                            }
                                                         }
+                                                        Spacer()
                                                     }
-                                                    Spacer()
                                                 }
                                             }
                                         }
                                     }
+                                } else {
+                                    Text("No results.")
+                                        .lineLimit(1)
+                                        .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                        .padding(.leading, 5)
                                 }
                             }
                             .searchable(text: $searchText)
@@ -325,11 +354,18 @@ struct SportsHibabi: View {
                     // MARK: sports news
                     else if selected == 3 {
                         List {
-                            ForEach(filteredSportsNews, id: \.id) { news in
-                                if news.isApproved {
-                                    sportnewscell(feat: news)
-                                        .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                            if hasResultsNews {
+                                ForEach(filteredSportsNews, id: \.id) { news in
+                                    if news.isApproved {
+                                        sportnewscell(feat: news)
+                                            .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                                    }
                                 }
+                            } else {
+                                Text("No results.")
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)
                             }
                             if !sportsNewsManager.allsportsnewslist.map({ $0.documentID }).contains("NAN") && !sportsNewsManager.allDocsLoaded {
                                 ProgressView()
