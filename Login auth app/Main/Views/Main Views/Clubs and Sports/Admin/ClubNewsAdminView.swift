@@ -405,6 +405,7 @@ struct ClubNewsAdminView: View { // hello
                             .lineLimit(1)
                             .font(.system(size: 22, weight: .semibold, design: .rounded))
                             .padding(.leading, 5)
+                        Spacer()
                     }
                 }
                 
@@ -458,6 +459,7 @@ struct ClubNewsAdminView: View { // hello
                                 print("Error deleting achievement: \(error.localizedDescription)")
                             }
                         }
+                        dataManager.allclubsnewslistUnsorted.removeAll {$0.documentID == achievementToDelete.documentID} // should delete after
                     }
                 },
                 secondaryButton: .cancel(Text("Cancel"))

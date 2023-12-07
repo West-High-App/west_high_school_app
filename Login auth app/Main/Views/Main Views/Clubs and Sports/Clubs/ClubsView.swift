@@ -411,27 +411,20 @@ struct ClubsHibabi: View {
 
 struct clubnewscell: View{
     var feat: clubNews
+    @State var imagedata: UIImage = UIImage()
+    @StateObject var imagemanager = imageManager()
     @State var screen = ScreenSize()
+    @State var hasAppeared = false
     
     var body:some View{
         VStack{
-            if feat.imagedata.count > 0 {
-                Image(uiImage: feat.imagedata[0])
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
-            } else {
-                Image(uiImage: UIImage())
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
-            }
+            Image(uiImage: imagedata)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 250)
+                .frame(maxWidth: screen.screenWidth - 60)
+                .clipped()
+                .cornerRadius(9)
             VStack(alignment: .leading, spacing:2){
                 HStack {
                     Text(feat.newsdate)
@@ -459,7 +452,20 @@ struct clubnewscell: View{
 //                        .padding(.leading, 5)
 
             }
-        }
+        }.onAppear {
+            if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
+                guard let image = feat.newsimage.first else { return }
+                print("IMAGE FUNCTION RUN cv")
+                 imagemanager.getImage(fileName: image) { uiimage in
+                      if let uiimage = uiimage {
+                          imagedata = uiimage
+                      }
+                 }
+                 hasAppeared = true
+            } else {
+            }
+            
+       }
     }
 }
 

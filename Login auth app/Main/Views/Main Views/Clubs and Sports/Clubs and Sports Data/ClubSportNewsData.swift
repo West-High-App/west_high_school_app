@@ -279,7 +279,7 @@ extension Array<clubNews> {
 }
 
 class clubsNewslist: ObservableObject{
-    @Published private var allclubsnewslistUnsorted = [clubNews(
+    @Published var allclubsnewslistUnsorted = [clubNews(
         newstitle: "hardcoded title",
         newsimage: ["roboticsclub"],
         newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app", newsdate: "Apr 1, 2023", newsdateSwift: Date(),

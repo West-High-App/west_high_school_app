@@ -9,7 +9,10 @@ import SwiftUI
 
 struct ClubsNewsDetailView: View {
     var currentclubnews: clubNews
+    @StateObject var imagemanager = imageManager()
     @State var screen = ScreenSize()
+    @State var hasAppeared = false
+    @State var imagedata: [UIImage] = []
     var body: some View {
             ScrollView(showsIndicators: true){
                 VStack{
@@ -44,19 +47,21 @@ struct ClubsNewsDetailView: View {
                         TabView {
                             
                             // Loop through each recipe
-                            ForEach(currentclubnews.imagedata.indices, id: \.self) { index in
+                            ForEach(imagedata.indices, id: \.self) { index in
                                 ZStack {
                                     Rectangle()
                                         .foregroundColor(.white)
                                     
-                                    VStack(spacing: 0) {
-                                        Image(uiImage: currentclubnews.imagedata[index])
-                                            .resizable()
-                                            .padding(.bottom, 2)
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: screen.screenWidth - 20, height: 250)
-                                            .clipped()
-                                            .cornerRadius(30)
+                                    if !imagedata.isEmpty {
+                                        VStack(spacing: 0) {
+                                            Image(uiImage: imagedata.first ?? UIImage())
+                                                .resizable()
+                                                .padding(.bottom, 2)
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: screen.screenWidth - 20, height: 250)
+                                                .clipped()
+                                                .cornerRadius(30)
+                                        }
                                     }
                                 }
                             }
@@ -86,6 +91,21 @@ struct ClubsNewsDetailView: View {
                         .padding(.bottom)
                     
                 }.padding(.top, 0 - (screen.screenHeight / 10) + 30) // <---
+                    .onAppear {
+                        if !hasAppeared || currentclubnews.imagedata == [] || currentclubnews.imagedata.first == UIImage() || currentclubnews.imagedata.first == nil { //
+                            
+                            for image in currentclubnews.newsimage {
+                                imagemanager.getImage(fileName: image) { uiimage in
+                                     if let uiimage = uiimage {
+                                         imagedata.append(uiimage)
+                                     }
+                                }
+                            }
+                             hasAppeared = true
+                        } else {
+                        }
+                        
+                   }
             }
         }
     }
