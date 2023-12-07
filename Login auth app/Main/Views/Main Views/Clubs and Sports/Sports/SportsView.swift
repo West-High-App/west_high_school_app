@@ -622,25 +622,20 @@ struct SportsHibabi: View {
 // MARK: sportnewscell
 struct sportnewscell: View{
     var feat: sportNews
+    @StateObject var imagemanager = imageManager()
     @State var screen = ScreenSize()
+    @State var hasAppeared = false
+    @State var imagedata: [UIImage] = []
 
     var body:some View{
         VStack{
-            if feat.imagedata.count > 0 {
-                Image(uiImage: feat.imagedata[0])
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
-            } else {
-                Image(uiImage: UIImage())
-                    .resizable()
-                    .cornerRadius(10)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.vertical, 2)
-            }
+            Image(uiImage: imagedata.first ?? UIImage())
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 250)
+                .frame(maxWidth: screen.screenWidth - 60)
+                .clipped()
+                .cornerRadius(9)
             VStack(alignment: .leading, spacing:2){
                 HStack {
                     Text(feat.newsdate)
@@ -668,7 +663,20 @@ struct sportnewscell: View{
 //                        .padding(.leading, 5)
 
             }
-        }
+        }.onAppear {
+            if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
+                for image in feat.newsimage {
+                    imagemanager.getImage(fileName: image) { uiimage in
+                         if let uiimage = uiimage {
+                             imagedata.append(uiimage)
+                         }
+                    }
+                }
+                 hasAppeared = true
+            } else {
+            }
+            
+       }
     }
 }
 

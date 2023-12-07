@@ -17,6 +17,7 @@ struct SportsNewsAdminView: View {
     @State var selected = 1
     
     @State var usableType: sportNews?
+    @State var usableTypeImageData: [UIImage] = []
     
     @State private var isConfirmingDeleteAchievement = false
     @State private var isConfirmingDeleteAchievementFinal = false
@@ -221,13 +222,13 @@ struct SportsNewsAdminView: View {
                                                             
                                                             VStack {
                                                                 TabView {
-                                                                    ForEach(usableType.imagedata.indices, id: \.self) { index in
+                                                                    ForEach(usableTypeImageData.indices, id: \.self) { index in
                                                                         ZStack {
                                                                             Rectangle()
                                                                                 .foregroundColor(.white)
                                                                             
                                                                             VStack(spacing: 0) {
-                                                                                Image(uiImage: usableType.imagedata[index])
+                                                                                Image(uiImage: usableTypeImageData[index])
                                                                                     .resizable()
                                                                                     .padding(.bottom, 2)
                                                                                     .aspectRatio(contentMode: .fill)
@@ -313,6 +314,19 @@ struct SportsNewsAdminView: View {
                                             }
                                             .onAppear {
                                                 usableType = dataManager.allsportsnewslist[selectedIndex]
+                                                usableTypeImageData.removeAll()
+                                                
+                                                let dispatchGroup = DispatchGroup()
+
+                                                for images in usableType?.newsimage ?? [] {
+                                                    dispatchGroup.enter()
+                                                    imagemanager.getImage(fileName: images) { uiimage in
+                                                        if let uiimage = uiimage {
+                                                            usableTypeImageData.append(uiimage)
+                                                        }
+                                                        dispatchGroup.leave()
+                                                    }
+                                                }
                                             }
                                             .alert(isPresented: $isConfirmingApproveAchievement) {
                                                 Alert(
@@ -408,6 +422,8 @@ struct SportsNewsAdminView: View {
                                 print("Error deleting achievement: \(error.localizedDescription)")
                             }
                         }
+                        dataManager.allsportsnewslistUnsorted.removeAll {$0.newsdescription == achievementToDelete.newsdescription && $0.newsdateSwift == achievementToDelete.newsdateSwift}
+
                     }
                 },
                 secondaryButton: .cancel(Text("Cancel"))
@@ -538,9 +554,9 @@ struct sportNewsRowlView: View {
             })
             .alert(isPresented: $isConfirmingAddAchievement) {
                 Alert(
-                    title: Text("You Are Publishing Changes"),
-                    message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(newstitle)\nDescription: \(newsdescription)\nAuthor: \(author)"),
-                    primaryButton: .destructive(Text("Publish Changes")) {
+                    title: Text("Publish Article?"),
+                    message: Text("This action cannot be undone."),
+                    primaryButton: .default(Text("Publish Changes")) {
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "MMMM dd, yyyy"
                         guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)") else {

@@ -37,7 +37,7 @@ class studentachievementlist: ObservableObject{
     
     static let shared = studentachievementlist()
     
-    @Published private var allstudentachievementlistUnsorted: [studentachievement] = []
+    @Published var allstudentachievementlistUnsorted: [studentachievement] = []
     @Published private var allpendingstudentachievementlistUnsorted: [studentachievement] = []
     var allstudentachievementlist: [studentachievement] {
         (allstudentachievementlistUnsorted + allpendingstudentachievementlistUnsorted).sortedByDate()

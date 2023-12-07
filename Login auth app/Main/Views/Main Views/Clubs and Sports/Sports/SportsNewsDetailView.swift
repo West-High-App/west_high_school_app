@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct SportsNewsDetailView: View {
-var currentnews: sportNews
+    var currentnews: sportNews
+    @StateObject var imagemanager = imageManager()
     @State var screen = ScreenSize()
+    @State var hasAppeared = false
+    @State var imagedata: [UIImage] = []
     var body: some View {
         ScrollView{
             VStack{
@@ -44,13 +47,13 @@ var currentnews: sportNews
                     TabView {
                         
                         // Loop through each recipe
-                        ForEach(currentnews.imagedata.indices, id: \.self) { index in
+                        ForEach(imagedata.indices, id: \.self) { index in
                             ZStack {
                                 Rectangle()
                                     .foregroundColor(.white)
                                 
                                 VStack(spacing: 0) {
-                                    Image(uiImage: currentnews.imagedata[index])
+                                    Image(uiImage: imagedata[index])
                                         .resizable()
                                         .padding(.bottom, 2)
                                         .aspectRatio(contentMode: .fill)
@@ -73,7 +76,20 @@ var currentnews: sportNews
                 Spacer()
             }.padding(.top, 0 - (screen.screenHeight / 10) + 30) // <---
             .onAppear {
-            }
+                if !hasAppeared || currentnews.imagedata == [] || currentnews.imagedata.first == UIImage() || currentnews.imagedata.first == nil {
+                
+                    for image in currentnews.newsimage {
+                        imagemanager.getImage(fileName: image) { uiimage in
+                             if let uiimage = uiimage {
+                                 imagedata.append(uiimage)
+                             }
+                        }
+                    }
+                     hasAppeared = true
+                } else {
+                }
+                
+           }
 
             LinkTextView(text: currentnews.newsdescription)
                 .multilineTextAlignment(.leading)

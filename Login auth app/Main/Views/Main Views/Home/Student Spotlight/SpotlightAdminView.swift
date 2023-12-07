@@ -486,6 +486,7 @@ struct SpotlightAdminView: View {
                                 print("Error deleting achievement: \(error.localizedDescription)")
                             }
                         }
+                        dataManager.allstudentachievementlistUnsorted.removeAll {$0.achievementdescription == achievementToDelete.achievementdescription && $0.date == achievementToDelete.date}
                     }
                 },
                 secondaryButton: .cancel(Text("Cancel"))

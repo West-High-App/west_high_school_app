@@ -37,7 +37,7 @@ extension Array<sportNews> {
 class sportsNewslist: ObservableObject {
     static let shared = sportsNewslist()
     
-    @Published private var allsportsnewslistUnsorted: [sportNews] = [sportNews(
+    @Published var allsportsnewslistUnsorted: [sportNews] = [sportNews(
         newstitle: "Varsity Football Team Wins Regional Championship",
         newsimage: ["football"],
         newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",

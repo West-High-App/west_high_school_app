@@ -2,28 +2,22 @@ import SwiftUI
 
 struct dubclubnewscell: View{ // hello aiden
     var feat: clubNews
+    @StateObject var imagemanager = imageManager()
     @State var screen = ScreenSize()
+    @State var hasAppeared = false
+    @State var imagedata: [UIImage] = []
+    
     @ObservedObject var hasPermission = PermissionsCheck.shared
     
     var body:some View{
         VStack{
-            if feat.imagedata.count > 0 {
-                Image(uiImage: feat.imagedata[0])
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
-            } else {
-                Image(uiImage: UIImage())
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
-            }
+            Image(uiImage: imagedata.first ?? UIImage())
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 250)
+                .frame(maxWidth: screen.screenWidth - 60)
+                .clipped()
+                .cornerRadius(9)
             VStack(alignment: .leading, spacing:2){
                 HStack {
                     Text(feat.newsdate)
@@ -52,7 +46,21 @@ struct dubclubnewscell: View{ // hello aiden
 //                        .padding(.leading, 5)
 
             }
-        }
+        }.onAppear {
+            if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
+                
+                for image in feat.newsimage {
+                    imagemanager.getImage(fileName: image) { uiimage in
+                         if let uiimage = uiimage {
+                             imagedata.append(uiimage)
+                         }
+                    }
+                }
+                 hasAppeared = true
+            } else {
+            }
+            
+       }
     }
 }
 
@@ -75,6 +83,7 @@ struct ClubNewsAdminView: View { // hello
     @ObservedObject var userInfo = UserInfo.shared
     
     @State var usableType: clubNews?
+    @State var usableTypeImageData: [UIImage] = []
     
     @State var hasAppeared = false
     
@@ -268,13 +277,13 @@ struct ClubNewsAdminView: View { // hello
                                                                 
                                                                 VStack {
                                                                     TabView {
-                                                                        ForEach(usableType.imagedata.indices, id: \.self) { index in
+                                                                        ForEach(usableTypeImageData.indices, id: \.self) { index in
                                                                             ZStack {
                                                                                 Rectangle()
                                                                                     .foregroundColor(.white)
                                                                                 
                                                                                 VStack(spacing: 0) {
-                                                                                    Image(uiImage: usableType.imagedata[index])
+                                                                                    Image(uiImage: usableTypeImageData[index])
                                                                                         .resizable()
                                                                                         .padding(.bottom, 2)
                                                                                         .aspectRatio(contentMode: .fill)
@@ -363,6 +372,18 @@ struct ClubNewsAdminView: View { // hello
                                                 
                                             }.onAppear {
                                                 usableType = dataManager.allclubsnewslist[selectedIndex]
+                                                usableTypeImageData.removeAll()
+                                                let dispatchGroup = DispatchGroup()
+
+                                                for images in usableType?.newsimage ?? [] {
+                                                    dispatchGroup.enter()
+                                                    imagemanager.getImage(fileName: images) { uiimage in
+                                                        if let uiimage = uiimage {
+                                                            usableTypeImageData.append(uiimage)
+                                                        }
+                                                        dispatchGroup.leave() // Leave the Dispatch Group when the async call is done
+                                                    }
+                                                }
                                             }
                                             
                                             
@@ -459,7 +480,7 @@ struct ClubNewsAdminView: View { // hello
                                 print("Error deleting achievement: \(error.localizedDescription)")
                             }
                         }
-                        dataManager.allclubsnewslistUnsorted.removeAll {$0.documentID == achievementToDelete.documentID} // should delete after
+                        dataManager.allclubsnewslistUnsorted.removeAll {$0.newsdescription == achievementToDelete.newsdescription && $0.newsdateSwift == achievementToDelete.newsdateSwift}
                     }
                 },
                 secondaryButton: .cancel(Text("Cancel"))

@@ -52,9 +52,8 @@ struct ClubsNewsDetailView: View {
                                     Rectangle()
                                         .foregroundColor(.white)
                                     
-                                    if !imagedata.isEmpty {
                                         VStack(spacing: 0) {
-                                            Image(uiImage: imagedata.first ?? UIImage())
+                                            Image(uiImage: imagedata[index])
                                                 .resizable()
                                                 .padding(.bottom, 2)
                                                 .aspectRatio(contentMode: .fill)
@@ -62,7 +61,6 @@ struct ClubsNewsDetailView: View {
                                                 .clipped()
                                                 .cornerRadius(30)
                                         }
-                                    }
                                 }
                             }
                             
