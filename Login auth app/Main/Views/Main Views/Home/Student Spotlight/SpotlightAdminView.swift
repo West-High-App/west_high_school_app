@@ -2,12 +2,13 @@ import SwiftUI
 struct dubachievementcell: View{
     var feat: studentachievement
     @StateObject var imagemanager = imageManager()
-    @State var imagedata: [UIImage] = []
+    @State var imagedata: UIImage = UIImage()
     @State var screen = ScreenSize()
+    @State var hasAppeared = false
     
     var body:some View{
         VStack{
-            Image(uiImage: feat.imagedata.first ?? UIImage())
+            Image(uiImage: imagedata)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 250)
@@ -48,7 +49,20 @@ struct dubachievementcell: View{
             }
 
 
-        }
+        }.onAppear {
+            if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
+                 guard let image = feat.images.first else { return }
+                print("IMAGE FUNCTION RUN sav")
+                 imagemanager.getImage(fileName: image) { uiimage in
+                      if let uiimage = uiimage {
+                           imagedata = uiimage
+                      }
+                 }
+                 hasAppeared = true
+            } else {
+            }
+            
+       }
     }
 }
 
@@ -71,6 +85,7 @@ struct SpotlightAdminView: View {
     
     @State var selectedIndex = 0
     @State var usableType: studentachievement?
+    @State var usableTypeImageData: [UIImage] = []
     
     @State var screen = ScreenSize()
 
@@ -274,13 +289,13 @@ struct SpotlightAdminView: View {
                                                                         TabView {
                                                                             
                                                                             // Loop through each recipe
-                                                                            ForEach(usableType.imagedata.indices, id: \.self) { index in
+                                                                            ForEach(usableTypeImageData.indices, id: \.self) { index in
                                                                                 ZStack {
                                                                                     Rectangle()
                                                                                         .foregroundColor(.white)
                                                                                     
                                                                                     VStack(spacing: 0) {
-                                                                                        Image(uiImage: usableType.imagedata[index])
+                                                                                        Image(uiImage: usableTypeImageData[index])
                                                                                             .resizable()
                                                                                             .aspectRatio(contentMode: .fill)
                                                                                             .frame(width: screen.screenWidth - 30, height: 250)
@@ -370,6 +385,20 @@ struct SpotlightAdminView: View {
                                             }.onAppear {
                                                 print(selectedArticle)
                                                 usableType = dataManager.allstudentachievementlist[selectedIndex]
+                                                usableTypeImageData.removeAll()
+                                                let dispatchGroup = DispatchGroup()
+
+                                                for images in usableType?.images ?? [] {
+                                                    dispatchGroup.enter()
+                                                    imagemanager.getImage(fileName: images) { uiimage in
+                                                        if let uiimage = uiimage {
+                                                            usableTypeImageData.append(uiimage)
+                                                            print("FOUND SPOTLIGHT IMAGE")
+                                                        }
+                                                        dispatchGroup.leave() // Leave the Dispatch Group when the async call is done
+                                                    }
+                                                }
+                                                
                                             }
                                             
                                         }
@@ -607,7 +636,7 @@ struct AchievementDetailView: View {
             })
             .alert(isPresented: $isConfirmingAddAchievement) {
                 Alert(
-                    title: Text("Publish Article"),
+                    title: Text("Publish Article?"),
                     message: Text("This action cannot be undone."),
                     primaryButton: .default(Text("Publish")) {
                         let dateFormatter = DateFormatter()

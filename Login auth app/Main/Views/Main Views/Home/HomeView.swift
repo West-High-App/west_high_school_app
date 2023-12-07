@@ -92,12 +92,7 @@ struct HomeView: View {
      
      var body: some View {
           ZStack {
-               StaffView()
-               LunchMenuView() // tryna load this shit early
-               ClassesView()
-               SchoolPolicyGuideView()
-               ClubsHibabi()
-               SportsHibabi()
+               
                //MARK: HOME
                if !isShutDown {
                     NavigationView{
@@ -820,7 +815,7 @@ struct MostRecentAchievementCell: View{
                     .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
           
                .onAppear {
-                    if !hasAppeared { // || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil
+                    if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
                          guard let image = feat.images.first else { return }
                          print("IMAGE FUNCTION RUN hv")
                          imagemanager.getImage(fileName: image) { uiimage in

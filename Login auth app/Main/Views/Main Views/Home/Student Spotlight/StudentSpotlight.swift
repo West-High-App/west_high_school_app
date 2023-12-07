@@ -183,7 +183,7 @@ class ScreenSize {
                 Divider()
                     .padding(.horizontal)
             }.onAppear {
-                if !hasAppeared { //  || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil 
+                if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //  
                      guard let image = feat.images.first else { return }
                     print("IMAGE FUNCTION RUN ss")
                      imagemanager.getImage(fileName: image) { uiimage in

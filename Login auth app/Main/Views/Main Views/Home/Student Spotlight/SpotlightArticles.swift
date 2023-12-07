@@ -94,7 +94,7 @@ struct SpotlightArticles: View {
                 
             
         }.onAppear {
-            if !hasAppeared { //  || currentstudentdub.imagedata == [] || currentstudentdub.imagedata.first == UIImage() || currentstudentdub.imagedata.first == nil
+            if !hasAppeared || currentstudentdub.imagedata == [] || currentstudentdub.imagedata.first == UIImage() || currentstudentdub.imagedata.first == nil { //
                 guard currentstudentdub.images.first != nil else { return }
                 print("IMAGE FUNCTION RUN sa")
                 for image in currentstudentdub.images {

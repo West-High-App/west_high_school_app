@@ -148,20 +148,18 @@ struct AuthView: View {
                             Button {
                                 Task {
                                     do {
-                                        if count == 0 {
-                                            if try await viewModel.signInWithGoogle(bypassing: false) {
-                                                
-                                                print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
-                                                
-                                                userInfo.loginStatus = "google"
-                                                count = 1
-                                            }
-                                            else {
-                                                showingDomainError = true
-                                            }
+                                        if try await viewModel.signInWithGoogle(bypassing: false) {
+                                            
+                                            print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
+                                            
+                                            userInfo.loginStatus = "google"
+                                            count = 1
+                                        }
+                                        else {
+                                            showingDomainError = true
                                         }
                                     } catch {
-                                        print(error.localizedDescription)
+                                        print(error.localizedDescription) // MARK: prints only error on program, is not on our side
                                     }
                                 }
                             } label : {
