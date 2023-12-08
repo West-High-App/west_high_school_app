@@ -153,6 +153,19 @@ struct ClubsDetailView: View {
                     }
                 }
                 
+                Picker(selection: $selected, label: Text(""), content: {
+                                    Text("Upcoming").tag(1)
+                                    if userInfo.loginStatus == "google" {
+                                        Text("Members (\(currentclub.clubmembers.count + (currentclub.clubcaptain?.count ?? 0)))").tag(2)
+                                    } else {
+                                        Text("Members").tag(2)
+                                    }
+                                }).pickerStyle(SegmentedPickerStyle())
+                                    .padding(.horizontal)
+                                // upcoming events view
+                                
+                if selected == 1 {
+                    
                     if upcomingeventlist.count < 1 {
                         VStack {
                             Text("No upcoming events.")
@@ -186,11 +199,99 @@ struct ClubsDetailView: View {
                                     }
                                     .padding(.leading, 5)
                                     Spacer()
-                                    
                                 }
                             }
                         }.frame(height: 450)
                     }
+                }
+                
+                // members view
+                                
+                                if selected == 2 {
+                                    if hasPermission.hasFullViewAccess {
+                                        if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
+                                            VStack {
+                                                Text("No members.")
+                                                    .lineLimit(1)
+                                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                                    .padding(.leading, 5)
+                                                Spacer()
+                                            }.frame(height: 450)
+                                            
+                                        } else {
+                                            
+                                            List{
+                                                if currentclub.clubadvisor.count > 0 {
+                                                    Section{
+                                                        ForEach(currentclub.clubadvisor, id: \.self){coach in
+                                                            HStack{
+                                                                Text(coach)
+                                                                    .font(.system(size: 17, weight: .medium, design: .rounded))
+                                                            }
+                                                        }
+                                                    }
+                                                header:{
+                                                    if currentclub.clubcaptain?.count == 1 {
+                                                        Text("Coach")
+                                                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                    } else {
+                                                        Text("Coaches")
+                                                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                        
+                                                    }
+                                                }
+                                                }
+                                                
+                                                if currentclub.clubcaptain?.count ?? 0 > 0 {
+                                                    Section {
+                                                        ForEach(currentclub.clubcaptain!, id: \.self) { captain in
+                                                            HStack {
+                                                                Text(captain)
+                                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                            }
+                                                        }
+                                                    } header:{
+                                                        if currentclub.clubcaptain?.count ?? 0 == 1 {
+                                                            Text("Captain")
+                                                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                        } else {
+                                                            Text("Captains")
+                                                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                if currentclub.clubmembers.count > 0 {
+                                                    Section {
+                                                        ForEach(currentclub.clubmembers
+                                                                , id: \.self) { member in
+                                                            HStack {
+                                                                Text(member)
+                                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                            }
+                                                        }
+                                                    } header: {
+                                                        Text("Members")
+                                                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                    }
+                                                }
+                                                
+                                            }.frame(height: 450)
+                                        }
+                                    }
+                                    else {
+                                        VStack {
+                                            Text("Members not available.")
+                                                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                                .padding(.leading, 5)
+                                            Text("Log in with your school account to view members.")
+                                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                .padding(.horizontal, 5)
+                                            Spacer()
+                                        }.frame(height: 450)
+                                    }
+                                    
+                                }
                     
 
                 

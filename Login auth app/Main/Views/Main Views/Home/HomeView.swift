@@ -81,6 +81,8 @@ struct HomeView: View {
           }
      }
      
+     @State var loadWebViews = true
+     
      // MARK: VIEW
      var safeArea: EdgeInsets
      var size: CGSize
@@ -92,7 +94,13 @@ struct HomeView: View {
      
      var body: some View {
           ZStack {
-               
+               if loadWebViews {
+                    StaffView()
+                    LunchMenuView()
+                    TransportationView()
+                    ClassesView()
+                    SchoolPolicyGuideView()
+               }
                //MARK: HOME
                if !isShutDown {
                     NavigationView{
@@ -431,9 +439,9 @@ struct HomeView: View {
                          
                     }
                }
+          }.onAppear() {
+               loadWebViews = false
           }
-          
-          
      }
      
      
