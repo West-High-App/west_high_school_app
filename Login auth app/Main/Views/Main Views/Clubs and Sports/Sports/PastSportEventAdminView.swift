@@ -292,7 +292,8 @@ struct PastSportEventsAdminView: View {
                                 if currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
                                     TextField("Description", text: $editingdescription)
                                 } else {
-                                    Text("Only admins can enter a description!")
+                                    Text("Ask your team administrator to enter a custom description.")
+                                        .italic()
                                 }
                             }
                         }

@@ -357,53 +357,52 @@ struct SpotlightAdminView: View {
                                                                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                                                                     .padding(.bottom)
                                                                 
+                                                                HStack {
+                                                                    Spacer()
+                                                                    Button {
+                                                                        presentingArticleSheet = false
+                                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                            tempAchievementTitle = selectedArticle.achievementtitle
+                                                                            isConfirmingDeleteAchievement = true
+                                                                            achievementToDelete = usableType
+                                                                        }
+                                                                    } label: {
+                                                                        Text("Delete")
+                                                                            .foregroundColor(.white)
+                                                                            .fontWeight(.semibold)
+                                                                            .padding(10)
+                                                                            .cornerRadius(15.0)
+                                                                            .frame(width: screen.screenWidth/2-60)
+                                                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                            .background(Rectangle()
+                                                                                .foregroundColor(.red)
+                                                                                .cornerRadius(10)
+                                                                            )
+                                                                    }
+                                                                    Spacer()
+                                                                    Button {
+                                                                        presentingArticleSheet = false
+                                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                            tempAchievementTitle = selectedArticle.achievementtitle
+                                                                            isConfirmingApproveAchievement = true
+                                                                            achievementToDelete = usableType
+                                                                        }
+                                                                    } label: {
+                                                                        Text("Approve")
+                                                                            .foregroundColor(.white)
+                                                                            .fontWeight(.semibold)
+                                                                            .padding(10)
+                                                                            .cornerRadius(15.0)
+                                                                            .frame(width: screen.screenWidth/2-60)
+                                                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                            .background(Rectangle()
+                                                                                .foregroundColor(.blue)
+                                                                                .cornerRadius(10)
+                                                                            )
+                                                                    }
+                                                                    Spacer()
+                                                                }.padding(.bottom)
                                                                 
-                                                            }
-                                                            
-                                                            HStack {
-                                                                Spacer()
-                                                                Button {
-                                                                    presentingArticleSheet = false
-                                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                                        tempAchievementTitle = selectedArticle.achievementtitle
-                                                                        isConfirmingDeleteAchievement = true
-                                                                        achievementToDelete = usableType
-                                                                    }
-                                                                } label: {
-                                                                    Text("Delete")
-                                                                        .foregroundColor(.white)
-                                                                        .fontWeight(.semibold)
-                                                                        .padding(10)
-                                                                        .cornerRadius(15.0)
-                                                                        .frame(width: screen.screenWidth/2-60)
-                                                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                                                        .background(Rectangle()
-                                                                            .foregroundColor(.red)
-                                                                            .cornerRadius(10)
-                                                                        )
-                                                                }
-                                                                Spacer()
-                                                                Button {
-                                                                    presentingArticleSheet = false
-                                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                                        tempAchievementTitle = selectedArticle.achievementtitle
-                                                                        isConfirmingApproveAchievement = true
-                                                                        achievementToDelete = usableType
-                                                                    }
-                                                                } label: {
-                                                                    Text("Approve")
-                                                                        .foregroundColor(.white)
-                                                                        .fontWeight(.semibold)
-                                                                        .padding(10)
-                                                                        .cornerRadius(15.0)
-                                                                        .frame(width: screen.screenWidth/2-60)
-                                                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                                                        .background(Rectangle()
-                                                                            .foregroundColor(.blue)
-                                                                            .cornerRadius(10)
-                                                                        )
-                                                                }
-                                                                Spacer()
                                                             }
                                                             
                                                         }

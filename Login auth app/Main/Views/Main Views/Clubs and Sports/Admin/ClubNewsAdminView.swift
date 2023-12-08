@@ -386,7 +386,7 @@ struct ClubNewsAdminView: View { // hello
                                                                         )
                                                                 }
                                                                 Spacer()
-                                                            }
+                                                            }.padding(.bottom)
                                                         }
                                                     }
                                                     

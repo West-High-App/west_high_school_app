@@ -325,8 +325,7 @@ struct SportsNewsAdminView: View {
                                                                     )
                                                             }
                                                             Spacer()
-                                                        }
-                                                        
+                                                        }.padding(.bottom)
                                                         
                                                     }
                                                     
