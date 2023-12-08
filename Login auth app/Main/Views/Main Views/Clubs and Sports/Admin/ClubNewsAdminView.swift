@@ -149,22 +149,44 @@ struct ClubNewsAdminView: View { // hello
 //                    Spacer()
 //                }
 //            }
+            
+            if !hasPermission.articleadmin && !hasPermission.clubarticleadmin {
+                HStack {
+                    Text("Add a club article to be approved by an administrator.")
+                        .padding(.horizontal)
+                    Spacer()
+                }
+            }
+            
             Button {
                 isPresentingAddAchievement = true
             } label: {
-                Text("Add Club Article")
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-                    .padding(10)
-                    .cornerRadius(15.0)
-                    .frame(width: screen.screenWidth-30)
-                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                    .background(Rectangle()
-                        .foregroundColor(.blue)
-                        .cornerRadius(10)
-                    )
+                if !hasPermission.articleadmin && !hasPermission.clubarticleadmin{
+                    Text("Add Pending Article")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10))
+                } else {
+                    Text("Add Club Article")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10))
+                }
 
             }
+            
             
             
             if hasPermission.articleadmin || hasPermission.clubarticleadmin {
@@ -434,10 +456,6 @@ struct ClubNewsAdminView: View { // hello
                 
                 VStack {
                     if pendingCount != 0 {
-                        Text("Current pending articles:")
-                            .multilineTextAlignment(.center)
-                            .font(.system(size: 24, weight: .semibold, design: .rounded))
-                            .padding(5)
                         List {
                             ForEach(dataManager.allclubsnewslist, id: \.id) { news in
                                 if !news.isApproved {

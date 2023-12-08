@@ -142,29 +142,55 @@ struct SpotlightAdminView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Edit Spotlight Articles")
-                    .foregroundColor(Color.black)
-                    .font(.system(size: 32, weight: .bold, design: .rounded))
-                    .lineLimit(2)
-                    .padding(.leading)
-                Spacer()
+                if hasPermission.articleadmin{
+                    Text("Edit Spotlight Articles")
+                        .foregroundColor(Color.black)
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .lineLimit(2)
+                        .padding(.leading)
+                } else {
+                    Text("Edit Spotlight Articles")
+                        .foregroundColor(Color.black)
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .lineLimit(2)
+                        .padding(.leading)
+                }
+                    Spacer()
+            }
+            if !hasPermission.articleadmin {
+                HStack {
+                    Text("Add a spotlight article to be approved by an administrator.")
+                        .padding(.horizontal)
+                    Spacer()
+                }
             }
 
             Button {
                 isPresentingAddAchievement = true
             } label: {
-                Text("Add Spotlight Article")
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-                    .padding(10)
-                    .cornerRadius(15.0)
-                    .frame(width: screen.screenWidth-30)
-                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                    .background(Rectangle()
-                        .foregroundColor(.blue)
-                        .cornerRadius(10)
-                    )
-
+                if hasPermission.articleadmin {
+                    Text("Add Spotlight Article")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10))
+                } else {
+                    Text("Add Pending Article")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10))
+                }
             }
 
             if hasPermission.articleadmin {

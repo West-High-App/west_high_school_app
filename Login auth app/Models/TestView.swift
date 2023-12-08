@@ -16,7 +16,7 @@ struct LinkTextView: View {
                         }
                 } else {
                     Text(item)
-                        .padding(.bottom, -10)
+                        //.padding(.bottom, -10)
                 }
             }
         }.padding(.bottom, 10)

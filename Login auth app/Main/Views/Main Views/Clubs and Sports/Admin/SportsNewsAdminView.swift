@@ -86,20 +86,41 @@ struct SportsNewsAdminView: View {
 //                    Spacer()
 //                }
 //            }
+            
+            if !hasPermission.articleadmin {
+                HStack {
+                    Text("Add a sports article to be approved by an administrator.")
+                        .padding(.horizontal)
+                    Spacer()
+                }
+            }
+            
             Button {
                 isPresentingAddAchievement = true
             } label: {
-                Text("Add Sports Article")
-                    .foregroundColor(.white)
-                    .fontWeight(.semibold)
-                    .padding(10)
-                    .cornerRadius(15.0)
-                    .frame(width: screen.screenWidth-30)
-                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                    .background(Rectangle()
-                        .foregroundColor(.blue)
-                        .cornerRadius(10)
-                    )
+                if hasPermission.articleadmin {
+                    Text("Add Sports Article")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10))
+                } else {
+                    Text("Add Pending Article")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-30)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10))
+                }
 
             }
             
@@ -376,10 +397,6 @@ struct SportsNewsAdminView: View {
                 
             } else {
                 if pendingCount != 0 {
-                    Text("Current pending articles:")
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 24, weight: .semibold, design: .rounded))
-                        .padding(5)
                     List {
                         ForEach(dataManager.allsportsnewslist, id: \.id) { news in
                             if !news.isApproved {
