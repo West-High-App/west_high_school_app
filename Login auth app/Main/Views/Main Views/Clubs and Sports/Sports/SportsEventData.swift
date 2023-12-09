@@ -171,10 +171,11 @@ class sportEventManager: ObservableObject {
                     let year = event["year"] as? String ?? ""
                     let time = event["time"] as? String ?? ""
                     
+                    let calendar = Calendar.current
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "dd-MMM-yyyy h:mm a"
                     if let date = dateFormatter.date(from: "\(day)/\(month)/\(year) \(time)") {
-                        
+                        let localDate = date.convertToTimeZone(initTimeZone: TimeZone(identifier: "America/Chicago")!, timeZone: calendar.timeZone)
                         let newEvent = ParsedEvent(date: date, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
                         return newEvent
                     } else {
