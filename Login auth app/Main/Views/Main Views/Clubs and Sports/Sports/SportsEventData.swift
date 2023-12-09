@@ -143,7 +143,7 @@ class sportEventManager: ObservableObject {
             self.eventSnapshotListener = nil
         }
         
-        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
+        let documentID = (forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "+")).replacingOccurrences(of: "%20", with: "+")
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents").document(documentID).collection("UpcomingEvents")
         
@@ -176,7 +176,7 @@ class sportEventManager: ObservableObject {
                     dateFormatter.dateFormat = "dd-MMM-yyyy h:mm a"
                     if let date = dateFormatter.date(from: "\(day)/\(month)/\(year) \(time)") {
                         let localDate = date.convertToTimeZone(initTimeZone: TimeZone(identifier: "America/Chicago")!, timeZone: calendar.timeZone)
-                        let newEvent = ParsedEvent(date: date, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
+                        let newEvent = ParsedEvent(date: localDate, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
                         return newEvent
                     } else {
                         return nil
@@ -200,7 +200,7 @@ class sportEventManager: ObservableObject {
             pastEventSnapshotListener?.remove()
             self.pastEventSnapshotListener = nil
         }
-        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
+        let documentID = (forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "+")).replacingOccurrences(of: "%20", with: "+")
         let db = Firestore.firestore()
         let collection = db.collection("SportEvents").document(documentID).collection("PastEvents")
         
@@ -272,7 +272,7 @@ class sportEventManager: ObservableObject {
     
     func deleteSportEventNews(forSport: String, sportEvent: sportEvent, completion: @escaping (Error?) -> Void) {
         print("deleting event...")
-        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
+        let documentID = (forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "+")).replacingOccurrences(of: "%20", with: "+")
         let db = Firestore.firestore()
         
         db.collection("SportEvents").document(documentID).collection("PastEvents").document(sportEvent.arrayId).delete { error in
@@ -290,7 +290,7 @@ class sportEventManager: ObservableObject {
     func updateSportEventScore(forSport: String, sportEvent: sportEvent) {
         
         let db = Firestore.firestore()
-        let documentID = forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "%20")
+        let documentID = (forSport.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? forSport.replacingOccurrences(of: " ", with: "+")).replacingOccurrences(of: "%20", with: "+")
         let ref = db.collection("SportEvents").document(documentID).collection("PastEvents").document(sportEvent.arrayId)
         
         guard self.pastSportsEvents.firstIndex(where: { $0.arrayId == sportEvent.arrayId }) != nil else {
