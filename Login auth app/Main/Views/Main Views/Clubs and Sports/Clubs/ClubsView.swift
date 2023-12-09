@@ -94,6 +94,30 @@ struct ClubsHibabi: View {
 
     }
     
+    var hasResults: Bool {
+        var bool = false
+        for item in filteredList(fromList: clubsmanager.allclublist) {
+            if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
+                if (item.favoritedusers.contains(userInfo.email) && clubselected == 1) || clubselected == 2 {
+                    bool = true
+                }
+            }
+        }
+        return bool
+    }
+    
+    var hasResultsNews: Bool {
+        var bool = false
+        for news in clubNewsManager.allclubsnewslist {
+            if searchText.isEmpty || news.newstitle.localizedStandardContains(searchText){
+                if news.isApproved {
+                    bool = true
+                }
+            }
+        }
+        return bool
+    }
+    
         // MARK: view
     var body: some View {
             ZStack {
@@ -217,49 +241,74 @@ struct ClubsHibabi: View {
                                 } else {
                                     VStack {
                                         // HERE WE GO
-                                        
-                                        List {// MARK: foreach 1 or 2
-                                            ForEach(filteredList(fromList: clubsmanager.allclublist)) { item in
-                                                if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
-                                                    
-                                                    if (item.favoritedusers.contains(userInfo.email) && clubselected == 1) || clubselected == 2 {
+                                        if hasResults {
+                                            List {// MARK: foreach 1 or 2
+                                                ForEach(filteredList(fromList: clubsmanager.allclublist)) { item in
+                                                    if clubsearchText.isEmpty || item.clubname.localizedStandardContains(clubsearchText) {
                                                         
-                                                        NavigationLink {
-                                                            ClubsMainView(selectedclub: item)
-                                                                .environmentObject(vmm)
-                                                                .environmentObject(clubfavoritesmanager)
-                                                                .environmentObject(clubsmanager)
-                                                        } label: {
-                                                            HStack {
-                                                                Image(uiImage: item.imagedata)
-                                                                    .resizable()
-                                                                    .aspectRatio(contentMode: .fill)
-                                                                    .frame(width: 50, height: 50)
-                                                                    .cornerRadius(1000)
-                                                                    .padding(.trailing, 10)
-                                                                VStack(alignment: .center) {
-                                                                    HStack {
-                                                                        Text(item.clubname)
-                                                                            .foregroundColor(.primary)
-                                                                            .lineLimit(1)
-                                                                            .minimumScaleFactor(0.5)
-                                                                            .font(.system(size: 24, weight: .semibold, design: .rounded))
-                                                                        Spacer()
+                                                        if (item.favoritedusers.contains(userInfo.email) && clubselected == 1) || clubselected == 2 {
+                                                            
+                                                            NavigationLink {
+                                                                ClubsMainView(selectedclub: item)
+                                                                    .environmentObject(vmm)
+                                                                    .environmentObject(clubfavoritesmanager)
+                                                                    .environmentObject(clubsmanager)
+                                                            } label: {
+                                                                HStack {
+                                                                    if item.imagedata != UIImage() {
+                                                                        Image(uiImage: item.imagedata)
+                                                                            .resizable()
+                                                                            .aspectRatio(contentMode: .fill)
+                                                                            .frame(width: 50, height: 50)
+                                                                            .cornerRadius(1000)
+                                                                            .padding(.trailing, 10)
+                                                                    } else {
+                                                                        Image(systemName: "questionmark.circle")
+                                                                            .resizable()
+                                                                            .aspectRatio(contentMode: .fill)
+                                                                            .frame(width: 50, height: 50)
+                                                                            .cornerRadius(1000)
+                                                                            .padding(.trailing, 10)
                                                                     }
-                                                                    HStack {
-                                                                        Text("Room \(item.clubmeetingroom)")
-                                                                            .foregroundColor(.secondary)
-                                                                            .lineLimit(1)
-                                                                            .minimumScaleFactor(0.5)
-                                                                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                                                        Spacer()
+                                                                    VStack(alignment: .center) {
+                                                                        HStack {
+                                                                            Text(item.clubname)
+                                                                                .foregroundColor(.primary)
+                                                                                .lineLimit(1)
+                                                                                .minimumScaleFactor(0.5)
+                                                                                .font(.system(size: 24, weight: .semibold, design: .rounded))
+                                                                            Spacer()
+                                                                        }
+                                                                        HStack {
+                                                                            if item.clubmeetingroom != "" {
+                                                                                Text("Room \(item.clubmeetingroom)")
+                                                                                    .foregroundColor(.secondary)
+                                                                                    .lineLimit(1)
+                                                                                    .minimumScaleFactor(0.5)
+                                                                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                            } else {
+                                                                                Text("No meeting room")
+                                                                                    .foregroundColor(.secondary)
+                                                                                    .lineLimit(1)
+                                                                                    .minimumScaleFactor(0.5)
+                                                                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                                                            }
+                                                                            Spacer()
+                                                                        }
                                                                     }
+                                                                    Spacer()
                                                                 }
-                                                                Spacer()
                                                             }
                                                         }
                                                     }
                                                 }
+                                            }
+                                        } else {
+                                            List {
+                                                Text("No results.")
+                                                    .lineLimit(1)
+                                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                                    .padding(.leading, 5)
                                             }
                                         }
                                         
@@ -282,11 +331,20 @@ struct ClubsHibabi: View {
                             else if clubselected == 3 {
                                 //mark
                                 List {
-                                    ForEach(clubNewsManager.allclubsnewslist) { news in  // filteredClubNews
-                                        if news.isApproved {
-                                            clubnewscell(feat: news)
-                                                .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                    if hasResultsNews {
+                                        ForEach(clubNewsManager.allclubsnewslist) { news in  // filteredClubNews
+                                            if searchText.isEmpty || news.newstitle.localizedStandardContains(searchText){
+                                                if news.isApproved {
+                                                    clubnewscell(feat: news)
+                                                        .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                                }
+                                            }
                                         }
+                                    } else {
+                                        Text("No results.")
+                                            .lineLimit(1)
+                                            .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                            .padding(.leading, 5)
                                     }
                                     if !clubNewsManager.allclubsnewslist.map({ $0.documentID }).contains("NAN") && !clubNewsManager.allDocsLoaded {
                                         ProgressView()
@@ -353,27 +411,20 @@ struct ClubsHibabi: View {
 
 struct clubnewscell: View{
     var feat: clubNews
+    @State var imagedata: UIImage = UIImage()
+    @StateObject var imagemanager = imageManager()
     @State var screen = ScreenSize()
+    @State var hasAppeared = false
     
     var body:some View{
         VStack{
-            if feat.imagedata.count > 0 {
-                Image(uiImage: feat.imagedata[0])
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
-            } else {
-                Image(uiImage: UIImage())
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: 250)
-                    .frame(maxWidth: screen.screenWidth - 60)
-                    .clipped()
-                    .cornerRadius(9)
-            }
+            Image(uiImage: imagedata)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 250)
+                .frame(maxWidth: screen.screenWidth - 60)
+                .clipped()
+                .cornerRadius(9)
             VStack(alignment: .leading, spacing:2){
                 HStack {
                     Text(feat.newsdate)
@@ -401,7 +452,20 @@ struct clubnewscell: View{
 //                        .padding(.leading, 5)
 
             }
-        }
+        }.onAppear {
+            if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
+                guard let image = feat.newsimage.first else { return }
+                print("IMAGE FUNCTION RUN cv")
+                 imagemanager.getImage(fileName: image) { uiimage in
+                      if let uiimage = uiimage {
+                          imagedata = uiimage
+                      }
+                 }
+                 hasAppeared = true
+            } else {
+            }
+            
+       }
     }
 }
 

@@ -141,12 +141,13 @@ class ScreenSize {
     struct achievementcell: View{
         var feat: studentachievement
         @StateObject var imagemanager = imageManager()
-        @State var imagedata: [UIImage] = []
+        @State var imagedata = UIImage()
         @State var screen = ScreenSize()
+        @State var hasAppeared = false
         
         var body:some View{
             VStack{
-                Image(uiImage: feat.imagedata.first ?? UIImage())
+                Image(uiImage: imagedata)
                     .resizable()
                     .padding(.bottom, 2)
                     .aspectRatio(contentMode: .fill)
@@ -181,7 +182,20 @@ class ScreenSize {
                 }.padding(.horizontal)
                 Divider()
                     .padding(.horizontal)
-            }
+            }.onAppear {
+                if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //  
+                     guard let image = feat.images.first else { return }
+                    print("IMAGE FUNCTION RUN ss")
+                     imagemanager.getImage(fileName: image) { uiimage in
+                          if let uiimage = uiimage {
+                               imagedata = uiimage
+                          }
+                     }
+                     hasAppeared = true
+                } else {
+                }
+                
+           }
                 .padding(.vertical, 5)
                 .listRowBackground(
                     Rectangle()

@@ -17,14 +17,6 @@ struct AnnouncementsAdminView: View {
    
    var body: some View {
        VStack {
-           VStack(alignment: .leading) {
-               HStack {
-                   Text("You are currently editing source data. Any changes will be made public across all devices.")
-                       .padding(.horizontal, 20)
-                       .padding(.bottom, 5)
-                   Spacer()
-               }
-           }
            Button {
                isPresentingAddAnnouncement = true
            } label: {
@@ -71,8 +63,8 @@ struct AnnouncementsAdminView: View {
        }
        .alert(isPresented: $isConfirmingDeleteAnnouncement) {
            Alert(
-               title: Text("You Are Deleting Public Data"),
-               message: Text("Are you sure you want to delete the announcement '\(tempAnnouncementTitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
+               title: Text("Delete Announcement"),
+               message: Text("This action cannot be undone."),
                primaryButton: .destructive(Text("Delete")) {
                    if let announcementToDelete = announcementToDelete {
                        dataManager.deleteAnnouncement(announcement: announcementToDelete) { error in
@@ -140,12 +132,28 @@ struct AnnouncementDetailView: View {
            Form {
                Section(header: Text("Announcement Details")) {
                    TextField("Announcement Title", text: $announcementTitle)
+                       .font(.system(size: 17, weight: .regular, design: .rounded))
                    TextField("Announcement Description", text: $announcementDescription)
-               }
+                       .font(.system(size: 17, weight: .regular, design: .rounded))
+               }.font(.system(size: 12, weight: .medium, design: .rounded))
                
-               Button {
-                   isConfirmingAddAnnouncement = true
-               } label: {
+               if !announcementTitle.isEmpty && !announcementDescription.isEmpty {
+                   Button {
+                       isConfirmingAddAnnouncement = true
+                   } label: {
+                       Text("Publish New Announcement")
+                           .foregroundColor(.white)
+                           .fontWeight(.semibold)
+                           .padding(10)
+                           .cornerRadius(15.0)
+                           .frame(width: screen.screenWidth-60)
+                           .font(.system(size: 17, weight: .semibold, design: .rounded))
+                           .background(Rectangle()
+                            .foregroundColor(.blue)
+                            .cornerRadius(10)
+                           )
+                   }
+               } else {
                    Text("Publish New Announcement")
                        .foregroundColor(.white)
                        .fontWeight(.semibold)
@@ -154,8 +162,8 @@ struct AnnouncementDetailView: View {
                        .frame(width: screen.screenWidth-60)
                        .font(.system(size: 17, weight: .semibold, design: .rounded))
                        .background(Rectangle()
-                           .foregroundColor(.blue)
-                           .cornerRadius(10)
+                        .foregroundColor(.gray)
+                        .cornerRadius(10)
                        )
                }
            }
@@ -165,9 +173,9 @@ struct AnnouncementDetailView: View {
            })
            .alert(isPresented: $isConfirmingAddAnnouncement) {
                Alert(
-                   title: Text("You Are Publishing Changes"),
-                   message: Text("These changes will become public on all devices. Please make sure this information is correct:\nTitle: \(announcementTitle)\nDescription: \(announcementDescription)"),
-                   primaryButton: .destructive(Text("Publish Changes")) {
+                   title: Text("Publish Announcement"),
+                   message: Text("This action cannot be undone."),
+                   primaryButton: .default(Text("Publish")) {
                        let announcementToSave = Newstab(
                            documentID: "NAN",
                            title: announcementTitle,

@@ -50,13 +50,13 @@ struct SpotlightArticles: View {
                     TabView {
                         
                         // Loop through each recipe
-                        ForEach(currentstudentdub.imagedata.indices, id: \.self) { index in
+                        ForEach(imagesdata.indices, id: \.self) { index in
                             ZStack {
                                 Rectangle()
                                     .foregroundColor(.white)
                                 
                                 VStack(spacing: 0) {
-                                    Image(uiImage: currentstudentdub.imagedata[index])
+                                    Image(uiImage: imagesdata[index])
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: screen.screenWidth - 30, height: 250)
@@ -93,7 +93,22 @@ struct SpotlightArticles: View {
                     .padding(.bottom)
                 
             
-        }
+        }.onAppear {
+            if !hasAppeared || currentstudentdub.imagedata == [] || currentstudentdub.imagedata.first == UIImage() || currentstudentdub.imagedata.first == nil { //
+                guard currentstudentdub.images.first != nil else { return }
+                print("IMAGE FUNCTION RUN sa")
+                for image in currentstudentdub.images {
+                    imagemanager.getImage(fileName: image) { uiimage in
+                        if let uiimage = uiimage {
+                            imagesdata.append(uiimage)
+                        }
+                    }
+                }
+                 hasAppeared = true
+            } else {
+            }
+            
+       }
     }
 }
 

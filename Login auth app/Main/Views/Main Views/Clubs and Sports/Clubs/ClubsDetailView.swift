@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ClubsDetailView: View {
     @State var selected = 1
-
+    
     @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
     @State private var isAdmin = false
@@ -85,27 +85,28 @@ struct ClubsDetailView: View {
                         }
                         Spacer()
                     }
-                    
-                    VStack {
-                        
-                        ZStack {
-                            Rectangle()
-                                .foregroundColor(.white)
+                    if currentclub.imagedata != UIImage() {
+                        VStack {
                             
-                            VStack(spacing: 0) {
-                                Image(uiImage: currentclub.imagedata )
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: screen.screenWidth - 30, height: 250)
-                                    .clipped()
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(.white)
+                                
+                                VStack(spacing: 0) {
+                                    Image(uiImage: currentclub.imagedata )
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                        .clipped()
+                                }
                             }
-                        }
+                            
+                        }.cornerRadius(30)
+                            .frame(width: screen.screenWidth - 30, height: 250)
+                            .shadow(color: .gray, radius: 8, x:2, y:3)
                         
-                    }.cornerRadius(30)
-                        .frame(width: screen.screenWidth - 30, height: 250)
-                        .shadow(color: .gray, radius: 8, x:2, y:3)
-                    
-                        .padding(.horizontal)
+                            .padding(.horizontal)
+                    }
                     
                     Spacer()
                 }
@@ -118,54 +119,61 @@ struct ClubsDetailView: View {
                     .padding(.horizontal, 25)
                     .padding(.vertical, 5)
                 
-                Picker(selection: $selected, label: Text(""), content: {
-                    Text("Upcoming").tag(1)
-                    Text("Members (\(currentclub.clubmembers.count + (currentclub.clubcaptain?.count ?? 0)))").tag(2)
-                }).pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal)
-                // upcoming events view
-                
-                if selected == 1 {
-                    if isAdmin {
-                        NavigationLink {
-                            ClubsEventsAdminView(currentclub: currentclub, admin: true)
-                        } label: {
-                            Text("Edit Upcoming Events")
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
-                                .padding(10)
-                                .cornerRadius(15.0)
-                                .frame(width: screen.screenWidth-30)
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                .background(Rectangle()
-                                    .foregroundColor(.blue)
-                                    .cornerRadius(10)
-                                )
-                        }
-                    } else if isEditor {
-                        NavigationLink {
-                            ClubsEventsAdminView(currentclub: currentclub, admin: false)
-                        } label: {
-                            Text("Edit Upcoming Events")
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
-                                .padding(10)
-                                .cornerRadius(15.0)
-                                .frame(width: screen.screenWidth-30)
-                                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                .background(Rectangle()
-                                    .foregroundColor(.blue)
-                                    .cornerRadius(10)
-                                )
-                        }
+                if isAdmin {
+                    NavigationLink {
+                        ClubsEventsAdminView(currentclub: currentclub, admin: true)
+                    } label: {
+                        Text("Edit Upcoming Events")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-30)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
                     }
+                } else if isEditor {
+                    NavigationLink {
+                        ClubsEventsAdminView(currentclub: currentclub, admin: false)
+                    } label: {
+                        Text("Edit Upcoming Events")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-30)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
+                    }
+                }
+                
+                Picker(selection: $selected, label: Text(""), content: {
+                                    Text("Upcoming").tag(1)
+                                    if userInfo.loginStatus == "google" {
+                                        Text("Members (\(currentclub.clubmembers.count + (currentclub.clubcaptain?.count ?? 0)))").tag(2)
+                                    } else {
+                                        Text("Members").tag(2)
+                                    }
+                                }).pickerStyle(SegmentedPickerStyle())
+                                    .padding(.horizontal)
+                                // upcoming events view
+                                
+                if selected == 1 {
+                    
                     if upcomingeventlist.count < 1 {
-                             Text("No upcoming events.")
-                                 .lineLimit(1)
-                                 .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                 .padding(.leading, 5)
-                        Spacer()
-                            .frame(height: 100)
+                        VStack {
+                            Text("No upcoming events.")
+                                .lineLimit(1)
+                                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                .padding(.leading, 5)
+                            Spacer()
+                        }.frame(height: 450)
                     } else {
                         List {
                             ForEach(clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? upcomingeventlist, id: \.id) {event in
@@ -191,84 +199,102 @@ struct ClubsDetailView: View {
                                     }
                                     .padding(.leading, 5)
                                     Spacer()
-                                    
                                 }
                             }
                         }.frame(height: 450)
                     }
-                    
                 }
                 
                 // members view
-                
-                if selected == 2 {
-                    if hasPermission.hasFullViewAccess {
-                        if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
-                            Text("No members.")
-                            Spacer()
-                                .frame(height: 100)
-                            
-                        } else {
-                            
-                            List{
-                                if currentclub.clubadvisor.count > 0 {
-                                    Section{
-                                        ForEach(currentclub.clubadvisor, id: \.self){coach in
-                                            HStack{
-                                                Text(coach)
-                                            }
-                                        }
-                                    }
-                                header:{
-                                    if currentclub.clubcaptain?.count == 1 {
-                                        Text("Coach")
-                                    } else {
-                                        Text("Coaches")
-                                    }
-                                }
-                                }
                                 
-                                if currentclub.clubcaptain?.count ?? 0 > 0 {
-                                    Section {
-                                        ForEach(currentclub.clubcaptain!, id: \.self) { captain in
-                                            HStack {
-                                                Text(captain)
-                                            }
-                                        }
-                                    } header:{
-                                        if currentclub.clubcaptain?.count ?? 0 == 1 {
-                                            Text("Captain")
+                                if selected == 2 {
+                                    if hasPermission.hasFullViewAccess {
+                                        if currentclub.clubadvisor.count == 0 && currentclub.clubcaptain?.count == 0 && currentclub.clubmembers.count == 0 {
+                                            VStack {
+                                                Text("No members.")
+                                                    .lineLimit(1)
+                                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                                    .padding(.leading, 5)
+                                                Spacer()
+                                            }.frame(height: 450)
+                                            
                                         } else {
-                                            Text("Captains")
+                                            
+                                            List{
+                                                if currentclub.clubadvisor.count > 0 {
+                                                    Section{
+                                                        ForEach(currentclub.clubadvisor, id: \.self){coach in
+                                                            HStack{
+                                                                Text(coach)
+                                                                    .font(.system(size: 17, weight: .medium, design: .rounded))
+                                                            }
+                                                        }
+                                                    }
+                                                header:{
+                                                    if currentclub.clubcaptain?.count == 1 {
+                                                        Text("Coach")
+                                                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                    } else {
+                                                        Text("Coaches")
+                                                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                        
+                                                    }
+                                                }
+                                                }
+                                                
+                                                if currentclub.clubcaptain?.count ?? 0 > 0 {
+                                                    Section {
+                                                        ForEach(currentclub.clubcaptain!, id: \.self) { captain in
+                                                            HStack {
+                                                                Text(captain)
+                                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                            }
+                                                        }
+                                                    } header:{
+                                                        if currentclub.clubcaptain?.count ?? 0 == 1 {
+                                                            Text("Captain")
+                                                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                        } else {
+                                                            Text("Captains")
+                                                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                if currentclub.clubmembers.count > 0 {
+                                                    Section {
+                                                        ForEach(currentclub.clubmembers
+                                                                , id: \.self) { member in
+                                                            HStack {
+                                                                Text(member)
+                                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                            }
+                                                        }
+                                                    } header: {
+                                                        Text("Members")
+                                                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                                                    }
+                                                }
+                                                
+                                            }.frame(height: 450)
                                         }
                                     }
-                                }
-                                
-                                if currentclub.clubmembers.count > 0 {
-                                    Section {
-                                        ForEach(currentclub.clubmembers
-                                                , id: \.self) { member in
-                                            HStack {
-                                                Text(member)
-                                            }
-                                        }
-                                    } header: {
-                                        Text("Members")
+                                    else {
+                                        VStack {
+                                            Text("Members not available.")
+                                                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                                .padding(.leading, 5)
+                                            Text("Log in with your school account to view members.")
+                                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                .padding(.horizontal, 5)
+                                            Spacer()
+                                        }.frame(height: 450)
                                     }
+                                    
                                 }
-                                
-                            }.frame(height: 450)
-                        }
-                    }
-                else {
-                    Text("Members not available.")
-                        .lineLimit(1)
-                        .font(.system(size: 22, weight: .semibold, design: .rounded))
-                        .padding(.leading, 5)
-                }
                     
-                }
 
+                
                 
             }.padding(.top, 10 + screen.screenHeight / 10)
             
@@ -344,7 +370,7 @@ struct ClubsDetailView: View {
                         print("3")
                         print(tempclub)
                         clubsmanager.updateClub(data: tempclub) // this is the error
-
+                        
                         isFavorited = true
                     }
                 }
@@ -363,11 +389,11 @@ struct ClubsDetailView: View {
                     }
                 }
         }
-
-    }
-        
         
     }
+    
+    
+}
 
 
 struct ClubsDetailView_Previews: PreviewProvider {

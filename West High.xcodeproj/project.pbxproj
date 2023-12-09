@@ -39,7 +39,6 @@
 		2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20C2A68DC3F00823E58 /* MenuView.swift */; };
 		2270B2102A68DD7100823E58 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B20F2A68DD7100823E58 /* HomeView.swift */; };
 		2270B2142A68DDFC00823E58 /* StudentSpotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2132A68DDFC00823E58 /* StudentSpotlight.swift */; };
-		2270B2162A68DE1E00823E58 /* SpotlightArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */; };
 		2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2182A68DE9E00823E58 /* SpotlightData.swift */; };
 		2270B2212A68DF9400823E58 /* AnnouncementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2202A68DF9400823E58 /* AnnouncementsView.swift */; };
 		2270B2232A68DFDD00823E58 /* AnnouncementsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2222A68DFDD00823E58 /* AnnouncementsDetailView.swift */; };
@@ -72,6 +71,7 @@
 		2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26B2A68E89400823E58 /* SettingsView.swift */; };
 		2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26D2A68E8E600823E58 /* WebViewModel.swift */; };
 		22778C082A9571D000547C8C /* AnnouncementsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22778C072A9571D000547C8C /* AnnouncementsAdminView.swift */; };
+		227B05C12AF9767400D9B572 /* SpotlightArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */; };
 		228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */; };
 		228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */; };
 		228309FF2A8680D100AE9C08 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */; };
@@ -601,7 +601,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					228362D42A2AB3D70061BFAE = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -709,13 +709,13 @@
 				2270B20D2A68DC3F00823E58 /* MenuView.swift in Sources */,
 				2270B2252A68E00F00823E58 /* AnnouncementsData.swift in Sources */,
 				2270B25C2A68E79800823E58 /* SocialView.swift in Sources */,
-				2270B2162A68DE1E00823E58 /* SpotlightArticles.swift in Sources */,
 				2270B2372A68E2AE00823E58 /* ClubsDetailView.swift in Sources */,
 				2232FEF02AA681AE0067AAB8 /* ClubsAdminView.swift in Sources */,
 				2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */,
 				2270B2492A68E65000823E58 /* SportsDetailView.swift in Sources */,
 				2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */,
 				221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */,
+				227B05C12AF9767400D9B572 /* SpotlightArticles.swift in Sources */,
 				228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */,
 				221423E32AD19F860015CD3B /* RosterDetailView.swift in Sources */,
 				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,
@@ -750,6 +750,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -782,6 +783,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -810,6 +812,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -842,6 +845,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -865,11 +869,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = N2R26K3XYA;
+				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -889,7 +894,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApps;
+				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHigh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -906,11 +911,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
-				DEVELOPMENT_TEAM = N2R26K3XYA;
+				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -930,7 +936,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHighApps;
+				PRODUCT_BUNDLE_IDENTIFIER = andersenlee.WestHigh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

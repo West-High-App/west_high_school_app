@@ -19,7 +19,7 @@ struct GoogleSignInResultModel {
 
 // MARK: SIGN IN FUNCTIONS
 func SignInGoogle(tokens: GoogleSignInResultModel, bypass: Bool) async throws -> Bool {
-    var userInfo = UserInfo.shared
+    let userInfo = UserInfo.shared
     print("Signing in to Google.")
     let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
     let _ = try await Auth.auth().signIn(with: credential)
@@ -36,7 +36,9 @@ func SignInGoogle(tokens: GoogleSignInResultModel, bypass: Bool) async throws ->
      } */
     print("Verified login.")
     if Auth.auth().currentUser?.email?.contains(allowedDomain) != nil {
-        userInfo.isMMSD = true
+        DispatchQueue.main.async {
+            userInfo.isMMSD = true
+        }
     }
     return true
 }
@@ -146,20 +148,18 @@ struct AuthView: View {
                             Button {
                                 Task {
                                     do {
-                                        if count == 0 {
-                                            if try await viewModel.signInWithGoogle(bypassing: false) {
-                                                
-                                                print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
-                                                
-                                                userInfo.loginStatus = "google"
-                                                count = 1
-                                            }
-                                            else {
-                                                showingDomainError = true
-                                            }
+                                        if try await viewModel.signInWithGoogle(bypassing: false) {
+                                            
+                                            print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
+                                            
+                                            userInfo.loginStatus = "google"
+                                            count = 1
+                                        }
+                                        else {
+                                            showingDomainError = true
                                         }
                                     } catch {
-                                        print(error.localizedDescription)
+                                        print(error.localizedDescription) // MARK: prints only error on program, is not on our side
                                     }
                                 }
                             } label : {

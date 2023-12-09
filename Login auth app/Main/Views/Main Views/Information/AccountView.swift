@@ -15,7 +15,7 @@ struct AccountView: View {
     @State private var profileImage: Image?
 
     var body: some View {
-                    
+                   
             VStack {
                 Form {
                     if userInfo.loginStatus == "google" {
@@ -49,34 +49,98 @@ struct AccountView: View {
                     }
                     } else {
                         HStack {
-                            Image(systemName: "person.circle")
+                            Image("guest-user-pfp")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 50, height: 50)
                                 .cornerRadius(100)
-                            Text("Guest User")
-                                .font(.system(size: 22, weight: .medium, design: .rounded))
-                                .padding(.vertical)
+                            VStack (alignment: .leading){
+                                Text("Guest User")
+                                    .font(.system(size: 22, weight: .medium, design: .rounded))
+                                    .lineLimit(2)
+                                Text("You are logged in as a guest.")
+                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                    .lineLimit(1)
+                            }.padding(.horizontal, 10)
                         }.foregroundColor(.primary)
-                        Text("You are logged in as a guest.")
-                            .font(.system(size: 20, weight: .regular, design: .rounded))
                     }
                     Button {
                         isPresentingLogoutConfirmation = true
                     } label: {
-                        HStack{
-                            Spacer()
-                            Text("Sign Out")
-                                .font(.system(size: 20, weight: .medium, design: .rounded))
-                            Spacer()
+                        if userInfo.loginStatus == "google" {
+                            HStack{
+                                Spacer()
+                                Text("Sign Out")
+                                    .font(.system(size: 20, weight: .medium, design: .rounded))
+                                Spacer()
+                            }
+                            .padding(.vertical,5)
+                            .foregroundColor(.red)
+                        } else {
+                            HStack{
+                                Spacer()
+                                Text("Sign In")
+                                    .font(.system(size: 20, weight: .medium, design: .rounded))
+                                Spacer()
+                            }
+                            .padding(.vertical,5)
+                            .foregroundColor(.blue)
                         }
-                        .padding(.vertical,5)
-                        .foregroundColor(.red)
                     }
                     
                 }
             }.navigationTitle("User Info")
-                .confirmationDialog("Log Out", isPresented: $isPresentingLogoutConfirmation) {
+        
+            .alert(isPresented: $isPresentingLogoutConfirmation) {
+                
+                if userInfo.loginStatus == "google" {
+                    Alert(
+                        title: Text("Sign Out"),
+                        message: Text("Signing out of your Google account will return you to the login screen."),
+                        primaryButton: .destructive(Text("Sign Out")) {
+                            DispatchQueue.main.async { // should fix the issue
+                                do {
+                                    print("trying to sign out.")
+                                    try Auth.auth().signOut()
+                                    DispatchQueue.main.async {
+                                        print("setting to none")
+                                        userInfo.loginStatus = "none"
+                                        print("set to none")
+                                    }
+                                } catch let signOutError {
+                                    print("tried to sign out failed")
+                                    print(signOutError.localizedDescription)
+                                }
+                            }
+                        },
+                        secondaryButton: .cancel(Text("Cancel"))
+                    )
+                } else {
+                    Alert(
+                        title: Text("Sign In"),
+                        message: Text("Continuing will return you to the login screen."),
+                        primaryButton: .default(Text("Continue")) {
+                            DispatchQueue.main.async {
+                                do {
+                                    print("trying to sign out.")
+                                    try Auth.auth().signOut()
+                                    DispatchQueue.main.async {
+                                        print("setting to none")
+                                        userInfo.loginStatus = "none"
+                                        print("set to none")
+                                    }
+                                } catch let signOutError {
+                                    print("tried to sign out failed")
+                                    print(signOutError.localizedDescription)
+                                }
+                            }
+                        },
+                        secondaryButton: .cancel(Text("Cancel"))
+                    )
+                }
+            }
+        
+                /*.confirmationDialog("Log Out", isPresented: $isPresentingLogoutConfirmation) {
                     Button("Sign Out", role: .destructive) {
                         DispatchQueue.main.async { // should fix the issue
                             do {
@@ -93,7 +157,7 @@ struct AccountView: View {
                             }
                         }
                     }
-                }
+                } */
     }
 }
 

@@ -103,7 +103,7 @@ class HTMLParser: ObservableObject {
             "Madison West Color Key:    Home Away Change View: Day/date Date condensed Month View",
             "Change View: Day/date Date condensed Month View"
         ]
-        let invalidComponents = [
+        let _ = [
             "Activity Time",
             "Opponent",
             "Location",

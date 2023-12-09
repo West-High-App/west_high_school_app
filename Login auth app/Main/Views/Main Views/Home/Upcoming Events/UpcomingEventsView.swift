@@ -49,9 +49,11 @@ struct UpcomingEventsView: View {
                         Divider()
                         VStack(alignment: .leading) {
                             Text(event.eventname)
+                                .minimumScaleFactor(0.8)
                                 .lineLimit(2)
                                 .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
                             Text(event.time)
+                                .minimumScaleFactor(0.8)
                                 .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                 .lineLimit(1)
                         }
@@ -60,7 +62,8 @@ struct UpcomingEventsView: View {
                         
                     }
                     
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
                     .background(Rectangle()
                         .cornerRadius(9.0)
                         .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)

@@ -37,6 +37,9 @@ struct SportsDetailView: View {
     @State var temprosterimage: UIImage?
     @State var isConfirmingChanges = false
     @State var sporttoedit: sport?
+    @State var showingeventdetails = false
+    @State var showAlert = false
+    @State var selectedevent: ParsedEvent?
     
     var isLoading: Bool {
         sporteventmanager.isLoading
@@ -135,6 +138,25 @@ struct SportsDetailView: View {
                         .padding(.horizontal, 25)
                         .padding(.vertical, 5)
                     
+                    if currentsport.editoremails.contains(userInfo.email) || currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
+                        NavigationLink {
+                            PastSportEventsAdminView(currentsport: currentsport)
+                        } label: {
+                            Text("Edit Past Events")
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
+                                .padding(10)
+                                .cornerRadius(15.0)
+                                .frame(width: screen.screenWidth-30)
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                .background(Rectangle()
+                                    .foregroundColor(.blue)
+                                    .cornerRadius(10)
+                                )
+
+                        }
+                    }
+                    
                     Picker(selection: $selected, label: Text(""), content: {
                         Text("Upcoming").tag(1)
                         Text("Past Events").tag(2)
@@ -149,10 +171,13 @@ struct SportsDetailView: View {
                         if !isLoading {
                         
                         if events.isEmpty {
-                            Text("No upcoming events.")
-                                .lineLimit(1)
-                                .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                .padding(.leading, 5)
+                            VStack {
+                                Text("No upcoming events.")
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)
+                                Spacer()
+                            }.frame(height: 450)
                         } else {
                             List {
                                 ForEach(events, id: \.id) { event in
@@ -168,7 +193,6 @@ struct SportsDetailView: View {
                                         .frame(width:50,height:50)
                                         Divider()
                                             .padding(.vertical, 10)
-
                                         VStack {
                                             HStack {
                                                 Text("\(event.type)")
@@ -189,16 +213,17 @@ struct SportsDetailView: View {
                                                         .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                                         .foregroundColor(.black)
                                                         .lineLimit(1)
-
                                                     Spacer()
                                                 }.foregroundColor(.black)
-                                                HStack {
-                                                    Image(systemName: "location")
-                                                        .resizable()
-                                                        .frame(width: 15, height: 15)
-                                                    Text("\(event.location)")
-                                                    Spacer()
-                                                }.foregroundColor(.black)
+                                                if !event.location.isEmpty {
+                                                    HStack {
+                                                        Image(systemName: "location")
+                                                            .resizable()
+                                                            .frame(width: 15, height: 15)
+                                                        Text("\(event.location)")
+                                                        Spacer()
+                                                    }.foregroundColor(.black)
+                                                }
                                                 
                                                 if !event.comments.isEmpty {
                                                     HStack {
@@ -206,12 +231,27 @@ struct SportsDetailView: View {
                                                         Spacer()
                                                     }.foregroundColor(.black)
                                                 }
-
                                             }.padding(.top, -10)
                                                 .accentColor(.gray)
                                                 .foregroundColor(.gray)
-                                            
                                         }
+                                        
+                                        /* .alert(isPresented: $showAlert) {
+                                            if let event = selectedevent {
+                                                Alert(
+                                                    title: Text("Event Info"),
+                                                    message: Text("Event: \(event.type)\nOpponent: \(event.opponent)\nTime: \(event.isTBD ? "TBD" : "\(event.date.formatted(date: .omitted, time: .shortened))")\(!event.location.isEmpty ? "\nLocation: \(event.location)" : "")\(!event.comments.isEmpty ? "\nComments: \(event.comments)" : "")"),
+                                                    dismissButton: .default(Text("Ok"))
+                                                )
+                                                
+                                            } else {
+                                                Alert(
+                                                    title: Text("Error"),
+                                                    message: Text("No info to display. Please try again with another event."),
+                                                    dismissButton: .default(Text("Ok"))
+                                                )
+                                            }
+                                        } */
                                     }
                                 }
                             }.frame(height: 450)                        }
@@ -225,30 +265,14 @@ struct SportsDetailView: View {
                     // past games view
                     
                     if selected == 2 {
-                        if currentsport.editoremails.contains(userInfo.email) || currentsport.adminemails.contains(userInfo.email) || hasPermission.sports {
-                            NavigationLink {
-                                PastSportEventsAdminView(currentsport: currentsport)
-                            } label: {
-                                Text("Edit past events")
-                                    .foregroundColor(.white)
-                                    .fontWeight(.semibold)
-                                    .padding(10)
-                                    .cornerRadius(15.0)
-                                    .frame(width: screen.screenWidth-30)
-                                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                    .background(Rectangle()
-                                        .foregroundColor(.blue)
-                                        .cornerRadius(10)
-                                    )
-
-                            }
-                        }
-                        
                         if pastSportEvents.isEmpty {
-                            Text("No past events.")
-                                .lineLimit(1)
-                                .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                .padding(.leading, 5)
+                            VStack {
+                                Text("No past events.")
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)
+                                Spacer()
+                            }.frame(height: 450)
                         } else {
                             List(pastSportEvents, id: \.id) { event in
                                 HStack {
@@ -273,7 +297,7 @@ struct SportsDetailView: View {
                                             Text(event.subtitle)
                                             HStack {
                                                 if event.score.count > 1 {
-                                                    if event.score[0] == 0 && event.score[1] == 0 {
+                                                    if event.score[0] == 0 && event.score[1] == 0 && event.isUpdated == false {
                                                     } else {
                                                         if event.score[0] > event.score[1] {
                                                             Text(String(event.score[0]))
@@ -297,15 +321,18 @@ struct SportsDetailView: View {
                                                 } else {
                                                 }
                                             }
-                                        } else {
+                                        } else { // MARK: new shit here
                                             if event.subtitle.contains("$WIN$") {
+                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                                 Text("Win")
                                                     .foregroundColor(.green)
                                             } else if event.subtitle.contains("$LOSS$") {
+                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                                 Text("Loss")
                                                     .foregroundColor(.red)
                                             }
                                             else if event.subtitle.contains("$TIE$") {
+                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
                                                 Text("Tie")
                                                     .foregroundColor(.black)
                                             }
@@ -333,16 +360,20 @@ struct SportsDetailView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .cornerRadius(10)
-                                        .frame(maxHeight: 800)
+                                        .frame(maxHeight: 440)
                                         .padding(10)
                                 }
                             }
                             else {
-                                Text("No roster.")
-                                    .lineLimit(1)
-                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
-                                    .padding(.leading, 5)                            }
-                        }
+                                VStack {
+                                    Text("No roster.")
+                                        .lineLimit(1)
+                                        .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                        .padding(.leading, 5)
+                                    Spacer()
+                                }.frame(height: 450)
+                            }
+                        }.frame(height: 450)
                     }
                     
                     

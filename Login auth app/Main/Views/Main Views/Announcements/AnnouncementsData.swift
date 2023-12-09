@@ -92,7 +92,7 @@ class Newslist: ObservableObject {
                         let title = data["title"] as? String ?? ""
                         let description = data["description"] as? String ?? ""
                         let publisheddate = data["publisheddate"] as? String ?? ""
-                        let newsimagename = data["newsimagename"] as? String ?? ""
+                        let _ = data["newsimagename"] as? String ?? ""
                         let documentID = document.documentID
                         let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description)
                         return newstab  // Add the newstab to the temporary array
@@ -126,7 +126,7 @@ class Newslist: ObservableObject {
                     let title = data["title"] as? String ?? ""
                     let description = data["description"] as? String ?? ""
                     let publisheddate = data["publisheddate"] as? String ?? ""
-                    let newsimagename = data["newsimagename"] as? String ?? ""
+                    let _ = data["newsimagename"] as? String ?? ""
                     let documentID = document.documentID
                     let newstab = Newstab(documentID: documentID, title: title, publisheddate: publisheddate, description: description)
                     return newstab  // Add the newstab to the temporary array

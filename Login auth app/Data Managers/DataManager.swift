@@ -45,7 +45,7 @@ class DataManager: ObservableObject {
                     let title = data["title"] as? String ?? ""
                     let subtitle = data["subtitle"] as? String ?? ""
                     
-                    let event = Event(id: id, date: date, title: title, subtitle: subtitle)
+                    let _ = Event(id: id, date: date, title: title, subtitle: subtitle)
                     //self.events.append(Event)
                 }
             }

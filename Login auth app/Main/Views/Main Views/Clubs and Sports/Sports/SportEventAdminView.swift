@@ -158,7 +158,7 @@ struct SportEventsAdminView: View {
                             isSpecial: isSpecial,
                             score: score,
                             isUpdated: isUpdated)
-                        if let eventToSave = eventToSave {
+                        if eventToSave != nil {
                             /*editingeventslist.append(eventToSave)
                             dataManager.createSportEvent(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: eventToSave)
                             isPresetingAddEvent = false*/
