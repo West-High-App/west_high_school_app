@@ -12,6 +12,7 @@ struct TransportationView: View {
         ZStack{
             SwiftUIWebView(url: URL(string:"https://west.madison.k12.wi.us/families/bus-routes")!)
         }
+        .navigationBarTitleDisplayMode(.inline)
 
 //        ScrollView{
 //            ZStack{

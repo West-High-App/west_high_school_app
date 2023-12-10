@@ -204,6 +204,7 @@ If you're in crisis, please check the crisis line information below to speak to 
             .cornerRadius(10)
             .scaleEffect(1)
         }.padding(.top, -1) // new code
+            .navigationBarTitleDisplayMode(.inline)
     }
 }
 

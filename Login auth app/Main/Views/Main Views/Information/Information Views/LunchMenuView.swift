@@ -11,7 +11,7 @@ import Foundation
 struct LunchMenuView: View {
     @State var isLoading = false
         var body: some View {
-            ZStack{
+            ZStack {
                 SwiftUIWebView(url: URL(string: "https://west.madison.k12.wi.us/families/menus/")) // https://west.madison.k12.wi.us/families/menus
                                 //
                 if isLoading {
@@ -28,8 +28,8 @@ struct LunchMenuView: View {
                         }
                     }
                 }
-                
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 

@@ -30,6 +30,7 @@ struct SchoolPolicyGuideView: View {
                 }
                 
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 

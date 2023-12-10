@@ -28,6 +28,7 @@ struct StaffView: View {
             }
             
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
