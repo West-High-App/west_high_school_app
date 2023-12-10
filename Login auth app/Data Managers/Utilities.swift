@@ -41,6 +41,8 @@ extension Date {
         return calendar.component(component, from: self)
     }
     func convertToTimeZone(initTimeZone: TimeZone, timeZone: TimeZone) -> Date {
+        guard initTimeZone != timeZone else { return self }
+        
          let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - initTimeZone.secondsFromGMT(for: self))
          return addingTimeInterval(delta)
     }

@@ -48,10 +48,10 @@ struct UpcomingEventsAdminView: View {
                         
                         HStack {
                             VStack {
-                                Text(event.month)
+                                Text(event.date.monthName)
                                     .font(.system(size: 16, weight: .medium, design: .rounded))
                                     .foregroundColor(.red)
-                                Text(event.day)
+                                Text("\(event.date.dateComponent(.day))")
                                     .font(.system(size: 26, weight: .regular, design: .rounded))
                                 
                             }
@@ -61,7 +61,7 @@ struct UpcomingEventsAdminView: View {
                                 Text(event.eventname)
                                     .lineLimit(2)
                                     .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                Text(event.time)
+                                Text(event.isAllDay ? "All Day" : event.date.twelveHourTime)
                                     .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                     .lineLimit(1)
                             }
@@ -159,7 +159,8 @@ struct EventDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var dataManager: upcomingEventsDataManager
     @State private var eventName = ""
-    @State private var eventTime = ""
+    @State private var eventTime = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) ?? Date()
+    @State private var isAllDay = false
     @State private var eventyear = ""
     @State private var selectedMonthIndex = Calendar.current.component(.month, from: Date()) - 1
     @State private var selectedYearIndex = 0
@@ -196,7 +197,12 @@ struct EventDetailView: View {
                 Section(header: Text("Event Details")) {
                     TextField("Event Name", text: $eventName)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
-                    TextField("Event Time", text: $eventTime)
+                    if !isAllDay {
+                        DatePicker("Pick a time", selection: $eventTime, displayedComponents: .hourAndMinute)
+                            .labelsHidden()
+                            .datePickerStyle(WheelDatePickerStyle())
+                    }
+                    Toggle("All Day", isOn: $isAllDay)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                     Picker("Month", selection: $selectedMonthIndex) {
                         ForEach(0..<months.count, id: \.self) { index in
@@ -217,7 +223,7 @@ struct EventDetailView: View {
 
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
-                if !eventName.isEmpty && !eventTime.isEmpty && isRealDate {
+                if !eventName.isEmpty && isRealDate {
                     Button {
                         isConfirmingAddEvent = true
                     } label: {
@@ -264,30 +270,7 @@ struct EventDetailView: View {
                     title: Text("Publish Event?"),
                     message: Text("This action cannot be undone."),
                     primaryButton: .default(Text("Publish")) {
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "MMMM dd, yyyy"
-                        guard let date = dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(eventyear)") else {
-                            print("Error configuring date")
-                            return
-                        }
-                        
-                        let eventToSave = event(
-                            documentID: "NAN",
-                            eventname: eventName,
-                            time: eventTime,
-                            month: months[selectedMonthIndex],
-                            day: "\(days[selectedDayIndex])",
-                            year: years[selectedYearIndex],
-                            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
-                            date: date
-                        )
-                        dataManager.createEvent(event: eventToSave) { error in
-                            if let error = error {
-                                print("Error creating event: \(error.localizedDescription)")
-                            } else {
-                                presentationMode.wrappedValue.dismiss()
-                            }
-                        }
+                        createEvent()
                     },
                     secondaryButton: .cancel()
                 )
@@ -295,7 +278,7 @@ struct EventDetailView: View {
             .onAppear {
                 if let event = editingEvent {
                     eventName = event.eventname
-                    eventTime = event.time
+                    eventTime = event.date
                     
                     if let monthIndex = months.firstIndex(of: event.month) {
                         selectedMonthIndex = monthIndex
@@ -306,6 +289,52 @@ struct EventDetailView: View {
                     }
 
                 }
+            }
+        }
+    }
+    
+    func createEvent() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy hh:mm a"
+        
+        var timeString: String {
+            if isAllDay {
+                return "All Day"
+            } else {
+                return self.eventTime.formatted(date: Date.FormatStyle.DateStyle.omitted, time: Date.FormatStyle.TimeStyle.shortened)
+            }
+        }
+        
+        var date: Date? {
+            if isAllDay {
+                dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(eventyear) 11:59 PM")
+            } else {
+                dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(eventyear) \(timeString)")
+            }
+        }
+        
+        guard let date else {
+            print("Error configuring date")
+            return
+        }
+        
+        
+        let eventToSave = event(
+            documentID: "NAN",
+            eventname: eventName,
+            time: timeString,
+            month: months[selectedMonthIndex],
+            day: "\(days[selectedDayIndex])",
+            year: years[selectedYearIndex], 
+            isAllDay: isAllDay,
+            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
+            date: date
+        )
+        dataManager.createEvent(event: eventToSave) { error in
+            if let error = error {
+                print("Error creating event: \(error.localizedDescription)")
+            } else {
+                presentationMode.wrappedValue.dismiss()
             }
         }
     }

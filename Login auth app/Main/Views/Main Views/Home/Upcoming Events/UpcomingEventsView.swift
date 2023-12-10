@@ -35,13 +35,13 @@ struct UpcomingEventsView: View {
                         .padding(.leading)
                     Spacer()
                 }
-                ForEach(upcomingeventslist, id: \.id) {event in
+                ForEach(upcomingeventslist, id: \.id) { event in
                     HStack {
                         VStack {
-                            Text(event.month)
+                            Text(event.date.monthName)
                                 .font(.system(size: 16, weight: .medium, design: .rounded))
                                 .foregroundColor(.red)
-                            Text(event.day)
+                            Text("\(event.date.dateComponent(.day))")
                                 .font(.system(size: 26, weight: .regular, design: .rounded))
                             
                         }
@@ -52,7 +52,7 @@ struct UpcomingEventsView: View {
                                 .minimumScaleFactor(0.8)
                                 .lineLimit(2)
                                 .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                            Text(event.time)
+                            Text(event.isAllDay ? "All Day" : event.date.twelveHourTime)
                                 .minimumScaleFactor(0.8)
                                 .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                 .lineLimit(1)
@@ -68,7 +68,6 @@ struct UpcomingEventsView: View {
                         .cornerRadius(9.0)
                         .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)
                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                    
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 5)

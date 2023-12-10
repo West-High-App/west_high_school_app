@@ -748,10 +748,10 @@ struct UpcomingEventCell: View{
      var body:some View{
           HStack {
                VStack {
-                    Text(event.month)
+                    Text(event.date.monthName)
                          .font(.system(size: 14, weight: .medium, design: .rounded))
                          .foregroundColor(.red)
-                    Text(event.day)
+                    Text("\(event.date.dateComponent(.day))")
                          .font(.system(size: 24, weight: .regular, design: .rounded))
                }.padding(.vertical, -5)
                     .padding(.leading, 20)
@@ -760,7 +760,7 @@ struct UpcomingEventCell: View{
                VStack(alignment: .leading) {
                     Text(event.eventname)
                          .font(.system(size: 17, weight: .semibold, design: .rounded))
-                    Text(event.time)
+                    Text(event.isAllDay ? "All Day" : event.date.twelveHourTime)
                          .font(.system(size: 17, weight: .regular, design: .rounded))
                }.padding(.vertical, -5)
                     .padding(.horizontal)

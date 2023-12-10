@@ -10,24 +10,37 @@ class event: NSObject, Identifiable {
     var month: String
     var day: String
     var year: String
+    var isAllDay: Bool
     var publishedDate: Date = Date()
     var date: Date
 
-    required init(documentID: String, eventname: String, time: String, month: String, day: String, year: String, publisheddate: String, date: Date) {
+    required init(documentID: String, eventname: String, time: String, month: String, day: String, year: String, isAllDay: Bool, publisheddate: String, date: Date, convertDate: Bool = true) {
         self.documentID = documentID
         self.eventname = eventname
         self.time = time
         self.month = month
         self.day = day
         self.year = year
+        self.isAllDay = isAllDay
  
         // Set the date formatter and optionally set the formatted date from string
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM d, yyyy"
         if let date = dateFormatter.date(from: publisheddate) {
-            self.publishedDate = date
+            let convertedDate = date.convertToTimeZone(initTimeZone: .chicago, timeZone: .current)
+            
+            if convertDate {
+                self.publishedDate = convertedDate
+            } else {
+                self.publishedDate = date
+            }
         }
-        self.date = date
+        let convertedDate = date.convertToTimeZone(initTimeZone: .chicago, timeZone: .current)
+        if convertDate {
+            self.date = convertedDate
+        } else {
+            self.date = date
+        }
     }
 
 }
@@ -155,9 +168,10 @@ class upcomingEventsDataManager: ObservableObject {
                     let month = data["month"] as? String ?? ""
                     let day = data["day"] as? String ?? ""
                     let year = data["year"] as? String ?? ""
+                    let isAllDay = data["isAllDay"] as? Bool ?? false
                     let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let documentID = document.documentID
-                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", date: date)
+                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, isAllDay: isAllDay, publisheddate: "\(month) \(day), \(year)", date: date)
                     
                    return event // adding event with info from firebase
                 }
@@ -195,9 +209,10 @@ class upcomingEventsDataManager: ObservableObject {
                     let month = data["month"] as? String ?? ""
                     let day = data["day"] as? String ?? ""
                     let year = data["year"] as? String ?? ""
+                    let isAllDay = data["isAllDay"] as? Bool ?? false
                     let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let documentID = document.documentID
-                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", date: date)
+                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, isAllDay: isAllDay, publisheddate: "\(month) \(day), \(year)", date: date)
                     
                    return event // adding event with info from firebase
                 }
@@ -212,14 +227,16 @@ class upcomingEventsDataManager: ObservableObject {
 
     func createEvent(event: event, completion: @escaping (Error?) -> Void) { // creating a new event
         let db = Firestore.firestore()
+        let convertedDate = event.date.convertToTimeZone(initTimeZone: .current, timeZone: .chicago)
+        
         db.collection("UpcomingEvents").addDocument(data: [
             "eventname": event.eventname,
-            "time": event.time,
-            "month": event.month,
-            "day": event.day,
-            "year": event.year,
-            "publisheddate": event.publishedDate,
-            "date": event.date
+            "time": convertedDate.twelveHourTime,
+            "month": convertedDate.monthName,
+            "day": "\(convertedDate.dateComponent(.day))",
+            "year": "\(convertedDate.dateComponent(.year))",
+            "publisheddate": convertedDate,
+            "date": convertedDate
         ]) { error in
             completion(error)
         }
