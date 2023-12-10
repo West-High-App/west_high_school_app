@@ -176,29 +176,31 @@ struct ClubsDetailView: View {
                         }.frame(height: 450)
                     } else {
                         List {
-                            ForEach(clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? upcomingeventlist, id: \.id) {event in
-                                HStack {
-                                    VStack {
-                                        Text(event.month)
-                                            .font(.system(size: 16, weight: .medium, design: .rounded))
-                                            .foregroundColor(.red)
-                                        Text(event.day)
-                                            .font(.system(size: 26, weight: .regular, design: .rounded))
-                                        
+                            ForEach(clubeventmanager.eventDictionary["\(currentclub.clubname)"] ?? upcomingeventlist, id: \.id) { event in
+                                if let eventDate = event.date {
+                                    HStack {
+                                        VStack {
+                                            Text(eventDate.monthName)
+                                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                                .foregroundColor(.red)
+                                            Text("\(eventDate.dateComponent(.day))")
+                                                .font(.system(size: 26, weight: .regular, design: .rounded))
+                                            
+                                        }
+                                        .frame(width:50,height:50)
+                                        Divider()
+                                            .padding(.vertical, 10)
+                                        VStack(alignment: .leading) {
+                                            Text(event.title)
+                                                .lineLimit(2)
+                                                .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
+                                            Text(eventDate.twelveHourTime)
+                                                .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                .lineLimit(1)
+                                        }
+                                        .padding(.leading, 5)
+                                        Spacer()
                                     }
-                                    .frame(width:50,height:50)
-                                    Divider()
-                                        .padding(.vertical, 10)
-                                    VStack(alignment: .leading) {
-                                        Text(event.title)
-                                            .lineLimit(2)
-                                            .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                        Text(event.subtitle)
-                                            .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                            .lineLimit(1)
-                                    }
-                                    .padding(.leading, 5)
-                                    Spacer()
                                 }
                             }
                         }.frame(height: 450)

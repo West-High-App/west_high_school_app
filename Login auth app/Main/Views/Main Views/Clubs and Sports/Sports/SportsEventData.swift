@@ -175,7 +175,7 @@ class sportEventManager: ObservableObject {
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "dd-MMM-yyyy h:mm a"
                     if let date = dateFormatter.date(from: "\(day)/\(month)/\(year) \(time)") {
-                        let localDate = date.convertToTimeZone(initTimeZone: TimeZone(identifier: "America/Chicago")!, timeZone: calendar.timeZone)
+                        let localDate = date.convertToTimeZone(initTimeZone: .chicago, timeZone: calendar.timeZone)
                         let newEvent = ParsedEvent(date: localDate, isTBD: isTBD, type: type, opponent: opponent, location: location, comments: comments)
                         return newEvent
                     } else {
@@ -333,9 +333,3 @@ class sportEventManager: ObservableObject {
 }
 
 // MARK: all files for all the sports
-extension Date {
-    func convertToTimeZone(initTimeZone: TimeZone, timeZone: TimeZone) -> Date {
-         let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - initTimeZone.secondsFromGMT(for: self))
-         return addingTimeInterval(delta)
-    }
-}

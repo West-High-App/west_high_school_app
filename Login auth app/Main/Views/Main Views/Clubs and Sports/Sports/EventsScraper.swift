@@ -73,7 +73,7 @@ class HTMLParser: ObservableObject {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM-dd-yy hh:mm a"
             dateFormatter.locale = Locale(identifier: "en_US_POSIX") // Set the locale to ensure consistent parsing
-            dateFormatter.timeZone = TimeZone(identifier: "America/Chicago")
+            dateFormatter.timeZone = .chicago
             
             if let date = dateFormatter.date(from: "\(date) \(time)") {
                 return date

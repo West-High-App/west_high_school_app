@@ -17,9 +17,9 @@ class clubEvent: NSObject, Identifiable {
     let month: String
     let day: String
     let year: String
-    var date: Date = Date()
+    var date: Date?
 
-    required init(documentID: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String) {
+    init(documentID: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String, convertDate: Bool = true) {
         self.documentID = documentID
         self.title = title
         self.subtitle = subtitle
@@ -28,11 +28,28 @@ class clubEvent: NSObject, Identifiable {
         self.year = year
  
         // Set the date formatter and optionally set the formatted date from string
+        
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM dd, yyyy"
-        if let date = dateFormatter.date(from: publisheddate) {
-            self.date = date
+        dateFormatter.dateFormat = "MMM dd, yyyy h:mm a"
+        if let date = dateFormatter.date(from: "\(month) \(day), \(year) \(subtitle)") {
+            let convertedDate = date.convertToTimeZone(initTimeZone: .chicago, timeZone: .current)
+            
+            if convertDate {
+                self.date = convertedDate
+            } else {
+                self.date = date
+            }
         }
+    }
+    
+    init(title: String, date: Date) {
+        self.documentID = UUID().uuidString
+        self.title = title
+        self.subtitle = date.twelveHourTime
+        self.month = date.monthName
+        self.day = "\(date.dateComponent(.day))"
+        self.year = "\(date.dateComponent(.year))"
+        self.date = date
     }
 
 }
@@ -84,7 +101,7 @@ class clubEventManager: ObservableObject {
                             let year = event["year"] ?? ""
 
                             let newEvent = clubEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
-                            if newEvent.date >= Date.yesterday {
+                            if let newDate = newEvent.date, newDate >= Date.yesterday {
                                 return newEvent
                             } else {
                                 return nil
@@ -92,10 +109,10 @@ class clubEventManager: ObservableObject {
                         }
                         
                             self.eventDictionary[forClub] = returnValue.sorted(by: {
-                                $0.date.compare($1.date) == .orderedAscending
+                                ($0.date ?? Date()).compare($1.date ?? Date()) == .orderedAscending
                             })
                             self.clubsEvents = returnValue.sorted(by: {
-                                $0.date.compare($1.date) == .orderedAscending
+                                ($0.date ?? Date()).compare($1.date ?? Date()) == .orderedAscending
                             })
                             print("got sports events")
                     }
@@ -128,15 +145,16 @@ class clubEventManager: ObservableObject {
                     if clubID == forClub {
                         eventlist = events
                         eventdocumentID = docID
+                        guard let convertedDate = clubEvent.date?.convertToTimeZone(initTimeZone: .current, timeZone: .chicago) else { return }
                         
                         var eventtoadd: [String: String] = [:]
                         let title = clubEvent.title
-                        let subtitle = clubEvent.subtitle
-                        let month = clubEvent.month
-                        let day = clubEvent.day
-                        let year = clubEvent.year
+                        let subtitle = convertedDate.twelveHourTime
+                        let month = convertedDate.monthName
+                        let day = convertedDate.dateComponent(.day)
+                        let year = convertedDate.dateComponent(.year)
                         let publisheddate = "\(month) \(day), \(year)"
-                        eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate]
+                        eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : "\(day)", "year" : "\(year)", "publisheddate" : publisheddate]
                         
                         eventlist.append(eventtoadd)
                         
@@ -148,29 +166,6 @@ class clubEventManager: ObservableObject {
                             } else {
                                 print("Document updated")
                             }
-                        }
-                    }
-                }
-                var Bool = true
-                for _ in eventlist {
-                    Bool = false
-                }
-                if Bool {
-                    var eventtoadd: [String: String] = [:]
-                    let title = clubEvent.title
-                    let subtitle = clubEvent.subtitle
-                    let month = clubEvent.month
-                    let day = clubEvent.day
-                    let year = clubEvent.year
-                    let publisheddate = "\(month) \(day), \(year)"
-                    eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate]
-                    
-                    collection.addDocument(data:[
-                        "clubID": forClub,
-                        "events": [eventtoadd]
-                    ]) { error in
-                        if let error = error {
-                            print("Error adding event: \(error.localizedDescription)")
                         }
                     }
                 }
