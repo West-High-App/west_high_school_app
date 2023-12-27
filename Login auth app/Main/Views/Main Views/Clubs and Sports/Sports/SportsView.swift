@@ -504,8 +504,9 @@ struct SportsHibabi: View {
                                 .padding(.bottom, 5)
                         }
                         Spacer()
-                        Text("Filter Results")
-                            .font(.title3)
+                        Text("Filter Sports")
+                            .lineLimit(1)
+                            .font(.system(size: 18, weight: .regular, design: .rounded))
                             .padding(.top)
                             .padding(.bottom, 5)
                         Spacer()

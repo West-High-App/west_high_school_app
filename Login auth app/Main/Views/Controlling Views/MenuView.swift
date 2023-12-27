@@ -1,173 +1,204 @@
-//NEWSTS
 //
-//  ContentView.swift
-//  West App
-//
-//  Created by Aiden Lee on 69/420/69
+// MenuView.swift
+// West High App
 //
 
 import SwiftUI
-extension UIScreen{
-   static let screenWidth = UIScreen.main.bounds.size.width
-   static let screenHeight = UIScreen.main.bounds.size.height
-   static let screenSize = UIScreen.main.bounds.size
-}
 
 enum MenuItem: String, CaseIterable {
+    
+    // Menu items at the bottom of the screen
+    case Home
+    case Announcements
+    case Clubs
+    case Sports
+    case Information
 
-    case home
-    case announcments
-    case activities
-    case calendar
-    case profile
-
+    // Text for each menu item
     var description: String {
         switch self {
-        case .home:
+        case .Home:
             return "Home"
-        case .activities:
+        case .Clubs:
             return "Clubs"
-        case .announcments:
+        case .Announcements:
             return "Messages"
-        case .calendar:
+        case .Sports:
             return "Sports"
-        case .profile:
+        case .Information:
             return "Info"
         }
     }
+    
+    // Icon for each menu item
     var icon: String {
         switch self {
-        case .home:
+        case .Home:
             return "house.fill"
-        case .activities:
+        case .Clubs:
             return "dice.fill"
-        case .announcments:
+        case .Announcements:
             return "megaphone.fill"
-        case .calendar:
+        case .Sports:
             return "basketball.fill"
-        case .profile:
+        case .Information:
             return "info.circle.fill"
         }
     }
 }
+
+extension UIScreen {
+    
+    // Adding accessible screen size components
+    static let screenWidth = UIScreen.main.bounds.size.width
+    static let screenHeight = UIScreen.main.bounds.size.height
+    static let screenSize = UIScreen.main.bounds.size
+    
+}
+
 extension UIApplication {
+    
+    // Finds safe area insets of the screen
     static var safeAreaInsets: UIEdgeInsets  {
         let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         return scene?.windows.first?.safeAreaInsets ?? .zero
     }
 }
-struct MenuView : View {
+
+extension Color {
+    
+    // Creating custom West colors
+    static let westYellow = Color(red: 248/255, green: 222/255, blue: 8/255)
+    static let westBlue = Color(red: 41/255, green: 52/255, blue: 134/255)
+}
+
+struct MenuView: View {
+    
     var tabItems = MenuItem.allCases
+    @State var selectedItem: MenuItem = .Home
+    
     @EnvironmentObject var userInfo: UserInfo
-    @EnvironmentObject var dataManager: DataManager
-    @State var selected: MenuItem = .home
+    
+    @StateObject var shutdownDataManager = ShutdownManager()
     @State var isShutDown = false
     @State var shutdownMessage = ""
-    @StateObject var shutdownmanager = ShutdownManager()
-    let westyellow = Color(red:248/255, green:222/255, blue:8/255)
-    let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
+    
     init() {
         UITabBar.appearance().isHidden = true
     }
-    var body: some View{
+    
+    var body: some View {
+        
         if !isShutDown {
-        VStack(spacing: 0){
-            TabView(selection: $selected){
-
-                HomeMainView()
-                    .environmentObject(userInfo)
-                    .tag(tabItems[0])
-                    .ignoresSafeArea(.all)
-                AnnouncementsView()
-                    .environmentObject(userInfo)
-                    .tag(tabItems[1])
-                    .ignoresSafeArea(.all)
-                ClubsHibabi()
-                    .environmentObject(userInfo)
-                    .tag(tabItems[2])
-                    .ignoresSafeArea(.all)
-                SportsHibabi()
-                    .environmentObject(userInfo)
-                    .tag(tabItems[3])
-                    .ignoresSafeArea(.all)
-                InformationView()
-                    .environmentObject(userInfo)
-                    .tag(tabItems[4])
-                    .ignoresSafeArea(.all)
+            
+            VStack(spacing: 0) {
+                TabView(selection: $selectedItem){
+                    
+                    HomeMainView()
+                        .environmentObject(userInfo)
+                        .tag(tabItems[0])
+                        .ignoresSafeArea(.all)
+                    AnnouncementsView()
+                        .environmentObject(userInfo)
+                        .tag(tabItems[1])
+                        .ignoresSafeArea(.all)
+                    ClubsHibabi()
+                        .environmentObject(userInfo)
+                        .tag(tabItems[2])
+                        .ignoresSafeArea(.all)
+                    SportsHibabi()
+                        .environmentObject(userInfo)
+                        .tag(tabItems[3])
+                        .ignoresSafeArea(.all)
+                    InformationView()
+                        .environmentObject(userInfo)
+                        .tag(tabItems[4])
+                        .ignoresSafeArea(.all)
+                }
+                Spacer(minLength: 0)
+                
+                CustomTabBarView(tabItems: tabItems, selected: $selectedItem)
             }
-            Spacer(minLength: 0)
-            CustomTabbarView(tabItems: tabItems, selected: $selected)
-        }
-        .onAppear {
-            shutdownmanager.fetchData { bool, string in
-                print("FROM ON APPEAR")
-                print(bool)
-                print(string)
-                isShutDown = bool
-                shutdownMessage = string
+            .ignoresSafeArea(.all, edges: .bottom)
+            
+            .onAppear {
+                
+                // Checks if manual shutdown has been activated
+                shutdownDataManager.fetchData { isShutDown, shutdownMessage in
+                    self.isShutDown = isShutDown
+                    self.shutdownMessage = shutdownMessage
+                }
             }
-        }
-        .ignoresSafeArea(.all, edges: .bottom)
-        } else {
-            ZStack { // shut down view
-                westblue
+        } 
+        
+        else {
+            
+            // Display if the app has been manually shut down
+            ZStack {
+                Color.westYellow
                     .ignoresSafeArea()
                 VStack {
                     Text("West App has been temporarily shut down.")
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.2)
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 26, weight: .semibold, design: .rounded))
-                        .fontWeight(.medium)
-                        .padding(.horizontal)
-                        .foregroundColor(westyellow)
-                        .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                        .screenMessageStyle(size: 26)
                     Text(shutdownMessage)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.2)
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 20, weight: .semibold, design: .rounded))
-                        .fontWeight(.medium)
-                        .padding()
-                        .foregroundColor(westyellow)
-                        .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                        .screenMessageStyle(size: 20)
                 }
             }
+            
         }
     }
 }
-struct CustomTabbarView: View {
-    var tabItems: [MenuItem]
-    @State var centerX : CGFloat = 2
-    @Environment(\.verticalSizeClass) var size
-    @Binding var selected: MenuItem
 
+struct MenuView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        MenuView()
+            .environmentObject(UserInfo())
+    }
+}
+
+struct CustomTabBarView: View {
+    
+    var tabItems: [MenuItem]
+    @Binding var selectedItem: MenuItem
+
+    @State var centerX: CGFloat = 2
+    @Environment(\.verticalSizeClass) var size
+    
     init(tabItems: [MenuItem], selected: Binding<MenuItem>) {
         UITabBar.appearance().isHidden = true
         self.tabItems = tabItems
-        self._selected = selected
+        self._selectedItem = selected
     }
-
+    
     var body: some View {
-        HStack(spacing: 0){
-
-            ForEach(tabItems,id: \.self){value in
-
-                GeometryReader{ proxy in
-                    BarButton(selected: $selected, centerX: $centerX, rect: proxy.frame(in: .global), value: value)
-                        .onAppear(perform: {
-                            if value == tabItems.first{
-                                centerX = proxy.frame(in: .global).midX
-                            }
-                        })
-                        .onChange(of: size) { (_) in
-                            if selected == value{
+        
+        HStack(spacing: 0) {
+            
+            ForEach(tabItems,id: \.self) { tabItem in
+                
+                // Animates around selected item
+                GeometryReader { proxy in
+                    
+                    BarButton(selectedMenuItem: $selectedItem, menuItem: tabItem, centerX: $centerX, rect: proxy.frame(in: .global))
+                        .onAppear {
+                            if tabItem == tabItems.first {
                                 centerX = proxy.frame(in: .global).midX
                             }
                         }
+                    
+                        .onChange(of: size) { (_) in
+                            if selectedItem == tabItem {
+                                centerX = proxy.frame(in: .global).midX
+                            }
+                        }
+                    
                 }
                 .frame(width: UIScreen.screenWidth/5.8, height: 50)
-                if value != tabItems.last{Spacer(minLength: 0)}
+                
+                if tabItem != tabItems.last {
+                    Spacer(minLength: 0)
+                }
             }
         }
         .padding(.horizontal,25)
@@ -179,60 +210,79 @@ struct CustomTabbarView: View {
         .ignoresSafeArea(.all, edges: .horizontal)
     }
 }
-struct BarButton : View {
-    @Binding var selected : MenuItem
-    @Binding var centerX : CGFloat
 
-    var rect : CGRect
-    var value: MenuItem
+struct BarButton: View {
+    
+    @Binding var selectedMenuItem: MenuItem
+    var menuItem: MenuItem
+
+    @Binding var centerX: CGFloat
+    var rect: CGRect
 
     var body: some View{
-        Button(action: {
-            withAnimation(.spring()){
-                selected = value
+        
+        Button {
+            withAnimation(.spring()) {
+                selectedMenuItem = menuItem
                 centerX = rect.midX
             }
-        }, label: {
+            
+        } label: {
+            
             VStack{
-                Image(systemName: value.icon)
+                Image(systemName: menuItem.icon)
                     .resizable()
                     .renderingMode(.template)
                     .frame(width: 26, height: 26)
-                    .foregroundColor(selected == value ? .blue : .gray)
+                    .foregroundColor(selectedMenuItem == menuItem ? .blue : .gray)
 
-                Text(value.description)
+                Text(menuItem.description)
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                    .opacity(selected == value ? 1 : 0)
+                    .opacity(selectedMenuItem == menuItem ? 1 : 0)
             }
             .padding(.top)
             .frame(width: 70, height: 50)
-            .offset(y: selected == value ? -15 : 0)
-        })
+            .offset(y: selectedMenuItem == menuItem ? -15 : 0)
+            
+        }
     }
 }
-struct CustomShape: Shape {
-    var centerX : CGFloat
-    var animatableData: CGFloat{
-        get{return centerX}
-        set{centerX = newValue}
-    }
 
+struct CustomShape: Shape {
+    
+    var centerX: CGFloat
+    
+    var animatableData: CGFloat {
+        get { return centerX}
+        set { centerX = newValue }
+    }
+    
     func path(in rect: CGRect) -> Path {
-        return Path{path in
+        
+        return Path { path in
             path.move(to: CGPoint(x: 0, y: 15))
             path.addLine(to: CGPoint(x: 0, y: rect.height))
             path.addLine(to: CGPoint(x: rect.width, y: rect.height))
             path.addLine(to: CGPoint(x: rect.width, y: 15))
             path.move(to: CGPoint(x: centerX - 35, y: 15))
-            //length of bulge
+            // Length of bulge
             path.addQuadCurve(to: CGPoint(x: centerX + 35, y: 15), control: CGPoint(x: centerX, y: -30))
         }
     }
 }
 
-struct MenuView_Previews: PreviewProvider {
-    static var previews: some View {
-        MenuView().environmentObject(UserInfo())
+extension Text {
+    
+    func screenMessageStyle(size: CGFloat) -> some View {
+        self
+            .lineLimit(2)
+            .minimumScaleFactor(0.2)
+            .multilineTextAlignment(.center)
+            .font(.system(size: size, weight: .semibold, design: .rounded))
+            .fontWeight(.medium)
+            .padding(.horizontal)
+            .foregroundColor(Color.yellow)
+            .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
     }
 }

@@ -77,8 +77,6 @@ struct AuthView: View {
     @State var userIsLoggedIn = false
     @State var count = 0
     @State var showingDomainError = false
-    let westyellow = Color(red:248/255, green:222/255, blue:8/255)
-    let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     @StateObject private var viewModel = AuthenticationViewModel()
     @StateObject var dataManager = DataManager()
     @EnvironmentObject var userInfo: UserInfo // changed this bitch
@@ -135,7 +133,7 @@ struct AuthView: View {
             else {
                 NavigationView {
                     ZStack {
-                        westblue
+                        Color.westYellow
                         VStack {
                             
                             // GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
@@ -208,7 +206,7 @@ struct AuthView: View {
                                     )
                             }
                             
-                        }.accentColor(westblue)
+                        }.accentColor(Color.westYellow)
                             .padding([.leading, .trailing, .bottom])
                             .padding(.top, 50)
                             .background(Rectangle()
@@ -262,7 +260,7 @@ struct AuthView: View {
             }
         } else { // no internet
             ZStack {
-                westblue
+                Color.westYellow
                     .ignoresSafeArea()
                 VStack {
                     Text("No connection")
@@ -272,7 +270,7 @@ struct AuthView: View {
                         .font(.system(size: 26, weight: .semibold, design: .rounded))
                         .fontWeight(.medium)
                         .padding(.horizontal)
-                        .foregroundColor(westyellow)
+                        .foregroundColor(Color.westYellow)
                         .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                     Text("Please check your connection and try again.")
                         .lineLimit(2)
@@ -281,7 +279,7 @@ struct AuthView: View {
                         .font(.system(size: 20, weight: .semibold, design: .rounded))
                         .fontWeight(.medium)
                         .padding()
-                        .foregroundColor(westyellow)
+                        .foregroundColor(Color.westYellow)
                         .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                 }
 

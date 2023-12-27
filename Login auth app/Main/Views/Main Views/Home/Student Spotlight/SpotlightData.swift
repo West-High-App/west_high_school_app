@@ -46,7 +46,6 @@ class studentachievementlist: ObservableObject{
     @Published var hasLoaded = false
 
     @StateObject var imagemanager = imageManager()
-    @ObservedObject var loading = Loading()
     private let fetchLimit = 20
     private var lastDocument: DocumentSnapshot?
     @Published private(set) var allDocsLoaded = false
@@ -82,7 +81,6 @@ class studentachievementlist: ObservableObject{
                     }
                 }
             }
-            self.loading.hasLoaded = true
             print(self.allstudentachievementlistUnsorted.count)
             self.hasLoaded = true
         }
@@ -254,7 +252,6 @@ class studentachievementlist: ObservableObject{
                             }
                         }
                     }
-                    self.loading.hasLoaded = true
                     self.hasLoaded = true
                 }
             }

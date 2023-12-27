@@ -17,7 +17,6 @@ struct HomeView: View {
      @ObservedObject var clubmanager = clubManager.shared
      @StateObject var newsDataManager = Newslist.shared
      @ObservedObject var upcomingeventsdataManager = upcomingEventsDataManager.shared
-     @StateObject var loading = Loading()
      
      @State var homeImage: UIImage?
      
@@ -86,8 +85,6 @@ struct HomeView: View {
      // MARK: VIEW
      var safeArea: EdgeInsets
      var size: CGSize
-     let westyellow = Color(red:248/255, green:222/255, blue:8/255)
-     let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
      @StateObject var shutdownmanager = ShutdownManager()
      @State var isShutDown = false
      @State var shutdownMessage = ""
@@ -136,7 +133,7 @@ struct HomeView: View {
                                                        Text("Upcoming Events")
                                                             .lineLimit(1)
                                                             .padding(.leading, 15)
-                                                            .foregroundColor(westblue)
+                                                            .foregroundColor(Color.westBlue)
                                                             .bold()
                                                             .font(.system(size: 24, weight: .semibold, design: .rounded))
                                                        //.padding(.horizontal)
@@ -232,7 +229,7 @@ struct HomeView: View {
                                                   
                                                   HStack {
                                                        Text("Student Spotlight")
-                                                            .foregroundColor(westblue)
+                                                            .foregroundColor(Color.westBlue)
                                                             .bold()
                                                             .minimumScaleFactor(0.8)
                                                             .font(.system(size: 24, weight: .semibold, design: .rounded))
@@ -364,7 +361,6 @@ struct HomeView: View {
                                         print("LOADING HOME VIEW")
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                              print("IS DONE LOADING?")
-                                             print(loading.hasLoaded)
                                              // this is where the view loads, should have been changed with the .onChange
                                              if !hasAppeared {
                                                   
@@ -408,33 +404,19 @@ struct HomeView: View {
                               
                          }
                          
-                         .background(westblue)
+                         .background(Color.westBlue)
                          .coordinateSpace(name: "SCROLL")
                          .padding(.top, -60)
                     }
                } else {
                     ZStack {
-                         westblue
+                         Color.westBlue
                               .ignoresSafeArea()
                          VStack {
                               Text("West App has been temporarily shut down")
-                                   .lineLimit(2)
-                                   .minimumScaleFactor(0.2)
-                                   .multilineTextAlignment(.center)
-                                   .font(.system(size: 26, weight: .semibold, design: .rounded))
-                                   .fontWeight(.medium)
-                                   .padding(.horizontal)
-                                   .foregroundColor(westyellow)
-                                   .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                                   .screenMessageStyle(size: 26)
                               Text(shutdownMessage)
-                                   .lineLimit(2)
-                                   .minimumScaleFactor(0.2)
-                                   .multilineTextAlignment(.center)
-                                   .font(.system(size: 20, weight: .semibold, design: .rounded))
-                                   .fontWeight(.medium)
-                                   .padding(.horizontal)
-                                   .foregroundColor(westyellow)
-                                   .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                                   .screenMessageStyle(size: 20)
                          }
                          
                     }
@@ -467,12 +449,12 @@ struct HomeView: View {
                                    Rectangle()
                                         .fill(
                                              .linearGradient(colors: [
-                                                  westblue.opacity(0 - progress),
-                                                  westblue.opacity(0 - progress),
-                                                  westblue.opacity(0.05 - progress),
-                                                  westblue.opacity(0.1 - progress),
-                                                  westblue.opacity(0.5 - progress),
-                                                  westblue.opacity(1),
+                                                  Color.westBlue.opacity(0 - progress),
+                                                  Color.westBlue.opacity(0 - progress),
+                                                  Color.westBlue.opacity(0.05 - progress),
+                                                  Color.westBlue.opacity(0.1 - progress),
+                                                  Color.westBlue.opacity(0.5 - progress),
+                                                  Color.westBlue.opacity(1),
                                              ], startPoint: .top, endPoint: .bottom)
                                         )
                                    VStack(spacing: 0) {
@@ -496,7 +478,7 @@ struct HomeView: View {
                                                   .font(.system(size: 32, weight: .semibold, design: .rounded))
                                                   .fontWeight(.medium)
                                                   .padding(.horizontal)
-                                                  .foregroundColor(westyellow)
+                                                  .foregroundColor(Color.westYellow)
                                                   .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                                         }
                                         else{
@@ -508,7 +490,7 @@ struct HomeView: View {
                                                   .fontWeight(.medium)
                                                   .fontWeight(.medium)
                                                   .padding(.horizontal)
-                                                  .foregroundColor(westyellow)
+                                                  .foregroundColor(Color.westYellow)
                                                   .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                                         }
                                    }
@@ -534,12 +516,12 @@ struct HomeView: View {
                                    Rectangle()
                                         .fill(
                                              .linearGradient(colors: [
-                                                  westblue.opacity(0 - progress),
-                                                  westblue.opacity(0 - progress),
-                                                  westblue.opacity(0.05 - progress),
-                                                  westblue.opacity(0.1 - progress),
-                                                  westblue.opacity(0.5 - progress),
-                                                  westblue.opacity(1),
+                                                  Color.westBlue.opacity(0 - progress),
+                                                  Color.westBlue.opacity(0 - progress),
+                                                  Color.westBlue.opacity(0.05 - progress),
+                                                  Color.westBlue.opacity(0.1 - progress),
+                                                  Color.westBlue.opacity(0.5 - progress),
+                                                  Color.westBlue.opacity(1),
                                              ], startPoint: .top, endPoint: .bottom)
                                         )
                                    VStack(spacing: 0) {
@@ -563,7 +545,7 @@ struct HomeView: View {
                                                   .font(.system(size: 32, weight: .semibold, design: .rounded))
                                                   .fontWeight(.medium)
                                                   .padding(.horizontal)
-                                                  .foregroundColor(westyellow)
+                                                  .foregroundColor(Color.westYellow)
                                                   .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                                         }
                                         else{
@@ -575,7 +557,7 @@ struct HomeView: View {
                                                   .fontWeight(.medium)
                                                   .fontWeight(.medium)
                                                   .padding(.horizontal)
-                                                  .foregroundColor(westyellow)
+                                                  .foregroundColor(Color.westYellow)
                                                   .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                                         }
                                    }
@@ -620,7 +602,7 @@ struct HomeView: View {
                               Text("REGENTS")
                                    .offset(y:15)
                                    .font(.system(size: 30, weight: .semibold, design: .rounded))
-                                   .foregroundStyle(westyellow)
+                                   .foregroundStyle(Color.westYellow)
                                    .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
                                    .offset(y: -titleProgress < 0.75 ? 0 : 100)
                                    .animation(.easeOut(duration: 0.55), value: -titleProgress > 0.75)
@@ -656,14 +638,14 @@ struct HomeView: View {
                     Rectangle()
                          .fill(
                               .linearGradient(colors: [
-                                   westblue.opacity(0.5 - titleProgress),
-                                   westblue.opacity(0.4 - titleProgress),
-                                   westblue.opacity(0.3 - titleProgress),
-                                   westblue.opacity(0.2 - titleProgress),
-                                   westblue.opacity(0.1 - titleProgress),
-                                   westblue.opacity(0 - titleProgress),
-                                   westblue.opacity(0 - titleProgress),
-                                   westblue.opacity(0 - titleProgress),
+                                   Color.westBlue.opacity(0.5 - titleProgress),
+                                   Color.westBlue.opacity(0.4 - titleProgress),
+                                   Color.westBlue.opacity(0.3 - titleProgress),
+                                   Color.westBlue.opacity(0.2 - titleProgress),
+                                   Color.westBlue.opacity(0.1 - titleProgress),
+                                   Color.westBlue.opacity(0 - titleProgress),
+                                   Color.westBlue.opacity(0 - titleProgress),
+                                   Color.westBlue.opacity(0 - titleProgress),
                                    
                                    
                               ], startPoint: .top, endPoint: .bottom)

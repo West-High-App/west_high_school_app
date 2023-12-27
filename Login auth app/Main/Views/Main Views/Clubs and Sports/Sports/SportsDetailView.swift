@@ -80,8 +80,6 @@ struct SportsDetailView: View {
     @State var topthree: [sportEvent] = []
     @State var isEditing = false
     
-    let westyellow = Color(red:248/255, green:222/255, blue:8/255)
-    let westblue = Color(red: 41/255, green: 52/255, blue: 134/255)
     //MARK: view
     var body: some View {
         GeometryReader { geometry in
