@@ -133,7 +133,7 @@ struct MenuView: View {
         
         else {
             
-            // Display if the app has been manually shut down
+            // Displays if the app has been manually shut down
             ZStack {
                 Color.westYellow
                     .ignoresSafeArea()
@@ -254,7 +254,7 @@ struct CustomShape: Shape {
     var centerX: CGFloat
     
     var animatableData: CGFloat {
-        get { return centerX}
+        get { return centerX }
         set { centerX = newValue }
     }
     

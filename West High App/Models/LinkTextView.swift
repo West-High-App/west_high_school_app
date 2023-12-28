@@ -1,4 +1,9 @@
-// MARK: THIS ENDED UP NOT BEING A TEST VIEW PLZ DON't DELETE it
+//
+// LinkTextView.swift
+// West High App
+// 
+
+
 import SwiftUI
 
 struct LinkTextView: View {

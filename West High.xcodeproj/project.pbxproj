@@ -18,7 +18,7 @@
 		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
 		221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */; };
 		221A9D052A9EC1A6004A9F02 /* ClubNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */; };
-		222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086922A60AE8E00EF1ECA /* LoginData.swift */; };
+		222086932A60AE8E00EF1ECA /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086922A60AE8E00EF1ECA /* UserInfo.swift */; };
 		222086E92A6224D400EF1ECA /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 222086E82A6224D400EF1ECA /* GoogleSignIn */; };
 		222086EB2A6224D400EF1ECA /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 222086EA2A6224D400EF1ECA /* GoogleSignInSwift */; };
 		222086EF2A62458900EF1ECA /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222086EE2A62458900EF1ECA /* Utilities.swift */; };
@@ -32,7 +32,6 @@
 		2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */; };
 		2232FEF62AA945140067AAB8 /* ClubEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */; };
 		224B2EE42AC8472A00BCF08B /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224B2EE32AC8472A00BCF08B /* ImageCropView.swift */; };
-		2263AD372ABB77EA0016AA73 /* uitestview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD362ABB77E90016AA73 /* uitestview.swift */; };
 		2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */; };
 		2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B1EB2A68D23300823E58 /* WestHighApp.swift */; };
 		2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2072A68D9FC00823E58 /* AuthView.swift */; };
@@ -75,20 +74,17 @@
 		228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */; };
 		228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */; };
 		228309FF2A8680D100AE9C08 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 228309FE2A8680D100AE9C08 /* SwiftKeychainWrapper */; };
-		22830A042A86D01300AE9C08 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22830A032A86D01300AE9C08 /* Notifications.swift */; };
-		228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362DA2A2AB3D70061BFAE /* ContentView.swift */; };
 		228362DD2A2AB3D80061BFAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228362DC2A2AB3D80061BFAE /* Assets.xcassets */; };
 		228362E02A2AB3D80061BFAE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 228362DF2A2AB3D80061BFAE /* Preview Assets.xcassets */; };
 		228362EA2A2AB9700061BFAE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 228362E92A2AB9700061BFAE /* FirebaseAnalytics */; };
 		228362EC2A2AB9700061BFAE /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 228362EB2A2AB9700061BFAE /* FirebaseAnalyticsSwift */; };
 		228362EE2A2AB9700061BFAE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 228362ED2A2AB9700061BFAE /* FirebaseAuth */; };
-		228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362EF2A2C17600061BFAE /* LoggedInView.swift */; };
 		228362F22A2C18CB0061BFAE /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362F12A2C18CB0061BFAE /* Events.swift */; };
 		228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362F32A2C1BBB0061BFAE /* DataManager.swift */; };
 		228362F72A2C1E720061BFAE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 228362F62A2C1E720061BFAE /* FirebaseFirestore */; };
 		228362F92A2C1E720061BFAE /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 228362F82A2C1E720061BFAE /* FirebaseFirestoreCombine-Community */; };
 		228362FB2A2C1E720061BFAE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 228362FA2A2C1E720061BFAE /* FirebaseFirestoreSwift */; };
-		228485CF2AB4B0F700D2AAD2 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228485CE2AB4B0F700D2AAD2 /* TestView.swift */; };
+		228485CF2AB4B0F700D2AAD2 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228485CE2AB4B0F700D2AAD2 /* LinkTextView.swift */; };
 		22DECD662AAABF9200061E60 /* FavoriteClubsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */; };
 		22DECD682AAB655000061E60 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DECD672AAB655000061E60 /* ImagePickerView.swift */; };
 		22DECD6A2AAB656300061E60 /* ImagePickerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DECD692AAB656300061E60 /* ImagePickerData.swift */; };
@@ -122,7 +118,7 @@
 		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
 		221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsNewsAdminView.swift; sourceTree = "<group>"; };
 		221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubNewsAdminView.swift; sourceTree = "<group>"; };
-		222086922A60AE8E00EF1ECA /* LoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
+		222086922A60AE8E00EF1ECA /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		222086EE2A62458900EF1ECA /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsEventData.swift; sourceTree = "<group>"; };
 		2232FEE72AA46F3D0067AAB8 /* SportsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsAdminView.swift; sourceTree = "<group>"; };
@@ -134,10 +130,9 @@
 		2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailAdminView.swift; sourceTree = "<group>"; };
 		2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEventAdminView.swift; sourceTree = "<group>"; };
 		224B2EE32AC8472A00BCF08B /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
-		2263AD362ABB77E90016AA73 /* uitestview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = uitestview.swift; sourceTree = "<group>"; };
 		2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastSportEventAdminView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
-		2270B1F92A68D5ED00823E58 /* Login_auth_app_testApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_auth_app_testApp.swift; sourceTree = "<group>"; };
+		2270B1F92A68D5ED00823E58 /* WestHighAppTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighAppTestApp.swift; sourceTree = "<group>"; };
 		2270B1FB2A68D5ED00823E58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2270B1FD2A68D5EF00823E58 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2270B2002A68D5EF00823E58 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -180,15 +175,12 @@
 		22778C072A9571D000547C8C /* AnnouncementsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsAdminView.swift; sourceTree = "<group>"; };
 		228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsData.swift; sourceTree = "<group>"; };
 		228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsAdminView.swift; sourceTree = "<group>"; };
-		22830A032A86D01300AE9C08 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		228362D52A2AB3D70061BFAE /* West High.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "West High.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		228362DA2A2AB3D70061BFAE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		228362DC2A2AB3D80061BFAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		228362DF2A2AB3D80061BFAE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		228362EF2A2C17600061BFAE /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
 		228362F12A2C18CB0061BFAE /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		228362F32A2C1BBB0061BFAE /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		228485CE2AB4B0F700D2AAD2 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		228485CE2AB4B0F700D2AAD2 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		22AA046E2AD1C9270088BE03 /* West High.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "West High.gpx"; sourceTree = "<group>"; };
 		22AA04712AD1E7E50088BE03 /* VPN.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VPN.gpx; sourceTree = "<group>"; };
 		22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteClubsData.swift; sourceTree = "<group>"; };
@@ -245,6 +237,8 @@
 				2232FEEF2AA681AE0067AAB8 /* ClubsAdminView.swift */,
 				2232FEE92AA46F4D0067AAB8 /* SportsDetailAdminView.swift */,
 				2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */,
+				2270B2342A68E29F00823E58 /* ClubsNewsDetailView.swift */,
+				2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -276,9 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				2270B2072A68D9FC00823E58 /* AuthView.swift */,
-				222086922A60AE8E00EF1ECA /* LoginData.swift */,
-				228362DA2A2AB3D70061BFAE /* ContentView.swift */,
-				228362EF2A2C17600061BFAE /* LoggedInView.swift */,
+				222086922A60AE8E00EF1ECA /* UserInfo.swift */,
 			);
 			path = "Login Flow";
 			sourceTree = "<group>";
@@ -288,22 +280,20 @@
 			children = (
 				228362F12A2C18CB0061BFAE /* Events.swift */,
 				2270B26D2A68E8E600823E58 /* WebViewModel.swift */,
-				22830A032A86D01300AE9C08 /* Notifications.swift */,
-				228485CE2AB4B0F700D2AAD2 /* TestView.swift */,
-				2263AD362ABB77E90016AA73 /* uitestview.swift */,
+				228485CE2AB4B0F700D2AAD2 /* LinkTextView.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		2270B1F82A68D5ED00823E58 /* Login auth app test */ = {
+		2270B1F82A68D5ED00823E58 /* West High App Test */ = {
 			isa = PBXGroup;
 			children = (
-				2270B1F92A68D5ED00823E58 /* Login_auth_app_testApp.swift */,
+				2270B1F92A68D5ED00823E58 /* WestHighAppTestApp.swift */,
 				2270B1FB2A68D5ED00823E58 /* ContentView.swift */,
 				2270B1FD2A68D5EF00823E58 /* Assets.xcassets */,
 				2270B1FF2A68D5EF00823E58 /* Preview Content */,
 			);
-			path = "Login auth app test";
+			path = "West High App Test";
 			sourceTree = "<group>";
 		};
 		2270B1FF2A68D5EF00823E58 /* Preview Content */ = {
@@ -404,8 +394,6 @@
 				E82562D62A84D0DA000AF117 /* ClubsMainView.swift */,
 				2270B2362A68E2AE00823E58 /* ClubsDetailView.swift */,
 				2270B2322A68E27800823E58 /* ClubsHibabi.swift */,
-				2270B2342A68E29F00823E58 /* ClubsNewsDetailView.swift */,
-				2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */,
 				2232FEF12AA798620067AAB8 /* ClubsEventData.swift */,
 			);
 			path = Clubs;
@@ -497,8 +485,8 @@
 		228362CC2A2AB3D70061BFAE = {
 			isa = PBXGroup;
 			children = (
-				228362D72A2AB3D70061BFAE /* Login auth app */,
-				2270B1F82A68D5ED00823E58 /* Login auth app test */,
+				228362D72A2AB3D70061BFAE /* West High App */,
+				2270B1F82A68D5ED00823E58 /* West High App Test */,
 				228362D62A2AB3D70061BFAE /* Products */,
 				228362F52A2C1E720061BFAE /* Frameworks */,
 			);
@@ -512,7 +500,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		228362D72A2AB3D70061BFAE /* Login auth app */ = {
+		228362D72A2AB3D70061BFAE /* West High App */ = {
 			isa = PBXGroup;
 			children = (
 				2270B1ED2A68D25F00823E58 /* Main */,
@@ -525,7 +513,7 @@
 				22AA046E2AD1C9270088BE03 /* West High.gpx */,
 				22AA04712AD1E7E50088BE03 /* VPN.gpx */,
 			);
-			path = "Login auth app";
+			path = "West High App";
 			sourceTree = "<group>";
 		};
 		228362DE2A2AB3D80061BFAE /* Preview Content */ = {
@@ -653,11 +641,9 @@
 				2270B22A2A68E0A400823E58 /* ClubSportData.swift in Sources */,
 				2270B22E2A68E1F800823E58 /* ClubSportNewsData.swift in Sources */,
 				228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */,
-				2263AD372ABB77EA0016AA73 /* uitestview.swift in Sources */,
 				221388302AC1FF370052A285 /* EventsScraper.swift in Sources */,
 				221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */,
 				2270B2602A68E7C600823E58 /* ContactView.swift in Sources */,
-				228362DB2A2AB3D70061BFAE /* ContentView.swift in Sources */,
 				22DECD6A2AAB656300061E60 /* ImagePickerData.swift in Sources */,
 				2232FEE62AA46F0D0067AAB8 /* SportsEventData.swift in Sources */,
 				2232FEEC2AA46F5E0067AAB8 /* SportEventAdminView.swift in Sources */,
@@ -669,7 +655,7 @@
 				E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */,
 				E8BD7FC92AD1E0080095443A /* Another Info Thing.swift in Sources */,
 				2270B23C2A68E33A00823E58 /* ClubsDatabase.swift in Sources */,
-				222086932A60AE8E00EF1ECA /* LoginData.swift in Sources */,
+				222086932A60AE8E00EF1ECA /* UserInfo.swift in Sources */,
 				E8531F612A83D1D100FB64F5 /* SportsMainView.swift in Sources */,
 				E82562D72A84D0DA000AF117 /* ClubsMainView.swift in Sources */,
 				2270B2212A68DF9400823E58 /* AnnouncementsView.swift in Sources */,
@@ -689,8 +675,7 @@
 				22DECD682AAB655000061E60 /* ImagePickerView.swift in Sources */,
 				22DF41452AB3586E00D25707 /* AccountView.swift in Sources */,
 				228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */,
-				22830A042A86D01300AE9C08 /* Notifications.swift in Sources */,
-				228485CF2AB4B0F700D2AAD2 /* TestView.swift in Sources */,
+				228485CF2AB4B0F700D2AAD2 /* LinkTextView.swift in Sources */,
 				2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */,
 				2270B2352A68E29F00823E58 /* ClubsNewsDetailView.swift in Sources */,
 				2270B2582A68E72D00823E58 /* StaffDetailView.swift in Sources */,
@@ -713,7 +698,6 @@
 				2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */,
 				221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */,
 				227B05C12AF9767400D9B572 /* SpotlightArticles.swift in Sources */,
-				228362F02A2C17600061BFAE /* LoggedInView.swift in Sources */,
 				221423E32AD19F860015CD3B /* RosterDetailView.swift in Sources */,
 				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,
 				E87A324C2A967EC100D7CDB1 /* HelpSupportView.swift in Sources */,
@@ -869,7 +853,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"West High App/Preview Content\"";
 				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
@@ -911,7 +895,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Login auth app/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"West High App/Preview Content\"";
 				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;

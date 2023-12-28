@@ -1,16 +1,23 @@
 //
 //  HomeView.swift
-//  West Ap
+//  West App
 //
-//  Created by blud what i litterally created this August Andersen on 5/19/23.
-// testing push from west_high_app_2 (i think)
 
 import SwiftUI
 import UserNotifications
 import Firebase
 
 struct HomeView: View {
-     @State var firstcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, imagedata: [])
+     
+     @State var firstcurrentevent = studentachievement(
+          documentID: "",
+          achievementtitle: "",
+          achievementdescription: "",
+          articleauthor: "", publisheddate: "",
+          date: Date(),
+          images: [""],
+          isApproved: false,
+          imagedata: [])
      @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, imagedata: [])
      @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, imagedata: [])
      var screen = ScreenSize()

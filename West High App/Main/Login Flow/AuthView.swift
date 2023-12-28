@@ -133,7 +133,7 @@ struct AuthView: View {
             else {
                 NavigationView {
                     ZStack {
-                        Color.westYellow
+                        Color.westBlue
                         VStack {
                             
                             // GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
@@ -206,7 +206,7 @@ struct AuthView: View {
                                     )
                             }
                             
-                        }.accentColor(Color.westYellow)
+                        }.accentColor(Color.westBlue)
                             .padding([.leading, .trailing, .bottom])
                             .padding(.top, 50)
                             .background(Rectangle()
@@ -260,27 +260,13 @@ struct AuthView: View {
             }
         } else { // no internet
             ZStack {
-                Color.westYellow
+                Color.westBlue
                     .ignoresSafeArea()
                 VStack {
                     Text("No connection")
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.2)
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 26, weight: .semibold, design: .rounded))
-                        .fontWeight(.medium)
-                        .padding(.horizontal)
-                        .foregroundColor(Color.westYellow)
-                        .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                        .screenMessageStyle(size: 26)
                     Text("Please check your connection and try again.")
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.2)
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 20, weight: .semibold, design: .rounded))
-                        .fontWeight(.medium)
-                        .padding()
-                        .foregroundColor(Color.westYellow)
-                        .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
+                        .screenMessageStyle(size: 20)
                 }
 
             }
