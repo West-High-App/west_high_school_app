@@ -1,5 +1,5 @@
 //
-//  ViewExtensions.swift
+//  Text.swift
 //  West High App
 //
 
@@ -26,17 +26,6 @@ extension Text {
             .foregroundColor(color)
             .padding(.horizontal, 20)
             .cornerRadius(9)
-    }
-    
-}
-
-extension Rectangle {
-    
-    func signInButtonBackground(color: Color) -> some View {
-        self
-            .cornerRadius(9.0)
-            .frame(width: 315, height: 50)
-            .foregroundColor(color)
     }
     
 }

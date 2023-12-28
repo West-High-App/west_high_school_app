@@ -14,8 +14,10 @@
 		221423DD2ACF3EDB0015CD3B /* LinksData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221423DC2ACF3EDB0015CD3B /* LinksData.swift */; };
 		221423E12AD0438D0015CD3B /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 221423E02AD0438D0015CD3B /* Entitlements.plist */; };
 		221423E32AD19F860015CD3B /* RosterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221423E22AD19F860015CD3B /* RosterDetailView.swift */; };
-		2215EDF12B3DCBC600B663EC /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDF02B3DCBC600B663EC /* ViewExtensions.swift */; };
-		221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* Permissions.swift */; };
+		2215EDF12B3DCBC600B663EC /* Shapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDF02B3DCBC600B663EC /* Shapes.swift */; };
+		2215EDF52B3DD19700B663EC /* PermissionsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDF42B3DD19700B663EC /* PermissionsDataManager.swift */; };
+		2215EDF82B3DD65300B663EC /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDF72B3DD65300B663EC /* Text.swift */; };
+		221A9CFA2A95DD0A004A9F02 /* PermissionsCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* PermissionsCheck.swift */; };
 		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
 		221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */; };
 		221A9D052A9EC1A6004A9F02 /* ClubNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */; };
@@ -69,7 +71,7 @@
 		2270B2682A68E86C00823E58 /* SchoolPolicyGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2672A68E86C00823E58 /* SchoolPolicyGuideView.swift */; };
 		2270B26A2A68E88700823E58 /* TransportationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2692A68E88700823E58 /* TransportationView.swift */; };
 		2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26B2A68E89400823E58 /* SettingsView.swift */; };
-		2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26D2A68E8E600823E58 /* WebViewModel.swift */; };
+		2270B26E2A68E8E600823E58 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B26D2A68E8E600823E58 /* WebView.swift */; };
 		22778C082A9571D000547C8C /* AnnouncementsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22778C072A9571D000547C8C /* AnnouncementsAdminView.swift */; };
 		227B05C12AF9767400D9B572 /* SpotlightArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B2152A68DE1E00823E58 /* SpotlightArticles.swift */; };
 		228309FA2A867DB200AE9C08 /* UpcomingEventsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */; };
@@ -80,8 +82,6 @@
 		228362EA2A2AB9700061BFAE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 228362E92A2AB9700061BFAE /* FirebaseAnalytics */; };
 		228362EC2A2AB9700061BFAE /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 228362EB2A2AB9700061BFAE /* FirebaseAnalyticsSwift */; };
 		228362EE2A2AB9700061BFAE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 228362ED2A2AB9700061BFAE /* FirebaseAuth */; };
-		228362F22A2C18CB0061BFAE /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362F12A2C18CB0061BFAE /* Events.swift */; };
-		228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228362F32A2C1BBB0061BFAE /* DataManager.swift */; };
 		228362F72A2C1E720061BFAE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 228362F62A2C1E720061BFAE /* FirebaseFirestore */; };
 		228362F92A2C1E720061BFAE /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 228362F82A2C1E720061BFAE /* FirebaseFirestoreCombine-Community */; };
 		228362FB2A2C1E720061BFAE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 228362FA2A2C1E720061BFAE /* FirebaseFirestoreSwift */; };
@@ -113,8 +113,10 @@
 		221423DC2ACF3EDB0015CD3B /* LinksData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksData.swift; sourceTree = "<group>"; };
 		221423E02AD0438D0015CD3B /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		221423E22AD19F860015CD3B /* RosterDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterDetailView.swift; sourceTree = "<group>"; };
-		2215EDF02B3DCBC600B663EC /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
-		221A9CF92A95DD0A004A9F02 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
+		2215EDF02B3DCBC600B663EC /* Shapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shapes.swift; sourceTree = "<group>"; };
+		2215EDF42B3DD19700B663EC /* PermissionsDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsDataManager.swift; sourceTree = "<group>"; };
+		2215EDF72B3DD65300B663EC /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
+		221A9CF92A95DD0A004A9F02 /* PermissionsCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsCheck.swift; sourceTree = "<group>"; };
 		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
 		221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsNewsAdminView.swift; sourceTree = "<group>"; };
 		221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubNewsAdminView.swift; sourceTree = "<group>"; };
@@ -171,15 +173,13 @@
 		2270B2672A68E86C00823E58 /* SchoolPolicyGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolPolicyGuideView.swift; sourceTree = "<group>"; };
 		2270B2692A68E88700823E58 /* TransportationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportationView.swift; sourceTree = "<group>"; };
 		2270B26B2A68E89400823E58 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		2270B26D2A68E8E600823E58 /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
+		2270B26D2A68E8E600823E58 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		22778C072A9571D000547C8C /* AnnouncementsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementsAdminView.swift; sourceTree = "<group>"; };
 		228309F92A867DB200AE9C08 /* UpcomingEventsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsData.swift; sourceTree = "<group>"; };
 		228309FB2A867DC500AE9C08 /* UpcomingEventsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingEventsAdminView.swift; sourceTree = "<group>"; };
 		228362D52A2AB3D70061BFAE /* West High.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "West High.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		228362DC2A2AB3D80061BFAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		228362DF2A2AB3D80061BFAE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		228362F12A2C18CB0061BFAE /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
-		228362F32A2C1BBB0061BFAE /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		228485CE2AB4B0F700D2AAD2 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		22AA046E2AD1C9270088BE03 /* West High.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "West High.gpx"; sourceTree = "<group>"; };
 		22AA04712AD1E7E50088BE03 /* VPN.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = VPN.gpx; sourceTree = "<group>"; };
@@ -226,6 +226,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2215EDF22B3DD15D00B663EC /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				2270B2072A68D9FC00823E58 /* AuthView.swift */,
+				222086922A60AE8E00EF1ECA /* UserInfo.swift */,
+				222086EE2A62458900EF1ECA /* Utilities.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		2215EDF32B3DD16800B663EC /* Permissions */ = {
+			isa = PBXGroup;
+			children = (
+				22DF41422AB2481A00D25707 /* PermissionsAdminView.swift */,
+				221A9CF92A95DD0A004A9F02 /* PermissionsCheck.swift */,
+				2215EDF42B3DD19700B663EC /* PermissionsDataManager.swift */,
+			);
+			path = Permissions;
+			sourceTree = "<group>";
+		};
+		2215EDF62B3DD61D00B663EC /* Image Picker */ = {
+			isa = PBXGroup;
+			children = (
+				22DECD672AAB655000061E60 /* ImagePickerView.swift */,
+				224B2EE32AC8472A00BCF08B /* ImageCropView.swift */,
+				22DECD692AAB656300061E60 /* ImagePickerData.swift */,
+			);
+			path = "Image Picker";
+			sourceTree = "<group>";
+		};
+		2215EDF92B3DD73300B663EC /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				2215EDFA2B3DD73900B663EC /* Plist */,
+				2215EDFB2B3DD74300B663EC /* GPX */,
+				2215EDFC2B3DD74800B663EC /* Assets and Previews */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		2215EDFA2B3DD73900B663EC /* Plist */ = {
+			isa = PBXGroup;
+			children = (
+				E82562DA2A867858000AF117 /* GoogleService-Info.plist */,
+				221423E02AD0438D0015CD3B /* Entitlements.plist */,
+			);
+			path = Plist;
+			sourceTree = "<group>";
+		};
+		2215EDFB2B3DD74300B663EC /* GPX */ = {
+			isa = PBXGroup;
+			children = (
+				22AA046E2AD1C9270088BE03 /* West High.gpx */,
+				22AA04712AD1E7E50088BE03 /* VPN.gpx */,
+			);
+			path = GPX;
+			sourceTree = "<group>";
+		};
+		2215EDFC2B3DD74800B663EC /* Assets and Previews */ = {
+			isa = PBXGroup;
+			children = (
+				228362DC2A2AB3D80061BFAE /* Assets.xcassets */,
+				228362DE2A2AB3D80061BFAE /* Preview Content */,
+			);
+			path = "Assets and Previews";
+			sourceTree = "<group>";
+		};
 		221A9D012A9EADEB004A9F02 /* Admin Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,48 +309,32 @@
 			path = "Admin Views";
 			sourceTree = "<group>";
 		};
-		2270B1ED2A68D25F00823E58 /* Main */ = {
+		2270B1EF2A68D29C00823E58 /* Other Views */ = {
 			isa = PBXGroup;
 			children = (
-				2270B1EB2A68D23300823E58 /* WestHighApp.swift */,
-				2270B1F02A68D2BE00823E58 /* Auth and Perms */,
-				2270B20A2A68DB0100823E58 /* Views */,
+				2270B26D2A68E8E600823E58 /* WebView.swift */,
+				228485CE2AB4B0F700D2AAD2 /* LinkTextView.swift */,
+				2215EDF62B3DD61D00B663EC /* Image Picker */,
 			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		2270B1EF2A68D29C00823E58 /* Data Managers */ = {
-			isa = PBXGroup;
-			children = (
-				228362F32A2C1BBB0061BFAE /* DataManager.swift */,
-				22DECD692AAB656300061E60 /* ImagePickerData.swift */,
-				224B2EE32AC8472A00BCF08B /* ImageCropView.swift */,
-				22DECD672AAB655000061E60 /* ImagePickerView.swift */,
-			);
-			path = "Data Managers";
+			path = "Other Views";
 			sourceTree = "<group>";
 		};
 		2270B1F02A68D2BE00823E58 /* Auth and Perms */ = {
 			isa = PBXGroup;
 			children = (
-				2270B2072A68D9FC00823E58 /* AuthView.swift */,
-				222086922A60AE8E00EF1ECA /* UserInfo.swift */,
-				222086EE2A62458900EF1ECA /* Utilities.swift */,
-				221A9CF92A95DD0A004A9F02 /* Permissions.swift */,
-				22DF41422AB2481A00D25707 /* PermissionsAdminView.swift */,
+				2215EDF22B3DD15D00B663EC /* Authentication */,
+				2215EDF32B3DD16800B663EC /* Permissions */,
 			);
 			path = "Auth and Perms";
 			sourceTree = "<group>";
 		};
-		2270B1F22A68D2E000823E58 /* Models */ = {
+		2270B1F22A68D2E000823E58 /* Extentions */ = {
 			isa = PBXGroup;
 			children = (
-				228362F12A2C18CB0061BFAE /* Events.swift */,
-				2270B26D2A68E8E600823E58 /* WebViewModel.swift */,
-				228485CE2AB4B0F700D2AAD2 /* LinkTextView.swift */,
-				2215EDF02B3DCBC600B663EC /* ViewExtensions.swift */,
+				2215EDF72B3DD65300B663EC /* Text.swift */,
+				2215EDF02B3DCBC600B663EC /* Shapes.swift */,
 			);
-			path = Models;
+			path = Extentions;
 			sourceTree = "<group>";
 		};
 		2270B1F82A68D5ED00823E58 /* West High App Test */ = {
@@ -305,7 +356,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		2270B20A2A68DB0100823E58 /* Views */ = {
+		2270B20A2A68DB0100823E58 /* Main Views */ = {
 			isa = PBXGroup;
 			children = (
 				2270B20C2A68DC3F00823E58 /* MenuView.swift */,
@@ -314,7 +365,7 @@
 				2270B22F2A68E23500823E58 /* Clubs and Sports */,
 				2270B24E2A68E69100823E58 /* Information */,
 			);
-			path = Views;
+			path = "Main Views";
 			sourceTree = "<group>";
 		};
 		2270B20E2A68DD5600823E58 /* Home */ = {
@@ -476,15 +527,12 @@
 		228362D72A2AB3D70061BFAE /* West High App */ = {
 			isa = PBXGroup;
 			children = (
-				2270B1ED2A68D25F00823E58 /* Main */,
-				2270B1EF2A68D29C00823E58 /* Data Managers */,
-				2270B1F22A68D2E000823E58 /* Models */,
-				E82562DA2A867858000AF117 /* GoogleService-Info.plist */,
-				228362DC2A2AB3D80061BFAE /* Assets.xcassets */,
-				228362DE2A2AB3D80061BFAE /* Preview Content */,
-				221423E02AD0438D0015CD3B /* Entitlements.plist */,
-				22AA046E2AD1C9270088BE03 /* West High.gpx */,
-				22AA04712AD1E7E50088BE03 /* VPN.gpx */,
+				2270B1EB2A68D23300823E58 /* WestHighApp.swift */,
+				2270B1F02A68D2BE00823E58 /* Auth and Perms */,
+				2270B20A2A68DB0100823E58 /* Main Views */,
+				2270B1EF2A68D29C00823E58 /* Other Views */,
+				2270B1F22A68D2E000823E58 /* Extentions */,
+				2215EDF92B3DD73300B663EC /* Other */,
 			);
 			path = "West High App";
 			sourceTree = "<group>";
@@ -626,6 +674,7 @@
 				E8ED91732AB5615200065526 /* ClassesListView.swift in Sources */,
 				E87A324E2A967ECF00D7CDB1 /* AboutView.swift in Sources */,
 				E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */,
+				2215EDF82B3DD65300B663EC /* Text.swift in Sources */,
 				E8BD7FC92AD1E0080095443A /* Another Info Thing.swift in Sources */,
 				2270B23C2A68E33A00823E58 /* ClubsDatabase.swift in Sources */,
 				222086932A60AE8E00EF1ECA /* UserInfo.swift in Sources */,
@@ -639,15 +688,15 @@
 				2270B2102A68DD7100823E58 /* HomeView.swift in Sources */,
 				221A9D052A9EC1A6004A9F02 /* ClubNewsAdminView.swift in Sources */,
 				2270B2662A68E83600823E58 /* NavigatingSchoolView.swift in Sources */,
-				2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */,
-				2215EDF12B3DCBC600B663EC /* ViewExtensions.swift in Sources */,
+				2270B26E2A68E8E600823E58 /* WebView.swift in Sources */,
+				2215EDF12B3DCBC600B663EC /* Shapes.swift in Sources */,
 				2270B24D2A68E67700823E58 /* SportsNewsDetailView.swift in Sources */,
 				2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */,
 				E87ADFEB2AA13B89009D9512 /* PrivacyPolicyView.swift in Sources */,
 				2270B2502A68E6BF00823E58 /* InformationView.swift in Sources */,
+				2215EDF52B3DD19700B663EC /* PermissionsDataManager.swift in Sources */,
 				22DECD682AAB655000061E60 /* ImagePickerView.swift in Sources */,
 				22DF41452AB3586E00D25707 /* AccountView.swift in Sources */,
-				228362F42A2C1BBB0061BFAE /* DataManager.swift in Sources */,
 				228485CF2AB4B0F700D2AAD2 /* LinkTextView.swift in Sources */,
 				2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */,
 				2270B2352A68E29F00823E58 /* ClubsNewsDetailView.swift in Sources */,
@@ -668,7 +717,7 @@
 				2270B26C2A68E89400823E58 /* SettingsView.swift in Sources */,
 				2270B2492A68E65000823E58 /* SportsDetailView.swift in Sources */,
 				2270B25E2A68E7B100823E58 /* ClassesView.swift in Sources */,
-				221A9CFA2A95DD0A004A9F02 /* Permissions.swift in Sources */,
+				221A9CFA2A95DD0A004A9F02 /* PermissionsCheck.swift in Sources */,
 				227B05C12AF9767400D9B572 /* SpotlightArticles.swift in Sources */,
 				221423E32AD19F860015CD3B /* RosterDetailView.swift in Sources */,
 				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,
@@ -683,7 +732,6 @@
 				2270B2332A68E27800823E58 /* ClubsHibabi.swift in Sources */,
 				2232FEEA2AA46F4D0067AAB8 /* SportsDetailAdminView.swift in Sources */,
 				2232FEEE2AA4BD6D0067AAB8 /* FavoriteSportsData.swift in Sources */,
-				228362F22A2C18CB0061BFAE /* Events.swift in Sources */,
 				222086EF2A62458900EF1ECA /* Utilities.swift in Sources */,
 				2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */,
 				E8BD7FC72AD1DFDD0095443A /* Info thing.swift in Sources */,
