@@ -271,18 +271,3 @@ struct CustomShape: Shape {
         }
     }
 }
-
-extension Text {
-    
-    func screenMessageStyle(size: CGFloat) -> some View {
-        self
-            .lineLimit(2)
-            .minimumScaleFactor(0.2)
-            .multilineTextAlignment(.center)
-            .font(.system(size: size, weight: .semibold, design: .rounded))
-            .fontWeight(.medium)
-            .padding(.horizontal)
-            .foregroundColor(Color.yellow)
-            .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
-    }
-}

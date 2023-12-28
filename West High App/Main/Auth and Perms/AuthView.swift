@@ -1,7 +1,6 @@
 //
 //  AuthView.swift
 //  West High App
-//
 
 import SwiftUI
 import Firebase
@@ -81,7 +80,7 @@ struct AuthView: View {
     @EnvironmentObject var userInfo: UserInfo
     
     // Check for an internet connection
-    func isInternetAvailable() -> Bool {
+    func internetConnectionIsAvailable() -> Bool {
         
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
@@ -110,71 +109,73 @@ struct AuthView: View {
     
     var body: some View {
         
-        if isInternetAvailable() {
-            if userInfo.loginStatus == "Google" {
+        if internetConnectionIsAvailable() {
+            switch userInfo.loginStatus {
+                
+                // Displays the menu view if the user is logged in
+            case "Google":
                 MenuView()
                     .environmentObject(userInfo)
                     .onAppear {
-                        userInfo.displayName = Auth.auth().currentUser?.displayName ?? "student"
-                        userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
+                        userInfo.displayName = Auth.auth().currentUser?.displayName ?? "user"
+                        userInfo.email = Auth.auth().currentUser?.email ?? "No email"
                     }
-            }
-            
-            else if userInfo.loginStatus == "Guest" {
+                
+            case "Guest":
                 MenuView()
                     .environmentObject(userInfo)
                     .onAppear {
-                        userInfo.displayName = "Guest"
-                        userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
+                        userInfo.displayName = "guest"
+                        userInfo.email = Auth.auth().currentUser?.email ?? "No email"
                     }
-            }
-            
-            else {
+                
+                // Shows the login screen if the user is not signed in
+            default:
                 NavigationView {
                     ZStack {
+                        
                         Color.westBlue
+                        
                         VStack {
                             
-                            // GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
                             Text("West High School")
                                 .foregroundColor(.black)
                                 .font(.system(size: 32, weight: .bold, design: .rounded))
                                 .padding(.horizontal)
                                 .padding(.bottom, 5.0)
                                 .padding(.top, 25.0)
+                            
+                            // Sign in with Google button
                             Button {
                                 Task {
+                                    
                                     do {
                                         if try await viewModel.startSignInProcess(bypassing: false) {
-                                            
-                                            print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
-                                            
                                             userInfo.loginStatus = "Google"
                                         }
                                         else {
                                             showingDomainError = true
                                         }
                                     } catch {
-                                        print(error.localizedDescription) // MARK: prints only error on program, is not on our side
+                                        print(error.localizedDescription) // Test for errors
                                     }
+                                    
                                 }
-                            } label : {
+                                
+                            } label: {
                                 HStack {
                                     Spacer()
+                                    
                                     Image("Google Logo")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(height: 35)
-                                        .background(
-                                            Circle()
-                                                .foregroundColor(.white)
-                                        )
+                                        .background(Circle().foregroundColor(.white))
+                                    
                                     Text("Sign in With Google")
-                                        .font(.body)
+                                        .signInButtonText(color: .white)
                                         .fontWeight(.semibold)
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 20)
-                                        .cornerRadius(9)
+                                    
                                     Spacer()
                                 }.background(
                                     Rectangle()
@@ -185,33 +186,31 @@ struct AuthView: View {
                                 .padding(.all)
                             }
                             
+                            // Continue as guest button
                             Button {
+                                
                                 userInfo.loginStatus = "Guest"
                                 
                             } label: {
                                 Text("Continue as Guest")
-                                    .font(.body)
+                                    .signInButtonText(color: .black)
                                     .fontWeight(.medium)
-                                    .foregroundColor(.black)
-                                    .padding(.horizontal, 20)
                                     .padding(.all)
-                                    .cornerRadius(9)
                                     .background(
                                         Rectangle()
-                                            .cornerRadius(9.0)
-                                            .frame(width: 315, height: 50)
-                                            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))
-                                    )
+                                            .signInButtonBackground(color: Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                             }
                             
-                        }.accentColor(Color.westBlue)
-                            .padding([.leading, .trailing, .bottom])
-                            .padding(.top, 50)
-                            .background(Rectangle()
-                                .cornerRadius(9.0)
-                                .frame(width: 350)
-                                .shadow(radius: 5, x: 3, y: 3)
-                                .foregroundColor(.white))
+                        }
+                        .accentColor(Color.westBlue)
+                        .padding([.leading, .trailing, .bottom])
+                        .padding(.top, 50)
+                        .background(Rectangle()
+                            .cornerRadius(9.0)
+                            .frame(width: 350)
+                            .shadow(radius: 5, x: 3, y: 3)
+                            .foregroundColor(.white))
+                        
                         VStack {
                             Image("Regents Logo")
                                 .resizable()
@@ -220,87 +219,69 @@ struct AuthView: View {
                             Spacer()
                                 .frame(height: 290)
                         }
+                        
                     }.ignoresSafeArea()
-                }.accentColor(.white)
-                    .environmentObject(userInfo)
-                
-                    .alert(isPresented: $showingDomainError) {
-                        Alert (
-                            title: Text("Incorrect Domain"),
-                            message: Text("You must have a 'madison.k12.wi.us' email to sign in with Google."),
-                            primaryButton: .destructive(Text("Bypass Domain Verification")) {
-                                print("Bypassing Domain Verification...")
-                                
-                                Task {
-                                    do {
-                                        if try await viewModel.startSignInProcess(bypassing: true) {
-                                            print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
-                                            userInfo.loginStatus = "Google"
-                                        }
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
-                                }
-                                
-                            },
-                            secondaryButton: .default(Text("Cancel")) {
-                                showingDomainError = false
-                            }
-                        )
-                    }
+                    
+                }
+                .accentColor(.white)
+                .environmentObject(userInfo)
             }
-        } else { // no internet
+            
+        // If there is no internet connection
+        } else {
+            
             ZStack {
                 Color.westBlue
                     .ignoresSafeArea()
+                
                 VStack {
                     Text("No connection")
                         .screenMessageStyle(size: 26)
+                    
                     Text("Please check your connection and try again.")
                         .screenMessageStyle(size: 20)
                 }
-                
             }
         }
-        
     }
 }
 
     
-    struct AuthView_Previews: PreviewProvider {
-        static var previews: some View {
-            AuthView()
-        }
+struct AuthView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        AuthView()
     }
+}
 
 
 class ShutdownManager: ObservableObject {
+    
     var isShutDown = false
     var shutdownMessage = "No info to display"
     
+    // Fetches data on whether the app has been manually shut down
     func fetchData(completion: @escaping (Bool, String) -> Void) {
+        
         let db = Firestore.firestore()
         let shutdownRef = db.collection("Shutdown")
         
-        var ref1a = false
-        var ref2a = ""
+        var isShutDownData = false
+        var shutdownMessageData = ""
         shutdownRef.getDocuments { snapshot, error in
+            
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
+            
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     let data = document.data()
-                    let ref1 = data["isShutDown"] as? Bool ?? false
-                    let ref2 = data["shutdownMessage"] as? String ?? "No info to display"
-                    ref1a = ref1
-                    ref2a = ref2
+                    isShutDownData = data["isShutDown"] as? Bool ?? false
+                    shutdownMessageData = data["shutdownMessage"] as? String ?? "No info to display"
                 }
             }
-            print("SHUTDOWN MANAGER UPDATE:")
-            print(ref1a)
-            print(ref2a)
-            completion(ref1a, ref2a)
+            completion(isShutDownData, shutdownMessageData)
         }
     }
 }

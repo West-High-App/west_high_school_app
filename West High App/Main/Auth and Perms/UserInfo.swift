@@ -13,7 +13,7 @@ class UserInfo: ObservableObject {
     private let loginStatusKey = "loginStatusKey"
     private let emailKey = "emailKey"
     
-    // Login status of the user ("Google", "Guest", or "None")
+    // Log in status of the user (Google, Guest, or None)
     @Published var loginStatus: String {
         didSet {
             KeychainWrapper.standard.set(loginStatus, forKey: loginStatusKey)

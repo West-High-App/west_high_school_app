@@ -43,6 +43,7 @@ extension Date {
         
         return calendar.component(component, from: self)
     }
+    
     func convertToTimeZone(initTimeZone: TimeZone, timeZone: TimeZone) -> Date {
         guard initTimeZone != timeZone else { return self }
         
@@ -59,11 +60,13 @@ extension Date {
 }
 
 extension DateFormatter {
+    
     func date(from date: Date) -> Date? {
         self.date(from: self.string(from: date))
     }
 }
 
 extension TimeZone {
+    
     static let chicago = TimeZone(identifier: "America/Chicago")!
 }
