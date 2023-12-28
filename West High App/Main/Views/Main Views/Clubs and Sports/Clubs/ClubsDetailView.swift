@@ -153,7 +153,7 @@ struct ClubsDetailView: View {
                 
                 Picker(selection: $selected, label: Text(""), content: {
                                     Text("Upcoming").tag(1)
-                                    if userInfo.loginStatus == "google" {
+                                    if userInfo.loginStatus == "Google" {
                                         Text("Members (\(currentclub.clubmembers.count + (currentclub.clubcaptain?.count ?? 0)))").tag(2)
                                     } else {
                                         Text("Members").tag(2)

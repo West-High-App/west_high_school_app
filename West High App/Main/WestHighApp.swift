@@ -1,6 +1,6 @@
 //  
-// WestHighApp.swift
-// West High App
+//  WestHighApp.swift
+//  West High App
 //
 
 import SwiftUI
@@ -10,6 +10,7 @@ import Firebase
 struct WestHighApp: App {
     
     init() {
+        
         // Intilialize Firebase
         FirebaseApp.configure()
     }
@@ -17,6 +18,7 @@ struct WestHighApp: App {
     @StateObject var userInfo = UserInfo.shared
         
     var body: some Scene {
+        
         WindowGroup {
             AuthView()
                 .environmentObject(userInfo)

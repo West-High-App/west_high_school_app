@@ -100,8 +100,6 @@
 		E87A32502A967EE900D7CDB1 /* ContactUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87A324F2A967EE900D7CDB1 /* ContactUsView.swift */; };
 		E87ADFEB2AA13B89009D9512 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87ADFEA2AA13B89009D9512 /* PrivacyPolicyView.swift */; };
 		E890123A2A7F484A00FCB764 /* HomeMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89012392A7F484A00FCB764 /* HomeMainView.swift */; };
-		E8A1E54F2A8CD311003BE94C /* DailyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */; };
-		E8A1E5512A8CDC85003BE94C /* DailyMessageAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A1E5502A8CDC85003BE94C /* DailyMessageAdminView.swift */; };
 		E8BD7FC72AD1DFDD0095443A /* Info thing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BD7FC62AD1DFDD0095443A /* Info thing.swift */; };
 		E8BD7FC92AD1E0080095443A /* Another Info Thing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BD7FC82AD1E0080095443A /* Another Info Thing.swift */; };
 		E8ED91712AB559B900065526 /* JobInternshipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ED91702AB559B900065526 /* JobInternshipView.swift */; };
@@ -197,8 +195,6 @@
 		E87A324F2A967EE900D7CDB1 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; };
 		E87ADFEA2AA13B89009D9512 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		E89012392A7F484A00FCB764 /* HomeMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMainView.swift; sourceTree = "<group>"; };
-		E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyMessage.swift; sourceTree = "<group>"; };
-		E8A1E5502A8CDC85003BE94C /* DailyMessageAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyMessageAdminView.swift; sourceTree = "<group>"; };
 		E8BD7FC62AD1DFDD0095443A /* Info thing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Info thing.swift"; sourceTree = "<group>"; };
 		E8BD7FC82AD1E0080095443A /* Another Info Thing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Another Info Thing.swift"; sourceTree = "<group>"; };
 		E8ED91702AB559B900065526 /* JobInternshipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobInternshipView.swift; sourceTree = "<group>"; };
@@ -231,14 +227,15 @@
 		221A9D012A9EADEB004A9F02 /* Admin */ = {
 			isa = PBXGroup;
 			children = (
-				221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */,
-				221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */,
-				2232FEE72AA46F3D0067AAB8 /* SportsAdminView.swift */,
 				2232FEEF2AA681AE0067AAB8 /* ClubsAdminView.swift */,
-				2232FEE92AA46F4D0067AAB8 /* SportsDetailAdminView.swift */,
+				2232FEE72AA46F3D0067AAB8 /* SportsAdminView.swift */,
 				2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */,
-				2270B2342A68E29F00823E58 /* ClubsNewsDetailView.swift */,
+				2232FEE92AA46F4D0067AAB8 /* SportsDetailAdminView.swift */,
+				221A9D042A9EC1A6004A9F02 /* ClubNewsAdminView.swift */,
+				221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */,
 				2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */,
+				2232FEEB2AA46F5E0067AAB8 /* SportEventAdminView.swift */,
+				2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -247,8 +244,8 @@
 			isa = PBXGroup;
 			children = (
 				2270B1EB2A68D23300823E58 /* WestHighApp.swift */,
+				2270B1F02A68D2BE00823E58 /* Authentication */,
 				2270B20A2A68DB0100823E58 /* Views */,
-				2270B1F02A68D2BE00823E58 /* Login Flow */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -257,7 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				22830A002A86843600AE9C08 /* Permissions */,
-				222086EE2A62458900EF1ECA /* Utilities.swift */,
 				228362F32A2C1BBB0061BFAE /* DataManager.swift */,
 				22DECD692AAB656300061E60 /* ImagePickerData.swift */,
 				224B2EE32AC8472A00BCF08B /* ImageCropView.swift */,
@@ -266,13 +262,14 @@
 			path = "Data Managers";
 			sourceTree = "<group>";
 		};
-		2270B1F02A68D2BE00823E58 /* Login Flow */ = {
+		2270B1F02A68D2BE00823E58 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
 				2270B2072A68D9FC00823E58 /* AuthView.swift */,
 				222086922A60AE8E00EF1ECA /* UserInfo.swift */,
+				222086EE2A62458900EF1ECA /* Utilities.swift */,
 			);
-			path = "Login Flow";
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 		2270B1F22A68D2E000823E58 /* Models */ = {
@@ -304,18 +301,10 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		2270B2092A68DAE300823E58 /* Controlling Views */ = {
-			isa = PBXGroup;
-			children = (
-				2270B20C2A68DC3F00823E58 /* MenuView.swift */,
-			);
-			path = "Controlling Views";
-			sourceTree = "<group>";
-		};
 		2270B20A2A68DB0100823E58 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2270B2092A68DAE300823E58 /* Controlling Views */,
+				2270B20C2A68DC3F00823E58 /* MenuView.swift */,
 				2270B20B2A68DB0F00823E58 /* Main Views */,
 			);
 			path = Views;
@@ -337,8 +326,6 @@
 			children = (
 				2270B20F2A68DD7100823E58 /* HomeView.swift */,
 				E89012392A7F484A00FCB764 /* HomeMainView.swift */,
-				E8A1E5502A8CDC85003BE94C /* DailyMessageAdminView.swift */,
-				E8A1E54E2A8CD311003BE94C /* DailyMessage.swift */,
 				2270B2172A68DE4500823E58 /* Student Spotlight */,
 				2270B23D2A68E3E000823E58 /* Upcoming Events */,
 			);
@@ -373,8 +360,6 @@
 				2270B2462A68E63E00823E58 /* SportsView.swift */,
 				E8531F602A83D1D100FB64F5 /* SportsMainView.swift */,
 				2270B24A2A68E66200823E58 /* SportsHibabi.swift */,
-				2232FEEB2AA46F5E0067AAB8 /* SportEventAdminView.swift */,
-				2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */,
 				2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */,
 				2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */,
 				2213882F2AC1FF370052A285 /* EventsScraper.swift */,
@@ -395,6 +380,7 @@
 				2270B2362A68E2AE00823E58 /* ClubsDetailView.swift */,
 				2270B2322A68E27800823E58 /* ClubsHibabi.swift */,
 				2232FEF12AA798620067AAB8 /* ClubsEventData.swift */,
+				2270B2342A68E29F00823E58 /* ClubsNewsDetailView.swift */,
 			);
 			path = Clubs;
 			sourceTree = "<group>";
@@ -415,8 +401,8 @@
 			children = (
 				2270B2292A68E0A400823E58 /* ClubSportData.swift */,
 				2232FEED2AA4BD6D0067AAB8 /* FavoriteSportsData.swift */,
-				2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */,
 				22DECD652AAABF9200061E60 /* FavoriteClubsData.swift */,
+				2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */,
 				2270B2392A68E32200823E58 /* SportsDatabase.swift */,
 				2270B23B2A68E33A00823E58 /* ClubsDatabase.swift */,
 			);
@@ -667,7 +653,6 @@
 				221A9D052A9EC1A6004A9F02 /* ClubNewsAdminView.swift in Sources */,
 				2270B2662A68E83600823E58 /* NavigatingSchoolView.swift in Sources */,
 				2270B26E2A68E8E600823E58 /* WebViewModel.swift in Sources */,
-				E8A1E54F2A8CD311003BE94C /* DailyMessage.swift in Sources */,
 				2270B24D2A68E67700823E58 /* SportsNewsDetailView.swift in Sources */,
 				2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */,
 				E87ADFEB2AA13B89009D9512 /* PrivacyPolicyView.swift in Sources */,
@@ -679,7 +664,6 @@
 				2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */,
 				2270B2352A68E29F00823E58 /* ClubsNewsDetailView.swift in Sources */,
 				2270B2582A68E72D00823E58 /* StaffDetailView.swift in Sources */,
-				E8A1E5512A8CDC85003BE94C /* DailyMessageAdminView.swift in Sources */,
 				2270B2142A68DDFC00823E58 /* StudentSpotlight.swift in Sources */,
 				22DECD662AAABF9200061E60 /* FavoriteClubsData.swift in Sources */,
 				2232FEF22AA798620067AAB8 /* ClubsEventData.swift in Sources */,
@@ -858,7 +842,7 @@
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Login-auth-app-Info.plist";
+				INFOPLIST_FILE = "WestHighApp-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "West High";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -900,7 +884,7 @@
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Login-auth-app-Info.plist";
+				INFOPLIST_FILE = "WestHighApp-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "West High";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

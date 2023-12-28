@@ -1,8 +1,6 @@
 //
 //  StudentSpotLight.swift
-//  West App
-//
-//  Created by August Andersen on 5/28/23.
+//  West High App
 //
 
 import SwiftUI

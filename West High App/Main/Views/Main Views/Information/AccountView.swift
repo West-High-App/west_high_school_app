@@ -18,7 +18,7 @@ struct AccountView: View {
                    
             VStack {
                 Form {
-                    if userInfo.loginStatus == "google" {
+                    if userInfo.loginStatus == "Google" {
                     HStack {
                         AsyncImage(url: Auth.auth().currentUser?.photoURL) { phase in
                             switch phase {
@@ -67,7 +67,7 @@ struct AccountView: View {
                     Button {
                         isPresentingLogoutConfirmation = true
                     } label: {
-                        if userInfo.loginStatus == "google" {
+                        if userInfo.loginStatus == "Google" {
                             HStack{
                                 Spacer()
                                 Text("Sign Out")
@@ -93,7 +93,7 @@ struct AccountView: View {
         
             .alert(isPresented: $isPresentingLogoutConfirmation) {
                 
-                if userInfo.loginStatus == "google" {
+                if userInfo.loginStatus == "Google" {
                     Alert(
                         title: Text("Sign Out"),
                         message: Text("Signing out of your Google account will return you to the login screen."),
@@ -104,7 +104,7 @@ struct AccountView: View {
                                     try Auth.auth().signOut()
                                     DispatchQueue.main.async {
                                         print("setting to none")
-                                        userInfo.loginStatus = "none"
+                                        userInfo.loginStatus = "None"
                                         print("set to none")
                                     }
                                 } catch let signOutError {
@@ -126,7 +126,7 @@ struct AccountView: View {
                                     try Auth.auth().signOut()
                                     DispatchQueue.main.async {
                                         print("setting to none")
-                                        userInfo.loginStatus = "none"
+                                        userInfo.loginStatus = "None"
                                         print("set to none")
                                     }
                                 } catch let signOutError {
@@ -148,7 +148,7 @@ struct AccountView: View {
                                 try Auth.auth().signOut()
                                 DispatchQueue.main.async {
                                     print("setting to none")
-                                    userInfo.loginStatus = "none"
+                                    userInfo.loginStatus = "None"
                                     print("set to none")
                                 }
                             } catch let signOutError {

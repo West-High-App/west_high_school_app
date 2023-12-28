@@ -477,7 +477,7 @@ struct HomeView: View {
                                         //.font(.system(size: 45))
                                         //.fontWeight(.bold)
                                         //.multilineTextAlignment(.center)
-                                        if userInfo.loginStatus == "google"{
+                                        if userInfo.loginStatus == "Google"{
                                              Text("Good \(getTime()), \(userInfo.firstName())!")
                                                   .lineLimit(2)
                                                   .minimumScaleFactor(0.2)
@@ -544,7 +544,7 @@ struct HomeView: View {
                                         //.font(.system(size: 45))
                                         //.fontWeight(.bold)
                                         //.multilineTextAlignment(.center)
-                                        if userInfo.loginStatus == "google"{
+                                        if userInfo.loginStatus == "Google"{
                                              Text("Good \(getTime()), \(userInfo.firstName())!")
                                                   .lineLimit(2)
                                                   .minimumScaleFactor(0.2)

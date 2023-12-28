@@ -26,7 +26,7 @@ struct InformationView: View {
                         AccountView()
                             .environmentObject(userInfo)
                     } label: {
-                        if userInfo.loginStatus == "google" {
+                        if userInfo.loginStatus == "Google" {
                             HStack {
                                 AsyncImage(url: Auth.auth().currentUser?.photoURL) { phase in
                                     switch phase {
@@ -170,7 +170,7 @@ struct InformationView: View {
                         Button {
                             do {
                                 try Auth.auth().signOut()
-                                userInfo.loginStatus = "none"
+                                userInfo.loginStatus = "None"
                             } catch let signOutError {
                                 print("tried to sign out failed")
                                 print(signOutError.localizedDescription)

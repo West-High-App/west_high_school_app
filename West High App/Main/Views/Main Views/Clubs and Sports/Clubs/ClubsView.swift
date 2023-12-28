@@ -126,7 +126,7 @@ struct ClubsHibabi: View {
                         VStack {
                             
                             Picker(selection: $clubselected, label: Text(""), content: { // picker at top
-                                if userInfo.loginStatus == "google" {
+                                if userInfo.loginStatus == "Google" {
                                     Text("Favorites").tag(1)
                                 }
                                 Text("Browse").tag(2)
@@ -400,7 +400,7 @@ struct ClubsHibabi: View {
                     }
             }.onAppear {
                 
-                if userInfo.loginStatus != "google" {
+                if userInfo.loginStatus != "Google" {
                     clubselected = 2
                 }
                     

@@ -1,6 +1,6 @@
 //
-// MenuView.swift
-// West High App
+//  MenuView.swift
+//  West High App
 //
 
 import SwiftUI

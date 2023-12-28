@@ -163,7 +163,7 @@ struct SportsHibabi: View {
             ZStack {
                 VStack {
                     Picker(selection: $selected, label: Text(""), content: { // picker at top
-                        if userInfo.loginStatus == "google" {
+                        if userInfo.loginStatus == "Google" {
                             Text("Favorites").tag(1)
                         }
                         Text("Browse").tag(2)
@@ -611,7 +611,7 @@ struct SportsHibabi: View {
                 })
                 
             }.onAppear {
-                if userInfo.loginStatus != "google" {
+                if userInfo.loginStatus != "Google" {
                     selected = 2
                 }
             }

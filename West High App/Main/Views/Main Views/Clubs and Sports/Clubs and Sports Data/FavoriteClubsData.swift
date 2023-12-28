@@ -13,7 +13,7 @@ class FavoriteClubs: ObservableObject {
     var userInfo = UserInfo.shared
     
     func getFavorites(completion: @escaping ([String]) -> Void) {
-        if userInfo.loginStatus == "google" {
+        if userInfo.loginStatus == "Google" {
             let email = userInfo.email
             let db = Firestore.firestore()
             let collection = db.collection("FavoritedClubs")

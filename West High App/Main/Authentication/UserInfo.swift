@@ -1,6 +1,6 @@
 //
-// UserInfo.swift
-// West High App
+//  UserInfo.swift
+//  West High App
 //
 
 import Foundation

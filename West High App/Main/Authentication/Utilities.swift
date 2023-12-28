@@ -1,8 +1,6 @@
 //
 //  Utilities.swift
-//  Login auth app
-//
-//  Created by August Andersen on 7/14/23.
+//  West high App
 //
 
 import Foundation
@@ -15,16 +13,21 @@ final class Utilities {
     
     @MainActor
     func topViewController(controller: UIViewController? = nil) -> UIViewController? {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return nil
+        }
         
-        let controller = controller ?? UIApplication.shared.keyWindow?.rootViewController
+        // Accessing the window's rootViewController
+        let controller = controller ?? windowScene.windows.first?.rootViewController
         
         if let navigationController = controller as? UINavigationController {
             return topViewController(controller: navigationController.visibleViewController)
-
         }
+        
         return controller
     }
 }
+
 
 extension Date {
     

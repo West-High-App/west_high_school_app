@@ -1,8 +1,6 @@
 //
-//  FirstView.swift
-//  Login auth app
-//
-//  Created by August Andersen on 7/8/23. fhello
+//  AuthView.swift
+//  West High App
 //
 
 import SwiftUI
@@ -13,56 +11,59 @@ import FirebaseAuth
 import SystemConfiguration
 
 struct GoogleSignInResultModel {
+    
     let idToken: String
     let accessToken: String
 }
 
-// MARK: SIGN IN FUNCTIONS
-func SignInGoogle(tokens: GoogleSignInResultModel, bypass: Bool) async throws -> Bool {
+func signInWithGoogle(tokens: GoogleSignInResultModel, bypassing: Bool) async throws -> Bool {
+    
     let userInfo = UserInfo.shared
-    print("Signing in to Google.")
+    
+    print("Signing in with Google.")
+    
+    // Tries to sign in using the provided tokens
     let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
-    let _ = try await Auth.auth().signIn(with: credential)
-    let allowedDomain = "@madison.k12.wi.us"
-    /* if Auth.auth().currentUser?.email?.contains(allowedDomain) != nil && bypass == false {
-     print("Incorrect domain.")
-     try Auth.auth().signOut()
-     return false
-     }
-     else {
-     print("Domain verified.")
-     return true
-     }
-     } */
+    try await Auth.auth().signIn(with: credential)
+    
     print("Verified login.")
+    
+    let allowedDomain = "@madison.k12.wi.us"
+    
     if Auth.auth().currentUser?.email?.contains(allowedDomain) != nil {
         DispatchQueue.main.async {
             userInfo.isMMSD = true
         }
     }
+    
     return true
 }
 
 @MainActor
-final class AuthenticationViewModel: ObservableObject {
+final class AuthViewModel: ObservableObject {
     
-    func signInWithGoogle(bypassing: Bool) async throws -> Bool {
+    func startSignInProcess(bypassing: Bool) async throws -> Bool {
         
-        guard let topVC = Utilities.shared.topViewController() else {
-            throw URLError(.cannotFindHost) // top view controller window
+        // Top view controller window
+        guard let topViewController = Utilities.shared.topViewController() else {
+            throw URLError(.cannotFindHost)
         }
         
-        let SignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: topVC) // signs in all that stuff
+        // Signing in
+        let SignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: topViewController)
         
+        // Tokens needed to sign in
         guard let idToken = SignInResult.user.idToken?.tokenString else {
             throw URLError(.badServerResponse)
         }
-        let accessToken: String = SignInResult.user.accessToken.tokenString // these two match to verify login
+        let accessToken: String = SignInResult.user.accessToken.tokenString
         
         let tokens = GoogleSignInResultModel(idToken: idToken, accessToken: accessToken)
         
         print("Verifying...")
-        return try await SignInGoogle(tokens: tokens, bypass: bypassing) // tokens: tokens
+        
+        // Signs the user in with the retrieved tokens
+        return try await signInWithGoogle(tokens: tokens, bypassing: bypassing)
     }
     
 }
@@ -73,21 +74,19 @@ struct AuthView: View {
     
     @State private var email = ""
     @State private var password = ""
-    @State var messageText = ""
-    @State var userIsLoggedIn = false
-    @State var count = 0
     @State var showingDomainError = false
-    @StateObject private var viewModel = AuthenticationViewModel()
-    @StateObject var dataManager = DataManager()
-    @EnvironmentObject var userInfo: UserInfo // changed this bitch
-    @State var shutdownmanager = ShutdownManager()
     
-    // check for internet connection
+    @StateObject private var viewModel = AuthViewModel()
+    @State var shutdownManager = ShutdownManager()
+    @EnvironmentObject var userInfo: UserInfo
+    
+    // Check for an internet connection
     func isInternetAvailable() -> Bool {
+        
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
-
+        
         guard let defaultRouteReachability = withUnsafePointer(to: &zeroAddress, {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
                 zeroSockAddress in
@@ -96,15 +95,15 @@ struct AuthView: View {
         }) else {
             return false
         }
-
+        
         var flags: SCNetworkReachabilityFlags = []
         if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
             return false
         }
-
+        
         let isReachable = flags.contains(.reachable)
         let needsConnection = flags.contains(.connectionRequired)
-
+        
         return isReachable && !needsConnection
     }
 
@@ -112,23 +111,23 @@ struct AuthView: View {
     var body: some View {
         
         if isInternetAvailable() {
-                if userInfo.loginStatus == "google" {
-                        MenuView()
-                            .environmentObject(userInfo)
-                            .onAppear {
-                                userInfo.displayName = Auth.auth().currentUser?.displayName ?? "student"
-                                userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
-                            }
+            if userInfo.loginStatus == "Google" {
+                MenuView()
+                    .environmentObject(userInfo)
+                    .onAppear {
+                        userInfo.displayName = Auth.auth().currentUser?.displayName ?? "student"
+                        userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
                     }
+            }
             
-                else if userInfo.loginStatus == "guest" {
-                        MenuView()
-                            .environmentObject(userInfo)
-                            .onAppear {
-                                userInfo.displayName = "guest"
-                                userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
-                            }
-                }
+            else if userInfo.loginStatus == "Guest" {
+                MenuView()
+                    .environmentObject(userInfo)
+                    .onAppear {
+                        userInfo.displayName = "Guest"
+                        userInfo.email = Auth.auth().currentUser?.email ?? "no email found"
+                    }
+            }
             
             else {
                 NavigationView {
@@ -146,12 +145,11 @@ struct AuthView: View {
                             Button {
                                 Task {
                                     do {
-                                        if try await viewModel.signInWithGoogle(bypassing: false) {
+                                        if try await viewModel.startSignInProcess(bypassing: false) {
                                             
                                             print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
                                             
-                                            userInfo.loginStatus = "google"
-                                            count = 1
+                                            userInfo.loginStatus = "Google"
                                         }
                                         else {
                                             showingDomainError = true
@@ -188,7 +186,7 @@ struct AuthView: View {
                             }
                             
                             Button {
-                                userInfo.loginStatus = "guest"
+                                userInfo.loginStatus = "Guest"
                                 
                             } label: {
                                 Text("Continue as Guest")
@@ -235,16 +233,9 @@ struct AuthView: View {
                                 
                                 Task {
                                     do {
-                                        if count == 0 {
-                                            if try await viewModel.signInWithGoogle(bypassing: true) {
-                                                print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
-                                                userInfo.loginStatus = "google"
-                                                count = 1
-                                            }
-                                            else {
-                                                print("Unsuccesful login.")
-                                                showingDomainError = true
-                                            }
+                                        if try await viewModel.startSignInProcess(bypassing: true) {
+                                            print("User logged in with Google. Email: \(Auth.auth().currentUser!.email ?? "No email found.")")
+                                            userInfo.loginStatus = "Google"
                                         }
                                     } catch {
                                         print(error.localizedDescription)
@@ -268,7 +259,7 @@ struct AuthView: View {
                     Text("Please check your connection and try again.")
                         .screenMessageStyle(size: 20)
                 }
-
+                
             }
         }
         
