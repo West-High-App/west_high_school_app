@@ -128,9 +128,7 @@ struct HomeView: View {
                                              }
                                         }
                                         .padding(.bottom, 10)
-                                        
-                                        //SNACK SPLICE BOISSSSSS
-                                        
+                                                                                
                                         //MARK: upcoming events
                                         VStack{
                                              NavigationLink {

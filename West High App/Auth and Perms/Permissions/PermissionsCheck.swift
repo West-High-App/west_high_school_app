@@ -62,10 +62,10 @@ class PermissionsCheck: ObservableObject {
         permissions.checkPermissions(dataType: "Sports Admin", user: user.email) { result in
             self.sports = result
         }
-        permissions.checkPermissions(dataType: "Upcoming Events", user: user.email) { result in
+        permissions.checkPermissions(dataType: "Upcoming Events Admin", user: user.email) { result in
             self.upcomingevents = result
         }
-        permissions.checkPermissions(dataType: "Announcements", user: user.email) { result in
+        permissions.checkPermissions(dataType: "Announcements Admin", user: user.email) { result in
             self.announcements = result
         }
         permissions.checkPermissions(dataType: "Article Admin", user: user.email) { result in
@@ -80,7 +80,7 @@ class PermissionsCheck: ObservableObject {
                 self.articles = result
             }
         }
-        permissions.checkPermissions(dataType: "Admin", user: user.email) { result in
+        permissions.checkPermissions(dataType: "General Admin", user: user.email) { result in
             self.admin = result
             if result {
                 self.clubs = true
