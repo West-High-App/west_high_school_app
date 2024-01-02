@@ -413,11 +413,8 @@
 				E8531F602A83D1D100FB64F5 /* SportsMainView.swift */,
 				2270B24A2A68E66200823E58 /* SportsHibabi.swift */,
 				2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */,
-				2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */,
-				2213882F2AC1FF370052A285 /* EventsScraper.swift */,
 				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
 				221423E22AD19F860015CD3B /* RosterDetailView.swift */,
-				221388342AC202530052A285 /* SportEventStorage.swift */,
 				E8BD7FC62AD1DFDD0095443A /* Info thing.swift */,
 				E8BD7FC82AD1E0080095443A /* Another Info Thing.swift */,
 			);
@@ -431,7 +428,6 @@
 				E82562D62A84D0DA000AF117 /* ClubsMainView.swift */,
 				2270B2362A68E2AE00823E58 /* ClubsDetailView.swift */,
 				2270B2322A68E27800823E58 /* ClubsHibabi.swift */,
-				2232FEF12AA798620067AAB8 /* ClubsEventData.swift */,
 				2270B2342A68E29F00823E58 /* ClubsNewsDetailView.swift */,
 			);
 			path = Clubs;
@@ -457,6 +453,10 @@
 				2270B22D2A68E1F800823E58 /* ClubSportNewsData.swift */,
 				2270B2392A68E32200823E58 /* SportsDatabase.swift */,
 				2270B23B2A68E33A00823E58 /* ClubsDatabase.swift */,
+				2213882F2AC1FF370052A285 /* EventsScraper.swift */,
+				221388342AC202530052A285 /* SportEventStorage.swift */,
+				2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */,
+				2232FEF12AA798620067AAB8 /* ClubsEventData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
