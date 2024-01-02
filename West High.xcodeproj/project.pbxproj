@@ -17,6 +17,8 @@
 		2215EDF12B3DCBC600B663EC /* Shapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDF02B3DCBC600B663EC /* Shapes.swift */; };
 		2215EDF52B3DD19700B663EC /* PermissionsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDF42B3DD19700B663EC /* PermissionsDataManager.swift */; };
 		2215EDF82B3DD65300B663EC /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDF72B3DD65300B663EC /* Text.swift */; };
+		2215EDFE2B3DF40900B663EC /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDFD2B3DF40900B663EC /* Date.swift */; };
+		2215EE002B40862700B663EC /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2215EDFF2B40862700B663EC /* Color.swift */; };
 		221A9CFA2A95DD0A004A9F02 /* PermissionsCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CF92A95DD0A004A9F02 /* PermissionsCheck.swift */; };
 		221A9CFE2A9D51C0004A9F02 /* SpotlightAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */; };
 		221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */; };
@@ -116,6 +118,8 @@
 		2215EDF02B3DCBC600B663EC /* Shapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shapes.swift; sourceTree = "<group>"; };
 		2215EDF42B3DD19700B663EC /* PermissionsDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsDataManager.swift; sourceTree = "<group>"; };
 		2215EDF72B3DD65300B663EC /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
+		2215EDFD2B3DF40900B663EC /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		2215EDFF2B40862700B663EC /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		221A9CF92A95DD0A004A9F02 /* PermissionsCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsCheck.swift; sourceTree = "<group>"; };
 		221A9CFD2A9D51C0004A9F02 /* SpotlightAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightAdminView.swift; sourceTree = "<group>"; };
 		221A9D022A9EAE82004A9F02 /* SportsNewsAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsNewsAdminView.swift; sourceTree = "<group>"; };
@@ -288,7 +292,6 @@
 			isa = PBXGroup;
 			children = (
 				228362DC2A2AB3D80061BFAE /* Assets.xcassets */,
-				228362DE2A2AB3D80061BFAE /* Preview Content */,
 			);
 			path = "Assets and Previews";
 			sourceTree = "<group>";
@@ -333,6 +336,8 @@
 			children = (
 				2215EDF72B3DD65300B663EC /* Text.swift */,
 				2215EDF02B3DCBC600B663EC /* Shapes.swift */,
+				2215EDFD2B3DF40900B663EC /* Date.swift */,
+				2215EDFF2B40862700B663EC /* Color.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -510,6 +515,7 @@
 			isa = PBXGroup;
 			children = (
 				228362D72A2AB3D70061BFAE /* West High App */,
+				228362DE2A2AB3D80061BFAE /* Preview Content */,
 				2270B1F82A68D5ED00823E58 /* West High App Test */,
 				228362D62A2AB3D70061BFAE /* Products */,
 				228362F52A2C1E720061BFAE /* Frameworks */,
@@ -698,6 +704,7 @@
 				22DECD682AAB655000061E60 /* ImagePickerView.swift in Sources */,
 				22DF41452AB3586E00D25707 /* AccountView.swift in Sources */,
 				228485CF2AB4B0F700D2AAD2 /* LinkTextView.swift in Sources */,
+				2215EDFE2B3DF40900B663EC /* Date.swift in Sources */,
 				2270B2192A68DE9E00823E58 /* SpotlightData.swift in Sources */,
 				2270B2352A68E29F00823E58 /* ClubsNewsDetailView.swift in Sources */,
 				2270B2582A68E72D00823E58 /* StaffDetailView.swift in Sources */,
@@ -722,6 +729,7 @@
 				221423E32AD19F860015CD3B /* RosterDetailView.swift in Sources */,
 				2270B23F2A68E3FF00823E58 /* UpcomingEventsView.swift in Sources */,
 				E87A324C2A967EC100D7CDB1 /* HelpSupportView.swift in Sources */,
+				2215EE002B40862700B663EC /* Color.swift in Sources */,
 				2270B2312A68E26900823E58 /* ClubsView.swift in Sources */,
 				2270B25A2A68E75900823E58 /* StaffData.swift in Sources */,
 				224B2EE42AC8472A00BCF08B /* ImageCropView.swift in Sources */,
@@ -873,7 +881,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"West High App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"$(SRCROOT)/Preview Content\"";
 				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;
@@ -915,7 +923,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"West High App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"$(SRCROOT)/Preview Content\"";
 				DEVELOPMENT_TEAM = B2YZ849D42;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_PREVIEWS = YES;

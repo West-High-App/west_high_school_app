@@ -1,3 +1,8 @@
+//
+//  PermissionsDataManager.swift
+//  West High App
+//
+
 import Foundation
 import Firebase
 
@@ -94,4 +99,3 @@ class PermissionsCheck: ObservableObject {
         }
     }
 }
-
