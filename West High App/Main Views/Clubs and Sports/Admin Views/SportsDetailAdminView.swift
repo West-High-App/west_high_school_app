@@ -313,6 +313,14 @@ struct SportsDetailAdminView: View {
                     
                     sporttoedit = sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, rosterimage: rosterimage, rosterimagedata: displayimage2, imagedata: displayimage, documentID: documentID, sportid: "\(sportname) \(sportsteam)", id: editingsport.id)
                     
+                    if let sporttoedit = sporttoedit {
+                        if let image = sporttoedit.imagedata {
+                            imagemanager.cacheImageInUserDefaults(image: image, fileName: sporttoedit.sportsimage)
+                        }
+                        if let image = sporttoedit.rosterimagedata {
+                            imagemanager.cacheImageInUserDefaults(image: image, fileName: sporttoedit.rosterimage)
+                        }
+                    }
                     
                     if let sporttoedit = sporttoedit {
                         sportsmanager.updateSport(data: sporttoedit)
