@@ -14,7 +14,8 @@ class sportEvent: NSObject, Identifiable {
     let arrayId: String
     let documentID: String
     var title: String
-    var subtitle: String
+    var subtitleLineOne: String
+    var subtitleLineTwo: String
     let month: String
     let day: String
     let year: String
@@ -23,11 +24,12 @@ class sportEvent: NSObject, Identifiable {
     var score: [Int] = [0, 0] // score of game (if applicable), home team first
     var isUpdated: Bool // should it show on past games
     
-    required init(documentID: String, arrayId: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String, isSpecial: Bool, score: [Int], isUpdated: Bool) {
+    required init(documentID: String, arrayId: String, title: String, subtitleLineOne: String, subtitleLineTwo: String, month: String, day: String, year: String, publisheddate: String, isSpecial: Bool, score: [Int], isUpdated: Bool) {
         self.documentID = documentID
         self.arrayId = arrayId
         self.title = title
-        self.subtitle = subtitle
+        self.subtitleLineOne = subtitleLineOne
+        self.subtitleLineTwo = subtitleLineTwo
         self.month = month
         self.day = day
         self.year = year
@@ -155,7 +157,8 @@ class sportEventManager: ObservableObject {
                     
                     let id = document.documentID
                     let eventname = event["title"] as? String ?? ""
-                    let time = event["subtitle"] as? String ?? ""
+                    let subtitleLineOne = event["subtitleLineOne"] as? String ?? event["subtitle"] as? String ?? ""
+                    let subtitleLineTwo = event["subtitleLineTwo"] as? String ?? ""
                     let month = event["month"] as? String ?? ""
                     let day = event["day"] as? String ?? ""
                     let year = event["year"] as? String ?? ""
@@ -163,7 +166,7 @@ class sportEventManager: ObservableObject {
                     let score = event["score"] as? [Int] ?? []
                     let isUpdated = event["isUpdated"] as? Bool ?? false
 
-                    let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
+                    let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitleLineOne: subtitleLineOne, subtitleLineTwo: subtitleLineTwo, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
                     return newEvent
                 }
                 
@@ -237,7 +240,8 @@ class sportEventManager: ObservableObject {
         
         let id = setEvent.arrayId
         let title = setEvent.title
-        let subtitle = setEvent.subtitle
+        let subtitleLineOne = setEvent.subtitleLineOne
+        let subtitleLineTwo = setEvent.subtitleLineTwo
         let month = setEvent.month
         let day = setEvent.day
         let year = setEvent.year
@@ -245,7 +249,7 @@ class sportEventManager: ObservableObject {
         let isSpecial = setEvent.isSpecial
         let isUpdated = setEvent.isUpdated
         let score = setEvent.score
-        let dict = ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated] as [String : Any]
+        let dict = ["id": id, "title": title, "subtitleLineOne": subtitleLineOne, "subtitleLineTwo": subtitleLineTwo, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated] as [String : Any]
         
         ref.setData(dict)
         

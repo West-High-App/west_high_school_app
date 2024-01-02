@@ -29,7 +29,8 @@ struct SportEventsAdminView: View {
     
     
     @State var title = ""
-    @State var subtitle = ""
+    @State var subtitleLineOne = ""
+    @State var subtitleLineTwo = ""
     @State var date = ""
     @State var isSpecial = false
     @State var score: [Int] = []
@@ -56,7 +57,7 @@ struct SportEventsAdminView: View {
                     VStack(alignment: .leading) {
                         Text(event.title)
                             .fontWeight(.semibold)
-                        Text(event.subtitle)
+                        Text(event.subtitleLineOne)
                         Text("\(event.month) \(event.day), \(event.year)")
                     }.contextMenu {
                         Button("Delete", role: .destructive) {
@@ -123,7 +124,7 @@ struct SportEventsAdminView: View {
                             }
                         } else {
                             Section(header: Text("Event information")) {
-                                    TextField("Description", text: $subtitle)
+                                    TextField("Description", text: $subtitleLineOne)
                             }
                         }
                         
@@ -150,7 +151,8 @@ struct SportEventsAdminView: View {
                             documentID: "NAN", 
                             arrayId: UUID().uuidString,
                             title: title,
-                            subtitle: subtitle,
+                            subtitleLineOne: subtitleLineOne,
+                            subtitleLineTwo: subtitleLineTwo,
                             month: months[selectedMonthIndex],
                             day: "\(days[selectedDayIndex])",
                             year: years[selectedYearIndex],

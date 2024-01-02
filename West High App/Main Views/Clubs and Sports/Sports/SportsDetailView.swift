@@ -291,8 +291,8 @@ struct SportsDetailView: View {
                                     VStack (alignment: .leading){
                                         Text(event.title)
                                             .font(.headline)
+                                        Text(event.subtitleLineOne)
                                         if !event.isSpecial {
-                                            Text(event.subtitle)
                                             HStack {
                                                 if event.score.count > 1 {
                                                     if event.score[0] == 0 && event.score[1] == 0 && event.isUpdated == false {
@@ -320,22 +320,19 @@ struct SportsDetailView: View {
                                                 }
                                             }
                                         } else { // MARK: new shit here
-                                            if event.subtitle.contains("$WIN$") {
-                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
+                                            if event.subtitleLineTwo.contains("$WIN$") {
                                                 Text("Win")
                                                     .foregroundColor(.green)
-                                            } else if event.subtitle.contains("$LOSS$") {
-                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
+                                            } else if event.subtitleLineTwo.contains("$LOSS$") {
                                                 Text("Loss")
                                                     .foregroundColor(.red)
                                             }
-                                            else if event.subtitle.contains("$TIE$") {
-                                                Text(event.subtitle.components(separatedBy: "\n").first ?? "")
+                                            else if event.subtitleLineTwo.contains("$TIE$") {
                                                 Text("Tie")
                                                     .foregroundColor(.black)
                                             }
                                             else {
-                                                Text(event.subtitle)
+                                                Text(event.subtitleLineTwo.replacingOccurrences(of: "$CUSTOM$=", with: ""))
                                             }
                                         }
                                     }
