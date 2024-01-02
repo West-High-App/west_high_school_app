@@ -429,6 +429,13 @@ struct HomeView: View {
                     }
                }
           }.onAppear() {
+               if !hasAppeared {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                         hasPermission.updatePermissions()
+                    }
+               }
+               
+               hasAppeared = true
                loadWebViews = false
           }
      }

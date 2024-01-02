@@ -188,9 +188,9 @@ struct AuthView: View {
                             
                             // Continue as guest button
                             Button {
-                                
+
                                 userInfo.loginStatus = "Guest"
-                                
+                                                                
                             } label: {
                                 Text("Continue as Guest")
                                     .signInButtonText(color: .black)
