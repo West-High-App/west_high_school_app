@@ -105,7 +105,7 @@ struct HomeView: View {
                     ClassesView()
                     SchoolPolicyGuideView()
                }
-               //MARK: HOME
+               
                if !isShutDown {
                     NavigationView{
                          ScrollView(.vertical, showsIndicators: false) {
@@ -434,7 +434,6 @@ struct HomeView: View {
                          hasPermission.updatePermissions()
                     }
                }
-               
                hasAppeared = true
                loadWebViews = false
           }
