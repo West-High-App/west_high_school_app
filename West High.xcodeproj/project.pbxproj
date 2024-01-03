@@ -288,7 +288,6 @@
 			isa = PBXGroup;
 			children = (
 				228362DC2A2AB3D80061BFAE /* Assets.xcassets */,
-				228362DE2A2AB3D80061BFAE /* Preview Content */,
 			);
 			path = "Assets and Previews";
 			sourceTree = "<group>";
@@ -510,6 +509,7 @@
 			isa = PBXGroup;
 			children = (
 				228362D72A2AB3D70061BFAE /* West High App */,
+				228362DE2A2AB3D80061BFAE /* Preview Content */,
 				2270B1F82A68D5ED00823E58 /* West High App Test */,
 				228362D62A2AB3D70061BFAE /* Products */,
 				228362F52A2C1E720061BFAE /* Frameworks */,

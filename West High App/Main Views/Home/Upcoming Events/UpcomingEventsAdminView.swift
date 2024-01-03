@@ -197,13 +197,13 @@ struct EventDetailView: View {
                 Section(header: Text("Event Details")) {
                     TextField("Event Name", text: $eventName)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
+                    Toggle("All Day", isOn: $isAllDay)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     if !isAllDay {
                         DatePicker("Pick a time", selection: $eventTime, displayedComponents: .hourAndMinute)
                             .labelsHidden()
                             .datePickerStyle(WheelDatePickerStyle())
                     }
-                    Toggle("All Day", isOn: $isAllDay)
-                        .font(.system(size: 17, weight: .regular, design: .rounded))
                     Picker("Month", selection: $selectedMonthIndex) {
                         ForEach(0..<months.count, id: \.self) { index in
                             Text(months[index]).tag(index)
