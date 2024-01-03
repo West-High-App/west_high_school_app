@@ -86,7 +86,7 @@ struct ClubsEventsAdminView: View {
                                     Text(event.title)
                                         .lineLimit(2)
                                         .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                    Text(event.subtitle)
+                                    Text(eventDate.twelveHourTime)
                                         .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                         .lineLimit(1)
                                 }
@@ -210,6 +210,10 @@ struct ClubEventAdminDetailView: View {
                    if admin {
                        //bob
                        TextField("Title", text: $title)
+                       DatePicker("Pick a time", selection: $selectedTime, displayedComponents: .hourAndMinute)
+                           .labelsHidden()
+                           .datePickerStyle(WheelDatePickerStyle())
+                       
                    } else {
                        Picker("Event Type", selection: $selectedevent) {
                            Text("Meeting")
@@ -221,12 +225,10 @@ struct ClubEventAdminDetailView: View {
                            Text("Special Event")
                                .tag(3)
                        }
+                       DatePicker("Pick a time", selection: $selectedTime, displayedComponents: .hourAndMinute)
+                           .labelsHidden()
+                           .datePickerStyle(WheelDatePickerStyle())
                    }
-                   
-                   DatePicker("Pick a time", selection: $selectedTime, displayedComponents: .hourAndMinute)
-                       .labelsHidden()
-                       .datePickerStyle(WheelDatePickerStyle())
-
                    
                    Picker("Month", selection: $selectedMonthIndex) {
                        ForEach(0..<months.count, id: \.self) { index in

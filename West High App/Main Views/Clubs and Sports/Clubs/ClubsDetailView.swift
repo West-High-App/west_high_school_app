@@ -181,7 +181,7 @@ struct ClubsDetailView: View {
                                                 .minimumScaleFactor(0.8)
                                                 .lineLimit(2)
                                                 .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                            Text(event.subtitle) // TODO: add all-day option here (and firebase ofc)
+                                            Text(eventDate.twelveHourTime) // TODO: add all-day option here (and firebase ofc)
                                                 .minimumScaleFactor(0.8)
                                                 .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
                                                 .lineLimit(1)

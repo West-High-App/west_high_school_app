@@ -290,7 +290,9 @@ struct PastSportEventsAdminView: View {
                             let score1 = Int(homescore) ?? 0
                             let score2 = Int(otherscore) ?? 0
                             let tempscore = [score1, score2]
-                                                        
+                            
+                            var part1 = ""
+                            
                             switch selectedspecialeventtype {
                             case 0:
                                 editingdescription = "$WIN$";
