@@ -30,8 +30,8 @@ class clubEvent: NSObject, Identifiable {
         // Set the date formatter and optionally set the formatted date from string
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM dd, yyyy h:mm a"
-        if let date = dateFormatter.date(from: "\(month) \(day), \(year) \(subtitle)") {
+        dateFormatter.dateFormat = "MMM dd, yyyy"
+        if let date = dateFormatter.date(from: "\(month) \(day), \(year)") {
             let convertedDate = date.convertToTimeZone(initTimeZone: .chicago, timeZone: .current)
             
             if convertDate {
@@ -42,10 +42,10 @@ class clubEvent: NSObject, Identifiable {
         }
     }
     
-    init(title: String, date: Date) {
+    init(title: String, subtitle: String, date: Date) {
         self.documentID = UUID().uuidString
         self.title = title
-        self.subtitle = date.twelveHourTime
+        self.subtitle = subtitle
         self.month = date.monthName
         self.day = "\(date.dateComponent(.day))"
         self.year = "\(date.dateComponent(.year))"
@@ -95,15 +95,17 @@ class clubEventManager: ObservableObject {
                     if clubID == forClub {
                         let returnValue = events.compactMap { event in
                             let eventname = event["title"] ?? ""
-                            let time = event["subtitle"] ?? ""
+                            let subtitle = event["subtitle"] ?? ""
                             let month = event["month"] ?? ""
                             let day = event["day"] ?? ""
                             let year = event["year"] ?? ""
 
-                            let newEvent = clubEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
+                            let newEvent = clubEvent(documentID: documentID, title: eventname, subtitle: subtitle, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
                             if let newDate = newEvent.date, newDate >= Date.yesterday {
                                 return newEvent
                             } else {
+                                self.deleteClubEvent(forClub: forClub, clubEvent: newEvent)
+                                print("deleted club event i think")
                                 return nil
                             }
                         }
