@@ -120,10 +120,13 @@ struct AccountView: View {
                         title: Text("Sign In"),
                         message: Text("Continuing will return you to the login screen."),
                         primaryButton: .default(Text("Continue")) {
+                                                        
                             DispatchQueue.main.async {
                                 do {
                                     print("trying to sign out.")
+                                    
                                     try Auth.auth().signOut()
+
                                     DispatchQueue.main.async {
                                         print("setting to none")
                                         userInfo.loginStatus = "None"

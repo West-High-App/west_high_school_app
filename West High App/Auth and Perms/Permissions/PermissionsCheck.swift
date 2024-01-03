@@ -1,3 +1,8 @@
+//
+//  PermissionsDataManager.swift
+//  West High App
+//
+
 import Foundation
 import Firebase
 
@@ -55,6 +60,10 @@ class PermissionsCheck: ObservableObject {
     }
     
     init() {
+        self.updatePermissions()
+    }
+    
+    func updatePermissions() {
         
         permissions.checkPermissions(dataType: "Clubs Admin", user: user.email) { result in
             self.clubs = result
@@ -92,6 +101,6 @@ class PermissionsCheck: ObservableObject {
                 self.articles = true
             }
         }
+        
     }
 }
-

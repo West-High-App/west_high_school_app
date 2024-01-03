@@ -2,8 +2,7 @@
 //  WebView.swift
 //  West App
 //
-//  Created by Aiden Lee on 5/26/23.
-//
+
 import SwiftUI
 import WebKit
 
