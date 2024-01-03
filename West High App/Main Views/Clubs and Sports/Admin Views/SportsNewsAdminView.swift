@@ -390,7 +390,6 @@ struct SportsNewsAdminView: View {
                             .lineLimit(1)
                             .font(.system(size: 22, weight: .semibold, design: .rounded))
                             .padding(.leading, 5)
-                        Spacer()
                     }
                     
                 }
@@ -417,7 +416,6 @@ struct SportsNewsAdminView: View {
                         .multilineTextAlignment(.center)
                         .font(.system(size: 24, weight: .semibold, design: .rounded))
                         .padding(5)
-                    Spacer()
                 }
             }
         }                .navigationBarTitle(Text("Edit Sport News"))
@@ -600,12 +598,6 @@ struct sportNewsRowlView: View {
                         
                         let achievementToSave = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: hasPermission.articleadmin, imagedata: imagedata, documentID: "NAN")
                          
-                        if let fileName = newsimage.first {
-                            if let image = imagedata.first {
-                                imagemanager.cacheImageInUserDefaults(image: image, fileName: fileName)
-                            }
-                        }
-                        
                         dataManager.createSportNews(sportNews: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating sport news: \(error.localizedDescription)")

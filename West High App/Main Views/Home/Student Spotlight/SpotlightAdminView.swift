@@ -440,15 +440,6 @@ struct SpotlightAdminView: View {
                                                         }
                                                         var tempachievement = achievementToDelete
                                                         tempachievement.isApproved = true
-                                                        
-                                                        var i = 0
-                                                        for image in tempachievement.images {
-                                                            if tempachievement.imagedata.count > i {
-                                                                imagemanager.cacheImageInUserDefaults(image: tempachievement.imagedata[i], fileName: image)
-                                                            }
-                                                            i = i + 1
-                                                        }
-                                                        
                                                         dataManager.createAchievement(achievement: tempachievement) { error in
                                                             if let error = error {
                                                                 print("Error approving achievement: \(error.localizedDescription)")
@@ -467,7 +458,6 @@ struct SpotlightAdminView: View {
                             .lineLimit(1)
                             .font(.system(size: 22, weight: .semibold, design: .rounded))
                             .padding(.leading, 5)
-                        Spacer()
                     }
                 }
             } else {
@@ -489,7 +479,6 @@ struct SpotlightAdminView: View {
                         .multilineTextAlignment(.center)
                         .font(.system(size: 24, weight: .semibold, design: .rounded))
                         .padding(5)
-                    Spacer()
                 }
                 
             }
@@ -700,17 +689,8 @@ struct AchievementDetailView: View {
                             articleauthor: articleAuthor,
                             publisheddate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)",
                             date: date,
-                            images: images, isApproved: check, imagedata: displayimagesdata
+                            images: images, isApproved: check, imagedata: []
                         )
-                        
-                        var i = 0
-                        for image in achievementToSave.images {
-                            if achievementToSave.imagedata.count > i {
-                                imagemanager.cacheImageInUserDefaults(image: achievementToSave.imagedata[i], fileName: image)
-                            }
-                            i = i + 1
-                        }
-                        
                         dataManager.createAchievement(achievement: achievementToSave) { error in
                             if let error = error {
                                 print("Error creating achievement: \(error.localizedDescription)")

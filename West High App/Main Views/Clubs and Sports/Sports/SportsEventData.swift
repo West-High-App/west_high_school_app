@@ -14,8 +14,7 @@ class sportEvent: NSObject, Identifiable {
     let arrayId: String
     let documentID: String
     var title: String
-    var subtitleLineOne: String
-    var subtitleLineTwo: String
+    var subtitle: String
     let month: String
     let day: String
     let year: String
@@ -24,12 +23,11 @@ class sportEvent: NSObject, Identifiable {
     var score: [Int] = [0, 0] // score of game (if applicable), home team first
     var isUpdated: Bool // should it show on past games
     
-    required init(documentID: String, arrayId: String, title: String, subtitleLineOne: String, subtitleLineTwo: String, month: String, day: String, year: String, publisheddate: String, isSpecial: Bool, score: [Int], isUpdated: Bool) {
+    required init(documentID: String, arrayId: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String, isSpecial: Bool, score: [Int], isUpdated: Bool) {
         self.documentID = documentID
         self.arrayId = arrayId
         self.title = title
-        self.subtitleLineOne = subtitleLineOne
-        self.subtitleLineTwo = subtitleLineTwo
+        self.subtitle = subtitle
         self.month = month
         self.day = day
         self.year = year
@@ -72,6 +70,70 @@ class sportEventManager: ObservableObject {
         self.getPastSportsEvents(forSport: "\(sport.sportname) \(sport.sportsteam)")
     }
     
+//    private func getSportsEvents(forSport sport: sport, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
+//        guard currentSport == sport else { return }
+//        
+//        if self.eventDictionary["\(sport.sportname) \(sport.sportsteam)"] == nil {
+//            self.isLoading = true
+//        }
+//        
+//        HTMLParser.parseEvents(from: sport.eventslink) { parsedevents, error in
+//            
+//            // Convert all events
+//            let allSportsEvents: [sportEvent] = parsedevents?.compactMap({ parsedEvent in
+//                let calendar = Calendar.current
+//                let components = calendar.dateComponents([.day, .month, .year], from: parsedEvent.date)
+//                
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "MMM" // This will give you the abbreviated month name
+//                
+//                return sportEvent(
+//                    documentID: "NAN",
+//                    arrayId: "NAN",
+//                    title: parsedEvent.type,
+//                    subtitle: parsedEvent.opponent,
+//                    month: dateFormatter.string(from: parsedEvent.date),
+//                    day: "\(components.day ?? 0)",
+//                    year: "\(components.year ?? 0)",
+//                    publisheddate: parsedEvent.date.formatted(date: .abbreviated, time: .omitted),
+//                    isSpecial: false,
+//                    score: [0, 0],
+//                    isUpdated: false
+//                )
+//            }) ?? []
+//            
+//            if let sportsEvents = parsedevents?.filter({ $0.date > Date() }) {
+//                DispatchQueue.main.async {
+//                    self.sportsEvents = sportsEvents
+//                    self.eventDictionary["\(sport.sportname) \(sport.sportsteam)"] = sportsEvents
+//                }
+//            }
+//            
+//            let pastSortsEvents = allSportsEvents.filter({ $0.date < Date() })
+//            
+//            for event in pastSortsEvents {
+//                if !self.pastSportsEvents.contains(where: {
+//                    $0.date == event.date &&
+//                    $0.title == event.title &&
+//                    $0.subtitle == event.subtitle
+//                }) {
+//                    print("sportEvent: \(event.title); \(event.subtitle)")
+//                    print("")
+//                    self.createSportEvent(forSport: "\(sport.sportname) \(sport.sportsteam)", sportEvent: event)
+//                }
+//            }
+//            
+//            if let completion {
+//                completion(allSportsEvents, error)
+//            }
+//            DispatchQueue.main.async {
+//                self.isLoading = false
+//            }
+//            /* DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(3)) {
+//                self.getSportsEvents(forSport: sport)
+//            } */ // MARK: this is duplicating the elements in the list and slowing down the app significantly
+//        }
+//    }
 //     
     func getSportsEvent(forSport: String, completion: (([sportEvent]?, Error?) -> Void)? = nil) {
         self.isLoading = true
@@ -157,8 +219,7 @@ class sportEventManager: ObservableObject {
                     
                     let id = document.documentID
                     let eventname = event["title"] as? String ?? ""
-                    let subtitleLineOne = event["subtitleLineOne"] as? String ?? event["subtitle"] as? String ?? ""
-                    let subtitleLineTwo = event["subtitleLineTwo"] as? String ?? ""
+                    let time = event["subtitle"] as? String ?? ""
                     let month = event["month"] as? String ?? ""
                     let day = event["day"] as? String ?? ""
                     let year = event["year"] as? String ?? ""
@@ -166,7 +227,7 @@ class sportEventManager: ObservableObject {
                     let score = event["score"] as? [Int] ?? []
                     let isUpdated = event["isUpdated"] as? Bool ?? false
 
-                    let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitleLineOne: subtitleLineOne, subtitleLineTwo: subtitleLineTwo, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
+                    let newEvent = sportEvent(documentID: documentID, arrayId: id, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isSpecial: isSpecial, score: score, isUpdated: isUpdated)
                     return newEvent
                 }
                 
@@ -240,8 +301,7 @@ class sportEventManager: ObservableObject {
         
         let id = setEvent.arrayId
         let title = setEvent.title
-        let subtitleLineOne = setEvent.subtitleLineOne
-        let subtitleLineTwo = setEvent.subtitleLineTwo
+        let subtitle = setEvent.subtitle
         let month = setEvent.month
         let day = setEvent.day
         let year = setEvent.year
@@ -249,7 +309,7 @@ class sportEventManager: ObservableObject {
         let isSpecial = setEvent.isSpecial
         let isUpdated = setEvent.isUpdated
         let score = setEvent.score
-        let dict = ["id": id, "title": title, "subtitleLineOne": subtitleLineOne, "subtitleLineTwo": subtitleLineTwo, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated] as [String : Any]
+        let dict = ["id": id, "title": title, "subtitle": subtitle, "month" : month, "day" : day, "year" : year, "publisheddate" : publisheddate, "score": score, "isSpecial": isSpecial, "isUpdated": isUpdated] as [String : Any]
         
         ref.setData(dict)
         

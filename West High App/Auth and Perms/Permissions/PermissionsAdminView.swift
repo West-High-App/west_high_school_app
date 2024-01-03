@@ -1,9 +1,3 @@
-//
-//  PermissionsAdminView.swift
-//  West High
-//
-
-
 import SwiftUI
 
 struct PermissionsAdminView: View {
@@ -12,7 +6,9 @@ struct PermissionsAdminView: View {
     @State var originalPermissionsList: [String: [String]] = [:]
     @State var permissionsList: [String: [String]] = [:]
     @State var permissionsListKeys: [String] = []
-    
+    @State private var newPermissionValue: String = ""
+    @State var screen = ScreenSize()
+
     func run(completion: @escaping () -> Void) {
         permissionsManager.checkPermissions(dataType: "", user: "") { _ in
             self.permissionsList = permissionsManager.permissions
@@ -29,9 +25,12 @@ struct PermissionsAdminView: View {
             .navigationTitle("Admin Permissions")
         }
         .onAppear {
-            run {}
+            run {
+                print("Async operation completed.")
+            }
         }
     }
+    
 }
 
 struct EmailListView: View {

@@ -1,6 +1,6 @@
 //
 //  PermissionsDataManager.swift
-//  West High
+//  West High App
 //
 
 import SwiftUI

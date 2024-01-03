@@ -1,7 +1,6 @@
 //
 //  AuthView.swift
-//  West High
-//
+//  West High App
 
 import SwiftUI
 import Firebase
@@ -65,6 +64,7 @@ final class AuthViewModel: ObservableObject {
         // Signs the user in with the retrieved tokens
         return try await signInWithGoogle(tokens: tokens, bypassing: bypassing)
     }
+    
 }
 
 import FirebaseFirestore
@@ -188,9 +188,9 @@ struct AuthView: View {
                             
                             // Continue as guest button
                             Button {
-
+                                
                                 userInfo.loginStatus = "Guest"
-                                                                
+                                
                             } label: {
                                 Text("Continue as Guest")
                                     .signInButtonText(color: .black)
