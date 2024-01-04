@@ -1,3 +1,9 @@
+//
+//  PermissionsCheck.swift
+//  West High
+//
+
+
 import Foundation
 import Firebase
 
@@ -38,7 +44,7 @@ class PermissionsCheck: ObservableObject {
             return true
         } else {
             for club in clubmanager.allclublist {
-                if club.adminemails.contains(user.email) {
+                if club.editoremails.contains(user.email) {
                     return true
                 }
             }

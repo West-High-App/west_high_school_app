@@ -1,6 +1,7 @@
 //
 //  AuthView.swift
 //  West High App
+//
 
 import SwiftUI
 import Firebase
