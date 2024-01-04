@@ -29,7 +29,7 @@ extension Array<Newstab> {
 }
 
 class Newslist: ObservableObject {
-    @Published private var topfiveUnsorted: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...")]
+    @Published var topfiveUnsorted: [Newstab] = [Newstab(documentID: "TestID", title: "Loading...", publisheddate: "Loading...", description: "Loading...")]
     var topfive: [Newstab] {
         topfiveUnsorted.sortedByDate()
     }

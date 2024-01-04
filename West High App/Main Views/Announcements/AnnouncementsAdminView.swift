@@ -72,6 +72,7 @@ struct AnnouncementsAdminView: View {
                                print("Error deleting announcement: \(error.localizedDescription)")
                            }
                        }
+                       dataManager.topfiveUnsorted.removeAll { $0 == announcementToDelete}
                    }
                },
                secondaryButton: .cancel(Text("Cancel"))
