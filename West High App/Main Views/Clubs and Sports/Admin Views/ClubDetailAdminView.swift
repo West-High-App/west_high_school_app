@@ -349,10 +349,12 @@ struct ClubDetailAdminView: View {
                             clubtoedit = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: editingclub.favoritedusers, imagedata: displayimage ?? UIImage(), documentID: editingclub.documentID, id: 0)
                             
                             if let clubtoedit = clubtoedit {
+                                print("caching...")
                                 imagemanager.cacheImageInUserDefaults(image: clubtoedit.imagedata, fileName: clubtoedit.clubimage)
                             }
                             
                             if let clubtoedit = clubtoedit {
+                                print("updating...")
                                 clubmanager.updateClub(data: clubtoedit)
                             }
                             

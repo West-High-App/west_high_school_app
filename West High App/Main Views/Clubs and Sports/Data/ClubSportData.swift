@@ -35,6 +35,7 @@ class sportsManager: ObservableObject {
     @Published var sportsPath = NavigationPath()
     
     @Published var allsportlist: [sport] = []
+    
     @Published var favoriteslist: [sport] = []
     @Published private(set) var isLoading = false
     private var imagemanager = imageManager()
@@ -47,7 +48,6 @@ class sportsManager: ObservableObject {
     
     func getSports() {
         self.isLoading = true
-        var tempID = 0
         let db = Firestore.firestore()
         let collection = db.collection("Sport")
         
@@ -60,43 +60,42 @@ class sportsManager: ObservableObject {
             if let snapshot = snapshot {
                 var returnvalue: [sport] = [] {
                     didSet {
+                        print("999 updated value")
                         if returnvalue.count == snapshot.documents.count {
                             DispatchQueue.main.async {
-                                if !self.sportsPath.isEmpty {
-//                                    self.sportsPath.removeLast(self.sportsPath.count)
-                                }
-                                self.allsportlist = returnvalue
                                 self.isLoading = false
-//                                for temp in returnvalue {
-//                                    if let index = self.allsportlist.firstIndex(where: { $0.documentID == temp.documentID }) {
-//                                        self.allsportlist[index].sportname = temp.sportname
-//                                        self.allsportlist[index].sportsteam = temp.sportsteam
-//                                        self.allsportlist[index].sportscaptains = temp.sportscaptains
-//                                        self.allsportlist[index].sportcoaches = temp.sportcoaches
-//                                        self.allsportlist[index].sportsroster = temp.sportsroster
-//                                        self.allsportlist[index].favoritedusers = temp.favoritedusers
-//                                        self.allsportlist[index].editoremails = temp.editoremails
-//                                        self.allsportlist[index].sportsimage = temp.sportsimage
-//                                        self.allsportlist[index].adminemails = temp.adminemails
-//                                        self.allsportlist[index].imagedata = temp.imagedata
-//                                        self.allsportlist[index].info = temp.info
-//                                        self.allsportlist[index].eventslink = temp.eventslink
-//                                        self.allsportlist[index].tags = temp.tags
-//                                        self.allsportlist[index].sportid = temp.sportid
-//                                        self.allsportlist[index].rosterimage = temp.rosterimage
-//                                        self.allsportlist[index].rosterimagedata = temp.rosterimagedata
-////                                        self.allsportlist[index].id = temp.id
-//                                    } else {
-//                                        self.allsportlist.append(temp)
-//                                    }
-//                                    if temp == returnvalue.last {
-//                                        for sport in self.allsportlist {
-//                                            if !returnvalue.contains(where: { $0.documentID == sport.documentID }) {
-//                                                self.allsportlist.removeAll(where: { $0.documentID == sport.documentID }) // Remove if not on server
-//                                            }
-//                                        }
-//                                    }
-//                                }
+                                for temp in returnvalue {
+                                    if let index = self.allsportlist.firstIndex(where: { $0.documentID == temp.documentID }) {
+                                        self.allsportlist[index].sportname = temp.sportname
+                                        self.allsportlist[index].sportsteam = temp.sportsteam
+                                        self.allsportlist[index].sportscaptains = temp.sportscaptains
+                                        self.allsportlist[index].sportcoaches = temp.sportcoaches
+                                        self.allsportlist[index].sportsroster = temp.sportsroster
+                                        self.allsportlist[index].favoritedusers = temp.favoritedusers
+                                        self.allsportlist[index].editoremails = temp.editoremails
+                                        self.allsportlist[index].sportsimage = temp.sportsimage
+                                        self.allsportlist[index].adminemails = temp.adminemails
+                                        self.allsportlist[index].imagedata = temp.imagedata
+                                        self.allsportlist[index].info = temp.info
+                                        self.allsportlist[index].eventslink = temp.eventslink
+                                        self.allsportlist[index].tags = temp.tags
+                                        self.allsportlist[index].sportid = temp.sportid
+                                        self.allsportlist[index].rosterimage = temp.rosterimage
+                                        self.allsportlist[index].rosterimagedata = temp.rosterimagedata
+//                                        self.allsportlist[index].id = temp.id
+                                    } else {
+                                        self.allsportlist.append(temp)
+                                        print("999 added that shit")
+                                        print("999 - \(self.allsportlist.contains(temp))")
+                                    }
+                                    if temp == returnvalue.last {
+                                        for sport in self.allsportlist {
+                                            if !returnvalue.contains(where: { $0.documentID == sport.documentID }) {
+                                                self.allsportlist.removeAll(where: { $0.documentID == sport.documentID }) // Remove if not on server
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -121,10 +120,10 @@ class sportsManager: ObservableObject {
                     let id = UUID()
 
                     self.imagemanager.getImage(fileName: sportsimage) { image in //
-                        
-                        let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, rosterimage: rosterimage, rosterimagedata: UIImage(), imagedata: image, documentID: documentID, sportid: sportid, id: id)) // its fine we don't have it for the roster image because it loads every time the detail view is opened.
-                        tempID = tempID + 1
-                        returnvalue.append(sport)
+                        self.imagemanager.getImage(fileName: rosterimage) { image2 in
+                            let sport = (sport(sportname: sportname, sportcoaches: sportcoaches, adminemails: adminemails, editoremails: editoremails, sportsimage: sportsimage, sportsteam: sportsteam, sportsroster: sportsroster, sportscaptains: sportscaptains, tags: tags, info: info, favoritedusers: favoritedusers, eventslink: eventslink, rosterimage: rosterimage, rosterimagedata: image2 ?? UIImage(), imagedata: image, documentID: documentID, sportid: sportid, id: id)) // its fine we don't have it for the roster image because it loads every time the detail view is opened.
+                            returnvalue.append(sport)
+                        }
                     }
                 }
             }
@@ -164,31 +163,17 @@ class sportsManager: ObservableObject {
         let db = Firestore.firestore()
         let ref = db.collection("Sport").document(data.documentID)
         ref.setData([
-            "sportname": data.sportname,
-            "sportscoaches": data.sportcoaches,
             "adminemails": data.adminemails,
             "editoremails": data.editoremails,
+            "eventslink": data.eventslink,
+            "favoritedusers": data.favoritedusers,
+            "info": data.info,
+            "rosterimage": data.rosterimage,
+            "sportname": data.sportname,
             "sportsimage": data.sportsimage,
             "sportsteam": data.sportsteam,
-            "sportsroster": data.sportsroster,
-            "sportscaptains": data.sportscaptains,
-            "favoritedusers": data.favoritedusers,
-            "eventslink": data.eventslink,
-            "rosterimage": data.rosterimage,
-            "tags": data.tags,
-            "info": data.info,
-        ]) { error in
-            if let error = error {
-                print("Error updating sport: \(error)")
-            } else {
-                for (index, sportItem) in self.allsportlist.enumerated() {
-                    if sportItem.eventslink == data.eventslink {
-                        self.allsportlist[index] = data
-                        break
-                    }
-                }
-            }
-        }
+            "tags": data.tags
+        ])
     }
 }
 

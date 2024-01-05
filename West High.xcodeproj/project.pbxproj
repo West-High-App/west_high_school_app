@@ -410,12 +410,12 @@
 			isa = PBXGroup;
 			children = (
 				2270B2462A68E63E00823E58 /* SportsView.swift */,
+				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
 				E8531F602A83D1D100FB64F5 /* SportsMainView.swift */,
 				2270B24A2A68E66200823E58 /* SportsHibabi.swift */,
 				2270B24C2A68E67700823E58 /* SportsNewsDetailView.swift */,
 				2232FEE52AA46F0D0067AAB8 /* SportsEventData.swift */,
 				2213882F2AC1FF370052A285 /* EventsScraper.swift */,
-				2270B2482A68E65000823E58 /* SportsDetailView.swift */,
 				221423E22AD19F860015CD3B /* RosterDetailView.swift */,
 				221388342AC202530052A285 /* SportEventStorage.swift */,
 				E8BD7FC62AD1DFDD0095443A /* Info thing.swift */,
