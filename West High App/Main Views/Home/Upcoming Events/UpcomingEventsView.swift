@@ -35,7 +35,7 @@ struct UpcomingEventsView: View {
                         .padding(.leading)
                     Spacer()
                 }
-                ForEach(upcomingeventslist, id: \.id) { event in
+                ForEach(upcomingeventsdataManager.allupcomingeventslist, id: \.id) { event in // REVERT BACK MAYBE
                     HStack {
                         VStack {
                             Text(event.date.monthName)

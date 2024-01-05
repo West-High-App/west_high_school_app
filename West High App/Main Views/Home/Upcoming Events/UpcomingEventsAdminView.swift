@@ -11,7 +11,6 @@ struct UpcomingEventsAdminView: View {
     @State var tempEventTitle = ""
     
     @State private var isConfirmingDeleteEvent = false
-    @State private var isConfirmingDeleteEventFinal = false
     @State private var eventToDelete: event?
     @State var screen = ScreenSize()
     
@@ -118,6 +117,7 @@ struct UpcomingEventsAdminView: View {
                                     print("Error deleting event: \(error.localizedDescription)")
                                 }
                             }
+                            dataManager.allupcomingeventslistUnsorted.removeAll {$0 == eventToDelete}
                         }
                     },
                     secondaryButton: .cancel(Text("Cancel"))
@@ -297,24 +297,32 @@ struct EventDetailView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM dd, yyyy hh:mm a"
         
+        let dateFormatter2 = DateFormatter()
+        dateFormatter2.dateFormat = "hh:mm a"
+        
         var timeString: String {
             if isAllDay {
-                return "All Day"
+                return "12:00 PM"
             } else {
-                return self.eventTime.formatted(date: Date.FormatStyle.DateStyle.omitted, time: Date.FormatStyle.TimeStyle.shortened)
+                return dateFormatter2.string(from: eventTime)
             }
         }
         
+        print("timeString if not all day")
+        print(dateFormatter2.string(from: eventTime))
+        
         var date: Date? {
             if isAllDay {
-                dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(eventyear) 11:59 PM")
+                dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(eventyear) 12:00 PM")
             } else {
                 dateFormatter.date(from: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(eventyear) \(timeString)")
             }
         }
         
         guard let date else {
+            isAllDay ? print("All day event") : print("not all day event")
             print("Error configuring date")
+            print(date ?? "error")
             return
         }
         

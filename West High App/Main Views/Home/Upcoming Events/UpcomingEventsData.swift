@@ -76,7 +76,7 @@ extension Array<event> {
 class upcomingEventsDataManager: ObservableObject {
     static let shared = upcomingEventsDataManager()
     
-    @Published private var allupcomingeventslistUnsorted: [event] = []
+    @Published var allupcomingeventslistUnsorted: [event] = []
     var allupcomingeventslist: [event] {
         allupcomingeventslistUnsorted.sortedByDate()
     }
@@ -236,7 +236,8 @@ class upcomingEventsDataManager: ObservableObject {
             "day": "\(convertedDate.dateComponent(.day))",
             "year": "\(convertedDate.dateComponent(.year))",
             "publisheddate": convertedDate,
-            "date": convertedDate
+            "date": convertedDate,
+            "isAllDay": event.isAllDay
         ]) { error in
             completion(error)
         }
