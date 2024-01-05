@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct dubclubnewscell: View{ // hello aiden
+struct dubclubnewscell: View {
     var feat: clubNews
     @StateObject var imagemanager = imageManager()
     @State var screen = ScreenSize()
@@ -141,14 +141,6 @@ struct ClubNewsAdminView: View { // hello
     
     var body: some View {
         VStack {
-//            VStack(alignment: .leading) {
-//                HStack {
-//                    Text("You are currently editing source data. Any changes will be made public across all devices.")
-//                        .padding(.horizontal, 20)
-//                        .padding(.bottom, 5)
-//                    Spacer()
-//                }
-//            }
             
             if !hasPermission.articleadmin && !hasPermission.clubarticleadmin {
                 HStack {
@@ -474,6 +466,7 @@ struct ClubNewsAdminView: View { // hello
                             .multilineTextAlignment(.center)
                             .font(.system(size: 24, weight: .semibold, design: .rounded))
                             .padding(5)
+                        Spacer()
                     }
                 }
                 
@@ -648,6 +641,12 @@ struct clubNewsRowlView: View {
                         let autoapprove = hasPermission.articleadmin || hasPermission.clubarticleadmin ? true : false
                         
                         let achievementToSave = clubNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)", newsdateSwift: date, author: author, isApproved: autoapprove, documentID: "NAN", imagedata: imagedata)
+                        
+                        if let fileName = newsimage.first {
+                            if let image = imagedata.first {
+                                imagemanager.cacheImageInUserDefaults(image: image, fileName: fileName)
+                            }
+                        }
                         
                         dataManager.createClubNews(clubNews: achievementToSave) { error in
                             if let error = error {

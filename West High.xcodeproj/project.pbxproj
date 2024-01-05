@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220264572B484C380000E9F9 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220264562B484C380000E9F9 /* Color.swift */; };
+		220264592B484C600000E9F9 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220264582B484C600000E9F9 /* Date.swift */; };
 		221388302AC1FF370052A285 /* EventsScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213882F2AC1FF370052A285 /* EventsScraper.swift */; };
 		221388332AC1FF7F0052A285 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 221388322AC1FF7F0052A285 /* SwiftSoup */; };
 		221388352AC202530052A285 /* SportEventStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221388342AC202530052A285 /* SportEventStorage.swift */; };
@@ -108,6 +110,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		220264562B484C380000E9F9 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		220264582B484C600000E9F9 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		2213882F2AC1FF370052A285 /* EventsScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsScraper.swift; sourceTree = "<group>"; };
 		221388342AC202530052A285 /* SportEventStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportEventStorage.swift; sourceTree = "<group>"; };
 		221423DC2ACF3EDB0015CD3B /* LinksData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksData.swift; sourceTree = "<group>"; };
@@ -332,6 +336,8 @@
 			children = (
 				2215EDF72B3DD65300B663EC /* Text.swift */,
 				2215EDF02B3DCBC600B663EC /* Shapes.swift */,
+				220264562B484C380000E9F9 /* Color.swift */,
+				220264582B484C600000E9F9 /* Date.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -691,6 +697,7 @@
 				2270B26E2A68E8E600823E58 /* WebView.swift in Sources */,
 				2215EDF12B3DCBC600B663EC /* Shapes.swift in Sources */,
 				2270B24D2A68E67700823E58 /* SportsNewsDetailView.swift in Sources */,
+				220264572B484C380000E9F9 /* Color.swift in Sources */,
 				2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */,
 				E87ADFEB2AA13B89009D9512 /* PrivacyPolicyView.swift in Sources */,
 				2270B2502A68E6BF00823E58 /* InformationView.swift in Sources */,
@@ -736,6 +743,7 @@
 				2270B2082A68D9FC00823E58 /* AuthView.swift in Sources */,
 				E8BD7FC72AD1DFDD0095443A /* Info thing.swift in Sources */,
 				E87A32502A967EE900D7CDB1 /* ContactUsView.swift in Sources */,
+				220264592B484C600000E9F9 /* Date.swift in Sources */,
 				E87A324A2A967EB400D7CDB1 /* PrivacySecurityView.swift in Sources */,
 				2270B24B2A68E66200823E58 /* SportsHibabi.swift in Sources */,
 				2270B2642A68E80D00823E58 /* MentalHealthView.swift in Sources */,
