@@ -34,15 +34,25 @@ struct AnnouncementsAdminView: View {
 
            }
            
-           List(dataManager.topfive, id: \.id){announcement in
-               VStack(alignment: .leading) {
-                   Text(announcement.title)
-                       .font(.system(size: 17, weight: .semibold, design: .rounded))
-                   Text(announcement.publisheddate)
-                       .font(.system(size: 17, weight: .regular, design: .rounded))
-                   Text(announcement.description)
-                       .font(.system(size: 17, weight: .regular, design: .rounded))
-                       .lineLimit(2)
+           List(dataManager.topfive, id: \.id) { announcement in
+               HStack {
+                   VStack(alignment: .leading, spacing: 2) {
+                       Text(announcement.title)
+                           .foregroundColor(.black)
+                           .lineLimit(2)
+                           .minimumScaleFactor(0.9)
+                           .font(.system(size: 18, weight: .semibold, design: .rounded))
+                           .padding(.leading, 5)
+                       Text(announcement.publisheddate)
+                           .foregroundColor(.secondary)
+                           .font(.system(size: 17, weight: .semibold, design: .rounded))
+                           .padding(.leading, 5)
+                       Text(announcement.description)
+                           .foregroundColor(.secondary)
+                           .font(.system(size: 17, weight: .medium, design: .rounded))
+                           .padding(.leading, 5)
+                           .lineLimit(1)
+                   }
                }
                    .buttonStyle(PlainButtonStyle())
                    .contextMenu {
@@ -53,8 +63,8 @@ struct AnnouncementsAdminView: View {
                        }
                    }
            }
-           .navigationBarTitle(Text("Edit Announcements"))
        }
+       .navigationTitle("Edit Announcements")
        .sheet(isPresented: $isPresentingAddAnnouncement) {
            AnnouncementDetailView(dataManager: dataManager)
        }
@@ -81,28 +91,6 @@ struct AnnouncementsAdminView: View {
    }
 }
 
-struct AnnouncementRowView: View {
-   var announcement: Newstab
-   
-   var body: some View {
-       HStack{
-           VStack(alignment: .leading) {
-               Text(announcement.title)
-                   .font(.headline)
-               Text(announcement.publisheddate)
-                   .font(.subheadline)
-               Text(announcement.description)
-                   .font(.subheadline)
-           }
-           Spacer()
-       }
-       .padding()
-       .background(Rectangle()
-           .cornerRadius(9.0)
-           .shadow(radius: 5, x: 0, y: 0)
-           .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-   }
-}
 
 
 struct AnnouncementDetailView: View {
