@@ -1,6 +1,6 @@
 import SwiftUI
 struct dubachievementcell: View{
-    var feat: studentachievement
+    var feat: studentAchievement
     @StateObject var imagemanager = imageManager()
     @State var imagedata: UIImage = UIImage()
     @State var screen = ScreenSize()
@@ -40,29 +40,24 @@ struct dubachievementcell: View{
                     .font(.system(size: 18, weight: .semibold, design: .rounded))
                     .padding(.leading, 5)
                     .lineLimit(1)
-//                    Text("Click here to read more")
-//                        .foregroundColor(.blue)
-//                        .lineLimit(2)
-//                        .font(.system(size: 18, weight: .semibold, design: .rounded))
-//                        .padding(.leading, 5)
-
+                
             }
-
-
+            
+            
         }.onAppear {
             if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
-                 guard let image = feat.images.first else { return }
+                guard let image = feat.images.first else { return }
                 print("IMAGE FUNCTION RUN sav")
-                 imagemanager.getImage(fileName: image) { uiimage in
-                      if let uiimage = uiimage {
-                           imagedata = uiimage
-                      }
-                 }
-                 hasAppeared = true
+                imagemanager.getImage(fileName: image) { uiimage in
+                    if let uiimage = uiimage {
+                        imagedata = uiimage
+                    }
+                }
+                hasAppeared = true
             } else {
             }
             
-       }
+        }
     }
 }
 
@@ -70,33 +65,33 @@ struct SpotlightAdminView: View {
     @ObservedObject var dataManager = studentachievementlist.shared
     @ObservedObject var hasPermission = PermissionsCheck.shared
     @StateObject var userInfo = UserInfo.shared
-
+    
     @State private var isPresentingAddAchievement = false
-    @State private var selectedAchievement: studentachievement?
+    @State private var selectedAchievement: studentAchievement?
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var tempAchievementTitle = ""
-
+    
     @State private var isConfirmingDeleteAchievement = false
     @State private var isConfirmingDeleteAchievementFinal = false
     @State private var isConfirmingApproveAchievement = false
     
-    @State private var achievementToDelete: studentachievement?
+    @State private var achievementToDelete: studentAchievement?
     
     @State var selectedIndex = 0
-    @State var usableType: studentachievement?
+    @State var usableType: studentAchievement?
     @State var usableTypeImageData: [UIImage] = []
     
     @State var screen = ScreenSize()
-
+    
     @State private var presentingArticleSheet = false
-    @State var selectedArticle = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [], isApproved: false, imagedata: [])
+    @State var selectedArticle = studentAchievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [], isApproved: false, writerEmail: "", imagedata: [])
     
     @State var selected = 1
     
     var pendingCount: Int {
-            return dataManager.allstudentachievementlist.filter { !$0.isApproved }.count
-        }
+        return dataManager.allstudentachievementlist.filter { !$0.isApproved }.count
+    }
     var pendingString: String {
         if pendingCount == 0 {
             return ""
@@ -132,7 +127,7 @@ struct SpotlightAdminView: View {
         
         return !flag
     }
-
+    
     @StateObject var imagemanager = imageManager()
     @State var displayimages: [UIImage] = []
     @State var currentimage: UIImage?
@@ -155,7 +150,7 @@ struct SpotlightAdminView: View {
                         .lineLimit(2)
                         .padding(.leading)
                 }
-                    Spacer()
+                Spacer()
             }
             if !hasPermission.articleadmin {
                 HStack {
@@ -164,7 +159,7 @@ struct SpotlightAdminView: View {
                     Spacer()
                 }
             }
-
+            
             Button {
                 isPresentingAddAchievement = true
             } label: {
@@ -192,7 +187,7 @@ struct SpotlightAdminView: View {
                             .cornerRadius(10))
                 }
             }
-
+            
             if hasPermission.articleadmin {
                 Picker("Selected", selection: $selected) {
                     Text("Edit")
@@ -260,103 +255,92 @@ struct SpotlightAdminView: View {
                                             presentingArticleSheet = true
                                             self.selectedArticle = achievement
                                         }
-                                    /*.contextMenu {
-                                     Button("Delete", role: .destructive) {
-                                     tempAchievementTitle = achievement.achievementtitle
-                                     isConfirmingDeleteAchievement = true
-                                     achievementToDelete = achievement
-                                     }
-                                     Button("Approve") {
-                                     tempAchievementTitle = achievement.achievementtitle
-                                     isConfirmingApproveAchievement = true
-                                     achievementToDelete = achievement
-                                     }
-                                     }*/
                                         .sheet(isPresented: $presentingArticleSheet) {
                                             VStack {
                                                 if let usableType = usableType {
-                                                        HStack {
-                                                            Button("Cancel") {
-                                                                presentingArticleSheet = false
-                                                            }.padding()
-                                                            Spacer()
-                                                        }
-                                                        VStack {
-                                                            ScrollView{
-                                                                VStack{
-                                                                    HStack {
-                                                                        Text(usableType.achievementtitle)
-                                                                            .foregroundColor(Color.black)
-                                                                            .font(.system(size: 35, weight: .bold, design: .rounded))
-                                                                            .lineLimit(2)
-                                                                            .minimumScaleFactor(0.3)
-                                                                            .padding(.horizontal)
-                                                                        Spacer()
-                                                                    }
-                                                                    HStack {
-                                                                        Text(usableType.articleauthor)
-                                                                            .foregroundColor(Color.gray)
-                                                                            .font(.system(size: 26, weight: .semibold, design: .rounded))
-                                                                            .lineLimit(1)
-                                                                            .padding(.horizontal)
-                                                                        Spacer()
-                                                                    }
-                                                                    HStack {
-                                                                        Text(usableType.publisheddate)
-                                                                            .foregroundColor(Color.gray)
-                                                                            .font(.system(size: 20, weight: .semibold, design: .rounded))
-                                                                            .lineLimit(1)
-                                                                            .padding(.horizontal)
-                                                                        Spacer()
-                                                                    }
-                                                                    
-                                                                    
-                                                                    VStack {
-                                                                        TabView {
-                                                                            
-                                                                            // Loop through each recipe
-                                                                            ForEach(usableTypeImageData.indices, id: \.self) { index in
-                                                                                ZStack {
-                                                                                    Rectangle()
-                                                                                        .foregroundColor(.white)
-                                                                                    
-                                                                                    VStack(spacing: 0) {
-                                                                                        Image(uiImage: usableTypeImageData[index])
-                                                                                            .resizable()
-                                                                                            .aspectRatio(contentMode: .fill)
-                                                                                            .frame(width: screen.screenWidth - 30, height: 250)
-                                                                                            .clipped()
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            
-                                                                            
-                                                                        }
-                                                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                                                                        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-                                                                        
-                                                                    }.cornerRadius(30)
-                                                                        .frame(width: screen.screenWidth - 30, height: 250)
-                                                                        .shadow(color: .gray, radius: 8, x:2, y:3)
-                                                                    
+                                                    HStack {
+                                                        Button("Cancel") {
+                                                            presentingArticleSheet = false
+                                                        }.padding()
+                                                        Spacer()
+                                                    }
+                                                    VStack {
+                                                        ScrollView{
+                                                            VStack{
+                                                                HStack {
+                                                                    Text(usableType.achievementtitle)
+                                                                        .foregroundColor(Color.black)
+                                                                        .font(.system(size: 35, weight: .bold, design: .rounded))
+                                                                        .lineLimit(2)
+                                                                        .minimumScaleFactor(0.3)
                                                                         .padding(.horizontal)
                                                                     Spacer()
-                                                                }.onAppear {
+                                                                }
+                                                                HStack {
+                                                                    Text(usableType.articleauthor)
+                                                                        .foregroundColor(Color.gray)
+                                                                        .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                                                        .lineLimit(1)
+                                                                        .padding(.horizontal)
+                                                                    Spacer()
+                                                                }
+                                                                HStack {
+                                                                    Text(usableType.publisheddate)
+                                                                        .foregroundColor(Color.gray)
+                                                                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                                        .lineLimit(1)
+                                                                        .padding(.horizontal)
+                                                                    Spacer()
                                                                 }
                                                                 
-                                                                LinkTextView(text: usableType.achievementdescription)
-                                                                    .multilineTextAlignment(.leading)
-                                                                    .foregroundColor(Color.black)
-                                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                                                    .padding(.horizontal, 25)
-                                                                    .padding(.vertical, 5)
-                                                                    .background(Rectangle()
-                                                                        .cornerRadius(10)
-                                                                        .padding(.horizontal)
-                                                                        .shadow(radius: 5, x: 3, y: 3)
-                                                                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                                                                    .padding(.bottom)
                                                                 
+                                                                VStack {
+                                                                    TabView {
+                                                                        
+                                                                        // Loop through each recipe
+                                                                        ForEach(usableTypeImageData.indices, id: \.self) { index in
+                                                                            ZStack {
+                                                                                Rectangle()
+                                                                                    .foregroundColor(.white)
+                                                                                
+                                                                                VStack(spacing: 0) {
+                                                                                    Image(uiImage: usableTypeImageData[index])
+                                                                                        .resizable()
+                                                                                        .aspectRatio(contentMode: .fill)
+                                                                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                                                                        .clipped()
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        
+                                                                        
+                                                                    }
+                                                                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                                                    .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                                                                    
+                                                                }.cornerRadius(30)
+                                                                    .frame(width: screen.screenWidth - 30, height: 250)
+                                                                    .shadow(color: .gray, radius: 8, x:2, y:3)
+                                                                
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }.onAppear {
+                                                            }
+                                                            
+                                                            LinkTextView(text: usableType.achievementdescription)
+                                                                .multilineTextAlignment(.leading)
+                                                                .foregroundColor(Color.black)
+                                                                .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                                .padding(.horizontal, 25)
+                                                                .padding(.vertical, 5)
+                                                                .background(Rectangle()
+                                                                    .cornerRadius(10)
+                                                                    .padding(.horizontal)
+                                                                    .shadow(radius: 5, x: 3, y: 3)
+                                                                    .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                                                .padding(.bottom)
+                                                            
+                                                            if hasPermission.articleadmin {
                                                                 HStack {
                                                                     Spacer()
                                                                     Button {
@@ -402,17 +386,20 @@ struct SpotlightAdminView: View {
                                                                     }
                                                                     Spacer()
                                                                 }.padding(.bottom)
-                                                                
                                                             }
                                                             
+                                                            // TODO: add a button for if the user is an editor AND their email matches with the current article's editorEmail, then you can delete it :)
+                                                            
                                                         }
+                                                        
+                                                    }
                                                 }
                                             }.onAppear {
                                                 print(selectedArticle)
                                                 usableType = dataManager.allstudentachievementlist[selectedIndex]
                                                 usableTypeImageData.removeAll()
                                                 let dispatchGroup = DispatchGroup()
-
+                                                
                                                 for images in usableType?.images ?? [] {
                                                     dispatchGroup.enter()
                                                     imagemanager.getImage(fileName: images) { uiimage in
@@ -479,8 +466,211 @@ struct SpotlightAdminView: View {
                     List {
                         ForEach(dataManager.allstudentachievementlist, id: \.id) { achievement in
                             if !achievement.isApproved {
-                                //
                                 dubachievementcell(feat: achievement)
+                                    .contextMenu {
+                                        Button("Edit") {
+                                            print(selectedArticle)
+                                            self.selectedArticle = achievement
+                                            if let index = dataManager.allstudentachievementlist.firstIndex(of: achievement) {
+                                                selectedIndex = index
+                                            }
+                                            presentingArticleSheet = true
+                                            self.selectedArticle = achievement
+                                        }
+                                    }
+                                    .onTapGesture {
+                                        print(selectedArticle)
+                                        self.selectedArticle = achievement
+                                        if let index = dataManager.allstudentachievementlist.firstIndex(of: achievement) {
+                                            selectedIndex = index
+                                        }
+                                        presentingArticleSheet = true
+                                        self.selectedArticle = achievement
+                                    }
+                                    .sheet(isPresented: $presentingArticleSheet) {
+                                        VStack {
+                                            if let usableType = usableType {
+                                                HStack {
+                                                    Button("Cancel") {
+                                                        presentingArticleSheet = false
+                                                    }.padding()
+                                                    Spacer()
+                                                }
+                                                VStack {
+                                                    ScrollView{
+                                                        VStack{
+                                                            HStack {
+                                                                Text(usableType.achievementtitle)
+                                                                    .foregroundColor(Color.black)
+                                                                    .font(.system(size: 35, weight: .bold, design: .rounded))
+                                                                    .lineLimit(2)
+                                                                    .minimumScaleFactor(0.3)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+                                                            HStack {
+                                                                Text(usableType.articleauthor)
+                                                                    .foregroundColor(Color.gray)
+                                                                    .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                                                    .lineLimit(1)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+                                                            HStack {
+                                                                Text(usableType.publisheddate)
+                                                                    .foregroundColor(Color.gray)
+                                                                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                                    .lineLimit(1)
+                                                                    .padding(.horizontal)
+                                                                Spacer()
+                                                            }
+                                                            
+                                                            
+                                                            VStack {
+                                                                TabView {
+                                                                    
+                                                                    // Loop through each recipe
+                                                                    ForEach(usableTypeImageData.indices, id: \.self) { index in
+                                                                        ZStack {
+                                                                            Rectangle()
+                                                                                .foregroundColor(.white)
+                                                                            
+                                                                            VStack(spacing: 0) {
+                                                                                Image(uiImage: usableTypeImageData[index])
+                                                                                    .resizable()
+                                                                                    .aspectRatio(contentMode: .fill)
+                                                                                    .frame(width: screen.screenWidth - 30, height: 250)
+                                                                                    .clipped()
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    
+                                                                    
+                                                                }
+                                                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                                                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                                                                
+                                                            }.cornerRadius(30)
+                                                                .frame(width: screen.screenWidth - 30, height: 250)
+                                                                .shadow(color: .gray, radius: 8, x:2, y:3)
+                                                            
+                                                                .padding(.horizontal)
+                                                            Spacer()
+                                                        }.onAppear {
+                                                        }
+                                                        
+                                                        LinkTextView(text: usableType.achievementdescription)
+                                                            .multilineTextAlignment(.leading)
+                                                            .foregroundColor(Color.black)
+                                                            .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                            .padding(.horizontal, 25)
+                                                            .padding(.vertical, 5)
+                                                            .background(Rectangle()
+                                                                .cornerRadius(10)
+                                                                .padding(.horizontal)
+                                                                .shadow(radius: 5, x: 3, y: 3)
+                                                                .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                                            .padding(.bottom)
+                                                        
+                                                        if hasPermission.articleadmin {
+                                                            HStack {
+                                                                Spacer()
+                                                                Button {
+                                                                    presentingArticleSheet = false
+                                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                        tempAchievementTitle = selectedArticle.achievementtitle
+                                                                        isConfirmingDeleteAchievement = true
+                                                                        achievementToDelete = usableType
+                                                                    }
+                                                                } label: {
+                                                                    Text("Delete")
+                                                                        .foregroundColor(.white)
+                                                                        .fontWeight(.semibold)
+                                                                        .padding(10)
+                                                                        .cornerRadius(15.0)
+                                                                        .frame(width: screen.screenWidth/2-60)
+                                                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                        .background(Rectangle()
+                                                                            .foregroundColor(.red)
+                                                                            .cornerRadius(10)
+                                                                        )
+                                                                }
+                                                                Spacer()
+                                                                Button {
+                                                                    presentingArticleSheet = false
+                                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                        tempAchievementTitle = selectedArticle.achievementtitle
+                                                                        isConfirmingApproveAchievement = true
+                                                                        achievementToDelete = usableType
+                                                                    }
+                                                                } label: {
+                                                                    Text("Approve")
+                                                                        .foregroundColor(.white)
+                                                                        .fontWeight(.semibold)
+                                                                        .padding(10)
+                                                                        .cornerRadius(15.0)
+                                                                        .frame(width: screen.screenWidth/2-60)
+                                                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                        .background(Rectangle()
+                                                                            .foregroundColor(.blue)
+                                                                            .cornerRadius(10)
+                                                                        )
+                                                                }
+                                                                Spacer()
+                                                            }.padding(.bottom)
+                                                        }
+                                                        else if usableType.writerEmail == userInfo.email {
+                                                            HStack {
+                                                                Spacer()
+                                                                Button {
+                                                                    presentingArticleSheet = false
+                                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                        tempAchievementTitle = selectedArticle.achievementtitle
+                                                                        isConfirmingDeleteAchievement = true
+                                                                        achievementToDelete = usableType
+                                                                    }
+                                                                } label: {
+                                                                    Text("Remove From Pending")
+                                                                        .foregroundColor(.white)
+                                                                        .fontWeight(.semibold)
+                                                                        .padding(10)
+                                                                        .cornerRadius(15.0)
+                                                                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                        .background(Rectangle()
+                                                                            .foregroundColor(.red)
+                                                                            .cornerRadius(10)
+                                                                        )
+                                                                }
+                                                                Spacer()
+                                                            }
+                                                        }
+                                                        
+                                                        // TODO: add a button for if the user is an editor AND their email matches with the current article's editorEmail, then you can delete it :)
+                                                        
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        }.onAppear {
+                                            print(selectedArticle)
+                                            usableType = dataManager.allstudentachievementlist[selectedIndex]
+                                            usableTypeImageData.removeAll()
+                                            let dispatchGroup = DispatchGroup()
+                                            
+                                            for images in usableType?.images ?? [] {
+                                                dispatchGroup.enter()
+                                                imagemanager.getImage(fileName: images) { uiimage in
+                                                    if let uiimage = uiimage {
+                                                        usableTypeImageData.append(uiimage)
+                                                        print("FOUND SPOTLIGHT IMAGE")
+                                                    }
+                                                    dispatchGroup.leave() // Leave the Dispatch Group when the async call is done
+                                                }
+                                            }
+                                            
+                                        }
+                                        
+                                    }
                             }
                         }
                     }
@@ -532,8 +722,8 @@ struct SpotlightAdminView: View {
 }
 
 struct AchievementRowView: View {
-    var achievement: studentachievement
-
+    var achievement: studentAchievement
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -580,7 +770,7 @@ struct AchievementDetailView: View {
     @State var hasAppeared = false
     
     @StateObject var imagemanager = imageManager()
-    var editingAchievement: studentachievement?
+    var editingAchievement: studentAchievement?
     @State var displayimages: [String] = []// make string
     @State var displayimagesdata: [UIImage] = [] // init to get this from displayimages
     @State var currentimage: UIImage?
@@ -609,7 +799,7 @@ struct AchievementDetailView: View {
                     TextField("Article Author", text: $articleAuthor)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
-
+                
                 
                 Section("Images") {
                     List {
@@ -626,17 +816,17 @@ struct AchievementDetailView: View {
                         isDisplayingAddImage = true
                     }.font(.system(size: 17, weight: .regular, design: .rounded))
                     
-                    .sheet(isPresented: $isDisplayingAddImage) {
-                        ImagePicker(selectedImage: $currentimage, isPickerShowing: $isDisplayingAddImage)
-                    }
+                        .sheet(isPresented: $isDisplayingAddImage) {
+                            ImagePicker(selectedImage: $currentimage, isPickerShowing: $isDisplayingAddImage)
+                        }
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
-                .onChange(of: currentimage) { newImage in
-                    if let currentimage = newImage {
-                        displayimagesdata.append(currentimage)
+                    .onChange(of: currentimage) { newImage in
+                        if let currentimage = newImage {
+                            displayimagesdata.append(currentimage)
+                        }
                     }
-                }
-
-
+                
+                
                 if displayimagesdata.isEmpty || achievementTitle == "" || articleAuthor == "" || achievementDescription == "" {
                     Text("Publish New Article")
                         .foregroundColor(.white)
@@ -693,14 +883,14 @@ struct AchievementDetailView: View {
                             check = true
                         }
                         
-                        let achievementToSave = studentachievement(
+                        let achievementToSave = studentAchievement(
                             documentID: "NAN",
                             achievementtitle: achievementTitle,
                             achievementdescription: achievementDescription,
                             articleauthor: articleAuthor,
                             publisheddate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]), \(year)",
                             date: date,
-                            images: images, isApproved: check, imagedata: displayimagesdata
+                            images: images, isApproved: check, writerEmail: userInfo.email, imagedata: displayimagesdata
                         )
                         
                         var i = 0
@@ -730,7 +920,7 @@ struct AchievementDetailView: View {
                     publishedDate = achievement.publisheddate
                     isApproved = achievement.isApproved
                 }
-               
+                
                 for image in displayimages {
                     if !hasAppeared2 {
                         imagemanager.getImage(fileName: image) { uiimage in

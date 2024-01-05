@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-struct studentachievement: Identifiable, Equatable{
+struct studentAchievement: Identifiable, Equatable{
     let id = UUID()
     let documentID: String
     var achievementtitle:String
@@ -18,10 +18,11 @@ struct studentachievement: Identifiable, Equatable{
     var date:Date
     var images:[String]
     var isApproved: Bool
+    var writerEmail: String
     var imagedata: [UIImage] // , imagedata: []
  }
 
-extension Array<studentachievement> {
+extension Array<studentAchievement> {
     func sortedByDate() -> Self {
         return self.sorted { first, second in
             let dateFormatter = DateFormatter()
@@ -37,12 +38,12 @@ class studentachievementlist: ObservableObject{
     
     static let shared = studentachievementlist()
     
-    @Published var allstudentachievementlistUnsorted: [studentachievement] = []
-    @Published private var allpendingstudentachievementlistUnsorted: [studentachievement] = []
-    var allstudentachievementlist: [studentachievement] {
+    @Published var allstudentachievementlistUnsorted: [studentAchievement] = []
+    @Published private var allpendingstudentachievementlistUnsorted: [studentAchievement] = []
+    var allstudentachievementlist: [studentAchievement] {
         (allstudentachievementlistUnsorted + allpendingstudentachievementlistUnsorted).sortedByDate()
     }
-    @Published var newstitlearray: [studentachievement] = []
+    @Published var newstitlearray: [studentAchievement] = []
     @Published var hasLoaded = false
 
     @StateObject var imagemanager = imageManager()
@@ -56,7 +57,7 @@ class studentachievementlist: ObservableObject{
         connectPendingAchievements()
     }
     
-    private func handleFirestore(_ templist: [studentachievement]) {
+    private func handleFirestore(_ templist: [studentAchievement]) {
         DispatchQueue.main.async {
             for temp in templist {
                 if let index = self.allstudentachievementlistUnsorted.firstIndex(where: { $0.documentID == temp.documentID }) {
@@ -67,6 +68,7 @@ class studentachievementlist: ObservableObject{
                     self.allstudentachievementlistUnsorted[index].publisheddate = temp.publisheddate
                     self.allstudentachievementlistUnsorted[index].isApproved = temp.isApproved
                     self.allstudentachievementlistUnsorted[index].imagedata = temp.imagedata
+                    self.allstudentachievementlistUnsorted[index].writerEmail = temp.writerEmail
                 } else {
                     self.allstudentachievementlistUnsorted.append(temp)
                 }
@@ -106,7 +108,7 @@ class studentachievementlist: ObservableObject{
             
             if let snapshot = snapshot {
                 self.lastDocument = snapshot.documents.last
-                let templist: [studentachievement] = snapshot.documents.map { document in
+                let templist: [studentAchievement] = snapshot.documents.map { document in
                     let data = document.data()
                     let achievementtitle = data["achievementtitle"] as? String ?? ""
                     let achievementdescription = data["achievementdescription"] as? String ?? ""
@@ -115,6 +117,7 @@ class studentachievementlist: ObservableObject{
                     let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let images = data["images"] as? [String] ?? []
                     let isApproved = data["isApproved"] as? Bool ?? false
+                    let writerEmail = data["writerEmail"] as? String ?? ""
                     let documentID = document.documentID
                     
                     var imagedata: [UIImage] = []
@@ -126,7 +129,7 @@ class studentachievementlist: ObservableObject{
                         }
                     }
                     
-                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, imagedata: imagedata)
+                    let achievement = studentAchievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, writerEmail: writerEmail, imagedata: imagedata)
                     return achievement
                 }
                 self.handleFirestore(templist)
@@ -157,7 +160,7 @@ class studentachievementlist: ObservableObject{
                 if self.lastDocument == nil {
                     self.lastDocument = snapshot.documents.last
                 }
-                let templist: [studentachievement] = snapshot.documents.map { document in
+                let templist: [studentAchievement] = snapshot.documents.map { document in
                     let data = document.data()
                     let achievementtitle = data["achievementtitle"] as? String ?? ""
                     let achievementdescription = data["achievementdescription"] as? String ?? ""
@@ -166,6 +169,7 @@ class studentachievementlist: ObservableObject{
                     let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let images = data["images"] as? [String] ?? []
                     let isApproved = data["isApproved"] as? Bool ?? false
+                    let writerEmail = data["writerEmail"] as? String ?? ""
                     let documentID = document.documentID
                     
                     var imagedata: [UIImage] = []
@@ -177,7 +181,7 @@ class studentachievementlist: ObservableObject{
                         }
                     }
                     
-                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, imagedata: imagedata)
+                    let achievement = studentAchievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, writerEmail: writerEmail, imagedata: imagedata)
                     return achievement
                 }
                 self.handleFirestore(templist)
@@ -204,7 +208,7 @@ class studentachievementlist: ObservableObject{
             
             if let snapshot = snapshot {
                 
-                let templist: [studentachievement] = snapshot.documents.map { document in
+                let templist: [studentAchievement] = snapshot.documents.map { document in
                     let data = document.data()
                     let achievementtitle = data["achievementtitle"] as? String ?? ""
                     let achievementdescription = data["achievementdescription"] as? String ?? ""
@@ -213,6 +217,7 @@ class studentachievementlist: ObservableObject{
                     let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     let images = data["images"] as? [String] ?? []
                     let isApproved = data["isApproved"] as? Bool ?? false
+                    let writerEmail = data["writerEmail"] as? String ?? ""
                     let documentID = document.documentID
                     
                     var imagedata: [UIImage] = []
@@ -224,7 +229,7 @@ class studentachievementlist: ObservableObject{
                         }
                     }
                     
-                    let achievement = studentachievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, imagedata: imagedata)
+                    let achievement = studentAchievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, writerEmail: writerEmail, imagedata: imagedata)
                     return achievement
                 }
                 DispatchQueue.main.async {
@@ -241,6 +246,7 @@ class studentachievementlist: ObservableObject{
                             self.allpendingstudentachievementlistUnsorted[index].publisheddate = temp.publisheddate
                             self.allpendingstudentachievementlistUnsorted[index].isApproved = temp.isApproved
                             self.allpendingstudentachievementlistUnsorted[index].imagedata = temp.imagedata
+                            self.allpendingstudentachievementlistUnsorted[index].writerEmail = temp.writerEmail
                         } else {
                             self.allpendingstudentachievementlistUnsorted.append(temp)
                         }
@@ -259,9 +265,10 @@ class studentachievementlist: ObservableObject{
     }
 
     
-    func createAchievement(achievement: studentachievement, completion: @escaping (Error?) -> Void) {
+    func createAchievement(achievement: studentAchievement, completion: @escaping (Error?) -> Void) {
         print("Creating new student spotlight...")
         let db = Firestore.firestore()
+        let userInfo = UserInfo.shared
         db.collection("StudentAchievements").addDocument(data: [
             "achievementtitle": achievement.achievementtitle,
             "achievementdescription": achievement.achievementdescription,
@@ -269,7 +276,8 @@ class studentachievementlist: ObservableObject{
             "images": achievement.images,
             "publisheddate": achievement.publisheddate,
             "date": achievement.date,
-            "isApproved": achievement.isApproved
+            "isApproved": achievement.isApproved,
+            "writerEmail": userInfo.email
         ]) { error in
             completion(error)
         }
@@ -277,7 +285,7 @@ class studentachievementlist: ObservableObject{
         
     }
     
-    func deleteAchievment(achievement: studentachievement, completion: @escaping (Error?) -> Void) {
+    func deleteAchievment(achievement: studentAchievement, completion: @escaping (Error?) -> Void) {
         print("Deleting article with documentID: \(achievement.documentID)...")
         let db = Firestore.firestore()
         let ref = db.collection("StudentAchievements").document(achievement.documentID)
@@ -288,9 +296,9 @@ class studentachievementlist: ObservableObject{
     }
     
     
-    func getImageData(articlelist: [studentachievement], completion: @escaping ([studentachievement]) -> Void) {
+    func getImageData(articlelist: [studentAchievement], completion: @escaping ([studentAchievement]) -> Void) {
         var spotlightarticles = articlelist
-        var returnlist: [studentachievement] = []
+        var returnlist: [studentAchievement] = []
         
         let dispatchGroup = DispatchGroup()
         
@@ -308,7 +316,7 @@ class studentachievementlist: ObservableObject{
             }
             
             dispatchGroup.notify(queue: .main) {
-                let updatedArticle = studentachievement(
+                let updatedArticle = studentAchievement(
                     documentID: article.documentID,
                     achievementtitle: article.achievementtitle,
                     achievementdescription: article.achievementdescription,
@@ -317,6 +325,7 @@ class studentachievementlist: ObservableObject{
                     date: article.date,
                     images: article.images,
                     isApproved: article.isApproved,
+                    writerEmail: article.writerEmail,
                     imagedata: tempimages
                 )
                 returnlist.append(updatedArticle)

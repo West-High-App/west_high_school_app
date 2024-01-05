@@ -9,11 +9,11 @@ struct StudentSpotlight: View {
     @EnvironmentObject var userInfo: UserInfo
     @ObservedObject var spotlightManager = studentachievementlist.shared
     @StateObject var imagemanager = imageManager()
-    var spotlightarticles: [studentachievement] {
+    var spotlightarticles: [studentAchievement] {
         spotlightManager.allstudentachievementlist
     }
     @State var hasAppeared = false
-    @State var newstitlearray: [studentachievement] = []
+    @State var newstitlearray: [studentAchievement] = []
     @State var isLoading = false
     
     class ScreenSize {
@@ -76,7 +76,7 @@ struct StudentSpotlight: View {
                     if  !hasAppeared { // !hasAppeared
                         print("LOADING....")
                         
-                        var returnlist: [studentachievement] = []
+                        var returnlist: [studentAchievement] = []
                         
                         let dispatchGroup = DispatchGroup() // Create a Dispatch Group
                         
@@ -95,7 +95,7 @@ struct StudentSpotlight: View {
                             }
                             
                             dispatchGroup.notify(queue: .main) { // This block will be executed after all async calls are done
-                                returnlist.append(studentachievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, date: article.date, images: article.images, isApproved: article.isApproved, imagedata: tempimages))
+                                returnlist.append(studentAchievement(documentID: article.documentID, achievementtitle: article.achievementtitle, achievementdescription: article.achievementdescription, articleauthor: article.articleauthor, publisheddate: article.publisheddate, date: article.date, images: article.images, isApproved: article.isApproved, writerEmail: article.writerEmail, imagedata: tempimages))
                                 
                                 isLoading = false
                                 print("DONE LOADING")
@@ -137,7 +137,7 @@ class ScreenSize {
 }
 
     struct achievementcell: View{
-        var feat: studentachievement
+        var feat: studentAchievement
         @StateObject var imagemanager = imageManager()
         @State var imagedata = UIImage()
         @State var screen = ScreenSize()

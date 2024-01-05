@@ -9,7 +9,7 @@ import Firebase
 
 struct HomeView: View {
      
-     @State var firstcurrentevent = studentachievement(
+     @State var firstcurrentevent = studentAchievement(
           documentID: "",
           achievementtitle: "",
           achievementdescription: "",
@@ -17,9 +17,10 @@ struct HomeView: View {
           date: Date(),
           images: [""],
           isApproved: false,
+          writerEmail: "",
           imagedata: [])
-     @State var secondcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, imagedata: [])
-     @State var thirdcurrentevent = studentachievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, imagedata: [])
+     @State var secondcurrentevent = studentAchievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, writerEmail: "", imagedata: [])
+     @State var thirdcurrentevent = studentAchievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, writerEmail: "", imagedata: [])
      var screen = ScreenSize()
      @ObservedObject var clubmanager = clubManager.shared
      @StateObject var newsDataManager = Newslist.shared
@@ -36,7 +37,7 @@ struct HomeView: View {
      @State private var hasAdmin = false
      
      @StateObject var spotlightManager = studentachievementlist.shared
-     @State var newstitlearray: [studentachievement] = []
+     @State var newstitlearray: [studentAchievement] = []
      
      @State private var isLoading = false
      
@@ -768,7 +769,7 @@ struct UpcomingEventCell: View{
 
 
 struct MostRecentAchievementCell: View{
-     var feat: studentachievement
+     var feat: studentAchievement
      @StateObject var imagemanager = imageManager()
      @State var hasAppeared = false
      @State var imagedata = UIImage()
