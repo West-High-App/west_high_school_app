@@ -118,6 +118,6 @@ struct ClubsNewsDetailView_Previews: PreviewProvider {
             newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app",
             newsdate: "Apr 1, 2023", newsdateSwift: Date(),
             author: "Aiden Jamae Lee (not funny)", isApproved: false,
-            documentID: "NAN", imagedata: []))
+            documentID: "NAN", writerEmail: "", imagedata: []))
     }
 }
