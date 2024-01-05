@@ -116,6 +116,6 @@ struct SportsNewsDetailView_Previews: PreviewProvider {
             newsimage: ["football"],
             newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
             newsdate: "Nov 15, 2022", newsdateSwift: Date(),
-            author: "Emily Thompson", isApproved: false, imagedata: [], documentID: "NAN"))
+            author: "Emily Thompson", isApproved: false, imagedata: [], documentID: "NAN", writerEmail: ""))
     }
 }

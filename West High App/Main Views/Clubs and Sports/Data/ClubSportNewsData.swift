@@ -20,6 +20,7 @@ struct sportNews: Identifiable, Equatable {
     var imagedata: [UIImage] // , imagedata: []
     var id = UUID()
     let documentID: String
+    var writerEmail: String
 }
 
 extension Array<sportNews> {
@@ -42,7 +43,7 @@ class sportsNewslist: ObservableObject {
         newsimage: ["football"],
         newsdescription: "The Lincoln High School varsity football team emerged victorious in the regional championship, securing their spot in the state finals.",
         newsdate: "Nov 15, 2022", newsdateSwift: Date(),
-        author: "Emily Thompson", isApproved: false, imagedata: [], documentID: "NAN")]
+        author: "Emily Thompson", isApproved: false, imagedata: [], documentID: "NAN", writerEmail: "")]
     
     var allsportsnewslist: [sportNews] {
         allsportsnewslistUnsorted.sortedByDate()
@@ -69,6 +70,7 @@ class sportsNewslist: ObservableObject {
                     self.allsportsnewslistUnsorted[index].author = temp.author
                     self.allsportsnewslistUnsorted[index].newsimage = temp.newsimage
                     self.allsportsnewslistUnsorted[index].isApproved = temp.isApproved
+                    self.allsportsnewslistUnsorted[index].writerEmail = temp.writerEmail
                 } else {
                     self.allsportsnewslistUnsorted.append(temp)
                 }
@@ -122,6 +124,7 @@ class sportsNewslist: ObservableObject {
                     let newsdateSwift = (data["newsdateSwift"] as? Timestamp)?.dateValue() ?? Date()
                     let author = data["author"] as? String ?? ""
                     let isApproved = data["isApproved"] as? Bool ?? false
+                    let writerEmail = data["writerEmail"] as? String ?? ""
                     let documentID = document.documentID
                     var imagedata: [UIImage] = []
                     for file in newsimage {
@@ -132,7 +135,7 @@ class sportsNewslist: ObservableObject {
                                 print(imagedata)
                                 print("1^")
                             }
-                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, imagedata: imagedata, documentID: documentID)
+                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, imagedata: imagedata, documentID: documentID, writerEmail: writerEmail)
                             templist.append(sportnews)
                         }
                     }
@@ -181,6 +184,7 @@ class sportsNewslist: ObservableObject {
                     let newsdateSwift = (data["newsdateSwift"] as? Timestamp)?.dateValue() ?? Date()
                     let author = data["author"] as? String ?? ""
                     let isApproved = data["isApproved"] as? Bool ?? false
+                    let writerEmail = data["writerEmail"] as? String ?? ""
                     let documentID = document.documentID
                     var imagedata: [UIImage] = []
                     for file in newsimage {
@@ -191,7 +195,7 @@ class sportsNewslist: ObservableObject {
                                 print(imagedata)
                                 print("1^")
                             }
-                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, imagedata: imagedata, documentID: documentID)
+                            let sportnews = sportNews(newstitle: newstitle, newsimage: newsimage, newsdescription: newsdescription, newsdate: newsdate, newsdateSwift: newsdateSwift, author: author, isApproved: isApproved, imagedata: imagedata, documentID: documentID, writerEmail: writerEmail)
                             templist.append(sportnews)
                         }
                     }
@@ -210,6 +214,7 @@ class sportsNewslist: ObservableObject {
     func updateSportNews(sportNews: sportNews, completion: @escaping (Error?) -> Void) {
         print("Creating new sports news...")
         let db = Firestore.firestore()
+        let userInfo = UserInfo.shared
         db.collection("SportsNews").document(sportNews.documentID).setData([
             "newstitle": sportNews.newstitle,
             "newsimage": sportNews.newsimage,
@@ -217,7 +222,8 @@ class sportsNewslist: ObservableObject {
             "newsdate": sportNews.newsdate,
             "newsdateSwift": sportNews.newsdateSwift,
             "author": sportNews.author,
-            "isApproved": sportNews.isApproved
+            "isApproved": sportNews.isApproved,
+            "writerEmail": userInfo.email
         ]) { error in
             completion(error)
         }
@@ -227,6 +233,7 @@ class sportsNewslist: ObservableObject {
     func createSportNews(sportNews: sportNews, completion: @escaping (Error?) -> Void) {
         print("Creating new sports news...")
         let db = Firestore.firestore()
+        let userInfo = UserInfo.shared
         db.collection("SportsNews").addDocument(data: [
             "newstitle": sportNews.newstitle,
             "newsimage": sportNews.newsimage,
@@ -234,7 +241,8 @@ class sportsNewslist: ObservableObject {
             "newsdate": sportNews.newsdate,
             "newsdateSwift": sportNews.newsdateSwift,
             "author": sportNews.author,
-            "isApproved": sportNews.isApproved
+            "isApproved": sportNews.isApproved,
+            "writerEmail": userInfo.email
         ]) { error in
             completion(error)
         }
