@@ -61,7 +61,7 @@ struct ClubDetailAdminView: View {
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
-                Section("Club Meeting Room") {
+                Section("Meeting Room") {
                     TextField("Meeting room", text: $clubmeetingroom)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
@@ -153,138 +153,7 @@ struct ClubDetailAdminView: View {
                     Text("Admins can edit all aspects of the club.\nEditors can add upcoming events with a template.")
                         .font(.system(size: 12, weight: .medium, design: .rounded))
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
-                
-
-                Section("Members") {
-                    
-                    DisclosureGroup("Captains") {
-                        ForEach($clubcaptain, id: \.self) { $captain in
-                            HStack {
-                                Text(captain)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .contextMenu {
-                                        Button(role: .destructive) {
-                                            clubcaptain.removeAll { $0 == captain }
-                                        } label: {
-                                            Text("Delete")
-                                        }
-                                    }
-                            }
-                        }
-                        Button("Add Captain") {
-                            isAddingCaptain = true
-                        }.font(.system(size: 17, weight: .regular, design: .rounded))
-                        .sheet(isPresented: $isAddingCaptain) {
-                            VStack {
-                                HStack {
-                                    Button("Cancel") {
-                                        isAddingCaptain = false
-                                    }.font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .padding()
-                                    Spacer()
-                                }
-                                Form {
-                                    Section("New Captain Name:") {
-                                        TextField("Email", text: $newCaptainName)
-                                            .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        Button("Add Captain") {
-                                            isAddingCaptain = false
-                                            clubcaptain.append(newCaptainName)
-                                            newCaptainName = ""
-                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
-                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
-                                }
-                            }
-                        }
-                    }.font(.system(size: 17, weight: .regular, design: .rounded))
-                    
-                    DisclosureGroup("Advisors") {
-                        ForEach($clubadvisor, id: \.self) {$advisor in
-                            HStack {
-                                Text(advisor)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .contextMenu {
-                                        Button(role: .destructive) {
-                                            clubadvisor.removeAll { $0 == advisor }
-                                        } label: {
-                                            Text("Delete")
-                                        }
-                                    }
-                            }
-                        }
-                        
-                        Button("Add Advisor") {
-                            isAddingAdvisor = true
-                        }.font(.system(size: 17, weight: .regular, design: .rounded))
-                        .sheet(isPresented: $isAddingAdvisor) {
-                            VStack {
-                                HStack {
-                                    Button("Cancel") {
-                                        isAddingAdvisor = false
-                                    }.font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .padding()
-                                    Spacer()
-                                }
-                                Form {
-                                    Section("New Advisor Name:") {
-                                        TextField("Name", text: $newAdvisorName)
-                                            .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        Button("Add Advisor") {
-                                            isAddingAdvisor = false
-                                            clubadvisor.append(newAdvisorName)
-                                            newAdvisorName = ""
-                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
-                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
-                                }
-                            }
-                        }
-                        
-                    }.font(.system(size: 17, weight: .regular, design: .rounded))
-                    
-                    DisclosureGroup("Members") {
-                        ForEach($clubmembers, id: \.self) { $player in
-                            
-                            HStack {
-                                Text(player)
-                                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .contextMenu {
-                                        Button(role: .destructive) {
-                                            clubmembers.removeAll { $0 == player }
-                                        } label: {
-                                            Text("Delete")
-                                        }
-                                    }
-                            }
-                        }
-                        Button("Add Member") {
-                            isAddingMember = true
-                        }.font(.system(size: 17, weight: .regular, design: .rounded))
-                        .sheet(isPresented: $isAddingMember) {
-                            VStack {
-                                HStack {
-                                    Button("Cancel") {
-                                        isAddingMember = false
-                                    }.font(.system(size: 17, weight: .regular, design: .rounded))
-                                    .padding()
-                                    Spacer()
-                                }
-                                Form {
-                                    
-                                    Section("New Member Name:") {
-                                        TextField("Name", text: $newMemberName)
-                                            .font(.system(size: 17, weight: .regular, design: .rounded))
-                                        Button("Add Player") {
-                                            isAddingMember = false
-                                            clubmembers.append(newMemberName)
-                                            newMemberName = ""
-                                        }.font(.system(size: 17, weight: .regular, design: .rounded))
-                                    }.font(.system(size: 12, weight: .medium, design: .rounded))
-                                }
-                            }
-                        }
-                    }.font(.system(size: 17, weight: .regular, design: .rounded))
-                }.font(.system(size: 12, weight: .medium, design: .rounded))
-                
+                                
                 
                 Section("Image") {
                     if let displayimage {

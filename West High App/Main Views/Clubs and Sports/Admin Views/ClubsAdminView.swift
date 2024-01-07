@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ClubsAdminView: View {
-     
+    
     //MARK: initializer
     @StateObject var db = clubManager.shared
     
@@ -41,6 +41,13 @@ struct ClubsAdminView: View {
         
         VStack {
             
+            HStack {
+                Text("Add a new club using the button below. Press and hold a club to delete.")
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                    .padding(.horizontal)
+                Spacer()
+            }
+            
             Button {
                 isPresentingAddClub = true
             } label: {
@@ -55,24 +62,59 @@ struct ClubsAdminView: View {
                         .foregroundColor(.blue)
                         .cornerRadius(10)
                     )
-
+                
             }
             
             List(db.allclublist, id: \.id) {
-                club in
+                item in
                 
-                VStack(alignment: .leading) {
-                    Text(club.clubname)
-                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                    Text("Room: \(club.clubmeetingroom)")
-                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                    Text(club.clubdescription)
-                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                        .lineLimit(1)
+                HStack {
+                    if item.imagedata != UIImage() {
+                        Image(uiImage: item.imagedata)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(1000)
+                            .padding(.trailing, 10)
+                    } else {
+                        Image(systemName: "questionmark.circle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(1000)
+                            .padding(.trailing, 10)
+                    }
+                    VStack(alignment: .center) {
+                        HStack {
+                            Text(item.clubname)
+                                .foregroundColor(.primary)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
+                                .font(.system(size: 24, weight: .semibold, design: .rounded))
+                            Spacer()
+                        }
+                        HStack {
+                            if item.clubmeetingroom != "" {
+                                Text("Room \(item.clubmeetingroom)")
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            } else {
+                                Text("No meeting room")
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            }
+                            Spacer()
+                        }
+                    }
+                    Spacer()
                 }.contextMenu {
                     Button("Delete", role: .destructive) {
-                        temptitle = club.clubname
-                        clubToDelete = club
+                        temptitle = item.clubname
+                        clubToDelete = item
                         isPresentingDeleteClub = true
                     }
                 }
@@ -88,10 +130,10 @@ struct ClubsAdminView: View {
             .sheet(item: $selectedClub) { club in
                 ClubAdminDetailView(dataManager: db, editingClub: club)
             }
-
+        
             .alert(isPresented: $isPresentingDeleteClub) {
                 Alert(
-                
+                    
                     title: Text("Delete Club"),
                     message: Text("This action cannot be undone."),
                     primaryButton: .destructive(Text("Delete")) {
@@ -110,12 +152,12 @@ struct ClubsAdminView: View {
 }
 
 struct ClubAdminDetailView: View {
-   @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode
     let calendar = Calendar.current
-   @ObservedObject var dataManager: clubManager
-   @State private var clubname = ""
-   @State private var adminstring = ""
-   var editingClub: club?
+    @ObservedObject var dataManager: clubManager
+    @State private var clubname = ""
+    @State private var adminstring = ""
+    var editingClub: club?
     
     @State var isPresentingAddClub = false
     @State var isPresentingConfirmClub = false
@@ -133,87 +175,102 @@ struct ClubAdminDetailView: View {
     @State var clubimage = ""
     @State var clubmembercount = ""
     @State var clubmembers: [String] = []
-      
-   @State private var isConfirmingAddClub = false
-   @State private var isConfirmingDeleteClub = false
-   
-   var body: some View {
-       NavigationView {
-           Form {
-               
-               Section(header: Text("Club Details")) {
-                   TextField("Club Name", text: $clubname)
-                       .font(.system(size: 17, weight: .regular, design: .rounded))
-                   TextField("Club Admin Emails (Comma Seperated)", text: $adminstring)
-                       .font(.system(size: 17, weight: .regular, design: .rounded))
-                   Text("Additional information can be added after creation of club.")
-                       .font(.system(size: 17, weight: .regular, design: .rounded))
-               }.font(.system(size: 12, weight: .medium, design: .rounded))
-               
-               if !clubname.isEmpty {
-                   Button {
-                       isConfirmingAddClub = true
-                   } label: {
-                       Text("Publish New Club")
-                           .foregroundColor(.white)
-                           .fontWeight(.semibold)
-                           .padding(10)
-                           .cornerRadius(15.0)
-                           .frame(width: screen.screenWidth-60)
-                           .font(.system(size: 17, weight: .semibold, design: .rounded))
-                           .background(Rectangle()
-                            .foregroundColor(.blue)
+    
+    @State private var isConfirmingAddClub = false
+    @State private var isConfirmingDeleteClub = false
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                
+                Section(header: Text("Club Details")) {
+                    TextField("Name", text: $clubname)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                    HStack {
+                        Text("Club name cannot be changed after creation of club.")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                        Spacer()
+                    }
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+                Section(header: Text("Club Admins")) {
+                    TextField("Admin Emails", text: $adminstring)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                    HStack {
+                        Text("Enter the club admin emails, seperated by comma. They can further edit  club information, and may not be students.\n\nAdditional information can be added after creation of club.")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                        Spacer()
+                    }
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+                
+                if !clubname.isEmpty {
+                    Button {
+                        isConfirmingAddClub = true
+                    } label: {
+                        Text("Publish New Club")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
+                    }
+                } else {
+                    Text("Publish New Club")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-60)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.gray)
                             .cornerRadius(10)
-                           )
-                   }
-               } else {
-                   Text("Publish New Club")
-                       .foregroundColor(.white)
-                       .fontWeight(.semibold)
-                       .padding(10)
-                       .cornerRadius(15.0)
-                       .frame(width: screen.screenWidth-60)
-                       .font(.system(size: 17, weight: .semibold, design: .rounded))
-                       .background(Rectangle()
-                        .foregroundColor(.gray)
-                        .cornerRadius(10)
-                       )
-               }
-               
-           }
-               
-           .navigationBarTitle(editingClub == nil ? "Add Club" : "Edit Club")
-           .navigationBarItems(leading: Button("Cancel") {
-               presentationMode.wrappedValue.dismiss()
-           })
-           .alert(isPresented: $isConfirmingAddClub) {
-               Alert(
-                   title: Text("Publish Club"),
-                   message: Text("This action cannot be undone."),
-                   primaryButton: .default(Text("Publish")) {
-                       adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
-                       
-                       clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: [], imagedata: UIImage(), documentID: "NAN", id: 0)
-                       
-                       if let clubToAdd = clubToAdd {
-                           dataManager.createClub(club: clubToAdd) {error in
-                               if let error = error {
-                                   print("Error creating club: \(error.localizedDescription)")
-                               }
-                           }
-                       }
-                       presentationMode.wrappedValue.dismiss()
-                   },
-                   secondaryButton: .cancel()
-               )
-           }
-           .onAppear {
-               if let club = editingClub {
-                   clubname = club.clubname
-               }
-           }
-       }
-   }
+                        )
+                    HStack {
+                        Text("Club can only be published when all fields are filled out.")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                        Spacer()
+                    }
+                }
+                
+            }
+            
+            .navigationBarTitle(editingClub == nil ? "Add Club" : "Edit Club")
+            .navigationBarItems(leading: Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            })
+            .alert(isPresented: $isConfirmingAddClub) {
+                Alert(
+                    title: Text("Publish Club"),
+                    message: Text("This action cannot be undone."),
+                    primaryButton: .default(Text("Publish")) {
+                        adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
+                        
+                        clubToAdd = club(clubname: clubname, clubcaptain: clubcaptain, clubadvisor: clubadvisor, clubmeetingroom: clubmeetingroom, clubdescription: clubdescription, clubimage: clubimage, clubmembercount: clubmembercount, clubmembers: clubmembers, adminemails: adminemails, editoremails: editoremails, favoritedusers: [], imagedata: UIImage(), documentID: "NAN", id: 0)
+                        
+                        if let clubToAdd = clubToAdd {
+                            dataManager.createClub(club: clubToAdd) {error in
+                                if let error = error {
+                                    print("Error creating club: \(error.localizedDescription)")
+                                }
+                            }
+                        }
+                        presentationMode.wrappedValue.dismiss()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+            .onAppear {
+                if let club = editingClub {
+                    clubname = club.clubname
+                }
+            }
+        }
+    }
 }
 
 struct ClubsAdminView_Previews: PreviewProvider {

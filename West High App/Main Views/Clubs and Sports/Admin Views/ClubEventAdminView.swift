@@ -51,6 +51,13 @@ struct ClubsEventsAdminView: View {
     var body: some View {
         
         VStack {
+            HStack {
+                Text("Add an event using the button below. Press and hold an event to delete.")
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                Spacer()
+            }.padding(.horizontal)
+
+            
             Button {
                 isPresetingAddEvent = true
             } label: {

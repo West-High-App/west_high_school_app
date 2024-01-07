@@ -152,9 +152,19 @@ struct SpotlightAdminView: View {
                 }
                 Spacer()
             }
+            
+            
             if !hasPermission.articleadmin {
                 HStack {
-                    Text("Add a spotlight article to be approved by an administrator.")
+                    Text("Add a new pending article to be approved by an administrator using the button below. Press and hold an article you created to delete.")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .padding(.horizontal)
+                    Spacer()
+                }
+            } else {
+                HStack {
+                    Text("Add a new article using the button below. Press and hold an article to delete. View pending student articles and approve or delete them under Pending.")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
                         .padding(.horizontal)
                     Spacer()
                 }
@@ -792,14 +802,21 @@ struct AchievementDetailView: View {
         NavigationView {
             Form {
                 Section(header: Text("Article Details")) {
-                    TextField("Article Title", text: $achievementTitle)
+                    TextField("Title", text: $achievementTitle)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
-                    TextField("Article Description", text: $achievementDescription)
-                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                    TextField("Article Author", text: $articleAuthor)
+                    TextField("Author", text: $articleAuthor)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
+                Section(header: Text("Article Content")) {
+                    TextField("Content", text: $achievementDescription)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                    HStack {
+                        Text("This can be pasted from MMSD emails or from the West website, and the formatting will automatically update. It can also be enterred manually (a double space signifies a paragraph break).")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                        Spacer()
+                    }
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 Section("Images") {
                     List {
@@ -839,6 +856,11 @@ struct AchievementDetailView: View {
                             .foregroundColor(.gray)
                             .cornerRadius(10)
                         )
+                    HStack {
+                        Text("Article can only be published when all fields are filled out and at least one image has been uploaded.")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                        Spacer()
+                    }
                 } else {
                     Button {
                         isConfirmingAddAchievement = true

@@ -46,8 +46,11 @@ struct EmailListView: View {
     @State var isPresentingConfirmChanges = false
     var body: some View {
         VStack {
-            Text("You are currently editing source data. Any changes will be made public across all devices.")
-                .padding(.horizontal)
+            HStack {
+                Text("Edit the users who have certain permissions within the app. Make sure to publish changes after revisions.")
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                Spacer()
+            }.padding(.horizontal)
             List {
                 ForEach(permissionsListKeys, id: \.self) { key in
                     DisclosureGroup {

@@ -82,7 +82,15 @@ struct SportsNewsAdminView: View {
             
             if !hasPermission.articleadmin {
                 HStack {
-                    Text("Add a sports article to be approved by an administrator.")
+                    Text("Add a new pending article to be approved by an administrator using the button below. Press and hold an article you created to delete.")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .padding(.horizontal)
+                    Spacer()
+                }
+            } else {
+                HStack {
+                    Text("Add a new article using the button below. Press and hold an article to delete. View pending student articles and approve or delete them under Pending.")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
                         .padding(.horizontal)
                     Spacer()
                 }
@@ -651,15 +659,23 @@ struct sportNewsRowlView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Sport Article Details")) {
+                Section(header: Text("Article Details")) {
                     TextField("Title", text: $newstitle)
-                        .font(.system(size: 17, weight: .regular, design: .rounded))
-                    TextField("Description", text: $newsdescription)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                     TextField("Author", text: $author)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
+                Section(header: Text("Article Content")) {
+                    TextField("Content", text: $newsdescription)
+                        .font(.system(size: 17, weight: .regular, design: .rounded))
+                    HStack {
+                        Text("This can be pasted from the Regent Reporter. It can also be enterred manually (a double space signifies a paragraph break).")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                        Spacer()
+                    }
+                }
+                    
                 Section(header: Text("Image")) {
                     if let displayimage = displayimage {
                         Image(uiImage: displayimage)
@@ -704,6 +720,11 @@ struct sportNewsRowlView: View {
                             .foregroundColor(.gray)
                             .cornerRadius(10)
                         )
+                    HStack {
+                        Text("Article can only be published when all fields are filled out and at least one image has been uploaded.")
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                        Spacer()
+                    }
                 }
                 
             }

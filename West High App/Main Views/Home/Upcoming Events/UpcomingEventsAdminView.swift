@@ -25,6 +25,12 @@ struct UpcomingEventsAdminView: View {
                         .padding(.leading)
                     Spacer()
                 }
+                HStack {
+                    Text("Add a new event using the button below. Press and hold an event to delete.")
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .padding(.horizontal)
+                    Spacer()
+                }
                 
                 Button {
                     isPresentingAddEvent = true
@@ -40,7 +46,7 @@ struct UpcomingEventsAdminView: View {
                             .foregroundColor(.blue)
                             .cornerRadius(10)
                         )
-                }
+                }.padding(.bottom, 5)
                 
                 ForEach(dataManager.allupcomingeventslist) { event in
                     VStack (alignment: .leading) {
@@ -128,31 +134,6 @@ struct UpcomingEventsAdminView: View {
 }
 
 
-struct EventRowView: View {
-    var event: event
-    
-    var body: some View {
-        HStack{
-            VStack(alignment: .leading) {
-                Text("Event Name : " + event.eventname)
-                    .font(.headline)
-                Text("Event Date : " + "\(event.month) \(event.day), \(event.year)")
-                    .font(.subheadline)
-                    .font(.subheadline)
-                Text("Event Time : " + event.time)
-                    .font(.subheadline)
-
-            }
-            Spacer()
-        }
-        .padding()
-        .background(Rectangle()
-            .cornerRadius(9.0)
-            .shadow(radius: 5, x: 0, y: 0)
-            .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-    }
-}
-
 struct EventDetailView: View {
     
     let calendar = Calendar.current
@@ -170,7 +151,7 @@ struct EventDetailView: View {
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     let days = Array(1...31)
     @State var years: [String] = []
-
+    
     let year = Calendar.current.component(.year, from: Date())
     @State private var isConfirmingAddEvent = false
     @State private var isConfirmingDeleteEvent = false
@@ -197,6 +178,9 @@ struct EventDetailView: View {
                 Section(header: Text("Event Details")) {
                     TextField("Event Name", text: $eventName)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+                
+                Section(header: Text("Event Time")) {
                     Toggle("All Day", isOn: $isAllDay)
                         .font(.system(size: 17, weight: .regular, design: .rounded))
                     if !isAllDay {
@@ -204,6 +188,9 @@ struct EventDetailView: View {
                             .labelsHidden()
                             .datePickerStyle(WheelDatePickerStyle())
                     }
+                }.font(.system(size: 12, weight: .medium, design: .rounded))
+                
+                Section(header: Text("Event Date")) {
                     Picker("Month", selection: $selectedMonthIndex) {
                         ForEach(0..<months.count, id: \.self) { index in
                             Text(months[index]).tag(index)
@@ -220,7 +207,6 @@ struct EventDetailView: View {
                             Text("\(years[index])").tag(index)
                         }
                     }.font(.system(size: 17, weight: .regular, design: .rounded))
-
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
                 
                 if !eventName.isEmpty && isRealDate {
@@ -240,17 +226,21 @@ struct EventDetailView: View {
                             )
                     }
                 } else {
-                    Text("Publish New Event")
-                        .foregroundColor(.white)
-                        .fontWeight(.semibold)
-                        .padding(10)
-                        .cornerRadius(15.0)
-                        .frame(width: screen.screenWidth-60)
-                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                        .background(Rectangle()
-                            .foregroundColor(.gray)
-                            .cornerRadius(10)
-                        )
+                    VStack(alignment: .leading) {
+                        Text("Publish New Event")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.gray)
+                                .cornerRadius(10)
+                            )
+                            Text("Event can only be published when all fields are filled out and a valid date has been selected.")
+                                .font(.system(size: 12, weight: .medium, design: .rounded))
+                    }
                 }
                 
             }
@@ -287,7 +277,7 @@ struct EventDetailView: View {
                     if let day = Int(event.day), let dayIndex = days.firstIndex(of: day) {
                         selectedDayIndex = dayIndex
                     }
-
+                    
                 }
             }
         }
@@ -333,7 +323,7 @@ struct EventDetailView: View {
             time: timeString,
             month: months[selectedMonthIndex],
             day: "\(days[selectedDayIndex])",
-            year: years[selectedYearIndex], 
+            year: years[selectedYearIndex],
             isAllDay: isAllDay,
             publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
             date: date
