@@ -273,6 +273,7 @@ struct EventDetailView: View {
                     if let monthIndex = months.firstIndex(of: event.month) {
                         selectedMonthIndex = monthIndex
                     }
+                    print("777 -- month \(selectedMonthIndex)")
                     
                     if let day = Int(event.day), let dayIndex = days.firstIndex(of: day) {
                         selectedDayIndex = dayIndex
@@ -316,18 +317,22 @@ struct EventDetailView: View {
             return
         }
         
+        print("777 -- year saving \(selectedYearIndex)")
+        print("777 -- year: \(years[selectedYearIndex])")
+        
         
         let eventToSave = event(
             documentID: "NAN",
             eventname: eventName,
             time: timeString,
-            month: months[selectedMonthIndex],
+            month: "\(months[selectedMonthIndex])",
             day: "\(days[selectedDayIndex])",
-            year: years[selectedYearIndex],
+            year: "\(years[selectedYearIndex])",
             isAllDay: isAllDay,
-            publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
+            publisheddate: "\(months[selectedMonthIndex]) \(days[selectedDayIndex]),\(eventyear)",
             date: date
         )
+        print("777 creating event: \(eventToSave)")
         dataManager.createEvent(event: eventToSave) { error in
             if let error = error {
                 print("Error creating event: \(error.localizedDescription)")

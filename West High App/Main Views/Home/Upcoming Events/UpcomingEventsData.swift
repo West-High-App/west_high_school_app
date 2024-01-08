@@ -220,6 +220,7 @@ class upcomingEventsDataManager: ObservableObject {
             "isAllDay": event.isAllDay
         ]) { error in
             completion(error)
+            print(error?.localizedDescription ?? " no error " + "-- 777")
         }
     }
 

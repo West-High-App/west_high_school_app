@@ -693,12 +693,15 @@ struct MostRecentAnnouncementCell: View{
      var body:some View{
           VStack(alignment: .leading) {
                HStack {
-                    Text(news.title)
-                         .foregroundColor(.black)
-                         .font(.system(size: 17, weight: .semibold, design: .rounded))
-                         .padding(.horizontal)
-                         .padding(.vertical, -5)
-                    Spacer()
+                    HStack {
+                         Text(news.title)
+                              .foregroundColor(.black)
+                              .font(.system(size: 17, weight: .semibold, design: .rounded))
+                              .padding(.horizontal)
+                              .padding(.vertical, -5)
+                              .lineLimit(1)
+                         Spacer()
+                    }
                     Text(news.publisheddate)
                          .foregroundColor(.gray)
                          .font(.system(size: 17, weight: .medium, design: .rounded))
