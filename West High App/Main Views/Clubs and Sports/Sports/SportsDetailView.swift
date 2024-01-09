@@ -45,7 +45,7 @@ struct SportsDetailView: View {
         sporteventmanager.isLoading
     }
     
-    @State var currentsport: sport
+    let currentsport: sport
     
     func dateDate(date: Date) -> String {
         return date.formatted(date: .long, time: .omitted)
@@ -442,10 +442,6 @@ struct SportsDetailView: View {
         }
         .onAppear {
             sporteventmanager.getData(forSport: self.currentsport)
-                                
-            imagemanager.getImage(fileName: currentsport.rosterimage) { image in
-                currentsport.rosterimagedata = image
-            }
             
             // checking if club is a favorite
             if currentsport.favoritedusers.contains(userInfo.email) {
