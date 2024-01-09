@@ -18,14 +18,16 @@ class clubEvent: NSObject, Identifiable {
     let day: String
     let year: String
     var date: Date?
+    var isAllDay: Bool
 
-    init(documentID: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String, convertDate: Bool = true) {
+    init(documentID: String, title: String, subtitle: String, month: String, day: String, year: String, publisheddate: String, convertDate: Bool = true, isAllDay: Bool) {
         self.documentID = documentID
         self.title = title
         self.subtitle = subtitle
         self.month = month
         self.day = day
         self.year = year
+        self.isAllDay = isAllDay
  
         // Set the date formatter and optionally set the formatted date from string
         
@@ -42,7 +44,7 @@ class clubEvent: NSObject, Identifiable {
         }
     }
     
-    init(title: String, date: Date) {
+    init(title: String, date: Date, isAllDay: Bool) {
         self.documentID = UUID().uuidString
         self.title = title
         self.subtitle = date.twelveHourTime
@@ -50,6 +52,7 @@ class clubEvent: NSObject, Identifiable {
         self.day = "\(date.dateComponent(.day))"
         self.year = "\(date.dateComponent(.year))"
         self.date = date
+        self.isAllDay = isAllDay
     }
 
 }
@@ -89,18 +92,19 @@ class clubEventManager: ObservableObject {
                 for document in snapshot.documents {
                     let data = document.data()
                     let clubID = data["clubID"] as? String ?? ""
-                    let events = data["events"] as? [[String: String]] ?? []
+                    let events = data["events"] as? [[String: Any]] ?? []
                     let documentID = document.documentID
                     
                     if clubID == forClub {
                         let returnValue = events.compactMap { event in
-                            let eventname = event["title"] ?? ""
-                            let time = event["subtitle"] ?? ""
-                            let month = event["month"] ?? ""
-                            let day = event["day"] ?? ""
-                            let year = event["year"] ?? ""
+                            let eventname = event["title"] as? String ?? ""
+                            let time = event["subtitle"] as? String ?? ""
+                            let month = event["month"] as? String ?? ""
+                            let day = event["day"] as? String ?? ""
+                            let year = event["year"] as? String ?? ""
+                            let isAllDay = event["isAllDay"] as? Bool ?? false
 
-                            let newEvent = clubEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)")
+                            let newEvent = clubEvent(documentID: documentID, title: eventname, subtitle: time, month: month, day: day, year: year, publisheddate: "\(month) \(day), \(year)", isAllDay: isAllDay)
                             if let newDate = newEvent.date, newDate >= Date.yesterday {
                                 return newEvent
                             } else {
@@ -123,7 +127,7 @@ class clubEventManager: ObservableObject {
     }
     
     func createClubEvent(forClub: String, clubEvent: clubEvent) {
-        var eventlist: [[String: String]] = []
+        var eventlist: [[String: Any]] = []
         var eventdocumentID = ""
         let db = Firestore.firestore()
         let collection = db.collection("ClubEvents")
@@ -139,7 +143,7 @@ class clubEventManager: ObservableObject {
                 for doc in snapshot.documents {
                     let data = doc.data()
                     let clubID = data["clubID"] as? String ?? ""
-                    let events = data["events"] as? [[String: String]] ?? []
+                    let events = data["events"] as? [[String: Any]] ?? []
                     let docID = doc.documentID
                     
                     if clubID == forClub {
@@ -147,14 +151,15 @@ class clubEventManager: ObservableObject {
                         eventdocumentID = docID
                         guard let convertedDate = clubEvent.date?.convertToTimeZone(initTimeZone: .current, timeZone: .chicago) else { return }
                         
-                        var eventtoadd: [String: String] = [:]
+                        var eventtoadd: [String: Any] = [:]
                         let title = clubEvent.title
                         let subtitle = convertedDate.twelveHourTime
                         let month = convertedDate.monthName
                         let day = convertedDate.dateComponent(.day)
                         let year = convertedDate.dateComponent(.year)
                         let publisheddate = "\(month) \(day), \(year)"
-                        eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : "\(day)", "year" : "\(year)", "publisheddate" : publisheddate]
+                        let isAllDay = clubEvent.isAllDay
+                        eventtoadd = ["title": title, "subtitle": subtitle, "month" : month, "day" : "\(day)", "year" : "\(year)", "publisheddate" : publisheddate, "isAllDay": isAllDay]
                         
                         eventlist.append(eventtoadd)
                         

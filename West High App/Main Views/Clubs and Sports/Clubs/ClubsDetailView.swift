@@ -181,10 +181,17 @@ struct ClubsDetailView: View {
                                                 .minimumScaleFactor(0.8)
                                                 .lineLimit(2)
                                                 .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                            Text(eventDate.twelveHourTime) // TODO: add all-day option here (and firebase ofc)
-                                                .minimumScaleFactor(0.8)
-                                                .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                                .lineLimit(1)
+                                            if event.isAllDay {
+                                                Text("All Day")
+                                                    .minimumScaleFactor(0.8)
+                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                    .lineLimit(1)
+                                            } else {
+                                                Text(eventDate.twelveHourTime)
+                                                    .minimumScaleFactor(0.8)
+                                                    .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                                    .lineLimit(1)
+                                            }
                                         }
                                         .padding(.leading, 5)
                                         Spacer()

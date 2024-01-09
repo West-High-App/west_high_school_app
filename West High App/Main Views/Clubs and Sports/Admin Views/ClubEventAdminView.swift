@@ -19,7 +19,7 @@ struct ClubsEventsAdminView: View {
     @State var eventToSave: clubEvent?
     @State var editingeventslist: [clubEvent] = []
     @State var screen = ScreenSize()
-        
+    
     @State var selectedevent = 0
     @State var selectedtime = 0
     
@@ -47,7 +47,7 @@ struct ClubsEventsAdminView: View {
     @State var date = ""
     
     @State var selectedclubevent: clubEvent?
-        
+    
     var body: some View {
         
         VStack {
@@ -56,7 +56,7 @@ struct ClubsEventsAdminView: View {
                     .font(.system(size: 14, weight: .medium, design: .rounded))
                 Spacer()
             }.padding(.horizontal)
-
+            
             
             Button {
                 isPresetingAddEvent = true
@@ -82,7 +82,7 @@ struct ClubsEventsAdminView: View {
                                     Text(eventDate.monthName)
                                         .font(.system(size: 16, weight: .medium, design: .rounded))
                                         .foregroundColor(.red)
-                                    Text("\(eventDate.dateComponent(.day))")
+                                    Text(event.day)
                                         .font(.system(size: 26, weight: .regular, design: .rounded))
                                     
                                 }
@@ -93,9 +93,15 @@ struct ClubsEventsAdminView: View {
                                     Text(event.title)
                                         .lineLimit(2)
                                         .font(.system(size: 18, weight: .semibold, design: .rounded)) // semibold
-                                    Text(eventDate.twelveHourTime)
-                                        .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
-                                        .lineLimit(1)
+                                    if event.isAllDay {
+                                        Text("All Day")
+                                            .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                            .lineLimit(1)
+                                    } else {
+                                        Text(eventDate.twelveHourTime)
+                                            .font(.system(size: 18, weight: .regular, design: .rounded))  // regular
+                                            .lineLimit(1)
+                                    }
                                 }
                                 .padding(.leading, 5)
                                 Spacer()
@@ -124,7 +130,7 @@ struct ClubsEventsAdminView: View {
                     .font(.system(size: 22, weight: .semibold, design: .rounded))
                     .padding(.leading, 5)
                 Spacer()
-                    // .frame(height: 500)
+                // .frame(height: 500)
             }
         }.navigationTitle("Edit Club Events")
             .alert(isPresented: $isConfirmingDeleteEvent) {
@@ -146,16 +152,16 @@ struct ClubsEventsAdminView: View {
             .sheet(item: $selectedclubevent) { event in
                 ClubEventAdminDetailView(dataManager: dataManager, editingEvent: event, currentclub: currentclub, admin: admin)
             }
-            
+        
     }
 }
 
 
 struct ClubEventAdminDetailView: View {
-   @Environment(\.presentationMode) var presentationMode
-   @ObservedObject var dataManager: clubEventManager
-   @State private var eventname = ""
-   var editingEvent: clubEvent?
+    @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var dataManager: clubEventManager
+    @State private var eventname = ""
+    var editingEvent: clubEvent?
     var currentclub: club
     
     @State var isConfirmingDeleteEvent = false
@@ -191,12 +197,13 @@ struct ClubEventAdminDetailView: View {
     @State var title = ""
     @State var subtitle = ""
     @State var date = ""
+    @State var isAllDay = false
     
     @State var isPresentingAddClub = false
     
     var admin: Bool
-      
-   @State private var isConfirmingAddClubEvent = false
+    
+    @State private var isConfirmingAddClubEvent = false
     
     var monthdays: [String: Int] = ["Jan": 31, "Feb": 28, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30, "Jul": 31, "Aug": 31, "Sep": 30, "Oct": 31, "Nov": 30, "Dec": 31]
     
@@ -209,138 +216,148 @@ struct ClubEventAdminDetailView: View {
         }
         return false
     }
-   
-   var body: some View {
-       NavigationView {
-           Form {
-               Section(header: Text("Clubs Event details")) {
-                   if admin {
-                       //bob
-                       TextField("Title", text: $title)
-                       DatePicker("Pick a time", selection: $selectedTime, displayedComponents: .hourAndMinute)
-                           .labelsHidden()
-                           .datePickerStyle(WheelDatePickerStyle())
-                       
-                   } else {
-                       Picker("Event Type", selection: $selectedevent) {
-                           Text("Meeting")
-                               .tag(0)
-                           Text("Mandatory Meeting")
-                               .tag(1)
-                           Text("Competition")
-                               .tag(2)
-                           Text("Special Event")
-                               .tag(3)
-                       }
-                       DatePicker("Pick a time", selection: $selectedTime, displayedComponents: .hourAndMinute)
-                           .labelsHidden()
-                           .datePickerStyle(WheelDatePickerStyle())
-                   }
-                   
-                   Picker("Month", selection: $selectedMonthIndex) {
-                       ForEach(0..<months.count, id: \.self) { index in
-                           Text(months[index]).tag(index)
-                       }
-                   }
-                   
-                   Picker("Day", selection: $selectedDayIndex) {
-                       ForEach(0..<days.count, id: \.self) { index in
-                           Text("\(days[index])").tag(index)
-                       }
-                   }
-                   
-                   Picker("Year", selection: $selectedYearIndex) {
-                       ForEach(0..<years.count, id: \.self) { index in
-                           Text("\(years[index])").tag(index)
-                       }
-                   }
-               }
-               
-               if ((admin && !title.isEmpty) || !admin) && isRealDate {
-                   Button {
-                       isConfirmingAddClubEvent = true
-                   } label: {
-                       Text("Publish New Club Event")
-                           .foregroundColor(.white)
-                           .fontWeight(.semibold)
-                           .padding(10)
-                           .cornerRadius(15.0)
-                           .frame(width: screen.screenWidth-60)
-                           .font(.system(size: 17, weight: .semibold, design: .rounded))
-                           .background(Rectangle()
-                            .foregroundColor(.blue)
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("EVENT DETAILS")) {
+                    if admin {
+                        TextField("Event Name", text: $title)
+                    } else {
+                        Picker("Event Type", selection: $selectedevent) {
+                            Text("Meeting")
+                                .tag(0)
+                            Text("Mandatory Meeting")
+                                .tag(1)
+                            Text("Competition")
+                                .tag(2)
+                            Text("Special Event")
+                                .tag(3)
+                        }
+                    }
+                }
+                Section(header: Text("EVENT TIME")) {
+                                        
+                    Toggle("All Day", isOn: $isAllDay)
+
+                    if !isAllDay {
+                        DatePicker("PICK A TIME", selection: $selectedTime, displayedComponents: .hourAndMinute)
+                            .labelsHidden()
+                            .datePickerStyle(WheelDatePickerStyle())
+                    }
+                    
+                }
+                
+                Section(header: Text("EVENT DATE")) {
+                                        
+                        Picker("Month", selection: $selectedMonthIndex) {
+                            ForEach(0..<months.count, id: \.self) { index in
+                                Text(months[index]).tag(index)
+                            }
+                        }
+                    
+                    Picker("Day", selection: $selectedDayIndex) {
+                        ForEach(0..<days.count, id: \.self) { index in
+                            Text("\(days[index])").tag(index)
+                        }
+                    }
+                    
+                    Picker("Year", selection: $selectedYearIndex) {
+                        ForEach(0..<years.count, id: \.self) { index in
+                            Text("\(years[index])").tag(index)
+                        }
+                    }
+                }
+                
+                if ((admin && !title.isEmpty) || !admin) && isRealDate {
+                    Button {
+                        isConfirmingAddClubEvent = true
+                    } label: {
+                        Text("Publish New Club Event")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                            .padding(10)
+                            .cornerRadius(15.0)
+                            .frame(width: screen.screenWidth-60)
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .background(Rectangle()
+                                .foregroundColor(.blue)
+                                .cornerRadius(10)
+                            )
+                    }
+                } else {
+                    Text("Publish New Club Event")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .padding(10)
+                        .cornerRadius(15.0)
+                        .frame(width: screen.screenWidth-60)
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .background(Rectangle()
+                            .foregroundColor(.gray)
                             .cornerRadius(10)
-                           )
-                   }
-               } else {
-                   Text("Publish New Club Event")
-                       .foregroundColor(.white)
-                       .fontWeight(.semibold)
-                       .padding(10)
-                       .cornerRadius(15.0)
-                       .frame(width: screen.screenWidth-60)
-                       .font(.system(size: 17, weight: .semibold, design: .rounded))
-                       .background(Rectangle()
-                        .foregroundColor(.gray)
-                        .cornerRadius(10)
-                       )
-               }
-           }
-               
-           .navigationBarTitle("Add Club Event")
-           .navigationBarItems(leading: Button("Cancel") {
-               presentationMode.wrappedValue.dismiss()
-           })
-           .alert(isPresented: $isConfirmingAddClubEvent) {
-               Alert(
-                   title: Text("Publish Club Event"),
-                   message: Text("This action cannot be undone."),
-                   primaryButton: .default(Text("Publish")) {
-                       if admin {
-                           eventToSave = clubEvent(
-                               documentID: "NAN",
-                               title: title,
-                               subtitle: formattedTime,
-                               month: months[selectedMonthIndex],
-                               day: "\(days[selectedDayIndex])",
-                               year: years[selectedYearIndex],
-                               publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
-                               convertDate: false
-                           )
-                       } else {
-                           eventToSave = clubEvent(
-                               documentID: "NAN",
-                               title: typelist[selectedevent],
-                               subtitle: formattedTime,
-                               month: months[selectedMonthIndex],
-                               day: "\(days[selectedDayIndex])",
-                               year: years[selectedYearIndex],
-                               publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
-                               convertDate: false
-                           )
-                       }
-                       if let eventToSave = eventToSave {
-                           print("Event to save")
-                           print(eventToSave)
-                           
-                           editingeventslist.append(eventToSave)
-                           
-                           dataManager.createClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToSave)
-                       }
-                       presentationMode.wrappedValue.dismiss()
-                   },
-                   secondaryButton: .cancel()
-               )
-           }
-           .onAppear{
-               for i in 0...2 {
-                   years.append(String(Int(year) + Int(i)))
-               }
-               let currentYear = calendar.component(.year, from: Date())
-               eventyear = String(currentYear)
-           }
-       }
-   }
+                        )
+                    Text("Event can only be published when all fields are filled out and a valid date has been selected.")
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                }
+            }
+            
+            .navigationBarTitle("Add Club Event")
+            .navigationBarItems(leading: Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            })
+            .alert(isPresented: $isConfirmingAddClubEvent) {
+                Alert(
+                    title: Text("Publish Club Event"),
+                    message: Text("This action cannot be undone."),
+                    primaryButton: .default(Text("Publish")) {
+                        if admin {
+                            eventToSave = clubEvent(
+                                documentID: "NAN",
+                                title: title,
+                                subtitle: formattedTime,
+                                month: months[selectedMonthIndex],
+                                day: "\(days[selectedDayIndex])",
+                                year: years[selectedYearIndex],
+                                publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
+                                convertDate: false,
+                                isAllDay: isAllDay
+                            )
+                        } else {
+                            eventToSave = clubEvent(
+                                documentID: "NAN",
+                                title: typelist[selectedevent],
+                                subtitle: formattedTime,
+                                month: months[selectedMonthIndex],
+                                day: "\(days[selectedDayIndex])",
+                                year: years[selectedYearIndex],
+                                publisheddate: "\(months[selectedMonthIndex])   \(days[selectedDayIndex]),\(eventyear)",
+                                convertDate: false,
+                                isAllDay: isAllDay
+                            )
+                        }
+                        if let eventToSave = eventToSave {
+                            print("Event to save")
+                            print(eventToSave)
+                            
+                            editingeventslist.append(eventToSave)
+                            
+                            dataManager.createClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToSave)
+                        }
+                        presentationMode.wrappedValue.dismiss()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+            .onAppear{
+                for i in 0...2 {
+                    years.append(String(Int(year) + Int(i)))
+                }
+                let currentYear = calendar.component(.year, from: Date())
+                eventyear = String(currentYear)
+            }
+        }
+    }
 }
 
 
