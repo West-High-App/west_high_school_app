@@ -44,6 +44,19 @@ struct EmailListView: View {
     @State var newAdminEmail = ""
     @StateObject var permissionsManager = permissionsDataManager()
     @State var isPresentingConfirmChanges = false
+    
+    let customPermissionOrder: [String] = ["General Admin", "Announcements Admin", "Upcoming Events Admin", "Article Writer", "Article Admin", "Clubs Admin", "Sports Admin"]
+    
+    var sortedKeys: [String] {
+            permissionsList.keys.sorted { key1, key2 in
+                guard let index1 = customPermissionOrder.firstIndex(of: key1),
+                      let index2 = customPermissionOrder.firstIndex(of: key2) else {
+                    return false // fallback to default order if not found in customOrder
+                }
+                return index1 < index2
+            }
+        }
+    
     var body: some View {
         VStack {
             HStack {
@@ -52,7 +65,7 @@ struct EmailListView: View {
                 Spacer()
             }.padding(.horizontal)
             List {
-                ForEach(permissionsListKeys, id: \.self) { key in
+                ForEach(sortedKeys, id: \.self) { key in
                     DisclosureGroup {
                         ForEach(permissionsList[key] ?? [], id: \.self) { adminEmail in
                             HStack {
