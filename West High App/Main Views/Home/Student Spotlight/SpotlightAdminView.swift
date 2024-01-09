@@ -430,9 +430,11 @@ struct SpotlightAdminView: View {
                                                 message: Text("This action cannot be undone."),
                                                 primaryButton: .default(Text("Approve")) {
                                                     if let achievementToDelete = achievementToDelete {
-                                                        dataManager.deleteAchievment(achievement: achievementToDelete) { error in
-                                                            if let error = error {
-                                                                print("Error deleting achievement: \(error.localizedDescription)")
+                                                        withAnimation {
+                                                            dataManager.deleteAchievment(achievement: achievementToDelete) { error in
+                                                                if let error = error {
+                                                                    print("Error deleting achievement: \(error.localizedDescription)")
+                                                                }
                                                             }
                                                         }
                                                         var tempachievement = achievementToDelete
@@ -450,7 +452,7 @@ struct SpotlightAdminView: View {
                                                             if let error = error {
                                                                 print("Error approving achievement: \(error.localizedDescription)")
                                                             }
-                                                        }
+                                                    }
                                                     }
                                                 },
                                                 secondaryButton: .cancel(Text("Cancel"))
@@ -717,12 +719,14 @@ struct SpotlightAdminView: View {
                 message: Text("This action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
                     if let achievementToDelete = achievementToDelete {
-                        dataManager.deleteAchievment(achievement: achievementToDelete) { error in
-                            if let error = error {
-                                print("Error deleting achievement: \(error.localizedDescription)")
+                        withAnimation {
+                            dataManager.deleteAchievment(achievement: achievementToDelete) { error in
+                                if let error = error {
+                                    print("Error deleting achievement: \(error.localizedDescription)")
+                                }
                             }
+                            dataManager.allstudentachievementlistUnsorted.removeAll {$0.achievementdescription == achievementToDelete.achievementdescription && $0.date == achievementToDelete.date}
                         }
-                        dataManager.allstudentachievementlistUnsorted.removeAll {$0.achievementdescription == achievementToDelete.achievementdescription && $0.date == achievementToDelete.date}
                     }
                 },
                 secondaryButton: .cancel(Text("Cancel"))
@@ -821,7 +825,6 @@ struct AchievementDetailView: View {
                 Section("Images") {
                     List {
                         ForEach(displayimagesdata, id: \.self) { image in
-                                .resizable()
                             Button {} label: {
                                 ZStack {
                                     Image(uiImage: image)
@@ -951,13 +954,13 @@ struct AchievementDetailView: View {
                             i = i + 1
                         }
                         
-                        dataManager.createAchievement(achievement: achievementToSave) { error in
-                            if let error = error {
-                                print("Error creating achievement: \(error.localizedDescription)")
-                            } else {
-                                presentationMode.wrappedValue.dismiss()
+                            dataManager.createAchievement(achievement: achievementToSave) { error in
+                                if let error = error {
+                                    print("Error creating achievement: \(error.localizedDescription)")
+                                } else {
+                                    presentationMode.wrappedValue.dismiss()
+                                }
                             }
-                        }
                     },
                     secondaryButton: .cancel()
                 )
