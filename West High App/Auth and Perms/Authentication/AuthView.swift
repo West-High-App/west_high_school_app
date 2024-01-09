@@ -152,7 +152,9 @@ struct AuthView: View {
                                     
                                     do {
                                         if try await viewModel.startSignInProcess(bypassing: false) {
-                                            userInfo.loginStatus = "Google"
+                                            withAnimation {
+                                                userInfo.loginStatus = "Google"
+                                            }
                                         }
                                         else {
                                             showingDomainError = true
@@ -190,7 +192,9 @@ struct AuthView: View {
                             // Continue as guest button
                             Button {
                                 
-                                userInfo.loginStatus = "Guest"
+                                withAnimation {
+                                    userInfo.loginStatus = "Guest"
+                                }
                                 
                             } label: {
                                 Text("Continue as Guest")

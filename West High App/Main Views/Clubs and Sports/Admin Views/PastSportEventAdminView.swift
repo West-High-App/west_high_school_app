@@ -325,9 +325,11 @@ struct PastSportEventsAdminView: View {
                             //                            }
                             //                        }
                             
-                            dataManager.updateSportEventScore(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
-                            subtitleLineOne = ""
-                            editingdescription = ""
+                            withAnimation {
+                                dataManager.updateSportEventScore(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: editingevent)
+                                subtitleLineOne = ""
+                                editingdescription = ""
+                            }
                             /*dataManager.deleteSportEventNews(forSport: "\(currentsport.sportname) \(currentsport.sportsteam)", sportEvent: oldevent)
                              
                              DispatchQueue.main.asyncAfter(deadline: .now() + 3) {

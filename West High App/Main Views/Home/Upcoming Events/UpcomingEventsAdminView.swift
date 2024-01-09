@@ -123,7 +123,9 @@ struct UpcomingEventsAdminView: View {
                                     print("Error deleting event: \(error.localizedDescription)")
                                 }
                             }
-                            dataManager.allupcomingeventslistUnsorted.removeAll {$0 == eventToDelete}
+                            withAnimation {
+                                dataManager.allupcomingeventslistUnsorted.removeAll {$0 == eventToDelete}
+                            }
                         }
                     },
                     secondaryButton: .cancel(Text("Cancel"))

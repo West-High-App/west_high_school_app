@@ -113,9 +113,10 @@ struct ClubsEventsAdminView: View {
                                     // isConfirmingDeleteEvent = true
                                     eventToDelete = event
                                     if let eventToDelete = eventToDelete {
-                                        editingeventslist.removeAll {$0 == eventToDelete}
-                                        print("Removed \(eventToDelete)")
-                                        dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
+                                        withAnimation {
+                                            editingeventslist.removeAll {$0 == eventToDelete}
+                                            dataManager.deleteClubEvent(forClub: "\(currentclub.clubname)", clubEvent: eventToDelete)
+                                        }
                                     }
                                 }
                             }

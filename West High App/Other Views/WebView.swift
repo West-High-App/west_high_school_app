@@ -28,7 +28,7 @@ struct SwiftUIWebView: UIViewRepresentable {
                     return
                 }
                 let request = URLRequest(url: myURL)
-                uiView.load(request)
+                    uiView.load(request)
             }
     }
 }

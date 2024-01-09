@@ -138,11 +138,11 @@ struct ClubsAdminView: View {
                     message: Text("This action cannot be undone."),
                     primaryButton: .destructive(Text("Delete")) {
                         if let clubToDelete = clubToDelete {
-                            db.deleteClub(data: clubToDelete) {error in
-                                if let error = error {
-                                    print("Error deleting club: \(error.localizedDescription)")
+                                db.deleteClub(data: clubToDelete) {error in
+                                    if let error = error {
+                                        print("Error deleting club: \(error.localizedDescription)")
+                                    }
                                 }
-                            }
                         }
                     },
                     secondaryButton: .cancel()

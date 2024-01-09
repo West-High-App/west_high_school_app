@@ -647,9 +647,11 @@ struct ClubNewsAdminView: View { // hello
                 message: Text("This action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
                     if let achievementToDelete = achievementToDelete {
-                        dataManager.deleteClubNews(clubNews: achievementToDelete) { error in
-                            if let error = error {
-                                print("Error deleting achievement: \(error.localizedDescription)")
+                        withAnimation {
+                            dataManager.deleteClubNews(clubNews: achievementToDelete) { error in
+                                if let error = error {
+                                    print("Error deleting achievement: \(error.localizedDescription)")
+                                }
                             }
                         }
                         dataManager.allclubsnewslistUnsorted.removeAll {$0.newsdescription == achievementToDelete.newsdescription && $0.newsdateSwift == achievementToDelete.newsdateSwift}

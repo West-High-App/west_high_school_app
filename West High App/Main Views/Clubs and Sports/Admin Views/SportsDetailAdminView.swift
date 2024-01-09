@@ -84,7 +84,9 @@ struct SportsDetailAdminView: View {
                                     .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .contextMenu {
                                         Button(role: .destructive) {
-                                            adminemails.removeAll { $0 == adminEmail }
+                                            withAnimation {
+                                                adminemails.removeAll { $0 == adminEmail }
+                                            }
                                         } label: {
                                             Text("Delete")
                                         }
@@ -123,7 +125,9 @@ struct SportsDetailAdminView: View {
                                     .font(.system(size: 17, weight: .regular, design: .rounded))
                                     .contextMenu {
                                         Button(role: .destructive) {
-                                            editoremails.removeAll { $0 == editoremail }
+                                            withAnimation {
+                                                editoremails.removeAll { $0 == editoremail }
+                                            }
                                         } label: {
                                             Text("Delete")
                                         }

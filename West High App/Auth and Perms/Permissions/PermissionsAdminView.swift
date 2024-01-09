@@ -29,7 +29,7 @@ struct PermissionsAdminView: View {
             .navigationTitle("Admin Permissions")
         }
         .onAppear {
-            run {}
+            withAnimation { run {} }
         }
     }
 }
@@ -73,7 +73,9 @@ struct EmailListView: View {
                                     .padding(0)
                                     .contextMenu {
                                         Button(role: .destructive) {
-                                            permissionsList[key]?.removeAll { $0 == adminEmail }
+                                            withAnimation {
+                                                permissionsList[key]?.removeAll { $0 == adminEmail }
+                                            }
                                         } label: {
                                             Text("Delete")
                                                 .foregroundColor(.red)
@@ -103,7 +105,9 @@ struct EmailListView: View {
                                             TextField("Email", text: $newAdminEmail)
                                             Button("Add Admin to \(key)") {
                                                 isPresentingAddAdmin = false
-                                                permissionsList[key]?.append(newAdminEmail)
+                                                withAnimation {
+                                                    permissionsList[key]?.append(newAdminEmail)
+                                                }
                                                 newAdminEmail = ""
                                             }
                                             
@@ -146,7 +150,7 @@ struct EmailListView: View {
                         message: Text("This action cannot be undone."),
                         primaryButton: .default(Text("Publish")) {
                             // update the permissions data
-                            permissionsManager.updatePermissions(newpermissions: permissionsList, oldpermissions: originalPermissionsList) {
+                                permissionsManager.updatePermissions(newpermissions: permissionsList, oldpermissions: originalPermissionsList) {
                             }
                             dismiss()
 
