@@ -821,12 +821,40 @@ struct AchievementDetailView: View {
                 Section("Images") {
                     List {
                         ForEach(displayimagesdata, id: \.self) { image in
-                            
-                            Image(uiImage: image)
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
+                            Button {} label: {
+                                ZStack {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .frame(width: 200, height: 150)
+                                        .aspectRatio(contentMode: .fill)
+                                        .cornerRadius(10)
+                                    HStack {
+                                        Spacer()
+                                        VStack {
+                                            Button {
+                                                withAnimation {
+                                                    displayimagesdata.removeAll(where: {$0 == image})
+                                                }
+                                            } label: {
+                                                Image(systemName: "trash")
+                                                    .foregroundStyle(.red)
+                                                    .frame(width: 20, height: 20)
+                                                    .background(Rectangle()
+                                                        .frame(width: 25, height: 25)
+                                                        .foregroundStyle(.white)
+                                                        .opacity(0.7)
+                                                        .cornerRadius(5)
+                                                    )
+                                                    .padding(10)
+                                            }
+                                            Spacer()
+                                        }
+                                    }
+                                }
                                 .frame(width: 200, height: 150)
-                                .cornerRadius(10)
+                            }
+
                         }
                     }
                     Button("Upload New Image") {
