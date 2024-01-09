@@ -35,7 +35,7 @@ struct PermissionsAdminView: View {
 }
 
 struct EmailListView: View {
-    
+    @Environment(\.dismiss) var dismiss
     let originalPermissionsList: [String: [String]]
     @Binding var permissionsList: [String: [String]]
     @Binding var permissionsListKeys: [String]
@@ -133,7 +133,10 @@ struct EmailListView: View {
                         message: Text("This action cannot be undone."),
                         primaryButton: .default(Text("Publish")) {
                             // update the permissions data
-                            permissionsManager.updatePermissions(newpermissions: permissionsList, oldpermissions: originalPermissionsList) {}
+                            permissionsManager.updatePermissions(newpermissions: permissionsList, oldpermissions: originalPermissionsList) {
+                            }
+                            dismiss()
+
                         },
                         secondaryButton: .cancel()
                     )
