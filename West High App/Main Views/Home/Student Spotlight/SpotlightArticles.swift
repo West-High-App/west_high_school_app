@@ -48,15 +48,14 @@ struct SpotlightArticles: View {
 
                 VStack {
                     TabView {
-                        
-                        // Loop through each recipe
-                        ForEach(imagesdata.indices, id: \.self) { index in
+                        // gets from imagedata first time it loads, then from currentstudentdub
+                        ForEach(imagesdata.count > currentstudentdub.imagedata.count ? imagesdata.indices : currentstudentdub.imagedata.indices, id: \.self) { index in
                             ZStack {
                                 Rectangle()
                                     .foregroundColor(.white)
                                 
                                 VStack(spacing: 0) {
-                                    Image(uiImage: imagesdata[index])
+                                    Image(uiImage: imagesdata.count > currentstudentdub.imagedata.count ? imagesdata[index] : currentstudentdub.imagedata[index])
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: screen.screenWidth - 30, height: 250)

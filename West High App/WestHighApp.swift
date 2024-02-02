@@ -16,7 +16,7 @@ struct WestHighApp: App {
     }
     
     @StateObject var userInfo = UserInfo.shared
-        
+    
     var body: some Scene {
         
         WindowGroup {

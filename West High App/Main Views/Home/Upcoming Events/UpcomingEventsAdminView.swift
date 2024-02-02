@@ -1,3 +1,9 @@
+//
+// UpcomingEventsAdminView
+// West High
+//
+
+
 import SwiftUI
 
 struct UpcomingEventsAdminView: View {

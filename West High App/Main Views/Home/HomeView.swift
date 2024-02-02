@@ -434,7 +434,8 @@ struct HomeView: View {
                          hasPermission.updatePermissions()
                     }
                }
-                              hasAppeared = true
+               
+               hasAppeared = true
                loadWebViews = false
           }
      }
@@ -774,13 +775,14 @@ struct UpcomingEventCell: View{
 struct MostRecentAchievementCell: View{
      var feat: studentAchievement
      @StateObject var imagemanager = imageManager()
+     @ObservedObject var spotlightManager = studentachievementlist.shared
      @State var hasAppeared = false
      @State var imagedata = UIImage()
      @State var screen = ScreenSize()
      
      var body:some View{
           VStack(alignment:.leading){
-               Image(uiImage: imagedata) // (uiImage: feat.imagedata.first ?? UIImage())
+               Image(uiImage: feat.imagedata.first ?? imagedata) // (uiImage: feat.imagedata.first ?? UIImage())
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 250)
@@ -821,12 +823,23 @@ struct MostRecentAchievementCell: View{
                     .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
           
                .onAppear {
-                    if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
+                    if feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
                          guard let image = feat.images.first else { return }
                          print("IMAGE FUNCTION RUN hv")
                          imagemanager.getImage(fileName: image) { uiimage in
                               if let uiimage = uiimage {
                                    imagedata = uiimage
+                                   
+                                   
+                                   // test
+                                   var temparticle = spotlightManager.allstudentachievementlistUnsorted.first(where: { $0 == feat })
+                                   if temparticle != nil {
+                                        temparticle!.imagedata.append(uiimage)
+                                        spotlightManager.allstudentachievementlistUnsorted.removeAll(where: { $0 == feat })
+                                        spotlightManager.allstudentachievementlistUnsorted.append(temparticle!)
+                                   }
+                                   
+                                   
                               }
                          }
                          hasAppeared = true

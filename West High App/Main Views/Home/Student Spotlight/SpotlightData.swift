@@ -121,16 +121,18 @@ class studentachievementlist: ObservableObject{
                     let documentID = document.documentID
                     
                     var imagedata: [UIImage] = []
-                    for file in images {
-                        let _ = imageManager().getImage(fileName: file) { image in
-                            if let image = image {
-                                imagedata.append(image)
-                            }
-                        }
-                    }
+                    
+//                    for file in images {
+//                        imageManager().getImage(fileName: file) { image in
+//                            if let image = image {
+//                                imagedata.append(image)
+//                            }
+//                        }
+//                    }
                     
                     let achievement = studentAchievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, writerEmail: writerEmail, imagedata: imagedata)
                     return achievement
+                    
                 }
                 self.handleFirestore(templist)
                 if snapshot.documents.count < self.fetchLimit {
@@ -293,45 +295,5 @@ class studentachievementlist: ObservableObject{
             completion(error)
         }
         print("Achievement deleted")
-    }
-    
-    
-    func getImageData(articlelist: [studentAchievement], completion: @escaping ([studentAchievement]) -> Void) {
-        var spotlightarticles = articlelist
-        var returnlist: [studentAchievement] = []
-        
-        let dispatchGroup = DispatchGroup()
-        
-        for article in spotlightarticles {
-            var tempimages: [UIImage] = []
-            
-            for imagepath in article.images {
-                dispatchGroup.enter()
-                imagemanager.getImage(fileName: imagepath) { uiimage in
-                    if let uiimage = uiimage {
-                        tempimages.append(uiimage)
-                    }
-                    dispatchGroup.leave()
-                }
-            }
-            
-            dispatchGroup.notify(queue: .main) {
-                let updatedArticle = studentAchievement(
-                    documentID: article.documentID,
-                    achievementtitle: article.achievementtitle,
-                    achievementdescription: article.achievementdescription,
-                    articleauthor: article.articleauthor,
-                    publisheddate: article.publisheddate,
-                    date: article.date,
-                    images: article.images,
-                    isApproved: article.isApproved,
-                    writerEmail: article.writerEmail,
-                    imagedata: tempimages
-                )
-                returnlist.append(updatedArticle)
-                spotlightarticles = returnlist
-                completion(spotlightarticles)
-            }
-        }
     }
 }

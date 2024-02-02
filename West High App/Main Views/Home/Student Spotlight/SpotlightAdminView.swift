@@ -8,7 +8,7 @@ struct dubachievementcell: View{
     
     var body:some View{
         VStack{
-            Image(uiImage: imagedata)
+            Image(uiImage: feat.imagedata.first ?? imagedata)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 250)

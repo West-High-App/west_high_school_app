@@ -145,7 +145,7 @@ class ScreenSize {
         
         var body:some View{
             VStack{
-                Image(uiImage: imagedata)
+                Image(uiImage: feat.imagedata.first ?? imagedata)
                     .resizable()
                     .padding(.bottom, 2)
                     .aspectRatio(contentMode: .fill)
@@ -181,7 +181,7 @@ class ScreenSize {
                 Divider()
                     .padding(.horizontal)
             }.onAppear {
-                if !hasAppeared || feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //  
+                if feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
                      guard let image = feat.images.first else { return }
                     print("IMAGE FUNCTION RUN ss")
                      imagemanager.getImage(fileName: image) { uiimage in
