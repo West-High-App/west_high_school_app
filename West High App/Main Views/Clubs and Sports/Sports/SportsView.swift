@@ -358,7 +358,7 @@ struct SportsHibabi: View {
                                 ForEach(filteredSportsNews, id: \.id) { news in
                                     if news.isApproved {
                                         sportnewscell(feat: news)
-                                            .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0) )
+                                            .background( NavigationLink("", destination: SportsNewsDetailView(currentnews: news)).opacity(0))
                                     }
                                 }
                             } else {

@@ -197,7 +197,6 @@ struct ClubsDetailView: View {
                                     Spacer()
                                     
                                 }
-                                //.frame(width: screen.screenWidth - 30)
                                 .padding(.vertical, 12) // comment below + 10
                                 .background(Rectangle()
                                     .cornerRadius(15.0)
@@ -205,9 +204,10 @@ struct ClubsDetailView: View {
                                     .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))
                                     .padding(.vertical, 2) // 5
                                 )
+                                .padding(.horizontal, 5) // gone
                             }
                         }
-                    }.frame(width: screen.screenWidth - 30, height: 450)
+                    }.frame(width: screen.screenWidth - 40, height: 450) // 30
                 }
             }
         }
