@@ -32,7 +32,7 @@ extension Date {
     
     var twelveHourTime: String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm a"
+        dateFormatter.dateFormat = "h:mm a"
         
         return dateFormatter.string(from: self)
     }

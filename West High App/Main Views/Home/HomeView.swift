@@ -213,7 +213,7 @@ struct HomeView: View {
                                                               
                                                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                                              } else {
-                                                  Text("No Upcoming Events")
+                                                  Text("No upcoming events.")
                                                        .foregroundStyle(.black)
                                                        .padding(.all) //EDIT
                                                        .background(Rectangle()

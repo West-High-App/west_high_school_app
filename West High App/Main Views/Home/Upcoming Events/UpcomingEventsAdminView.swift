@@ -54,6 +54,14 @@ struct UpcomingEventsAdminView: View {
                         )
                 }.padding(.bottom, 5)
                 
+                if dataManager.allupcomingeventslist.isEmpty {
+                    Text("No upcoming events.")
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .padding(5)
+                    Spacer()
+                }
+                
                 ForEach(dataManager.allupcomingeventslist) { event in
                     VStack (alignment: .leading) {
                         
@@ -266,7 +274,7 @@ struct EventDetailView: View {
             .alert(isPresented: $isConfirmingAddEvent) {
                 Alert(
                     title: Text("Publish Event?"),
-                    message: Text("This action cannot be undone."),
+                    message: Text("Event will be made public."),
                     primaryButton: .default(Text("Publish")) {
                         createEvent()
                     },
@@ -297,11 +305,11 @@ struct EventDetailView: View {
         dateFormatter.dateFormat = "MMMM dd, yyyy hh:mm a"
         
         let dateFormatter2 = DateFormatter()
-        dateFormatter2.dateFormat = "hh:mm a"
+        dateFormatter2.dateFormat = "h:mm a"
         
         var timeString: String {
             if isAllDay {
-                return "12:00 PM"
+                return "12:00 AM"
             } else {
                 return dateFormatter2.string(from: eventTime)
             }

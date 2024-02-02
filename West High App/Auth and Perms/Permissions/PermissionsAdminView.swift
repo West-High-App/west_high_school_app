@@ -147,7 +147,7 @@ struct EmailListView: View {
                     
                     Alert(
                         title: Text("Change Permissions?"),
-                        message: Text("This action cannot be undone."),
+                        message: Text("Changes will be updated soon."),
                         primaryButton: .default(Text("Publish")) {
                             // update the permissions data
                                 permissionsManager.updatePermissions(newpermissions: permissionsList, oldpermissions: originalPermissionsList) {

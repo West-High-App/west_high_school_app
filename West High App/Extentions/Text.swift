@@ -28,4 +28,9 @@ extension Text {
             .cornerRadius(9)
     }
     
+    func defaultText() -> some View {
+        self
+            .font(.system(size: 17, weight: .regular, design: .rounded))
+    }
+    
 }

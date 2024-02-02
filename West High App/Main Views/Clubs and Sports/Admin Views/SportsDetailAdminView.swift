@@ -281,7 +281,7 @@ struct SportsDetailAdminView: View {
         .alert(isPresented: $isConfirmingChanges) {
             Alert(
                 title: Text("Publish Changes?"),
-                message: Text("This action cannot be undone."),
+                message: Text("Changes will be made public."),
                 primaryButton: .default(Text("Publish")) {
                     
 //                    // images

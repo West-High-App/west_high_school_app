@@ -35,6 +35,13 @@ struct UpcomingEventsView: View {
                         .padding(.leading)
                     Spacer()
                 }
+                if upcomingeventsdataManager.allupcomingeventslist.isEmpty {
+                    Text("No upcoming events.")
+                        .multilineTextAlignment(.center)
+                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .padding(5)
+                    Spacer()
+                }
                 ForEach(upcomingeventsdataManager.allupcomingeventslist, id: \.id) { event in // REVERT BACK MAYBE
                     HStack {
                         VStack {

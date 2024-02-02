@@ -766,7 +766,7 @@ struct sportNewsRowlView: View {
             .alert(isPresented: $isConfirmingAddAchievement) {
                 Alert(
                     title: Text("Publish Article?"),
-                    message: Text("This action cannot be undone."),
+                    message: Text("Article will be made public."),
                     primaryButton: .default(Text("Publish")) {
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "MMMM dd, yyyy"

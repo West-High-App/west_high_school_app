@@ -81,7 +81,7 @@ struct SportEventsAdminView: View {
         }.navigationTitle("Edit Past Sport Events")
         .alert(isPresented: $isConfirmingDeleteEvent) {
             Alert(
-                title: Text("You Are Deleting Public Data"),
+                title: Text("You Are Deleting Public Data"), // SHOULDNT BE USED
                 message: Text("Are you sure you want to delete the event '\(temptitle)'? \nOnce deleted, the data can no longer be retrieved and will disappear from the app.\nThis action cannot be undone."),
                 primaryButton: .destructive(Text("Delete")) {
                     if let eventToDelete = eventToDelete {

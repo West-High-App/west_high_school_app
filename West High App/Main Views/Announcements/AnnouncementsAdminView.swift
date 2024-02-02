@@ -189,7 +189,7 @@ struct AnnouncementDetailView: View {
             .alert(isPresented: $isConfirmingAddAnnouncement) {
                 Alert(
                     title: Text("Publish Announcement"),
-                    message: Text("This action cannot be undone."),
+                    message: Text("Announcement will be made public."),
                     primaryButton: .default(Text("Publish")) {
                         let announcementToSave = Newstab(
                             documentID: "NAN",

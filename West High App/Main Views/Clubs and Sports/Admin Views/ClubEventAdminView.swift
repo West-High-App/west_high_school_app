@@ -310,7 +310,7 @@ struct ClubEventAdminDetailView: View {
             .alert(isPresented: $isConfirmingAddClubEvent) {
                 Alert(
                     title: Text("Publish Club Event"),
-                    message: Text("This action cannot be undone."),
+                    message: Text("Event will be made public."),
                     primaryButton: .default(Text("Publish")) {
                         if admin {
                             eventToSave = clubEvent(

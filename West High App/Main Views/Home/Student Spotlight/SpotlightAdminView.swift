@@ -860,19 +860,25 @@ struct AchievementDetailView: View {
 
                         }
                     }
-                    Button("Upload New Image") {
-                        isDisplayingAddImage = true
-                    }.font(.system(size: 17, weight: .regular, design: .rounded))
-                    
-                        .sheet(isPresented: $isDisplayingAddImage) {
-                            ImagePicker(selectedImage: $currentimage, isPickerShowing: $isDisplayingAddImage)
-                        }
+                    if displayimagesdata.count < 6 {
+                        Button("Upload New Image") {
+                            isDisplayingAddImage = true
+                        }.font(.system(size: 17, weight: .regular, design: .rounded))
+                            .sheet(isPresented: $isDisplayingAddImage) {
+                                ImagePicker(selectedImage: $currentimage, isPickerShowing: $isDisplayingAddImage)
+                            }
+                    } else {
+                        Text("Upload New Image")
+                            .foregroundStyle(.gray)
+                            .font(.system(size: 17, weight: .regular, design: .rounded))
+                    }
                 }.font(.system(size: 12, weight: .medium, design: .rounded))
                     .onChange(of: currentimage) { newImage in
                         if let currentimage = newImage {
                             displayimagesdata.append(currentimage)
                         }
                     }
+                
                 
                 
                 if displayimagesdata.isEmpty || achievementTitle == "" || articleAuthor == "" || achievementDescription == "" {
@@ -917,7 +923,7 @@ struct AchievementDetailView: View {
             .alert(isPresented: $isConfirmingAddAchievement) {
                 Alert(
                     title: Text("Publish Article?"),
-                    message: Text("This action cannot be undone."),
+                    message: Text("Article will be made public."),
                     primaryButton: .default(Text("Publish")) {
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "MMMM dd, yyyy"

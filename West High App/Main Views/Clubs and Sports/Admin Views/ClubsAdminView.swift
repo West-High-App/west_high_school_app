@@ -246,7 +246,7 @@ struct ClubAdminDetailView: View {
             .alert(isPresented: $isConfirmingAddClub) {
                 Alert(
                     title: Text("Publish Club"),
-                    message: Text("This action cannot be undone."),
+                    message: Text("Club will be made public."),
                     primaryButton: .default(Text("Publish")) {
                         adminemails = adminstring.split(whereSeparator: { ", ".contains($0) || ",".contains($0) }).map(String.init)
                         
