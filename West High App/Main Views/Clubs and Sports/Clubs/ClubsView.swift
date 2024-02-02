@@ -335,8 +335,11 @@ struct ClubsHibabi: View {
                                         ForEach(clubNewsManager.allclubsnewslist) { news in  // filteredClubNews
                                             if searchText.isEmpty || news.newstitle.localizedStandardContains(searchText){
                                                 if news.isApproved {
-                                                    clubnewscell(feat: news)
-                                                        .background(NavigationLink("", destination: ClubsNewsDetailView(currentclubnews: news).environmentObject(clubNewsManager)).opacity(0))
+                                                    NavigationLink {
+                                                        ClubsNewsDetailView(currentclubnews: news)
+                                                    } label: {
+                                                        clubnewscell(feat: news)
+                                                    }
                                                 }
                                             }
                                         }

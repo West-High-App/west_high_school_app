@@ -14,7 +14,6 @@ struct SpotlightArticles: View {
     @State var imagesdata: [UIImage] = []
     @State var hasAppeared = false
     @State var screen = ScreenSize()
-
     
     var body: some View {
         ScrollView{
@@ -44,8 +43,7 @@ struct SpotlightArticles: View {
                         .padding(.horizontal)
                     Spacer()
                 }
-
-
+                
                 VStack {
                     TabView {
                         // gets from imagedata first time it loads, then from currentstudentdub
@@ -72,10 +70,10 @@ struct SpotlightArticles: View {
                 }.cornerRadius(30)
                     .frame(width: screen.screenWidth - 30, height: 250)
                     .shadow(color: .gray, radius: 8, x:2, y:3)
-                
                     .padding(.horizontal)
+                
                 Spacer()
-            }.onAppear {
+                
             }
 
             LinkTextView(text: currentstudentdub.achievementdescription)
@@ -91,7 +89,6 @@ struct SpotlightArticles: View {
                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                     .padding(.bottom)
                 
-            
         }.onAppear {
             if !hasAppeared || currentstudentdub.imagedata == [] || currentstudentdub.imagedata.first == UIImage() || currentstudentdub.imagedata.first == nil { //
                 guard currentstudentdub.images.first != nil else { return }

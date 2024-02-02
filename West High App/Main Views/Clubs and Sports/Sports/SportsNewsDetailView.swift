@@ -74,7 +74,7 @@ struct SportsNewsDetailView: View {
                     .shadow(color: .gray, radius: 8, x:2, y:3)
                     .padding(.horizontal)
                 Spacer()
-            }.padding(.top, 0 - (screen.screenHeight / 10) + 30) // <---
+            }.navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 if !hasAppeared || currentnews.imagedata == [] || currentnews.imagedata.first == UIImage() || currentnews.imagedata.first == nil {
                 

@@ -16,7 +16,6 @@ struct SportsMainView: View {
     var body: some View {
         if let item = sportsmanager.allsportlist.first(where: { $0.documentID == selectedsport.documentID }) {
             SportsDetailView(currentsport: item)
-                .ignoresSafeArea(.container, edges: .top)
                 .environmentObject(sportsmanager)
                 .environmentObject(sporteventmanager)
                 .environmentObject(sporteventstorage)

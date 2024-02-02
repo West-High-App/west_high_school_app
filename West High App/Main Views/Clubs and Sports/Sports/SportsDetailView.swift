@@ -82,7 +82,6 @@ struct SportsDetailView: View {
     
     //MARK: view
     var body: some View {
-        GeometryReader { geometry in
             ScrollView (showsIndicators: false){
                 VStack {
                     VStack{
@@ -372,7 +371,7 @@ struct SportsDetailView: View {
                     }
                     
                     
-                }.padding(.top, 10 + screen.screenHeight / 10) // padding was here
+                }
                 
                 .navigationDestination(isPresented: $isEditing, destination: {
                     SportsDetailAdminView(editingsport: currentsport)
@@ -439,7 +438,9 @@ struct SportsDetailView: View {
                     }
                 }
             }
-        }
+        
+            .navigationBarTitleDisplayMode(.inline)
+        
         .onAppear {
             sporteventmanager.getData(forSport: self.currentsport)
             

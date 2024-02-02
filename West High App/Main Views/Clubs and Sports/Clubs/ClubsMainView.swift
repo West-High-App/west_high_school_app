@@ -17,7 +17,6 @@ struct ClubsMainView: View {
             let size = $0.size
             if let item = clubsmanager.allclublist.first(where: { $0.documentID == selectedclub.documentID }) {
                 ClubsDetailView(currentclub: item, safeArea: safeArea, size: size)
-                    .ignoresSafeArea(.container, edges: .top)
                     .environmentObject(clubfavoritesmanager)
                     .environmentObject(clubsmanager)
             }
