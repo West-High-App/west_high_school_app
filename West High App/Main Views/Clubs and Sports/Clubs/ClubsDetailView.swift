@@ -16,10 +16,8 @@ struct ClubsDetailView: View {
     @State private var isEditor = false
     @State private var canEditClub = false
     @State var isFavorited = false
-    @State var favoritesManager = FavoriteClubs()
     @EnvironmentObject var clubsmanager: clubManager
     @State var favorites: [club] = []
-    @EnvironmentObject var vmm: ClubsHibabi.ClubViewModel
     @State private var confirming = false
     @State private var confirming2 = false
     var upcomingeventlist: [clubEvent] {
@@ -32,7 +30,6 @@ struct ClubsDetailView: View {
     @State var originalimage = UIImage()
     @StateObject var imagemanager = imageManager()
     
-    @EnvironmentObject var clubfavoritesmanager: FavoriteClubsManager
     
     func dateDate(date: Date) -> String {
         return date.formatted(date: .long, time: .omitted)
@@ -309,6 +306,6 @@ struct ClubsDetailView: View {
 
 struct ClubsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubsMainView(selectedclub: club(clubname: "Chess Club", clubcaptain: ["Andrea Botez"], clubadvisor: ["Hiakru Nikamura"], clubmeetingroom: "2013", clubdescription: "For seasoned pros, or newbeginners, chess is a game that everyone can learn and improve at.", clubimage: "chess", clubmembercount: "1", clubmembers: ["John Johnson", "Bob Bobson", "Anders Anderson", "Millie Millson"], adminemails: ["augustelholm@gmail.com"], editoremails: [], favoritedusers: [], imagedata: UIImage(), documentID: "documentID", id: 1)).environmentObject(ClubsHibabi.ClubViewModel())
+        ClubsMainView(selectedclub: club(clubname: "Chess Club", clubcaptain: ["Andrea Botez"], clubadvisor: ["Hiakru Nikamura"], clubmeetingroom: "2013", clubdescription: "For seasoned pros, or newbeginners, chess is a game that everyone can learn and improve at.", clubimage: "chess", clubmembercount: "1", clubmembers: ["John Johnson", "Bob Bobson", "Anders Anderson", "Millie Millson"], adminemails: ["augustelholm@gmail.com"], editoremails: [], favoritedusers: [], imagedata: UIImage(), documentID: "documentID", id: 1))
     }
 }

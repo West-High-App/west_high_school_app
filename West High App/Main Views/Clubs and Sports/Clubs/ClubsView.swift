@@ -13,11 +13,9 @@ struct ClubsHibabi: View {
     @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
     @StateObject var clubsmanager = clubManager.shared 
-    @StateObject var clubfavoritesmanager = FavoriteClubsManager()
 
     @ObservedObject var clubNewsManager = clubsNewslist.shared
     @State var newstitlearray:[clubNews] = []
-    @StateObject var vmm = ClubViewModel()
     @State var clubsearchText = "" // text for search field
     @State var clubselected = 1 // which tab is selected
     @State var clubisFiltering = false
@@ -25,7 +23,6 @@ struct ClubsHibabi: View {
     @State var clubtempSelection = 1
     @State var clubshowingAllNews = 1
     @State private var clubcount = 0
-    @State var favoriteclublist: [club] = []
     
     var hasFavorites: Bool {
         var returnvalue = false
@@ -67,7 +64,6 @@ struct ClubsHibabi: View {
             }
     }
     
-    @State var favoritesManager = FavoriteClubs()
     @State var favorites: [club] = []
     @State var searchText = ""
     @State var imagesManager = imageManager()
@@ -137,18 +133,15 @@ struct ClubsHibabi: View {
                                 .padding(.horizontal,30)
                                 .onAppear() {
                                     if clubcount == 0 {
-                                        vmm.clubsortFavs()
                                         clubcount = 1
                                     }
                                 }
                                 .onChange(of: clubselected) { newValue in
                                     print("CHANGE THIS SHIT")
                                     if (clubselected == 1 && clubtempSelection == 2) {
-                                        vmm.clubsortFavs()
                                         clubtempSelection = clubselected
                                     }
                                     else if (clubselected == 2 && clubtempSelection == 1) {
-                                        vmm.clubsortFavs()
                                         clubtempSelection = clubselected
                                     }
                                 }
@@ -250,8 +243,6 @@ struct ClubsHibabi: View {
                                                             
                                                             NavigationLink {
                                                                 ClubsMainView(selectedclub: item)
-                                                                    .environmentObject(vmm)
-                                                                    .environmentObject(clubfavoritesmanager)
                                                                     .environmentObject(clubsmanager)
                                                             } label: {
                                                                 HStack {
@@ -371,9 +362,7 @@ struct ClubsHibabi: View {
                         }
                         
                         .onAppear { // MARK: on appear
-                            
-                            favoriteclublist = clubfavoritesmanager.favoriteClubs
-                            
+                                                        
                             if !hasAppeared {
                                 isLoading = false
                                 hasAppeared = true
@@ -473,21 +462,5 @@ struct clubnewscell: View{
 struct ClubsHibabi_Previews: PreviewProvider {
     static var previews: some View {
         ClubsHibabi()
-    }
-}
-
-
-
-class FavoriteClubsManager: ObservableObject {
-    @Published var favoriteClubs: [club] = []
-
-    func addFavorite(club: club) {
-        favoriteClubs.append(club)
-    }
-
-    func removeFavorite(club: club) {
-        if let index = favoriteClubs.firstIndex(where: { $0.id == club.id }) {
-            favoriteClubs.remove(at: index)
-        }
     }
 }

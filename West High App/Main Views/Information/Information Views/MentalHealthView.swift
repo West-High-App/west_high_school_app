@@ -35,7 +35,7 @@ struct MentalHealthView: View {
                         .foregroundColor(Color(red: 85/255, green: 85/255, blue: 85/255))
                         .offset(y:50)
                     HStack{
-                        Image("mmsd")
+                        Image("MMSD Logo")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width:20)

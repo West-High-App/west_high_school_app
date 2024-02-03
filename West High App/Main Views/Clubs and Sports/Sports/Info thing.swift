@@ -60,7 +60,9 @@ struct InfoPanelView: View {
 }
 
 
-// MARK: - PREVIEW
+#if DEBUG
+import SwiftUI
+
 struct InfoPanelView_Previews: PreviewProvider {
     static var previews: some View {
         InfoPanelView(scale: 1, offset: .zero)
@@ -69,3 +71,5 @@ struct InfoPanelView_Previews: PreviewProvider {
             .padding()
     }
 }
+#endif
+

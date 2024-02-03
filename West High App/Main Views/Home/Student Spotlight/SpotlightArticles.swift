@@ -110,7 +110,7 @@ struct SpotlightArticles: View {
 
 struct SpotlightArticles_Previews: PreviewProvider {
     static var previews: some View {
-        SpotlightArticles(currentstudentdub: studentAchievement(documentID: "testID" , achievementtitle: "test", achievementdescription: "building go boom boom", articleauthor: "alah akbar", publisheddate: "Sept 11, 2001", date: Date(), images: ["west", "west"], isApproved: false,writerEmail: "", imagedata: []))
+        SpotlightArticles(currentstudentdub: studentAchievement(documentID: "testID" , achievementtitle: "test", achievementdescription: "building go boom boom", articleauthor: "alah akbar", publisheddate: "Sept 11, 2001", date: Date(), images: ["west-background", "west-background"], isApproved: false,writerEmail: "", imagedata: []))
     }
 }
 //(documentID: "testID", title: "Test", publisheddate: "Jan 5, 2023", description: "Description", newsimagename: "West Regents Logo")

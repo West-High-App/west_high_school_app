@@ -517,7 +517,7 @@ struct HomeView: View {
                          })                .offset(y: -minY)
                     
                } else {
-                    Image("west")
+                    Image("west-background")
                          .resizable()
                          .scaledToFill()
                          .aspectRatio(contentMode: .fill)

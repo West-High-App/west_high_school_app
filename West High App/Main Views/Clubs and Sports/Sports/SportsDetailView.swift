@@ -12,7 +12,6 @@ struct SportsDetailView: View {
     @EnvironmentObject var userInfo: UserInfo
     @EnvironmentObject var sportsmanager: sportsManager // <------
     @EnvironmentObject var sporteventmanager: sportEventManager
-    @EnvironmentObject var sporteventstorage: SportsEventStorage
     @StateObject var imagemanager = imageManager()
     @State private var hasPermissionSport = false
     @State private var canEditSport = false

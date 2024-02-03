@@ -199,7 +199,6 @@ struct club: Identifiable, Equatable {
 class clubManager: ObservableObject {
     var filteredlist: [club] = []
     @Published var allclublist: [club] = []
-    var favoriteclubs = FavoriteClubs() // make favorite clubs
     private var imagemanager = imageManager()
     @Published var favoriteslist: [club] = []
     @Published private(set) var isLoading = false
@@ -208,9 +207,6 @@ class clubManager: ObservableObject {
     
     init() {
         getClubs()
-        getFavorites { favorites in
-            self.favoriteslist = favorites
-        }
     }
     
     func getClubs() {
@@ -332,30 +328,6 @@ class clubManager: ObservableObject {
             "clubmembers": data.clubmembers,
             "clubname": data.clubname
         ])
-    }
-    
-    func getFavorites(completion: @escaping ([club]) -> Void) {
-        var templist: [club] = []
-        var templist2: [String] = []
-        var returnlist: [club] = []
-        
-        returnlist = self.allclublist
-
-        favoriteclubs.getFavorites { [self] favorites in
-            
-            templist2 = favorites
-            templist = self.allclublist
-                
-                for item in templist {
-                    for item2 in templist2 {
-                        if item.clubname == item2 {
-                            returnlist.append(item)
-                        }
-                    }
-                }
-              completion(returnlist)
-            
-        }
     }
     
 }

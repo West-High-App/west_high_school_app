@@ -14,7 +14,6 @@ struct SportsHibabi: View {
     @ObservedObject var hasPermission = PermissionsCheck.shared
     @EnvironmentObject var userInfo: UserInfo
     @StateObject var sporteventmanager = sportEventManager.shared
-    @StateObject var sporteventstorage = SportsEventStorage.shared
     @State private var hasPermissionSportsNews = false
     @State private var hasPermissionSports = false
     @ObservedObject var sportsNewsManager = sportsNewslist.shared
@@ -291,7 +290,6 @@ struct SportsHibabi: View {
                                                     //.environmentObject(vm)
                                                         .environmentObject(sportsmanager)
                                                         .environmentObject(sporteventmanager)
-                                                        .environmentObject(sporteventstorage)
                                                 } label: {
                                                     HStack {
                                                         if item.imagedata != nil {
@@ -345,7 +343,6 @@ struct SportsHibabi: View {
                                         //.environmentObject(vm)
                                         .environmentObject(sportsmanager)
                                         .environmentObject(sporteventmanager)
-                                        .environmentObject(sporteventstorage)
                                 }
                             }
                         }

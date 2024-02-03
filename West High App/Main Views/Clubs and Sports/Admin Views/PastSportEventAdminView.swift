@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct PastSportEventsAdminView: View {
     var currentsport: sport
@@ -290,9 +291,7 @@ struct PastSportEventsAdminView: View {
                             let score1 = Int(homescore) ?? 0
                             let score2 = Int(otherscore) ?? 0
                             let tempscore = [score1, score2]
-                            
-                            var part1 = ""
-                            
+                                                        
                             switch selectedspecialeventtype {
                             case 0:
                                 editingdescription = "$WIN$";
@@ -377,3 +376,20 @@ struct PastContentView_Previews: PreviewProvider {
         PastSportEventsAdminView(currentsport: sport(sportname: "SPORT NAME", sportcoaches: ["COACH 1", "COACH 2"], adminemails: ["augustelholm@gmail.com"], editoremails: [], sportsimage: "basketball", sportsteam: "SPORTS TEAM", sportsroster: ["PLAYER 1", "PLAYER 2"], sportscaptains: [], tags: [1, 1, 1], info: "SPORT INFO", favoritedusers: [], eventslink: "", rosterimage: "", rosterimagedata: UIImage(), imagedata: UIImage(), documentID: "NAN", sportid: "SPORT ID",  id: UUID())).environmentObject(sportEventManager())
     }
 }
+
+struct NumericTextField: View {
+    @Binding var text: String
+    var displaytext: String
+    
+    var body: some View {
+        TextField("Enter a number", text: $text)
+            .keyboardType(.numberPad)
+            .onReceive(Just(text)) { newValue in
+                let filtered = newValue.filter { "0123456789".contains($0) }
+                if filtered != newValue {
+                    self.text = filtered
+                }
+            }
+    }
+}
+

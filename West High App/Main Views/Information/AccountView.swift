@@ -142,25 +142,6 @@ struct AccountView: View {
                     )
                 }
             }
-        
-                /*.confirmationDialog("Log Out", isPresented: $isPresentingLogoutConfirmation) {
-                    Button("Sign Out", role: .destructive) {
-                        DispatchQueue.main.async { // should fix the issue
-                            do {
-                                print("trying to sign out.")
-                                try Auth.auth().signOut()
-                                DispatchQueue.main.async {
-                                    print("setting to none")
-                                    userInfo.loginStatus = "None"
-                                    print("set to none")
-                                }
-                            } catch let signOutError {
-                                print("tried to sign out failed")
-                                print(signOutError.localizedDescription)
-                            }
-                        }
-                    }
-                } */
     }
 }
 
