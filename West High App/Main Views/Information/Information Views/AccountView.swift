@@ -39,7 +39,7 @@ struct AccountView: View {
                             }
                         }
                         VStack (alignment: .leading){
-                            Text(userInfo.displayName)
+                            Text(userInfo.displayName ?? "User")
                                 .font(.system(size: 22, weight: .medium, design: .rounded))
                                 .lineLimit(2)
                             Text(userInfo.email)

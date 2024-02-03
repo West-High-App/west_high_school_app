@@ -72,8 +72,6 @@ import FirebaseFirestore
 
 struct AuthView: View {
     
-    @State private var email = ""
-    @State private var password = ""
     @State var showingDomainError = false
     
     @StateObject private var viewModel = AuthViewModel()
@@ -251,42 +249,12 @@ struct AuthView: View {
     }
 }
 
-    
+
+#if DEBUG
 struct AuthView_Previews: PreviewProvider {
     
     static var previews: some View {
         AuthView()
     }
 }
-
-
-class ShutdownManager: ObservableObject {
-    
-    var isShutDown = false
-    var shutdownMessage = "No info to display"
-    
-    // Fetches data on whether the app has been manually shut down
-    func fetchData(completion: @escaping (Bool, String) -> Void) {
-        
-        let db = Firestore.firestore()
-        let shutdownRef = db.collection("Shutdown")
-        
-        var isShutDownData = false
-        var shutdownMessageData = ""
-        shutdownRef.getDocuments { snapshot, error in
-            
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-            
-            if let snapshot = snapshot {
-                for document in snapshot.documents {
-                    let data = document.data()
-                    isShutDownData = data["isShutDown"] as? Bool ?? false
-                    shutdownMessageData = data["shutdownMessage"] as? String ?? "No info to display"
-                }
-            }
-            completion(isShutDownData, shutdownMessageData)
-        }
-    }
-}
+#endif

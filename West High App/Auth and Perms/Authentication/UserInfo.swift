@@ -29,7 +29,7 @@ class UserInfo: ObservableObject {
     @Published var isAdmin = false
     @Published var isSportsAdmin = false
     @Published var isMMSD = false
-    @Published var displayName = "user"
+    @Published var displayName: String?
     
     init() {
         
@@ -45,6 +45,7 @@ class UserInfo: ObservableObject {
     
     // Returns the fisrt name from a full name (eg. "Dan" from "Dan Kigeya")
     func firstName() -> String {
+        guard let displayName = displayName else { return "user" }
         let fullname = displayName
         let namelist = fullname.components(separatedBy: " ")
         let name = namelist.first

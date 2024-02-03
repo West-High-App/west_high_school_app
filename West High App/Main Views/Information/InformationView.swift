@@ -47,7 +47,7 @@ struct InformationView: View {
                                     }
                                 }
                                 .padding(.trailing, 10)
-                                Text(userInfo.displayName) // if google login, do image + full name, otherwise do person.circle + guest
+                                Text(userInfo.displayName ?? "User") // if google login, do image + full name, otherwise do person.circle + guest
                             }.foregroundColor(.primary)
                         } else {
                             HStack {
@@ -142,7 +142,7 @@ struct InformationView: View {
                 .sheet(isPresented: $isShowingAccountDetails) {
                     
                     VStack {
-                        Text(userInfo.displayName)
+                        Text(userInfo.displayName ?? "User")
                         Text(userInfo.email)
                         Text(Auth.auth().currentUser?.phoneNumber ?? "")
                         AsyncImage(url: Auth.auth().currentUser?.photoURL) { phase in

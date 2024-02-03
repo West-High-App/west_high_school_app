@@ -21,36 +21,26 @@ struct HomeView: View {
           imagedata: [])
      @State var secondcurrentevent = studentAchievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, writerEmail: "", imagedata: [])
      @State var thirdcurrentevent = studentAchievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [""], isApproved: false, writerEmail: "", imagedata: [])
+     
      var screen = ScreenSize()
-     @ObservedObject var clubmanager = clubManager.shared
+     
      @StateObject var newsDataManager = Newslist.shared
      @ObservedObject var upcomingeventsdataManager = upcomingEventsDataManager.shared
      
      @State var homeImage: UIImage?
      
-     
      // permissions
      @StateObject var hasPermission = PermissionsCheck.shared
-     @ObservedObject var sportsnewsmanager = sportsNewslist.shared
-     @State private var hasPermissionUpcomingEvents = false
-     @State private var hasPermissionSpotlight = false
-     @State private var hasAdmin = false
      
      @StateObject var spotlightManager = studentachievementlist.shared
-     @State var newstitlearray: [studentAchievement] = []
-     
-     @State private var isLoading = false
-     
-     @State var hasPermissionsUpcomingEvents = false
-     //var notiManager = NotificationsManager()
-     //var safeArea: EdgeInsets
-     //var size: CGSize
-     // delete init under if being stupid
-     @State var formatteddate: String = ""
+          
      @State var date = Date()
      
      let viewdateFormatter = DateFormatter()
      let dateFormatter = DateFormatter()
+     
+     var safeArea: EdgeInsets
+     var size: CGSize
      
      init(safeArea: EdgeInsets, size: CGSize) {
           self.safeArea = safeArea
@@ -58,16 +48,6 @@ struct HomeView: View {
           
           viewdateFormatter.dateFormat = "MMMM d, yyyy"
           dateFormatter.dateFormat = "MMM d, yyyy"
-          let currentDate = Date()
-          
-          formatteddate = dateFormatter.string(from: currentDate)
-          print("\n\nDate Stuff")
-          print(dateFormatter.string(from: currentDate)) // MARK: CRASH PART
-          newstitlearray = newstitlearray.sorted { first, second in
-               let firstDate = dateFormatter.date(from: first.publisheddate) ?? Date()
-               let secondDate = dateFormatter.date(from: second.publisheddate) ?? Date()
-               return firstDate < secondDate
-          }.reversed()
      }
      
      @State var hasAppeared = false
@@ -75,9 +55,7 @@ struct HomeView: View {
      @StateObject var imagemanager = imageManager()
      
      @EnvironmentObject var userInfo: UserInfo
-     let yellow = Color(red: 0.976, green: 0.87, blue: 0.01)
-     let blue = Color(red: 0.159, green: 0.207, blue: 0.525)
-     
+          
      func getTime() -> String {
           let hour = Calendar.current.component(.hour, from: Date())
           
@@ -91,8 +69,6 @@ struct HomeView: View {
      @ObservedObject var webViews = WebViewLoader.shared
      
      // MARK: VIEW
-     var safeArea: EdgeInsets
-     var size: CGSize
      @StateObject var shutdownmanager = ShutdownManager()
      @State var isShutDown = false
      @State var shutdownMessage = ""
@@ -133,7 +109,7 @@ struct HomeView: View {
                                         //MARK: upcoming events
                                         VStack{
                                              NavigationLink {
-                                                  UpcomingEventsView(upcomingeventslist: upcomingeventsdataManager.allupcomingeventslist, permission: hasPermissionsUpcomingEvents)
+                                                  UpcomingEventsView(upcomingeventslist: upcomingeventsdataManager.allupcomingeventslist)
                                              } label: {
                                                   HStack {
                                                        Text("Upcoming Events")
@@ -402,7 +378,6 @@ struct HomeView: View {
                               
                               // checking for permissions on appear
                               .onAppear {
-                                   isLoading = true
                                    if spotlightManager.allstudentachievementlist.count < 1 {
                                         print("LIST IS LESS THAN 1")
                                    }
@@ -475,7 +450,7 @@ struct HomeView: View {
                                              .lineLimit(1)
                                              .minimumScaleFactor(0.2)
                                              .font(.system(size: 50, weight: .semibold, design: .rounded))
-                                             .foregroundColor(yellow)
+                                             .foregroundColor(Color.westYellow)
                                              .padding(.horizontal)
                                              .fontWeight(.semibold)
                                              .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)
@@ -542,7 +517,7 @@ struct HomeView: View {
                                              .lineLimit(1)
                                              .minimumScaleFactor(0.2)
                                              .font(.system(size: 50, weight: .semibold, design: .rounded))
-                                             .foregroundColor(yellow)
+                                             .foregroundColor(Color.westYellow)
                                              .padding(.horizontal)
                                              .fontWeight(.semibold)
                                              .shadow(color: .black, radius: 2, x: 1.5, y: 1.5)

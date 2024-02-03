@@ -14,7 +14,6 @@ struct UpcomingEventsView: View {
     @State private var hasPermission = false
     @State private var hasAppeared = false
     var upcomingeventslist: [event]
-    var permission: Bool
     
     var body: some View {
         ScrollView {
@@ -99,6 +98,6 @@ struct UpcomingEventsView: View {
 
 struct UpcomingEventsView_Previews: PreviewProvider {
     static var previews: some View {
-        UpcomingEventsView(upcomingeventslist: [], permission: true)
+        UpcomingEventsView(upcomingeventslist: [])
     }
 }

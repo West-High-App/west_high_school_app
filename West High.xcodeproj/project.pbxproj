@@ -34,6 +34,8 @@
 		2232FEF22AA798620067AAB8 /* ClubsEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF12AA798620067AAB8 /* ClubsEventData.swift */; };
 		2232FEF42AA7C7790067AAB8 /* ClubDetailAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */; };
 		2232FEF62AA945140067AAB8 /* ClubEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */; };
+		2246037B2B6E81F100F4DDA1 /* ShutdownManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246037A2B6E81F100F4DDA1 /* ShutdownManager.swift */; };
+		2246037D2B6E9FB700F4DDA1 /* SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246037C2B6E9FB700F4DDA1 /* SwiftUI.swift */; };
 		224B2EE42AC8472A00BCF08B /* ImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224B2EE32AC8472A00BCF08B /* ImageCropView.swift */; };
 		2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */; };
 		2270B1EC2A68D23300823E58 /* WestHighApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2270B1EB2A68D23300823E58 /* WestHighApp.swift */; };
@@ -119,6 +121,8 @@
 		2232FEF12AA798620067AAB8 /* ClubsEventData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsEventData.swift; sourceTree = "<group>"; };
 		2232FEF32AA7C7790067AAB8 /* ClubDetailAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailAdminView.swift; sourceTree = "<group>"; };
 		2232FEF52AA945140067AAB8 /* ClubEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubEventAdminView.swift; sourceTree = "<group>"; };
+		2246037A2B6E81F100F4DDA1 /* ShutdownManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutdownManager.swift; sourceTree = "<group>"; };
+		2246037C2B6E9FB700F4DDA1 /* SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI.swift; sourceTree = "<group>"; };
 		224B2EE32AC8472A00BCF08B /* ImageCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropView.swift; sourceTree = "<group>"; };
 		2263AD382ABB93EE0016AA73 /* PastSportEventAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastSportEventAdminView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		2270B1EB2A68D23300823E58 /* WestHighApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WestHighApp.swift; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				2270B2072A68D9FC00823E58 /* AuthView.swift */,
+				2246037A2B6E81F100F4DDA1 /* ShutdownManager.swift */,
 				222086922A60AE8E00EF1ECA /* UserInfo.swift */,
 				222086EE2A62458900EF1ECA /* Utilities.swift */,
 			);
@@ -299,6 +304,7 @@
 				2215EDF02B3DCBC600B663EC /* Shapes.swift */,
 				220264562B484C380000E9F9 /* Color.swift */,
 				220264582B484C600000E9F9 /* Date.swift */,
+				2246037C2B6E9FB700F4DDA1 /* SwiftUI.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -607,6 +613,7 @@
 				2270B2532A68E6FA00823E58 /* LunchMenuView.swift in Sources */,
 				2270B22A2A68E0A400823E58 /* ClubSportData.swift in Sources */,
 				2270B22E2A68E1F800823E58 /* ClubSportNewsData.swift in Sources */,
+				2246037D2B6E9FB700F4DDA1 /* SwiftUI.swift in Sources */,
 				228309FC2A867DC500AE9C08 /* UpcomingEventsAdminView.swift in Sources */,
 				221388302AC1FF370052A285 /* EventsScraper.swift in Sources */,
 				221A9D032A9EAE82004A9F02 /* SportsNewsAdminView.swift in Sources */,
@@ -663,6 +670,7 @@
 				2270B2312A68E26900823E58 /* ClubsView.swift in Sources */,
 				224B2EE42AC8472A00BCF08B /* ImageCropView.swift in Sources */,
 				2263AD392ABB93EE0016AA73 /* PastSportEventAdminView.swift in Sources */,
+				2246037B2B6E81F100F4DDA1 /* ShutdownManager.swift in Sources */,
 				E8ED91712AB559B900065526 /* JobInternshipView.swift in Sources */,
 				2270B2472A68E63E00823E58 /* SportsView.swift in Sources */,
 				22778C082A9571D000547C8C /* AnnouncementsAdminView.swift in Sources */,

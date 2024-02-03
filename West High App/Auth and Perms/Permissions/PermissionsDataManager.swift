@@ -52,19 +52,6 @@ class permissionsDataManager: ObservableObject {
             completion(returnValue)
         }
     }
-    
-    func updatePermission(_ permission: permission, completion: @escaping (Error?) -> Void) {
-            let db = Firestore.firestore()
-            let documentRef = db.collection("Permissions").document(permission.documentID)
-            
-            documentRef.setData([
-                "dataType": permission.dataType,
-                "allowedUsers": permission.allowedUsers
-            ], merge: true) { error in
-                completion(error)
-            }
-        }
-    
         
     func updatePermissions(newpermissions: [String: [String]], oldpermissions: [String: [String]], completion: @escaping () -> Void) {
         print("updating permissions")

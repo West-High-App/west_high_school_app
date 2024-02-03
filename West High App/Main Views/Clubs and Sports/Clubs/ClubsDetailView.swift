@@ -8,50 +8,29 @@
 import SwiftUI
 
 struct ClubsDetailView: View {
-    @State var selected = 1
+    
+    var currentclub: club
+    
+    @EnvironmentObject var userInfo: UserInfo
     
     @ObservedObject var hasPermission = PermissionsCheck.shared
-    @EnvironmentObject var userInfo: UserInfo
     @State private var isAdmin = false
     @State private var isEditor = false
-    @State private var canEditClub = false
+    
     @State var isFavorited = false
+    
     @EnvironmentObject var clubsmanager: clubManager
-    @State var favorites: [club] = []
+    
     @State private var confirming = false
     @State private var confirming2 = false
+    
     var upcomingeventlist: [clubEvent] {
         self.clubeventmanager.clubsEvents
     }
+    
     @ObservedObject var clubeventmanager = clubEventManager.shared
-    
-    @State var hasAppeared = false
-    @State var displayedimage: UIImage?
-    @State var originalimage = UIImage()
-    @StateObject var imagemanager = imageManager()
-    
-    
-    func dateDate(date: Date) -> String {
-        return date.formatted(date: .long, time: .omitted)
-    }
-    
-    func dateTime(date: Date) -> String {
-        return date.formatted(date: .omitted, time: .shortened)
-    }
-    
-    func firstThree(input: String) -> String {
-        if input.count > 2 {
-            return String(input.prefix(3))
-        }
-        return ""
-    }
-    let calendar = Calendar.current
-    
-    var currentclub: club
+            
     @State var screen = ScreenSize()
-    var safeArea: EdgeInsets
-    var size: CGSize
-    
     
     var body: some View {
         ScrollView{
@@ -227,15 +206,10 @@ struct ClubsDetailView: View {
             
             if currentclub.editoremails.contains(userInfo.email) {
                 isEditor = true
-            } else {
-                print(currentclub.editoremails)
-                print(userInfo.email)
-                print("doesn't match")
             }
         }
         
-        .navigationBarItems(trailing:
-                                Group {
+        .navigationBarItems(trailing: Group {
             HStack {
                 if isAdmin {
                     NavigationLink {
@@ -263,8 +237,7 @@ struct ClubsDetailView: View {
                     }
                 }
             }
-        }
-        )
+        })
         
         // add/remove sports confirm
         .confirmationDialog("Add to Favorites", isPresented: $confirming) {
@@ -304,8 +277,25 @@ struct ClubsDetailView: View {
 }
 
 
+#if DEBUG
 struct ClubsDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ClubsMainView(selectedclub: club(clubname: "Chess Club", clubcaptain: ["Andrea Botez"], clubadvisor: ["Hiakru Nikamura"], clubmeetingroom: "2013", clubdescription: "For seasoned pros, or newbeginners, chess is a game that everyone can learn and improve at.", clubimage: "chess", clubmembercount: "1", clubmembers: ["John Johnson", "Bob Bobson", "Anders Anderson", "Millie Millson"], adminemails: ["augustelholm@gmail.com"], editoremails: [], favoritedusers: [], imagedata: UIImage(), documentID: "documentID", id: 1))
+        ClubsMainView(selectedclub: 
+            club(
+                clubname: "Untitled Club",
+                clubcaptain: ["Person 1"],
+                clubadvisor: ["Person 2"],
+                clubmeetingroom: "100",
+                clubdescription: "Club description...",
+                clubimage: "",
+                clubmembercount: "3",
+                clubmembers: ["Person 3", "Person 4"],
+                adminemails: [""],
+                editoremails: [],
+                favoritedusers: [],
+                imagedata: UIImage(),
+                documentID: "",
+                id: 0))
     }
 }
+#endif

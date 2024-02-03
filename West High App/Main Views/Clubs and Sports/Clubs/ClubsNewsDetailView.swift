@@ -102,9 +102,7 @@ struct ClubsNewsDetailView: View {
                     }
                 }
                 hasAppeared = true
-            } else {
             }
-            
         }
     }
 }

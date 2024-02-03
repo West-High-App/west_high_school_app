@@ -15,18 +15,19 @@ struct ClubsMainView: View {
             let safeArea = $0.safeAreaInsets
             let size = $0.size
             if let item = clubsmanager.allclublist.first(where: { $0.documentID == selectedclub.documentID }) {
-                ClubsDetailView(currentclub: item, safeArea: safeArea, size: size)
+                ClubsDetailView(currentclub: item)
                     .environmentObject(clubsmanager)
             }
         }
-        //.background(.blue)
     }
 
 }
 
+#if DEBUG
 struct ClubsMainView_Previews: PreviewProvider {
     static var previews: some View {
         ClubsMainView(selectedclub: clubManager().allclublist.first!).environmentObject(UserInfo())
         
     }
 }
+#endif
