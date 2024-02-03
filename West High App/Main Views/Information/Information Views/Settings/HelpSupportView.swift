@@ -17,7 +17,7 @@ struct HelpSupportView: View {
                                 Text("**Who can edit content on the app?**")
                                 Spacer()
                             }
-                            Text("Only verified users and administrators can edit content inside the app. Certain student leaders also may have access to editing the app, this includes chosen members of sports teams and chosen members of clubs. Club captains and Sports team captains are able to add events and edit the homepage of their respective club & sport.\n")
+                            Text("Only verified users and administrators can edit content inside the app. Certain student leaders also may have access to editing the app, this includes chosen members of sports teams and chosen members of clubs. Club captains and Sports team captains are able to add events and edit the homepage of their respective club or sport.\n")
                             
                             HStack{
                                 Text("**Who writes the news articles?**")
@@ -42,13 +42,13 @@ struct HelpSupportView: View {
                             Text("**Why should I log in?**")
                             Spacer()
                         }
-                        Text("Logging in with your MMSD email allows access to certain features, such as club rosters, that are otherwise hidden. Logging in also enables you to save  sports and clubs to the 'Favorites' tab, so they are always easily accessible. If you do not want to log in, you can always continue as a guest.\n")
+                        Text("Logging in with your MMSD email allows access to certain features, such as club rosters, that are otherwise hidden. Logging in also enables you to save sports and clubs to the 'Favorites' tab, so they are always easily accessible. If you do not want to log in, you can always continue as a guest.\n")
                         
                         HStack{
                             Text("**What is logging in as a guest?**")
                             Spacer()
                         }
-                        Text("Logging in as a guest will allow you to enter the app without logging in with an email, logging in as a guest will restrict you from certain features of the app, as well as editing or adding content onto the app. You willl also not be able to save favorite clubs or sports.")
+                        Text("Logging in as a guest will allow you to enter the app without logging in with an email. Logging in as a guest will restrict you from certain features of the app, as well as editing or adding content to the app. You will also not be able to save favorite clubs or sports.")
                     }.font(.system(size: 17, weight: .regular, design: .rounded))
                         .accentColor(.accentColor)
                 }
@@ -69,7 +69,7 @@ struct HelpSupportView: View {
                                 Text("**Additional Questions**")
                                 Spacer()
                             }
-                            Text("Other questions and concerns can be emailed to westhighapp@gmail.com, emails may take one to three business days to process. Thank you for your patience.")
+                            Text("Other questions and concerns can be emailed to westhighapp@gmail.com, emails may take up to three business days to process. Thank you for your patience.")
                         }
                     }.font(.system(size: 17, weight: .regular, design: .rounded))
                         .accentColor(.accentColor)
