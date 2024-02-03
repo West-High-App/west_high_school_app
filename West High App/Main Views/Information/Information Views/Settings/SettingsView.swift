@@ -13,40 +13,27 @@ struct SettingsView: View {
 
     var body: some View {
         
-            VStack{
                 List{
                     NavigationLink {
                         PrivacyPolicyView()
                     } label: {
-                        HStack{
-                            Image(systemName: "lock.shield")
-                                .font(.system(size: 30))
-                            Spacer()
-                                .frame(width:15)
-                            Text("Privacy Policy")
-                                .font(.system(size: 24))
-                        }
+                        Image(systemName: "lock.shield")
+                        Text("Privacy Policy")
                     }
                     .padding(.vertical,10)
                     
                     NavigationLink {
                         PrivacySecurityView()
                     } label: {
-                        HStack{
-                            Image(systemName: "checkmark.circle")
-                                .font(.system(size: 30))
-                            Spacer()
-                                .frame(width:15)
-                            Text("Terms of Service")
-                                .font(.system(size: 24))
-                        }
+                        Image(systemName: "checkmark.circle")
+                        Text("Terms of Service")
                     }
-                    .padding(.vertical,15)
+                    .padding(.vertical,10)
 
                 }
-                .font(.system(size: 22, weight: .regular, design: .rounded))
-            }
-            .navigationBarTitle("Terms & Policies")
+                .foregroundColor(.black)
+                .font(.system(size: 22, weight: .medium, design: .rounded))
+                .navigationBarTitle("Terms & Policies")
     }
 }
 

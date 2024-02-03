@@ -9,8 +9,7 @@ import SwiftUI
 
 struct HelpSupportView: View {
     var body: some View {
-        ScrollView{
-            VStack{
+            List{
                 DisclosureGroup("FAQs"){
                     VStack(alignment:.leading){
                         VStack(alignment: .leading){
@@ -32,23 +31,10 @@ struct HelpSupportView: View {
                             }
                             Text("Student Council helps maintain the West High app, if you are interested feel free to join Student Council (more info under 'Clubs'). If you have any suggestions or improvements, contact us at westhighapp@gmail.com.")
                         }
-                    }
-                    .font(.system(size: 18, weight: .regular, design: .rounded))
-
-                    .foregroundColor(.black)
-                    .padding(.vertical, 10.0)
+                    }.font(.system(size: 17, weight: .regular   , design: .rounded))
+                    .accentColor(.accentColor)
                 }
-                .font(.system(size: 17, weight: .semibold, design: .rounded))
-
-                .padding()
-                .tint(.black)
-                .foregroundColor(.black)
-                .background(Color(red: 230/255, green: 230/255, blue: 230/255))
-                .cornerRadius(20)
-                .padding(.horizontal,5)
-                
-                
-                
+                .padding(.vertical,10)
                 
                 DisclosureGroup("Logging in"){
                     VStack(alignment:.leading){
@@ -63,24 +49,10 @@ struct HelpSupportView: View {
                             Spacer()
                         }
                         Text("Logging in as a guest will allow you to enter the app without logging in with an email, logging in as a guest will restrict you from certain features of the app, as well as editing or adding content onto the app. You willl also not be able to save favorite clubs or sports.")
-                    }
-                    .font(.system(size: 18, weight: .regular, design: .rounded))
-
-                    .foregroundColor(.black)
-                    .padding(.vertical, 10.0)
-
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                        .accentColor(.accentColor)
                 }
-                .font(.system(size: 17, weight: .semibold, design: .rounded))
-
-                .padding()
-                .tint(.black)
-                .foregroundColor(.black)
-                .background(Color(red: 230/255, green: 230/255, blue: 230/255))
-                .cornerRadius(20)
-                .padding(.horizontal,5)
-                
-                
-                
+                .padding(.vertical,10)
                 
                 DisclosureGroup("Other Issues"){
                     VStack(alignment:.leading){
@@ -99,26 +71,15 @@ struct HelpSupportView: View {
                             }
                             Text("Other questions and concerns can be emailed to westhighapp@gmail.com, emails may take one to three business days to process. Thank you for your patience.")
                         }
-                    }
-                    .font(.system(size: 18, weight: .regular, design: .rounded))
-
-                    .foregroundColor(.black)
-                    .padding(.vertical, 10.0)
+                    }.font(.system(size: 17, weight: .regular, design: .rounded))
+                        .accentColor(.accentColor)
                 }
-                .font(.system(size: 17, weight: .semibold, design: .rounded))
-
-                .padding()
-                .tint(.black)
-                .foregroundColor(.black)
-                .background(Color(red: 230/255, green: 230/255, blue: 230/255))
-                .cornerRadius(20)
-                .padding(.horizontal,5)
+                .padding(.vertical,10)
             }
-            .padding(.bottom, 10)
-            .padding(.horizontal, 5)
-            
-        }.navigationTitle("Help & Support")
-
+            .foregroundColor(.black)
+            .font(.system(size: 22, weight: .medium, design: .rounded))
+            .navigationTitle("Help & Support")
+            .accentColor(.gray)
     }
 }
 

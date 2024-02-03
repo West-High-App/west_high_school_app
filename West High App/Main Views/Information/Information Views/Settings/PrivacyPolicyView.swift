@@ -11,21 +11,6 @@ struct PrivacyPolicyView: View {
     var body: some View {
         ScrollView{
                 VStack{
-                    HStack{
-                        Text("Privacy Policy")
-                            .foregroundColor(.black)
-                            .font(
-                                .custom(
-                                    "arial",
-                                    fixedSize: 30)
-                                .weight(.bold)
-                            )
-                            .padding(.vertical, 10)
-                        Spacer()
-
-                        Spacer()
-                    }
-
                     VStack(alignment: .leading){
                         Text("West High built the West High App app as a free app. This SERVICE is provided by West High at no cost and is intended for use as is.\n")
                         Text("This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decides to use our Service.\n")
@@ -65,18 +50,16 @@ struct PrivacyPolicyView: View {
                         Text("These Services do not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13 years of age. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do the necessary actions.\n")
                         Text("**Changes to This Privacy Policy**")
                         Text("We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page.")
-                        Text("This policy is effective as of 2023-09-11\n")
+                        Text("This policy is effective as of 2024-02-03\n")
                         Text("**Contact Us**")
                         Text("If you have any questions or suggestions about our Privacy Policy, contact us at westhighapp@gmail.com.\n")
                     }
                 }
-            
-                .padding(.top, -50) // .vertical
-                .padding(.horizontal,10)
-            
-            
-            
+                .padding(.horizontal)
         }
+        .foregroundColor(.black)
+        .font(.system(size: 17, weight: .regular, design: .rounded))
+        .navigationTitle("Privacy Policy")
 
     }
 }

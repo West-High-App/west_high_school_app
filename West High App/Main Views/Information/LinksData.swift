@@ -33,7 +33,5 @@ class LinkManager: ObservableObject {
                                 
             }
         }
-        
     }
-        
 }

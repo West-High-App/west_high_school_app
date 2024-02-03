@@ -12,7 +12,6 @@ struct JobInternshipView: View {
     @ObservedObject var linkManager = LinkManager.shared
     
     var body: some View {
-        NavigationView{
             List{
                 Link(destination: URL(string: linkManager.linktionary["Food Service"] ?? "https://docs.google.com/document/d/1pAMUB6xT41RtX-FZmkZ4-Ro4S4EvywxR9PFYIHO9H5k/edit")!,
                      label: {
@@ -77,10 +76,7 @@ struct JobInternshipView: View {
             }
             .foregroundColor(.black)
             .font(.system(size: 22, weight: .medium, design: .rounded))
-
-            
-        }
-        .navigationBarTitle("Jobs & Internships")
+            .navigationTitle("Jobs & Internships")
     }
 }
 

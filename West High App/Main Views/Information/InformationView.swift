@@ -133,16 +133,7 @@ struct InformationView: View {
                     }
                     .padding(.vertical,10)
                     
-                    
-                    NavigationLink {
-                        HelpSupportView()
-                    } label: {
-                        Image(systemName: "questionmark.circle")
-                        Text("Help & Support")
-                    }.padding(.vertical, 10)
-                    
                     MyCustomListItemSubview()
-                    
                     
                 }
                 .font(.system(size: 22, weight: .medium, design: .rounded))
@@ -197,12 +188,6 @@ struct InformationView: View {
 
 struct MyCustomListItemSubview: View {
     var body: some View {
-        NavigationLink {
-            SettingsView()
-        } label: {
-            Image(systemName: "book.closed")
-            Text("Terms & Policies")
-        }.padding(.vertical, 10)
 
         NavigationLink {
             JobInternshipView()
@@ -211,6 +196,20 @@ struct MyCustomListItemSubview: View {
             Text("Jobs & Internships ")
         }
         .padding(.vertical,10)
+        
+        NavigationLink {
+            HelpSupportView()
+        } label: {
+            Image(systemName: "questionmark.circle")
+            Text("Help & Support")
+        }.padding(.vertical, 10)
+        
+        NavigationLink {
+            SettingsView()
+        } label: {
+            Image(systemName: "book.closed")
+            Text("Terms & Policies")
+        }.padding(.vertical, 10)
     }
 }
 
