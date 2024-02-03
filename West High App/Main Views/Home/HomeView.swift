@@ -88,7 +88,7 @@ struct HomeView: View {
           }
      }
      
-     @State var loadWebViews = true
+     @ObservedObject var webViews = WebViewLoader.shared
      
      // MARK: VIEW
      var safeArea: EdgeInsets
@@ -99,7 +99,7 @@ struct HomeView: View {
      
      var body: some View {
           ZStack {
-               if loadWebViews {
+               if webViews.shouldLoad {
                     StaffView()
                     LunchMenuView()
                     TransportationView()
@@ -436,7 +436,6 @@ struct HomeView: View {
                }
                
                hasAppeared = true
-               loadWebViews = false
           }
      }
      
@@ -884,4 +883,10 @@ struct UpcomingEventsList: View{
                .padding(.horizontal)
                .padding(.vertical, 5)
      }
+}
+
+class WebViewLoader: ObservableObject {
+     static let shared = WebViewLoader()
+     
+     @Published var shouldLoad = true
 }

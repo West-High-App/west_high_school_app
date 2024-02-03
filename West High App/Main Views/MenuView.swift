@@ -76,6 +76,8 @@ struct MenuView: View {
     @State var isShutDown = false
     @State var shutdownMessage = ""
     
+    @StateObject var webViews = WebViewLoader.shared
+    
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -107,7 +109,10 @@ struct MenuView: View {
                         .environmentObject(userInfo)
                         .tag(tabItems[4])
                         .ignoresSafeArea(.all)
+                }.onChange(of: selectedItem) { _ in
+                    webViews.shouldLoad = false
                 }
+                
                 Spacer(minLength: 0)
                 
                 CustomTabBarView(tabItems: tabItems, selected: $selectedItem)
