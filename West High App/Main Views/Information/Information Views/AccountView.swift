@@ -104,7 +104,9 @@ struct AccountView: View {
                                     try Auth.auth().signOut()
                                     DispatchQueue.main.async {
                                         print("setting to none")
-                                        userInfo.loginStatus = "None"
+                                        withAnimation {
+                                            userInfo.loginStatus = "None"
+                                        }
                                         print("set to none")
                                     }
                                 } catch let signOutError {
@@ -129,7 +131,9 @@ struct AccountView: View {
 
                                     DispatchQueue.main.async {
                                         print("setting to none")
-                                        userInfo.loginStatus = "None"
+                                        withAnimation {
+                                            userInfo.loginStatus = "None"
+                                        }
                                         print("set to none")
                                     }
                                 } catch let signOutError {

@@ -63,7 +63,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <LocationScenarioReference
-         identifier = "../../Login auth app/West High.gpx"
+         identifier = "../../West High App/Other/GPX/West High.gpx"
          referenceType = "0">
       </LocationScenarioReference>
    </LaunchAction>
