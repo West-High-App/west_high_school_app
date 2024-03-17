@@ -1,65 +1,54 @@
-//
-//  ClubsNewDetailView.swift
-//  West App
-//
-//  Created by Aiden Lee on 7/7/23.
-//
-
 import SwiftUI
 
 struct ClubsNewsDetailView: View {
     var currentclubnews: clubNews
-    
-    @State var imagemanager = imageManager()
-    @State var imagedata: [UIImage] = []
-    @State var screen = ScreenSize()
-    @State var hasAppeared = false
-    
+    @StateObject var imagemanager = imageManager()
+    @State private var imagedata: [UIImage] = []
+    @State private var screen = ScreenSize()
+    @State private var hasAppeared = false
     var body: some View {
-        ScrollView{
-            VStack{
-                HStack {
+        ScrollView {
+            VStack(spacing: 10) {
+                HStack{
                     Text(currentclubnews.newstitle)
-                        .foregroundColor(Color.black)
-                        .font(.system(size: 35, weight: .bold, design: .rounded))
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                        .multilineTextAlignment(.leading)
                         .lineLimit(2)
                         .minimumScaleFactor(0.3)
                         .padding(.horizontal)
                     Spacer()
                 }
                 HStack {
-                    Text(currentclubnews.author)
-                        .foregroundColor(Color.gray)
-                        .font(.system(size: 26, weight: .semibold, design: .rounded))
-                        .lineLimit(1)
+                    Text("By \(currentclubnews.author)")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                         .padding(.horizontal)
+                    
                     Spacer()
-                }
-                HStack {
+                    
                     Text(currentclubnews.newsdate)
-                        .foregroundColor(Color.gray)
-                        .font(.system(size: 20, weight: .semibold, design: .rounded))
-                        .lineLimit(1)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                         .padding(.horizontal)
-                    Spacer()
                 }
-                
+                .padding(.bottom, 10)
                 VStack {
                     TabView {
-                        // gets from imagedata first time it loads, then from currentstudentdub
+                        
+                        // Loop through each recipe
                         ForEach(imagedata.indices, id: \.self) { index in
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.white)
                                 
                                 VStack(spacing: 0) {
                                     Image(uiImage: imagedata[index])
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
-                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                        .frame(width: screen.screenWidth - 20, height: 250)
                                         .clipped()
+                                        .cornerRadius(30)
                                 }
-                            }
+                            
                         }
                         
                         
@@ -67,56 +56,57 @@ struct ClubsNewsDetailView: View {
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
                     .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                     
-                }.cornerRadius(30)
-                    .frame(width: screen.screenWidth - 30, height: 250)
-                    .shadow(color: .gray, radius: 8, x:2, y:3)
-                    .padding(.horizontal)
-                
-                Spacer()
-                
-            }
+                }
+                .cornerRadius(30)
+                .frame(width: screen.screenWidth - 20, height: 250)
+                .shadow(color: .gray, radius: 4, x:2, y:3)
+                .padding(.horizontal)
+                Divider()
+                    .frame(width: screen.screenWidth / 1.2, height: 2)
 
+
+                Spacer()
+            }
+            .padding(.top)
+            .navigationBarTitleDisplayMode(.inline)
+            
             LinkTextView(text: currentclubnews.newsdescription)
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(Color.black)
-                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                    .padding(.horizontal, 25)
-                    .padding(.vertical, 5)
-                    .background(Rectangle()
-                        .cornerRadius(10)
-                        .padding(.horizontal)
-                        .shadow(radius: 5, x: 3, y: 3)
-                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                    .padding(.bottom)
-                
-        }.navigationBarTitleDisplayMode(.inline)
-        
+                .multilineTextAlignment(.leading)
+                .font(.body)
+                .foregroundColor(.black)
+                .padding(.horizontal, 20)
+                .padding(.bottom)
+        }
         .onAppear {
-            if !hasAppeared || currentclubnews.imagedata == [] || currentclubnews.imagedata.first == UIImage() || currentclubnews.imagedata.first == nil { //
-                
+            if !hasAppeared || currentclubnews.imagedata == [] || currentclubnews.imagedata.first == UIImage() || currentclubnews.imagedata.first == nil {
+            
                 for image in currentclubnews.newsimage {
                     imagemanager.getImage(fileName: image) { uiimage in
-                        if let uiimage = uiimage {
-                            imagedata.append(uiimage)
-                        }
+                         if let uiimage = uiimage {
+                             imagedata.append(uiimage)
+                         }
                     }
                 }
-                hasAppeared = true
+                 hasAppeared = true
+            } else {
             }
-        }
+            
+       }
     }
 }
-
-
 
 struct ClubsNewsDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ClubsNewsDetailView(currentclubnews: clubNews(
             newstitle: "August learns how to piss!",
             newsimage: ["roboticsclub"],
-            newsdescription: "this is a hardcoded example, is not from firebase and should never be shwon on the app",
-            newsdate: "Apr 1, 2023", newsdateSwift: Date(),
-            author: "Aiden Jamae Lee (not funny)", isApproved: false,
-            documentID: "NAN", writerEmail: "", imagedata: []))
+            newsdescription: "This is a hardcoded example, is not from firebase and should never be shown on the app",
+            newsdate: "Apr 1, 2023",
+            newsdateSwift: Date(),
+            author: "Aiden Jamae Lee (not funny)",
+            isApproved: false,
+            documentID: "NAN",
+            writerEmail: "",
+            imagedata: []))
     }
 }

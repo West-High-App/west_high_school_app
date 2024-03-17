@@ -12,6 +12,7 @@ struct StudentSpotlight: View {
     var spotlightarticles: [studentAchievement] {
         spotlightManager.allstudentachievementlist
     }
+    @StateObject var hasPermission = PermissionsCheck.shared
     @State var hasAppeared = false
     @State var newstitlearray: [studentAchievement] = []
     @State var isLoading = false
@@ -41,6 +42,20 @@ struct StudentSpotlight: View {
                                 .lineLimit(2)
                                 .padding(.leading)
                             Spacer()
+                            if hasPermission.articles {
+                                
+                                 NavigationLink {
+                                      SpotlightAdminView()
+                                 } label: {
+                                    Image(systemName: "square.and.pencil")
+                                           .foregroundColor(.blue)
+                                           .padding(.trailing)
+                                           .font(.system(size: 26, design: .rounded))
+
+                                      
+                                 }
+                                 
+                            }
                         }
                         HStack {
                             Text("Articles")
@@ -156,30 +171,31 @@ class ScreenSize {
                     HStack{
                         Text("By " + feat.articleauthor)
                             .foregroundColor(.secondary)
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .font(.system(size: 18, weight: .semibold))
                         Spacer()
                         Text(feat.publisheddate)
                             .foregroundColor(.secondary)
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .font(.system(size: 18, weight: .semibold))
                     }
                     Text(feat.achievementtitle)
                         .foregroundColor(.black)
                         .lineLimit(2)
                         .minimumScaleFactor(0.9)
-                        .font(.system(size: 24, weight: .semibold, design: .rounded))
+                        .font(.system(size: 24, weight: .semibold))
                     Text(feat.achievementdescription)
                         .foregroundColor(.secondary)
                         .lineLimit(2)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .font(.system(size: 18, weight: .regular))
 //                    Text("Click here to read more")
 //                        .foregroundColor(.blue)
 //                        .lineLimit(2)
 //                        .font(.system(size: 18, weight: .semibold, design: .rounded))
 //                        .padding(.leading, 5)
 
-                }.padding(.horizontal)
+                }
+                //.padding(.horizontal)
                 Divider()
-                    .padding(.horizontal)
+                   // .padding(.horizontal)
             }.onAppear {
                 if feat.imagedata == [] || feat.imagedata.first == UIImage() || feat.imagedata.first == nil { //
                      guard let image = feat.images.first else { return }

@@ -151,19 +151,19 @@ struct HomeView: View {
                                              
                                              // edit button
                                              
-                                             if hasPermission.upcomingevents {
-                                                  NavigationLink {
-                                                       UpcomingEventsAdminView()
-                                                  } label: {
-                                                       Text("Edit Upcoming Events")
-                                                            .foregroundColor(.blue)
-                                                            .padding(.vertical, 5)
-                                                            .frame(width: screen.screenWidth-30)
-                                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                                            .background(Rectangle()
-                                                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))                                                            .cornerRadius(10)
-                                                                 .shadow(radius: 2, x: 1, y: 1))                        }
-                                             }
+//                                             if hasPermission.upcomingevents {
+//                                                  NavigationLink {
+//                                                       UpcomingEventsAdminView()
+//                                                  } label: {
+//                                                       Text("Edit Upcoming Events")
+//                                                            .foregroundColor(.blue)
+//                                                            .padding(.vertical, 5)
+//                                                            .frame(width: screen.screenWidth-30)
+//                                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+//                                                            .background(Rectangle()
+//                                                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))                                                            .cornerRadius(10)
+//                                                                 .shadow(radius: 2, x: 1, y: 1))                        }
+//                                             }
                                              if let firstcurrentevent = upcomingeventsdataManager.firstcurrentevent {
                                                   VStack {
                                                        UpcomingEventCell(event: firstcurrentevent)
@@ -247,22 +247,22 @@ struct HomeView: View {
                                                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
                                              }
                                              
-                                             if hasPermission.articles {
-                                                  NavigationLink {
-                                                       SpotlightAdminView()
-                                                  } label: {
-                                                       Text("Edit Spotlight Articles")
-                                                            .foregroundColor(.blue)
-                                                            .padding(.vertical, 5)
-                                                            .frame(width: screen.screenWidth-30)
-                                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
-                                                            .background(Rectangle()
-                                                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))                                                            .cornerRadius(10)
-                                                                 .shadow(radius: 2, x: 1, y: 1))
-                                                       
-                                                  }
-                                                  
-                                             }
+//                                             if hasPermission.articles {
+//                                                  NavigationLink {
+//                                                       SpotlightAdminView()
+//                                                  } label: {
+//                                                       Text("Edit Spotlight Articles")
+//                                                            .foregroundColor(.blue)
+//                                                            .padding(.vertical, 5)
+//                                                            .frame(width: screen.screenWidth-30)
+//                                                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+//                                                            .background(Rectangle()
+//                                                                 .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94))                                                            .cornerRadius(10)
+//                                                                 .shadow(radius: 2, x: 1, y: 1))
+//                                                       
+//                                                  }
+//                                                  
+//                                             }
                                              
                                              VStack { // MARK: student spotlight
                                                   ForEach(spotlightManager.allstudentachievementlist.filter { $0.isApproved == true }.prefix(3), id: \.id) { article in

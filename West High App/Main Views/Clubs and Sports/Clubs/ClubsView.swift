@@ -120,7 +120,6 @@ struct ClubsHibabi: View {
                 NavigationStack {
                     ZStack {
                         VStack {
-                            
                             Picker(selection: $clubselected, label: Text(""), content: { // picker at top
                                 if userInfo.loginStatus == "Google" {
                                     Text("Favorites").tag(1)
@@ -130,14 +129,13 @@ struct ClubsHibabi: View {
                                 
                                 
                             }).pickerStyle(SegmentedPickerStyle())
-                                .padding(.horizontal,30)
+                                .padding(.horizontal,15)
                                 .onAppear() {
                                     if clubcount == 0 {
                                         clubcount = 1
                                     }
                                 }
                                 .onChange(of: clubselected) { newValue in
-                                    print("CHANGE THIS SHIT")
                                     if (clubselected == 1 && clubtempSelection == 2) {
                                         clubtempSelection = clubselected
                                     }
@@ -146,7 +144,6 @@ struct ClubsHibabi: View {
                                     }
                                 }
                             
-                            // TODO: Build clubs UI
                     
                             if clubselected == 1 || clubselected == 2 {
                                 if clubsmanager.isLoading {
@@ -360,6 +357,7 @@ struct ClubsHibabi: View {
                             }
                             
                         }
+                        .offset(y:-5)
                         
                         .onAppear { // MARK: on appear
                                                         
@@ -419,7 +417,7 @@ struct clubnewscell: View{
                     Text(feat.newsdate)
                         .foregroundColor(.secondary)
                         .lineLimit(2)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .font(.system(size: 18, weight: .semibold))
                         .padding(.leading, 5)
                     Spacer()
                 }
@@ -427,11 +425,11 @@ struct clubnewscell: View{
                     .foregroundColor(.black)
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
-                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                    .font(.system(size: 24, weight: .semibold))
                     .padding(.leading, 5)
                 Text(feat.newsdescription)
                     .foregroundColor(.secondary)
-                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .font(.system(size: 18, weight: .regular))
                     .padding(.leading, 5)
                     .lineLimit(1)
 //                    Text("Click here to read more")
