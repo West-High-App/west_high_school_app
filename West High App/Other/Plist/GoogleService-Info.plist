@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>15364376159-35vsdqlicta1qs13esic0pqbirf3mipo.apps.googleusercontent.com</string>
+	<string>15364376159-ftutqvbfdvju343ikaef414p82o9bgf6.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.15364376159-35vsdqlicta1qs13esic0pqbirf3mipo</string>
+	<string>com.googleusercontent.apps.15364376159-ftutqvbfdvju343ikaef414p82o9bgf6</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAOUyMMOv54dWgZrCrwuvUVaHFFaFdbGWM</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>AugustAndersen.West-High-App</string>
+	<string>com.andersenlee.westhighapps</string>
 	<key>PROJECT_ID</key>
 	<string>west-high-app-cd475</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:15364376159:ios:0fbffbab215b51a2f73dea</string>
+	<string>1:15364376159:ios:87bd0b665f795e83f73dea</string>
 </dict>
 </plist>
