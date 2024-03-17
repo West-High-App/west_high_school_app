@@ -101,45 +101,46 @@ class studentachievementlist: ObservableObject{
             .limit(to: fetchLimit)
             .start(afterDocument: lastDocument)
             .getDocuments { snapshot, error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
-            }
-            
-            if let snapshot = snapshot {
-                self.lastDocument = snapshot.documents.last
-                let templist: [studentAchievement] = snapshot.documents.map { document in
-                    let data = document.data()
-                    let achievementtitle = data["achievementtitle"] as? String ?? ""
-                    let achievementdescription = data["achievementdescription"] as? String ?? ""
-                    let articleauthor = data["articleauthor"] as? String ?? ""
-                    let publisheddate = data["publisheddate"] as? String ?? ""
-                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
-                    let images = data["images"] as? [String] ?? []
-                    let isApproved = data["isApproved"] as? Bool ?? false
-                    let writerEmail = data["writerEmail"] as? String ?? ""
-                    let documentID = document.documentID
-                    
-                    var imagedata: [UIImage] = []
-                    
-//                    for file in images {
-//                        imageManager().getImage(fileName: file) { image in
-//                            if let image = image {
-//                                imagedata.append(image)
-//                            }
-//                        }
-//                    }
-                    
-                    let achievement = studentAchievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, writerEmail: writerEmail, imagedata: imagedata)
-                    return achievement
-                    
+                print("FIREBASE READ")
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    return
                 }
-                self.handleFirestore(templist)
-                if snapshot.documents.count < self.fetchLimit {
+                
+                if let snapshot = snapshot {
+                    self.lastDocument = snapshot.documents.last
+                    let templist: [studentAchievement] = snapshot.documents.map { document in
+                        let data = document.data()
+                        let achievementtitle = data["achievementtitle"] as? String ?? ""
+                        let achievementdescription = data["achievementdescription"] as? String ?? ""
+                        let articleauthor = data["articleauthor"] as? String ?? ""
+                        let publisheddate = data["publisheddate"] as? String ?? ""
+                        let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
+                        let images = data["images"] as? [String] ?? []
+                        let isApproved = data["isApproved"] as? Bool ?? false
+                        let writerEmail = data["writerEmail"] as? String ?? ""
+                        let documentID = document.documentID
+                        
+                        var imagedata: [UIImage] = []
+                        
+                        //                    for file in images {
+                        //                        imageManager().getImage(fileName: file) { image in
+                        //                            if let image = image {
+                        //                                imagedata.append(image)
+                        //                            }
+                        //                        }
+                        //                    }
+                        
+                        let achievement = studentAchievement(documentID: documentID, achievementtitle: achievementtitle, achievementdescription: achievementdescription, articleauthor: articleauthor, publisheddate: publisheddate, date: date, images: images, isApproved: isApproved, writerEmail: writerEmail, imagedata: imagedata)
+                        return achievement
+                        
+                    }
+                    self.handleFirestore(templist)
+                    if snapshot.documents.count < self.fetchLimit {
                         self.allDocsLoaded = true
+                    }
                 }
             }
-        }
     }
     
     func connectAchievements() {

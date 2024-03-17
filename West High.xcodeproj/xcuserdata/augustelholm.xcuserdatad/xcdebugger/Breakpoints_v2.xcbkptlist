@@ -173,8 +173,8 @@
             filePath = "West High App/Main Views/Clubs and Sports/Data/ClubSportNewsData.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
             landmarkName = "updateSportNews(sportNews:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -189,8 +189,8 @@
             filePath = "West High App/Main Views/Clubs and Sports/Data/ClubSportNewsData.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
             landmarkName = "updateSportNews(sportNews:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -285,8 +285,8 @@
             filePath = "West High App/Main Views/Home/HomeView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "800"
-            endingLineNumber = "800"
+            startingLineNumber = "801"
+            endingLineNumber = "801"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -349,8 +349,8 @@
             filePath = "West High App/Main Views/Home/Student Spotlight/SpotlightData.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "getMoreAchievements()"
             landmarkType = "7">
          </BreakpointContent>
@@ -365,8 +365,8 @@
             filePath = "West High App/Main Views/Home/Student Spotlight/SpotlightData.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
             landmarkName = "connectAchievements()"
             landmarkType = "7">
          </BreakpointContent>
@@ -381,8 +381,8 @@
             filePath = "West High App/Main Views/Home/Student Spotlight/SpotlightData.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
+            startingLineNumber = "236"
+            endingLineNumber = "236"
             landmarkName = "connectPendingAchievements()"
             landmarkType = "7">
          </BreakpointContent>
@@ -449,6 +449,38 @@
             endingLineNumber = "105"
             landmarkName = "body"
             landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "573810A5-3AC6-47A9-9EE0-A0AC1D3CA26C - 7a7e7fc7f04130df"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 () -&gt; () in closure #2 () -&gt; SwiftUI.Alert in West_High.AccountView.body.getter : some"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/West%20High%20App/Main%20Views/Information/Information%20Views/AccountView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "105"
+                  endingLineNumber = "105"
+                  offsetFromSymbolStart = "572">
+               </Location>
+               <Location
+                  uuid = "573810A5-3AC6-47A9-9EE0-A0AC1D3CA26C - 5ce42a261e8978f2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 @Swift.MainActor () -&gt; () in closure #1 () -&gt; () in closure #2 () -&gt; SwiftUI.Alert in West_High.AccountView.body.getter : some"
+                  moduleName = "West High"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/augustelholm/Documents/west_high_school_app/West%20High%20App/Main%20Views/Information/Information%20Views/AccountView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "105"
+                  endingLineNumber = "105"
+                  offsetFromSymbolStart = "168">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

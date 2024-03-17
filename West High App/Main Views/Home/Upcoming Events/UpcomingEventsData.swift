@@ -135,33 +135,34 @@ class upcomingEventsDataManager: ObservableObject {
             .start(afterDocument: lastDocument)
             .limit(to: self.fetchLimit)
             .getDocuments { snapshot, error in
-            guard error == nil else {
-                print("Error: \(error!.localizedDescription)") // if this happens everything is
-                return
-            }
-            if let snapshot = snapshot {
-                self.lastDocument = snapshot.documents.last
-                let templist = snapshot.documents.map { document in
-                    let data = document.data()
-                    let eventname = data["eventname"] as? String ?? ""
-                    let time = data["time"] as? String ?? ""
-                    let month = data["month"] as? String ?? ""
-                    let day = data["day"] as? String ?? ""
-                    let year = data["year"] as? String ?? ""
-                    let isAllDay = data["isAllDay"] as? Bool ?? false
-                    let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
-                    let documentID = document.documentID
-                    let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, isAllDay: isAllDay, publisheddate: "\(month) \(day), \(year)", date: date)
+                print("FIREBASE READ")
+                guard error == nil else {
+                    print("Error: \(error!.localizedDescription)") // if this happens everything is
+                    return
+                }
+                if let snapshot = snapshot {
+                    self.lastDocument = snapshot.documents.last
+                    let templist = snapshot.documents.map { document in
+                        let data = document.data()
+                        let eventname = data["eventname"] as? String ?? ""
+                        let time = data["time"] as? String ?? ""
+                        let month = data["month"] as? String ?? ""
+                        let day = data["day"] as? String ?? ""
+                        let year = data["year"] as? String ?? ""
+                        let isAllDay = data["isAllDay"] as? Bool ?? false
+                        let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
+                        let documentID = document.documentID
+                        let event = event(documentID: documentID, eventname: eventname, time: time, month: month, day: day, year: year, isAllDay: isAllDay, publisheddate: "\(month) \(day), \(year)", date: date)
+                        
+                        return event // adding event with info from firebase
+                    }
+                    self.handleFirestore(templist)
+                    if snapshot.documents.count < self.fetchLimit {
+                        self.allDocsLoaded = true
+                    }
                     
-                   return event // adding event with info from firebase
                 }
-                self.handleFirestore(templist)
-                if snapshot.documents.count < self.fetchLimit {
-                    self.allDocsLoaded = true
-                }
-
             }
-        }
     }
 
     func connectUpcomingEvents() {
