@@ -218,7 +218,7 @@ struct SportsNewsAdminView: View {
                                                             HStack {
                                                                 Text(usableType.newstitle)
                                                                     .foregroundColor(Color.black)
-                                                                    .font(.system(size: 35, weight: .bold, design: .rounded))                            .lineLimit(2)
+                                                                    .titleText()                            .lineLimit(2)
                                                                     .minimumScaleFactor(0.3)
                                                                     .padding(.horizontal)
                                                                 Spacer()
@@ -441,7 +441,7 @@ struct SportsNewsAdminView: View {
                                                         HStack {
                                                             Text(usableType.newstitle)
                                                                 .foregroundColor(Color.black)
-                                                                .font(.system(size: 35, weight: .bold, design: .rounded))                            .lineLimit(2)
+                                                                .titleText()                            .lineLimit(2)
                                                                 .minimumScaleFactor(0.3)
                                                                 .padding(.horizontal)
                                                             Spacer()

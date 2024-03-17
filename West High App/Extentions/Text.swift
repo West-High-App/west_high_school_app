@@ -33,4 +33,9 @@ extension Text {
             .font(.system(size: 17, weight: .regular, design: .rounded))
     }
     
+    func titleText() -> some View {
+        self
+            .font(.system(size: 35, weight: .bold, design: .rounded))
+    }
+    
 }

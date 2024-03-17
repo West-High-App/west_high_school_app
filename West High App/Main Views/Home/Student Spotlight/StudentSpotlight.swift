@@ -17,6 +17,25 @@ struct StudentSpotlight: View {
     @State var newstitlearray: [studentAchievement] = []
     @State var isLoading = false
     
+    @State var isConfirmingDeleteAchievement = false
+    @State private var achievementToDelete: studentAchievement?
+    @State var isPresentingAddAchievement = false
+    @State var selectedAchievement: studentAchievement?
+    
+    @State var selectedArticle = studentAchievement(documentID: "", achievementtitle: "", achievementdescription: "", articleauthor: "", publisheddate: "", date: Date(), images: [], isApproved: false, writerEmail: "", imagedata: [])
+    @State var selectedIndex = 0
+    
+    @State var usableType: studentAchievement?
+    @State var usableTypeImageData: [UIImage] = []
+    
+    @State var isConfirmingApproveAchievement = false
+    
+    @State var presentingArticleSheet = false
+
+    @State var screen = ScreenSize()
+    
+    @State private var tempAchievementTitle = ""
+    
     class ScreenSize {
         let screen: CGRect
         let screenWidth: CGFloat
@@ -28,10 +47,35 @@ struct StudentSpotlight: View {
             screenHeight = screen.height
         }
     }
-    // delete init under if being stupid
+    
+    @State var showingPendingArticles = false
+    
+    var pendingCount: Int {
+        return spotlightManager.allstudentachievementlist.filter { !$0.isApproved }.count
+    }
+    
+    var pendingString: String {
+        return pendingCount == 0 ? "" : " (\(pendingCount))"
+    }
+    
+    var pendingArticlesEmpty: Bool {
+        
+        var flag = false
+        for article in spotlightManager.allstudentachievementlist {
+            if !flag {
+                if !article.isApproved {
+                    flag = true
+                }
+            }
+        }
+        
+        return !flag
+    }
     
     var body: some View {
-
+        
+        if !showingPendingArticles {
+            
             ZStack {
                 ScrollView {
                     LazyVStack {
@@ -42,20 +86,27 @@ struct StudentSpotlight: View {
                                 .lineLimit(2)
                                 .padding(.leading)
                             Spacer()
-                            if hasPermission.articles {
+                            
+                            // add a spotlight article
+                            if hasPermission.articleadmin {
                                 
-                                 NavigationLink {
-                                      SpotlightAdminView()
-                                 } label: {
+                                Button {
+                                    isPresentingAddAchievement = true
+                                } label: {
                                     Image(systemName: "square.and.pencil")
-                                           .foregroundColor(.blue)
-                                           .padding(.trailing)
-                                           .font(.system(size: 26, design: .rounded))
-
-                                      
-                                 }
-                                 
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing)
+                                        .font(.system(size: 26, design: .rounded))
+                                }
+                                
+                                .sheet(isPresented: $isPresentingAddAchievement) {
+                                    AchievementDetailView(dataManager: spotlightManager, editingAchievement: nil, displayimages: [])
+                                }
+                                .sheet(item: $selectedAchievement) { achievement in
+                                    AchievementDetailView(dataManager: spotlightManager, editingAchievement: achievement)
+                                }
                             }
+                            
                         }
                         HStack {
                             Text("Articles")
@@ -65,19 +116,50 @@ struct StudentSpotlight: View {
                                 .padding(.leading)
                             Spacer()
                         }
-                        ForEach(spotlightarticles, id: \.id)
-                        {news in
+                        ForEach(spotlightarticles, id: \.id) { news in
                             if news.isApproved { // checking if article is approved
-                            NavigationLink {
-                                SpotlightArticles(currentstudentdub: news)
-                            } label: {
-                                achievementcell(feat: news)
-                                // .background( NavigationLink("", destination: SpotlightArticles(currentstudentdub: news)).opacity(0) )
-                                // .listRowSeparator(.hidden)
-                            }.buttonStyle(PlainButtonStyle())
+                                NavigationLink {
+                                    SpotlightArticles(currentstudentdub: news)
+                                } label: {
+                                    achievementcell(feat: news)
+                                    
+                                        .contextMenu {
+                                            if hasPermission.articleadmin {
+                                                Button("Delete", role: .destructive) {
+                                                    isConfirmingDeleteAchievement = true
+                                                    achievementToDelete = news
+                                                }
+                                            }
+                                        }
+                                    
+                                }.buttonStyle(PlainButtonStyle())
+                            }
                         }
+                        
+                        .alert(isPresented: $isConfirmingDeleteAchievement) {
+                            Alert(
+                                title: Text("Delete Article?"),
+                                message: Text("This action cannot be undone."),
+                                primaryButton: .destructive(Text("Delete")) {
+                                    if let achievementToDelete = achievementToDelete {
+                                        withAnimation {
+                                            spotlightManager.deleteAchievment(achievement: achievementToDelete) { error in
+                                                if let error = error {
+                                                    print("Error deleting achievement: \(error.localizedDescription)")
+                                                }
+                                            }
+                                            withAnimation {
+                                                spotlightManager.allstudentachievementlistUnsorted.removeAll {$0.achievementdescription == achievementToDelete.achievementdescription && $0.date == achievementToDelete.date}
+                                            }
+                                        }
+                                    }
+                                },
+                                secondaryButton: .cancel(Text("Cancel"))
+                            )
                         }
-                            .padding(.horizontal)
+                        
+                        
+                        .padding(.horizontal)
                         if !spotlightManager.allstudentachievementlist.isEmpty && !spotlightManager.allDocsLoaded {
                             ProgressView()
                                 .padding()
@@ -87,6 +169,20 @@ struct StudentSpotlight: View {
                         }
                     }
                 }
+                
+                .navigationBarItems(
+                    trailing:
+                        Group {
+                            if hasPermission.articles {
+                                Button(showingPendingArticles ? "Show Public Articles" : "Show Pending Articles\(pendingString)") {
+                                    withAnimation {
+                                        showingPendingArticles.toggle()
+                                    }
+                                }
+                            }
+                        }
+                )
+                
                 .onAppear {
                     if  !hasAppeared { // !hasAppeared
                         print("LOADING....")
@@ -135,8 +231,488 @@ struct StudentSpotlight: View {
                 
                 
             }
-        
+        } else {
+            if hasPermission.articleadmin {
+                ZStack {
+                    ScrollView {
+                        LazyVStack {
+                            HStack {
+                                Text("Pending Articles")
+                                    .foregroundColor(Color.black)
+                                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                                    .lineLimit(2)
+                                    .padding(.leading)
+                                Spacer()
+                            }
+                            if !pendingArticlesEmpty {
+                                ForEach(spotlightManager.allstudentachievementlist, id: \.id) { achievement in
+                                    if !achievement.isApproved {
+                                        achievementcell(feat: achievement)
+                                            .contextMenu {
+                                                Button("Edit") {
+                                                    print(selectedArticle)
+                                                    self.selectedArticle = achievement
+                                                    if let index = spotlightManager.allstudentachievementlist.firstIndex(of: achievement) {
+                                                        selectedIndex = index
+                                                    }
+                                                    presentingArticleSheet = true
+                                                    self.selectedArticle = achievement
+                                                }
+                                            }
+                                            .buttonStyle(PlainButtonStyle())
+                                            .onTapGesture {
+                                                print(selectedArticle)
+                                                self.selectedArticle = achievement
+                                                if let index = spotlightManager.allstudentachievementlist.firstIndex(of: achievement) {
+                                                    selectedIndex = index
+                                                }
+                                                presentingArticleSheet = true
+                                                self.selectedArticle = achievement
+                                            }
+                                            .sheet(isPresented: $presentingArticleSheet) {
+                                                VStack {
+                                                    if let usableType = usableType {
+                                                        HStack {
+                                                            Button("Cancel") {
+                                                                presentingArticleSheet = false
+                                                            }.padding()
+                                                            Spacer()
+                                                        }
+                                                        VStack {
+                                                            ScrollView{
+                                                                VStack{
+                                                                    HStack {
+                                                                        Text(usableType.achievementtitle)
+                                                                            .foregroundColor(Color.black)
+                                                                            .titleText()
+                                                                            .lineLimit(2)
+                                                                            .minimumScaleFactor(0.3)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
+                                                                    }
+                                                                    HStack {
+                                                                        Text(usableType.articleauthor)
+                                                                            .foregroundColor(Color.gray)
+                                                                            .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                                                            .lineLimit(1)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
+                                                                    }
+                                                                    HStack {
+                                                                        Text(usableType.publisheddate)
+                                                                            .foregroundColor(Color.gray)
+                                                                            .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                                            .lineLimit(1)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
+                                                                    }
+                                                                    
+                                                                    
+                                                                    VStack {
+                                                                        TabView {
+                                                                            
+                                                                            ForEach(usableTypeImageData.indices, id: \.self) { index in
+                                                                                ZStack {
+                                                                                    Rectangle()
+                                                                                        .foregroundColor(.white)
+                                                                                    
+                                                                                    VStack(spacing: 0) {
+                                                                                        Image(uiImage: usableTypeImageData[index])
+                                                                                            .resizable()
+                                                                                            .aspectRatio(contentMode: .fill)
+                                                                                            .frame(width: screen.screenWidth - 30, height: 250)
+                                                                                            .clipped()
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            
+                                                                            
+                                                                        }
+                                                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                                                        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                                                                        
+                                                                    }.cornerRadius(30)
+                                                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                                                        .shadow(color: .gray, radius: 8, x:2, y:3)
+                                                                    
+                                                                        .padding(.horizontal)
+                                                                    Spacer()
+                                                                }.onAppear {
+                                                                }
+                                                                
+                                                                LinkTextView(text: usableType.achievementdescription)
+                                                                    .multilineTextAlignment(.leading)
+                                                                    .foregroundColor(Color.black)
+                                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                                    .padding(.horizontal, 25)
+                                                                    .padding(.vertical, 5)
+                                                                    .background(Rectangle()
+                                                                        .cornerRadius(10)
+                                                                        .padding(.horizontal)
+                                                                        .shadow(radius: 5, x: 3, y: 3)
+                                                                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                                                    .padding(.bottom)
+                                                                
+                                                                if hasPermission.articleadmin {
+                                                                    HStack {
+                                                                        Spacer()
+                                                                        Button {
+                                                                            isConfirmingDeleteAchievement = true
+                                                                            achievementToDelete = usableType
+                                                                        } label: {
+                                                                            Text("Delete")
+                                                                                .foregroundColor(.white)
+                                                                                .fontWeight(.semibold)
+                                                                                .padding(10)
+                                                                                .cornerRadius(15.0)
+                                                                                .frame(width: screen.screenWidth/2-60)
+                                                                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                                .background(Rectangle()
+                                                                                    .foregroundColor(.red)
+                                                                                    .cornerRadius(10)
+                                                                                )
+                                                                        }
+                                                                        .alert(isPresented: $isConfirmingDeleteAchievement) {
+                                                                            Alert(
+                                                                                title: Text("Delete Article?"),
+                                                                                message: Text("This action cannot be undone."),
+                                                                                primaryButton: .destructive(Text("Delete")) {
+                                                                                    if let achievementToDelete = achievementToDelete {
+                                                                                        withAnimation {
+                                                                                            spotlightManager.deleteAchievment(achievement: achievementToDelete) { error in
+                                                                                                if let error = error {
+                                                                                                    print("Error deleting achievement: \(error.localizedDescription)")
+                                                                                                }
+                                                                                            }
+                                                                                            withAnimation {
+                                                                                                spotlightManager.allstudentachievementlistUnsorted.removeAll {$0.achievementdescription == achievementToDelete.achievementdescription && $0.date == achievementToDelete.date}
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                },
+                                                                                secondaryButton: .cancel(Text("Cancel"))
+                                                                            )
+                                                                        }
+                                                                        Spacer()
+                                                                        Button {
+                                                                            presentingArticleSheet = false
+                                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                                tempAchievementTitle = selectedArticle.achievementtitle
+                                                                                isConfirmingApproveAchievement = true
+                                                                                achievementToDelete = usableType
+                                                                            }
+                                                                        } label: {
+                                                                            Text("Approve")
+                                                                                .foregroundColor(.white)
+                                                                                .fontWeight(.semibold)
+                                                                                .padding(10)
+                                                                                .cornerRadius(15.0)
+                                                                                .frame(width: screen.screenWidth/2-60)
+                                                                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                                                                .background(Rectangle()
+                                                                                    .foregroundColor(.blue)
+                                                                                    .cornerRadius(10)
+                                                                                )
+                                                                        }
+                                                                        Spacer()
+                                                                    }.padding(.bottom)
+                                                                }
+                                                                
+                                                                // TODO: add a button for if the user is an editor AND their email matches with the current article's editorEmail, then you can delete it :)
+                                                                
+                                                            }
+                                                            
+                                                        }
+                                                    }
+                                                }.onAppear {
+                                                    print(selectedArticle)
+                                                    usableType = spotlightManager.allstudentachievementlist[selectedIndex]
+                                                    usableTypeImageData.removeAll()
+                                                    let dispatchGroup = DispatchGroup()
+                                                    
+                                                    for images in usableType?.images ?? [] {
+                                                        dispatchGroup.enter()
+                                                        imagemanager.getImage(fileName: images) { uiimage in
+                                                            if let uiimage = uiimage {
+                                                                usableTypeImageData.append(uiimage)
+                                                                print("FOUND SPOTLIGHT IMAGE")
+                                                            }
+                                                            dispatchGroup.leave() // Leave the Dispatch Group when the async call is done
+                                                        }
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }
+                                            .alert(isPresented: $isConfirmingApproveAchievement) {
+                                                Alert(
+                                                    title: Text("Approve Article?"),
+                                                    message: Text("This action cannot be undone."),
+                                                    primaryButton: .default(Text("Approve")) {
+                                                        if let achievementToDelete = achievementToDelete {
+                                                            withAnimation {
+                                                                spotlightManager.deleteAchievment(achievement: achievementToDelete) { error in
+                                                                    if let error = error {
+                                                                        print("Error deleting achievement: \(error.localizedDescription)")
+                                                                    }
+                                                                }
+                                                            }
+                                                            var tempachievement = achievementToDelete
+                                                            tempachievement.isApproved = true
+                                                            
+                                                            var i = 0
+                                                            for image in tempachievement.images {
+                                                                if tempachievement.imagedata.count > i {
+                                                                    imagemanager.cacheImageInUserDefaults(image: tempachievement.imagedata[i], fileName: image)
+                                                                }
+                                                                i = i + 1
+                                                            }
+                                                            
+                                                            spotlightManager.createAchievement(achievement: tempachievement) { error in
+                                                                if let error = error {
+                                                                    print("Error approving achievement: \(error.localizedDescription)")
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    secondaryButton: .cancel(Text("Cancel"))
+                                                )
+                                            }
+                                    }
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .padding(.horizontal)
+                                .navigationBarItems(
+                                    trailing:
+                                        Group {
+                                            if hasPermission.articles {
+                                                Button(showingPendingArticles ? "Show Public Articles" : "Show Pending Articles\(pendingString)") {
+                                                    withAnimation {
+                                                        showingPendingArticles.toggle()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                )
+                            } else {
+                                Spacer()
+                                    .frame(height: 10)
+                                Text("No pending articles.")
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)
+                                Spacer()
+                                    .navigationBarItems(
+                                        trailing:
+                                            Group {
+                                                if hasPermission.articles {
+                                                    Button(showingPendingArticles ? "Show Public Articles" : "Show Pending Articles\(pendingString)") {
+                                                        withAnimation {
+                                                            showingPendingArticles.toggle()
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                    )
+                            }
+                        }
+                    }
+                }
+            } else if hasPermission.articlewriter {
+                ZStack {
+                    ScrollView {
+                        LazyVStack {
+                            HStack {
+                                Text("Pending Articles")
+                                    .foregroundColor(Color.black)
+                                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                                    .lineLimit(2)
+                                    .padding(.leading)
+                                Spacer()
+                            }
+                            if !pendingArticlesEmpty {
+                                ForEach(spotlightManager.allstudentachievementlist, id: \.id) { achievement in
+                                    if !achievement.isApproved {
+                                        achievementcell(feat: achievement)
+                                            .contextMenu {
+                                                Button("Delete", role:.destructive) {
+                                                    presentingArticleSheet = false
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                        tempAchievementTitle = selectedArticle.achievementtitle
+                                                        isConfirmingDeleteAchievement = true
+                                                        achievementToDelete = usableType
+                                                    }
+                                                }
+                                            }
+                                            .alert(isPresented: $isConfirmingDeleteAchievement) {
+                                                Alert(
+                                                    title: Text("Delete Article?"),
+                                                    message: Text("This action cannot be undone."),
+                                                    primaryButton: .destructive(Text("Delete")) {
+                                                        if let achievementToDelete = achievementToDelete {
+                                                            withAnimation {
+                                                                spotlightManager.deleteAchievment(achievement: achievementToDelete) { error in
+                                                                    if let error = error {
+                                                                        print("Error deleting achievement: \(error.localizedDescription)")
+                                                                    }
+                                                                }
+                                                                withAnimation {
+                                                                    spotlightManager.allstudentachievementlistUnsorted.removeAll {$0.achievementdescription == achievementToDelete.achievementdescription && $0.date == achievementToDelete.date}
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    secondaryButton: .cancel(Text("Cancel"))
+                                                )
+                                            }
+                                            .onTapGesture {
+                                                print(selectedArticle)
+                                                self.selectedArticle = achievement
+                                                if let index = spotlightManager.allstudentachievementlist.firstIndex(of: achievement) {
+                                                    selectedIndex = index
+                                                }
+                                                presentingArticleSheet = true
+                                                self.selectedArticle = achievement
+                                            }
+                                            .sheet(isPresented: $presentingArticleSheet) {
+                                                VStack {
+                                                    if let usableType = usableType {
+                                                        HStack {
+                                                            Button("Cancel") {
+                                                                presentingArticleSheet = false
+                                                            }.padding()
+                                                            Spacer()
+                                                        }
+                                                        VStack {
+                                                            ScrollView{
+                                                                VStack{
+                                                                    HStack {
+                                                                        Text(usableType.achievementtitle)
+                                                                            .foregroundColor(Color.black)
+                                                                            .titleText()
+                                                                            .lineLimit(2)
+                                                                            .minimumScaleFactor(0.3)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
+                                                                    }
+                                                                    HStack {
+                                                                        Text(usableType.articleauthor)
+                                                                            .foregroundColor(Color.gray)
+                                                                            .font(.system(size: 26, weight: .semibold, design: .rounded))
+                                                                            .lineLimit(1)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
+                                                                    }
+                                                                    HStack {
+                                                                        Text(usableType.publisheddate)
+                                                                            .foregroundColor(Color.gray)
+                                                                            .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                                            .lineLimit(1)
+                                                                            .padding(.horizontal)
+                                                                        Spacer()
+                                                                    }
+                                                                    
+                                                                    
+                                                                    VStack {
+                                                                        TabView {
+                                                                            
+                                                                            // Loop through each recipe
+                                                                            ForEach(usableTypeImageData.indices, id: \.self) { index in
+                                                                                ZStack {
+                                                                                    Rectangle()
+                                                                                        .foregroundColor(.white)
+                                                                                    
+                                                                                    VStack(spacing: 0) {
+                                                                                        Image(uiImage: usableTypeImageData[index])
+                                                                                            .resizable()
+                                                                                            .aspectRatio(contentMode: .fill)
+                                                                                            .frame(width: screen.screenWidth - 30, height: 250)
+                                                                                            .clipped()
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            
+                                                                            
+                                                                        }
+                                                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                                                                        .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+                                                                        
+                                                                    }.cornerRadius(30)
+                                                                        .frame(width: screen.screenWidth - 30, height: 250)
+                                                                        .shadow(color: .gray, radius: 8, x:2, y:3)
+                                                                    
+                                                                        .padding(.horizontal)
+                                                                    Spacer()
+                                                                }.onAppear {
+                                                                }
+                                                                
+                                                                LinkTextView(text: usableType.achievementdescription)
+                                                                    .multilineTextAlignment(.leading)
+                                                                    .foregroundColor(Color.black)
+                                                                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                                                                    .padding(.horizontal, 25)
+                                                                    .padding(.vertical, 5)
+                                                                    .background(Rectangle()
+                                                                        .cornerRadius(10)
+                                                                        .padding(.horizontal)
+                                                                        .shadow(radius: 5, x: 3, y: 3)
+                                                                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                                                                    .padding(.bottom)
+                                                            }
+                                                            
+                                                        }
+                                                    }
+                                                }.onAppear {
+                                                    print(selectedArticle)
+                                                    usableType = spotlightManager.allstudentachievementlist[selectedIndex]
+                                                    usableTypeImageData.removeAll()
+                                                    let dispatchGroup = DispatchGroup()
+                                                    
+                                                    for images in usableType?.images ?? [] {
+                                                        dispatchGroup.enter()
+                                                        imagemanager.getImage(fileName: images) { uiimage in
+                                                            if let uiimage = uiimage {
+                                                                usableTypeImageData.append(uiimage)
+                                                                print("FOUND SPOTLIGHT IMAGE")
+                                                            }
+                                                            dispatchGroup.leave() // Leave the Dispatch Group when the async call is done
+                                                        }
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }
+                                    }
+                                }
+                                .padding(.horizontal)
+                                .buttonStyle(PlainButtonStyle())
+                            } else {
+                                Spacer()
+                                    .frame(height: 10)
+                                Text("No pending articles.")
+                                    .lineLimit(1)
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                                    .padding(.leading, 5)
+                                Spacer()
+                                    .navigationBarItems(
+                                        trailing:
+                                            Group {
+                                                if hasPermission.articles {
+                                                    Button(showingPendingArticles ? "Show Public Articles" : "Show Pending Articles\(pendingString)") {
+                                                        withAnimation {
+                                                            showingPendingArticles.toggle()
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                    )
+                            }
+                        }
+                    }
+                }
+            }
         }
+    }
     }
 
 class ScreenSize {

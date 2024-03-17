@@ -221,8 +221,8 @@
             filePath = "West High App/Main Views/Home/Student Spotlight/StudentSpotlight.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
+            startingLineNumber = "762"
+            endingLineNumber = "762"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -269,8 +269,8 @@
             filePath = "West High App/Main Views/Home/Student Spotlight/StudentSpotlight.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
+            startingLineNumber = "760"
+            endingLineNumber = "760"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -404,7 +404,7 @@
             <Locations>
                <Location
                   uuid = "14B4FD4B-A4EF-424C-82E6-B72A04C34FFD - a251a9fcedad5689"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(Swift.Optional&lt;SwiftUI.TupleView&lt;(West_High.StaffView, West_High.LunchMenuView, West_High.TransportationView, West_High.ClassesView, West_High.SchoolPolicyGuideView)&gt;&gt;, SwiftUI._ConditionalContent&lt;SwiftUI.NavigationView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;, SwiftUI.ZStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.ignoresSafeArea(_: SwiftUI.SafeAreaRegions, edges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0, SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.Text.screenMessageStyle(size: CoreGraphics.CGFloat) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.Text.screenMessageStyle(size: CoreGraphics.CGFloat) -&gt; some&gt;&gt;.0)&gt;&gt;)&gt;&gt;&gt;)&gt; in West_High.HomeView.body.getter : some"
@@ -419,7 +419,7 @@
                </Location>
                <Location
                   uuid = "14B4FD4B-A4EF-424C-82E6-B72A04C34FFD - a251a9fcedad5689"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(Swift.Optional&lt;SwiftUI.TupleView&lt;(West_High.StaffView, West_High.LunchMenuView, West_High.TransportationView, West_High.ClassesView, West_High.SchoolPolicyGuideView)&gt;&gt;, SwiftUI._ConditionalContent&lt;SwiftUI.NavigationView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;, SwiftUI.ZStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.ignoresSafeArea(_: SwiftUI.SafeAreaRegions, edges: SwiftUI.Edge.Set) -&gt; some&gt;&gt;.0, SwiftUI.VStack&lt;SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.Text.screenMessageStyle(size: CoreGraphics.CGFloat) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.Text.screenMessageStyle(size: CoreGraphics.CGFloat) -&gt; some&gt;&gt;.0)&gt;&gt;)&gt;&gt;&gt;)&gt; in West_High.HomeView.body.getter : some"
@@ -439,7 +439,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "573810A5-3AC6-47A9-9EE0-A0AC1D3CA26C"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "West High App/Main Views/Information/Information Views/AccountView.swift"
@@ -452,7 +452,7 @@
             <Locations>
                <Location
                   uuid = "573810A5-3AC6-47A9-9EE0-A0AC1D3CA26C - 7a7e7fc7f04130df"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 () -&gt; () in closure #2 () -&gt; SwiftUI.Alert in West_High.AccountView.body.getter : some"
@@ -467,7 +467,7 @@
                </Location>
                <Location
                   uuid = "573810A5-3AC6-47A9-9EE0-A0AC1D3CA26C - 5ce42a261e8978f2"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 @Swift.MainActor () -&gt; () in closure #1 () -&gt; () in closure #2 () -&gt; SwiftUI.Alert in West_High.AccountView.body.getter : some"

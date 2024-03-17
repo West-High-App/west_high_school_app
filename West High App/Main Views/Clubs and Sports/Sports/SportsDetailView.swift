@@ -87,7 +87,7 @@ struct SportsDetailView: View {
                         HStack {
                             Text(currentsport.sportname)
                                 .foregroundColor(Color.black)
-                                .font(.system(size: 35, weight: .bold, design: .rounded))
+                                .titleText()
                                 .lineLimit(2)
                                 .minimumScaleFactor(0.3)
                                 .padding(.horizontal)

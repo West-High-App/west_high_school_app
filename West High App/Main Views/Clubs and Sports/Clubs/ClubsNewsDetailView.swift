@@ -11,8 +11,7 @@ struct ClubsNewsDetailView: View {
             VStack(spacing: 10) {
                 HStack{
                     Text(currentclubnews.newstitle)
-                        .font(.title)
-                        .fontWeight(.bold)
+                        .titleText()
                         .foregroundColor(.black)
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
@@ -67,7 +66,6 @@ struct ClubsNewsDetailView: View {
 
                 Spacer()
             }
-            .padding(.top)
             .navigationBarTitleDisplayMode(.inline)
             
             LinkTextView(text: currentclubnews.newsdescription)

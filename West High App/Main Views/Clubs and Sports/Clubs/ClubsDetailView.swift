@@ -39,7 +39,7 @@ struct ClubsDetailView: View {
                     HStack {
                         Text(currentclub.clubname)
                             .foregroundColor(Color.black)
-                            .font(.system(size: 35, weight: .bold, design: .rounded))
+                            .titleText()
                             .lineLimit(1)
                             .minimumScaleFactor(0.3)
                             .padding(.horizontal)

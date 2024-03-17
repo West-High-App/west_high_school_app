@@ -121,7 +121,7 @@ struct AccountView: View {
                     Alert(
                         title: Text("Sign Out"),
                         message: Text("Continuing will return you to the login screen."),
-                        primaryButton: .default(Text("Sign Out")) {
+                        primaryButton: .default(Text("Sign Out").foregroundColor(.red)) {
                                                         
                             DispatchQueue.main.async {
                                 do {

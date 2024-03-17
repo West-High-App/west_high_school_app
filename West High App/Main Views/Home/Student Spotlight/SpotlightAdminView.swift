@@ -216,7 +216,6 @@ struct SpotlightAdminView: View {
                                         .buttonStyle(PlainButtonStyle())
                                         .contextMenu {
                                             Button("Delete", role: .destructive) {
-                                                tempAchievementTitle = achievement.achievementtitle
                                                 isConfirmingDeleteAchievement = true
                                                 achievementToDelete = achievement
                                             }
@@ -280,7 +279,7 @@ struct SpotlightAdminView: View {
                                                                 HStack {
                                                                     Text(usableType.achievementtitle)
                                                                         .foregroundColor(Color.black)
-                                                                        .font(.system(size: 35, weight: .bold, design: .rounded))
+                                                                        .titleText()
                                                                         .lineLimit(2)
                                                                         .minimumScaleFactor(0.3)
                                                                         .padding(.horizontal)
@@ -307,7 +306,6 @@ struct SpotlightAdminView: View {
                                                                 VStack {
                                                                     TabView {
                                                                         
-                                                                        // Loop through each recipe
                                                                         ForEach(usableTypeImageData.indices, id: \.self) { index in
                                                                             ZStack {
                                                                                 Rectangle()
@@ -514,7 +512,7 @@ struct SpotlightAdminView: View {
                                                             HStack {
                                                                 Text(usableType.achievementtitle)
                                                                     .foregroundColor(Color.black)
-                                                                    .font(.system(size: 35, weight: .bold, design: .rounded))
+                                                                    .titleText()
                                                                     .lineLimit(2)
                                                                     .minimumScaleFactor(0.3)
                                                                     .padding(.horizontal)

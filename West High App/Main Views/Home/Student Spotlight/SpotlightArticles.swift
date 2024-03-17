@@ -20,8 +20,7 @@ struct SpotlightArticles: View {
             VStack(spacing:10){
                 HStack {
                     Text(currentstudentdub.achievementtitle)
-                        .font(.title)
-                        .fontWeight(.bold)
+                        .titleText()
                         .foregroundColor(.black)
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
@@ -77,7 +76,6 @@ struct SpotlightArticles: View {
                 Spacer()
                 
             }
-            .padding(.top)
             .navigationBarTitleDisplayMode(.inline)
             
             LinkTextView(text: currentstudentdub.achievementdescription)
