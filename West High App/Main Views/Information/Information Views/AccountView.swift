@@ -79,12 +79,12 @@ struct AccountView: View {
                         } else {
                             HStack{
                                 Spacer()
-                                Text("Sign In")
+                                Text("Sign Out")
                                     .font(.system(size: 20, weight: .medium, design: .rounded))
                                 Spacer()
                             }
                             .padding(.vertical,5)
-                            .foregroundColor(.blue)
+                            .foregroundColor(.red)
                         }
                     }
                     
