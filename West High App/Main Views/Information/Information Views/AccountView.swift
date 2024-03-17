@@ -119,9 +119,9 @@ struct AccountView: View {
                     )
                 } else {
                     Alert(
-                        title: Text("Sign In"),
+                        title: Text("Sign Out"),
                         message: Text("Continuing will return you to the login screen."),
-                        primaryButton: .default(Text("Continue")) {
+                        primaryButton: .default(Text("Sign Out")) {
                                                         
                             DispatchQueue.main.async {
                                 do {
