@@ -11,10 +11,20 @@ struct UpcomingEventsView: View {
     @StateObject var upcomingeventsdataManager = upcomingEventsDataManager.shared
     @EnvironmentObject var userInfo: UserInfo
     @State private var hasPermissionUpcomingEvents = false
-    @State private var hasPermission = false
+    @StateObject var hasPermission = PermissionsCheck.shared
     @State private var hasAppeared = false
     var upcomingeventslist: [event]
+    @StateObject var dataManager = upcomingEventsDataManager.shared
+    @State private var isEditing = false
+    @State private var selectedEvent: event?
+    @State private var isPresentingAddEvent = false
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    @State var tempEventTitle = ""
     
+    @State private var isConfirmingDeleteEvent = false
+    @State private var eventToDelete: event?
+    @State var screen = ScreenSize()
     var body: some View {
         ScrollView {
             LazyVStack {
@@ -25,6 +35,25 @@ struct UpcomingEventsView: View {
                         .lineLimit(2)
                         .padding(.leading)
                     Spacer()
+                    if hasPermission.upcomingevents {
+                        Button {
+                            isPresentingAddEvent = true
+                        } label: {
+                            Image(systemName: "square.and.pencil")
+                                .foregroundColor(.blue)
+                                .padding(.trailing)
+                                .font(.system(size: 26, design: .rounded))
+                        }
+//                         NavigationLink {
+//                              UpcomingEventsAdminView()
+//                         } label: {
+//                             Image(systemName: "square.and.pencil")
+//                                    .foregroundColor(.blue)
+//                                    .padding(.trailing)
+//                                    .font(.system(size: 26, design: .rounded))
+//                          }
+                    }
+
                 }
                 HStack {
                     Text("Calendar")
@@ -67,14 +96,23 @@ struct UpcomingEventsView: View {
                         Spacer()
                         
                     }
-                    
                     .padding(.horizontal)
                     .padding(.vertical, 10)
                     .background(Rectangle()
                         .cornerRadius(9.0)
                         .shadow(color: Color.black.opacity(0.25), radius: 3, x: 1, y: 1)
                         .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
+                    .buttonStyle(PlainButtonStyle())
+                    .contextMenu {
+                        Button("Delete", role: .destructive) {
+                            tempEventTitle = event.eventname
+                            isConfirmingDeleteEvent = true
+                            eventToDelete = event
+                        }
+                    }
+
                 }
+                
                 .padding(.horizontal)
                 .padding(.vertical, 5)
                 
@@ -91,6 +129,31 @@ struct UpcomingEventsView: View {
                             upcomingeventsdataManager.getMoreUpcomingEvents()
                         }
                 }
+            }
+            .sheet(isPresented: $isPresentingAddEvent) {
+                EventDetailView(dataManager: dataManager)
+            }
+            .sheet(item: $selectedEvent) { event in
+                EventDetailView(dataManager: dataManager, editingEvent: event)
+            }
+            .alert(isPresented: $isConfirmingDeleteEvent) {
+                Alert(
+                    title: Text("Delete Event?"),
+                    message: Text("This action cannot be undone."),
+                    primaryButton: .destructive(Text("Delete")) {
+                        if let eventToDelete = eventToDelete {
+                            dataManager.deleteEvent(event: eventToDelete) { error in
+                                if let error = error {
+                                    print("Error deleting event: \(error.localizedDescription)")
+                                }
+                            }
+                            withAnimation {
+                                dataManager.allupcomingeventslistUnsorted.removeAll {$0 == eventToDelete}
+                            }
+                        }
+                    },
+                    secondaryButton: .cancel(Text("Cancel"))
+                )
             }
         }
     }

@@ -8,7 +8,6 @@ import SwiftUI
 
 struct UpcomingEventsAdminView: View {
     @StateObject var dataManager = upcomingEventsDataManager.shared
-    
     @State private var isEditing = false
     @State private var selectedEvent: event?
     @State private var isPresentingAddEvent = false

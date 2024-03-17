@@ -17,32 +17,32 @@ struct SpotlightArticles: View {
     
     var body: some View {
         ScrollView{
-            VStack{
+            VStack(spacing:10){
                 HStack {
                     Text(currentstudentdub.achievementtitle)
-                        .foregroundColor(Color.black)
-                        .font(.system(size: 35, weight: .bold, design: .rounded))
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                        .multilineTextAlignment(.leading)
                         .lineLimit(2)
                         .minimumScaleFactor(0.3)
                         .padding(.horizontal)
                     Spacer()
                 }
                 HStack {
-                    Text(currentstudentdub.articleauthor)
-                        .foregroundColor(Color.gray)
-                        .font(.system(size: 26, weight: .semibold, design: .rounded))
-                        .lineLimit(1)
+                    Text("By \(currentstudentdub.articleauthor)")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                         .padding(.horizontal)
+                    
                     Spacer()
-                }
-                HStack {
+                    
                     Text(currentstudentdub.publisheddate)
-                        .foregroundColor(Color.gray)
-                        .font(.system(size: 20, weight: .semibold, design: .rounded))
-                        .lineLimit(1)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                         .padding(.horizontal)
-                    Spacer()
                 }
+                .padding(.bottom, 10)
                 
                 VStack {
                     TabView {
@@ -67,27 +67,25 @@ struct SpotlightArticles: View {
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
                     .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
                     
-                }.cornerRadius(30)
-                    .frame(width: screen.screenWidth - 30, height: 250)
-                    .shadow(color: .gray, radius: 8, x:2, y:3)
-                    .padding(.horizontal)
-                
+                }
+                .cornerRadius(30)
+                .frame(width: screen.screenWidth - 30, height: 250)
+                .shadow(color: .gray, radius: 4, x:2, y:3)
+                .padding(.horizontal)
+                Divider()
+                    .frame(width: screen.screenWidth / 1.2, height: 2)
                 Spacer()
                 
             }
-
+            .padding(.top)
+            .navigationBarTitleDisplayMode(.inline)
+            
             LinkTextView(text: currentstudentdub.achievementdescription)
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(Color.black)
-                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                    .padding(.horizontal, 25)
-                    .padding(.vertical, 5)
-                    .background(Rectangle()
-                        .cornerRadius(10)
-                        .padding(.horizontal)
-                        .shadow(radius: 5, x: 3, y: 3)
-                        .foregroundColor(Color(hue: 1.0, saturation: 0.0, brightness: 0.94)))
-                    .padding(.bottom)
+                .multilineTextAlignment(.leading)
+                .font(.body)
+                .foregroundColor(.black)
+                .padding(.horizontal, 20)
+                .padding(.bottom)
                 
         }.onAppear {
             if !hasAppeared || currentstudentdub.imagedata == [] || currentstudentdub.imagedata.first == UIImage() || currentstudentdub.imagedata.first == nil { //

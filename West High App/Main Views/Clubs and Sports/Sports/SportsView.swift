@@ -169,7 +169,7 @@ struct SportsHibabi: View {
                         Text("News").tag(3)
                         
                     }).pickerStyle(SegmentedPickerStyle())
-                        .padding(.horizontal,30)
+                        .padding(.horizontal,15)
                         .onAppear() {
                             if count == 0 {
                                 
@@ -292,21 +292,21 @@ struct SportsHibabi: View {
                                                         .environmentObject(sporteventmanager)
                                                 } label: {
                                                     HStack {
-                                                        if item.imagedata != nil {
-                                                            Image(uiImage: item.imagedata!)
-                                                                .resizable()
-                                                                .aspectRatio(contentMode: .fill)
-                                                                .frame(width: 50, height: 50)
-                                                                .cornerRadius(1000)
-                                                                .padding(.trailing, 10)
-                                                        } else {
-                                                            Image(systemName: "questionmark.circle")
-                                                                .resizable()
-                                                                .aspectRatio(contentMode: .fill)
-                                                                .frame(width: 50, height: 50)
-                                                                .cornerRadius(1000)
-                                                                .padding(.trailing, 10)
-                                                        }
+//                                                        if item.imagedata != nil {
+//                                                            Image(uiImage: item.imagedata!)
+//                                                                .resizable()
+//                                                                .aspectRatio(contentMode: .fill)
+//                                                                .frame(width: 50, height: 50)
+//                                                                .cornerRadius(1000)
+//                                                                .padding(.trailing, 10)
+//                                                        } //else {
+//                                                            Image(systemName: "questionmark.circle")
+//                                                                .resizable()
+//                                                                .aspectRatio(contentMode: .fill)
+//                                                                .frame(width: 50, height: 50)
+//                                                                .cornerRadius(1000)
+//                                                                .padding(.trailing, 10)
+//                                                        }
                                                         VStack (alignment: .center){
                                                             HStack {
                                                                 Text(item.sportname)
@@ -373,6 +373,7 @@ struct SportsHibabi: View {
                         }.searchable(text: $searchText)
                     }
                 }
+                .offset(y:-5)
                 
                 .navigationBarItems(trailing:
                                         Group {
@@ -639,7 +640,7 @@ struct sportnewscell: View{
                     Text(feat.newsdate)
                         .foregroundColor(.secondary)
                         .lineLimit(2)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .font(.system(size: 18, weight: .semibold))
                         .padding(.leading, 5)
                     Spacer()
                 }
@@ -647,11 +648,11 @@ struct sportnewscell: View{
                     .foregroundColor(.black)
                     .lineLimit(2)
                     .minimumScaleFactor(0.9)
-                    .font(.system(size: 24, weight: .semibold, design: .rounded))
+                    .font(.system(size: 24, weight: .semibold))
                     .padding(.leading, 5)
                 Text(feat.newsdescription)
                     .foregroundColor(.secondary)
-                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .font(.system(size: 18, weight: .regular))
                     .padding(.leading, 5)
                     .lineLimit(1)
 //                    Text("Click here to read more")
